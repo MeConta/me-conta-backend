@@ -18,7 +18,7 @@ COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/package*.json ./
 ENV NODE_ENV=${NODE_ENV}
 ENV PORT=${PORT}
-RUN npm ci --only=production
+COPY --from=builder /usr/src/app/node_modules ./node_modules
 EXPOSE ${PORT}
 ENTRYPOINT ["node", "/usr/src/app/dist/main"]
 
