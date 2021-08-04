@@ -1,35 +1,38 @@
-# BUILD STAGE
-FROM node:slim as build
-
+# DEPENDENCY STAGE
+FROM node:slim as dependencies
 WORKDIR /usr/src/app
-
 COPY package*.json ./
-
 RUN npm ci
 
+# BUILD STAGE
+FROM node:slim as builder
+WORKDIR /usr/src/app
 COPY ./ ./
-
+COPY --from=dependencies /usr/src/app/node_modules ./node_modules
 RUN npm run build
 
-
-# DEPLOY STAGE
-FROM node:slim
-
+# RUN STAGE
+FROM node:slim as runner
 WORKDIR /usr/src/app
-
-COPY --from=build /usr/src/app/dist ./dist
-
-COPY package*.json ./
-
-ARG NODE_ENV
+COPY --from=builder /usr/src/app/dist ./dist
+COPY --from=builder /usr/src/app/package*.json ./
 ENV NODE_ENV=${NODE_ENV}
-
-ARG PORT
 ENV PORT=${PORT}
-
 RUN npm ci --only=production
-
-
 EXPOSE ${PORT}
+ENTRYPOINT ["node", "/usr/src/app/dist/main"]
 
-CMD ["node", "/usr/src/app/dist/main"]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
