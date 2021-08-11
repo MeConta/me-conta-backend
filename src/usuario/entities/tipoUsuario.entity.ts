@@ -9,7 +9,7 @@ export class TipoUsuario {
   nome: string;
 
   @Column({
-    nullable: true
+    nullable: true,
   })
   descricao: string;
 }
