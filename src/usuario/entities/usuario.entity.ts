@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
+import { TipoUsuario } from './tipoUsuario.entity';
 
 @Entity('usuario')
 export class Usuario {
@@ -28,4 +35,8 @@ export class Usuario {
 
   @Column()
   email: string;
+
+  @OneToOne(() => TipoUsuario)
+  @JoinColumn()
+  tipoUsuario: TipoUsuario;
 }
