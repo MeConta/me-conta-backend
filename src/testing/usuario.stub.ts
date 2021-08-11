@@ -12,11 +12,15 @@ export class UsuarioStub {
       senha: 'teste',
       UF: 'SP',
       telefone: '5511947866489',
+      dataCriacao: new Date(),
+      dataAlteracao: new Date(),
       tipoUsuario: {
         id: 1,
         nome: 'Admin',
         descricao: 'Bonecos',
-      }
+        dataCriacao: new Date(),
+        dataAlteracao: new Date(),
+      },
     };
   }
   static getEntities(numero = 1): Usuario[] {

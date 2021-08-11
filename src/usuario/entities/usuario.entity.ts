@@ -6,9 +6,10 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { TipoUsuario } from './tipoUsuario.entity';
+import { DefaultEntity } from '../../default.entity';
 
 @Entity('usuario')
-export class Usuario {
+export class Usuario extends DefaultEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
