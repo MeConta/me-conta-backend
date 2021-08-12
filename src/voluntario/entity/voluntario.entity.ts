@@ -1,5 +1,6 @@
-import { Column } from 'typeorm';
+import { Column, JoinTable, ManyToMany } from 'typeorm';
 import { DefaultEntity } from '../../default.entity';
+import { FrenteAtuacao } from '../../frente-atuacao/entities/frente-atuacao.entity';
 
 export abstract class Voluntario extends DefaultEntity {
   @Column()
@@ -13,4 +14,8 @@ export abstract class Voluntario extends DefaultEntity {
 
   @Column()
   aprovado: boolean;
+
+  @ManyToMany(() => FrenteAtuacao)
+  @JoinTable()
+  frentesAtuacao: FrenteAtuacao[];
 }

@@ -7,6 +7,7 @@ import { UsuarioModule } from './usuario/usuario.module';
 import { AlunoModule } from './aluno/aluno.module';
 import { AtendenteModule } from './atendente/atendente.module';
 import { SupervisorModule } from './supervisor/supervisor.module';
+import { FrenteAtuacaoModule } from './frente-atuacao/frente-atuacao.module';
 import database from './config/database.config';
 
 @Module({
@@ -27,6 +28,7 @@ import database from './config/database.config';
     AlunoModule,
     AtendenteModule,
     SupervisorModule,
+    FrenteAtuacaoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
