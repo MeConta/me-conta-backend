@@ -1,7 +1,8 @@
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import { Usuario } from '../../usuario/entities/usuario.entity';
 import { Supervisor } from '../../supervisor/entities/supervisor.entity';
 import { Voluntario } from '../../voluntario/entity/voluntario.entity';
+import { Agenda } from '../../agenda/entities/agenda.entity';
 
 @Entity('atendente')
 export class Atendente extends Voluntario {
@@ -27,4 +28,7 @@ export class Atendente extends Voluntario {
   @OneToOne(() => Supervisor)
   @JoinColumn()
   supervisor: Supervisor;
+
+  @OneToMany(() => Agenda, (agenda) => agenda.atendente)
+  agendas: Agenda[];
 }

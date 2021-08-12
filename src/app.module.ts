@@ -8,6 +8,9 @@ import { AlunoModule } from './aluno/aluno.module';
 import { AtendenteModule } from './atendente/atendente.module';
 import { SupervisorModule } from './supervisor/supervisor.module';
 import { FrenteAtuacaoModule } from './frente-atuacao/frente-atuacao.module';
+import { AgendaModule } from './agenda/agenda.module';
+import { ConsultaModule } from './consulta/consulta.module';
+import { AvaliacaoModule } from './avaliacao/avaliacao.module';
 import database from './config/database.config';
 
 @Module({
@@ -29,6 +32,9 @@ import database from './config/database.config';
     AtendenteModule,
     SupervisorModule,
     FrenteAtuacaoModule,
+    AgendaModule,
+    ConsultaModule,
+    AvaliacaoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
