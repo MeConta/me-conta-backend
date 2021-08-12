@@ -7,6 +7,7 @@ import { FactoryMock, MockType } from '../testing/factory.mock';
 import { Repository, TypeORMError } from 'typeorm';
 import { Usuario } from '../usuario/entities/usuario.entity';
 import { UnprocessableEntityException } from '@nestjs/common';
+import { UsuarioService } from '../usuario/usuario.service';
 
 describe('AlunoService', () => {
   let service: AlunoService;
@@ -18,6 +19,10 @@ describe('AlunoService', () => {
         {
           provide: getRepositoryToken(Aluno),
           useFactory: FactoryMock.repositoryMockFactory,
+        },
+        {
+          provide: UsuarioService,
+          useFactory: FactoryMock.serviceMockFactory,
         },
         AlunoService,
       ],

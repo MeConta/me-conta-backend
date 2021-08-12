@@ -1,9 +1,15 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { DefaultEntity } from '../../default.entity';
 import { Estado, Genero, Tipo } from './usuario.enum';
+import { Exclude } from 'class-transformer';
 
 @Entity('usuario')
 export class Usuario extends DefaultEntity {
+  constructor(partial: Partial<DefaultEntity>) {
+    super(partial);
+    Object.assign(this, partial);
+  }
+
   @Column()
   nome: string;
 
@@ -13,6 +19,7 @@ export class Usuario extends DefaultEntity {
   email: string;
 
   @Column()
+  @Exclude()
   senha: string;
 
   @Column()

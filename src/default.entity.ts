@@ -11,11 +11,18 @@ export abstract class DefaultEntity {
   id: number;
 
   @CreateDateColumn()
+  @Exclude()
   dataCriacao!: Date;
 
   @UpdateDateColumn()
+  @Exclude()
   dataAlteracao!: Date;
 
   @DeleteDateColumn()
+  @Exclude()
   dataExclusao?: Date;
+
+  constructor(partial: Partial<DefaultEntity>) {
+    Object.assign(this, partial);
+  }
 }

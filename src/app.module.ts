@@ -5,6 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsuarioModule } from './usuario/usuario.module';
 import { AlunoModule } from './aluno/aluno.module';
+import { AtendenteModule } from './atendente/atendente.module';
+import { SupervisorModule } from './supervisor/supervisor.module';
 import database from './config/database.config';
 
 @Module({
@@ -23,6 +25,8 @@ import database from './config/database.config';
     }),
     UsuarioModule,
     AlunoModule,
+    AtendenteModule,
+    SupervisorModule,
   ],
   controllers: [AppController],
   providers: [AppService],
