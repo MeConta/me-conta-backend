@@ -1,9 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Usuario } from './entities/usuario.entity';
-import { Repository } from 'typeorm';
+import { EntityColumnNotFound, Repository } from 'typeorm';
+import { Erros } from '../erros.enum';
 
 @Injectable()
 export class UsuarioService {
@@ -12,8 +18,13 @@ export class UsuarioService {
     private repository: Repository<Usuario>,
   ) {}
 
-  create(createUsuarioDto: CreateUsuarioDto) {
-    return 'This action adds a new usuario';
+  async create(createUsuarioDto: CreateUsuarioDto) {
+    const usuario = this.repository.create(createUsuarioDto);
+    try {
+      return await this.repository.save(usuario);
+    } catch (e) {
+      throw new UnprocessableEntityException(Erros.EMAIL_DUPLICADO);
+    }
   }
 
   async findAll() {
@@ -21,16 +32,33 @@ export class UsuarioService {
   }
 
   async findOne(id: number) {
-    return this.repository.findOne({
+    const usuario = await this.repository.findOne({
       id,
     });
+    if (!usuario) {
+      throw new NotFoundException(Erros.NAO_ENCONTRADO);
+    }
+    return usuario;
   }
 
-  update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-    return `This action updates a #${id} usuario`;
+  async update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
+    try {
+      const result = await this.repository.update(
+        {
+          id,
+        },
+        updateUsuarioDto,
+      );
+      if (!result.affected) {
+        return Promise.reject(new NotFoundException(Erros.NAO_ENCONTRADO));
+      }
+      return await this.findOne(id);
+    } catch (e) {
+      throw new UnprocessableEntityException(Erros.PARAMETROS_INCORRETOS);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} usuario`;
+  async remove(id: number) {
+    return this.repository.softRemove([await this.findOne(id)]);
   }
 }

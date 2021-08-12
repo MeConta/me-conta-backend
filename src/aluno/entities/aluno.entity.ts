@@ -11,9 +11,6 @@ import { Usuario } from '../../usuario/entities/usuario.entity';
 
 @Entity('aluno')
 export class Aluno extends DefaultEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
   @Column('text')
   tipoEscola: TipoEscola;
 

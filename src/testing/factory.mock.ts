@@ -10,11 +10,18 @@ export class FactoryMock {
     () => ({
       find: jest.fn((entity) => entity),
       findOne: jest.fn((entity) => entity),
+      create: jest.fn((entity) => entity),
+      save: jest.fn((entity) => entity),
+      update: jest.fn((entity) => entity),
+      softRemove: jest.fn((entity) => entity),
     }),
   );
 
-  static conversionMockFactory: () => MockType<any> = jest.fn(() => ({
-    convert: jest.fn((entity) => entity),
-    convertAll: jest.fn((entity) => entity),
+  static serviceMockFactory: () => MockType<any> = jest.fn(() => ({
+    create: jest.fn(),
+    findAll: jest.fn(),
+    findOne: jest.fn(),
+    update: jest.fn(),
+    remove: jest.fn(),
   }));
 }

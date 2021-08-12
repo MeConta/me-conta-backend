@@ -1,20 +1,16 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToOne,
-  JoinColumn,
-} from 'typeorm';
-import { TipoUsuario } from './tipoUsuario.entity';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { DefaultEntity } from '../../default.entity';
+import { Estado, Genero, Tipo } from './usuario.enum';
 
 @Entity('usuario')
 export class Usuario extends DefaultEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
   @Column()
   nome: string;
+
+  @Column({
+    unique: true,
+  })
+  email: string;
 
   @Column()
   senha: string;
@@ -22,11 +18,18 @@ export class Usuario extends DefaultEntity {
   @Column()
   dataNascimento: Date;
 
-  @Column({ length: 2 })
-  UF: string;
+  @Column({
+    type: 'enum',
+    enum: Genero,
+    default: Genero.PREFIRO_NAO_DECLARAR,
+  })
+  genero: Genero;
 
-  @Column()
-  genero: string;
+  @Column({
+    type: 'enum',
+    enum: Estado,
+  })
+  UF: Estado;
 
   @Column()
   cidade: string;
@@ -34,10 +37,10 @@ export class Usuario extends DefaultEntity {
   @Column()
   telefone: string;
 
-  @Column()
-  email: string;
-
-  @OneToOne(() => TipoUsuario)
-  @JoinColumn()
-  tipoUsuario: TipoUsuario;
+  @Column({
+    type: 'enum',
+    enum: Tipo,
+    default: Tipo.ALUNO,
+  })
+  tipoUsuario: Tipo;
 }
