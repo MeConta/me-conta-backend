@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsuarioController } from './usuario.controller';
 import { UsuarioService } from './usuario.service';
-import { UsuarioServiceStub } from './usuario.service.stub';
 import { FactoryMock } from '../testing/factory.mock';
 import { UsuarioStub } from '../testing/usuario.stub';
 

@@ -3,12 +3,7 @@ import { UsuarioService } from './usuario.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Usuario } from './entities/usuario.entity';
 import { FactoryMock, MockType } from '../testing/factory.mock';
-import {
-  EntityColumnNotFound,
-  Repository,
-  TypeORMError,
-  UpdateResult,
-} from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { UsuarioStub } from '../testing/usuario.stub';
 import {
   NotFoundException,
