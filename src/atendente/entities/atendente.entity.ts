@@ -1,5 +1,4 @@
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
-import { DefaultEntity } from '../../default.entity';
 import { Usuario } from '../../usuario/entities/usuario.entity';
 import { Supervisor } from '../../supervisor/entities/supervisor.entity';
 import { Voluntario } from '../../voluntario/entity/voluntario.entity';
