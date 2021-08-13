@@ -1,4 +1,3 @@
-import { join } from 'path';
 import { registerAs } from '@nestjs/config';
 import { ConnectionOptions } from 'typeorm';
 
