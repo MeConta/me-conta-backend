@@ -1,5 +1,4 @@
 import {
-  HttpStatus,
   Injectable,
   NotFoundException,
   UnprocessableEntityException,
@@ -8,7 +7,7 @@ import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Usuario } from './entities/usuario.entity';
-import { EntityColumnNotFound, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Erros } from '../erros.enum';
 
 @Injectable()
