@@ -36,7 +36,5 @@ import database from './config/database.config';
     ConsultaModule,
     AvaliacaoModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
