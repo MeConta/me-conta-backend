@@ -26,14 +26,14 @@ export class Usuario extends DefaultEntity {
   dataNascimento: Date;
 
   @Column({
-    type: 'enum',
+    type: 'varchar',
     enum: Genero,
     default: Genero.PREFIRO_NAO_DECLARAR,
   })
   genero: Genero;
 
   @Column({
-    type: 'enum',
+    type: 'varchar',
     enum: Estado,
   })
   UF: Estado;
@@ -45,7 +45,7 @@ export class Usuario extends DefaultEntity {
   telefone: string;
 
   @Column({
-    type: 'enum',
+    type: 'varchar',
     enum: Tipo,
     default: Tipo.ALUNO,
   })

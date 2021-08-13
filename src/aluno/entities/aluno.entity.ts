@@ -6,14 +6,14 @@ import { Usuario } from '../../usuario/entities/usuario.entity';
 @Entity('aluno')
 export class Aluno extends DefaultEntity {
   @Column({
-    type: 'enum',
+    type: 'varchar',
     enum: TipoEscola,
     default: TipoEscola.PUBLICA,
   })
   tipoEscola: TipoEscola;
 
   @Column({
-    type: 'enum',
+    type: 'integer',
     enum: GrauEnsinoMedio,
   })
   grauEnsinoMedio: GrauEnsinoMedio;

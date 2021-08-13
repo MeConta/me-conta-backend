@@ -6,7 +6,7 @@ import { Atendente } from '../../atendente/entities/atendente.entity';
 @Entity('supervisor')
 export class Supervisor extends Voluntario {
   @Column({
-    type: 'enum',
+    type: 'varchar',
     enum: AreaAtuacao,
   })
   areaAtuacao: AreaAtuacao;
