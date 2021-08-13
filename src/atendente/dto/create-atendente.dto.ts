@@ -1,9 +1,7 @@
-import { CreateUsuarioDto } from '../../usuario/dto/create-usuario.dto';
-import { Usuario } from '../../usuario/entities/usuario.entity';
 import { IsNotEmpty, Length, Max, Min } from 'class-validator';
-import { Transform } from 'class-transformer';
+import { CreateVoluntarioDto } from '../../voluntario/dto/create-voluntario.dto';
 
-export class CreateAtendenteDto extends CreateUsuarioDto {
+export class CreateAtendenteDto extends CreateVoluntarioDto {
   @IsNotEmpty()
   formado: boolean;
 
@@ -11,18 +9,6 @@ export class CreateAtendenteDto extends CreateUsuarioDto {
   @Max(10)
   semestre: number;
 
-  @IsNotEmpty()
-  especializacao: string;
-
   @Length(4, 4)
   anoFormacao: number;
-
-  @IsNotEmpty()
-  descricao: string;
-
-  @IsNotEmpty()
-  instituicao: string;
-
-  @Transform(({ value }) => value.id)
-  usuario: Usuario;
 }
