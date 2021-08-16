@@ -2,6 +2,7 @@ import { CreateAlunoDto } from '../aluno/dto/create-aluno.dto';
 import { UsuarioStub } from './usuario.stub';
 import { GrauEnsinoMedio, TipoEscola } from '../aluno/entities/aluno.enum';
 import { Aluno } from '../aluno/entities/aluno.entity';
+import { UpdateAlunoDto } from '../aluno/dto/update-aluno.dto';
 
 export class AlunoStub {
   static getCreateDto(): CreateAlunoDto {
@@ -10,6 +11,12 @@ export class AlunoStub {
       usuario: UsuarioStub.getEntity(),
       tipoEscola: TipoEscola.PUBLICA,
       grauEnsinoMedio: GrauEnsinoMedio.PRIMEIRO,
+    };
+  }
+
+  static getUpdateDto(): UpdateAlunoDto {
+    return {
+      email: 'teste-alterado@teste.com',
     };
   }
 

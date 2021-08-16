@@ -8,22 +8,18 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FindConditions, Repository } from 'typeorm';
 import { Erros } from './erros.enum';
 
-export interface IDefaultService<
-  Entity = any,
-  createDto = any,
-  updateDto = any,
-> {
+export interface IDefaultService<Entity, CreateDto, UpdateDto> {
   repository: Repository<Entity>;
-  create(dto: createDto): Promise<Entity>;
+  create(dto: CreateDto): Promise<Entity>;
   findAll(conditions?: FindConditions<Entity>): Promise<Entity[]>;
   findOne(id: number): Promise<Entity>;
-  update(id: number, dto: updateDto): Promise<Entity>;
+  update(id: number, dto: UpdateDto): Promise<Entity>;
   remove(id: number): Promise<Entity>;
 }
 
 export function DefaultService<createDto, updateDto>(
   entity,
-): Type<IDefaultService> {
+): Type<IDefaultService<typeof entity, createDto, updateDto>> {
   @Injectable()
   class DefaultServiceHost
     implements IDefaultService<typeof entity, createDto, updateDto>
@@ -60,10 +56,11 @@ export function DefaultService<createDto, updateDto>(
     async update(id: number, dto: updateDto) {
       await this.findOne(id);
       try {
-        return await this.repository.save<typeof entity>({
+        await this.repository.save<typeof entity>({
           ...dto,
           id,
         });
+        return this.findOne(id);
       } catch (e) {
         throw new UnprocessableEntityException(Erros.PARAMETROS_INCORRETOS);
       }

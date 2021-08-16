@@ -95,9 +95,7 @@ describe('UsuarioService', () => {
   });
 
   it('Não deve encontrar o usuário para alterar', async () => {
-    jest.spyOn(repository, 'update').mockReturnValue({
-      affected: 0,
-    } as UpdateResult);
+    jest.spyOn(service, 'findOne').mockRejectedValue(new NotFoundException());
 
     await expect(() =>
       service.update(1, UsuarioStub.getUpdateDto()),
@@ -105,7 +103,7 @@ describe('UsuarioService', () => {
   });
 
   it('Não deve alterar o usuário pois os parâmetros estão incorretos', async () => {
-    jest.spyOn(repository, 'update').mockImplementation(() => Promise.reject());
+    jest.spyOn(repository, 'save').mockImplementation(() => Promise.reject());
 
     await expect(() =>
       service.update(1, UsuarioStub.getUpdateDto()),

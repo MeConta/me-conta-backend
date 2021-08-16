@@ -11,15 +11,18 @@ import { Tipo } from '../usuario/entities/usuario.enum';
 import { Erros } from '../erros.enum';
 import { UpdateUsuarioDto } from '../usuario/dto/update-usuario.dto';
 
-export function ParticipantService<CreateDto, UpdateDto>(
+export function ParticipantService(
   Entity,
   tipo: Tipo,
-): Type<IDefaultService> {
+  CreateDto,
+  UpdateDto,
+): Type<IDefaultService<typeof Entity, typeof CreateDto, typeof UpdateDto>> {
   @Injectable()
-  class ParticipantServiceHost extends DefaultService<CreateDto, UpdateDto>(
-    Entity,
-  ) {
-    @Inject() usuarioService: UsuarioService;
+  class ParticipantServiceHost extends DefaultService<
+    typeof CreateDto,
+    typeof UpdateDto
+  >(Entity) {
+    @Inject(UsuarioService) usuarioService: UsuarioService;
 
     async create(dto: any): Promise<typeof Entity> {
       try {
@@ -38,26 +41,34 @@ export function ParticipantService<CreateDto, UpdateDto>(
       }
     }
 
-    /* async update(id: number, dto: UpdateDto): Promise<typeof Entity> {
-      try {
-        const entity = await this.findOne(id);
-        let { usuario } = entity;
+    async update(id: number, dto: typeof UpdateDto): Promise<typeof Entity> {
+      const entity = await this.findOne(id);
 
-        const usuarioDto: UpdateUsuarioDto = {
-          ...usuario,
-          ...dto,
-        };
-        usuario = await this.usuarioService.update(usuario.id, usuarioDto);
-        dto = {
-          usuario,
-          ...entity,
-          ...dto,
-        } as UpdateDto;
-        return await super.update(id, dto);
-      } catch (e) {
-        throw new UnprocessableEntityException(Erros.PARAMETROS_INCORRETOS);
-      }
-    }*/
+      const {
+        email,
+        genero,
+        cidade,
+        UF,
+        nome,
+        senha,
+        dataNascimento,
+        telefone,
+        ...participant
+      } = dto;
+
+      await this.usuarioService.update(entity.usuario.id, {
+        email,
+        genero,
+        cidade,
+        UF,
+        nome,
+        senha,
+        dataNascimento,
+        telefone,
+      } as UpdateUsuarioDto);
+
+      return await super.update(id, participant);
+    }
   }
   return ParticipantServiceHost;
 }

@@ -6,7 +6,9 @@ import { ParticipantService } from '../voluntario/participant.service';
 import { UpdateAlunoDto } from './dto/update-aluno.dto';
 
 @Injectable()
-export class AlunoService extends ParticipantService<
+export class AlunoService extends ParticipantService(
+  Aluno,
+  Tipo.ALUNO,
   CreateAlunoDto,
-  UpdateAlunoDto
->(Aluno, Tipo.ALUNO) {}
+  UpdateAlunoDto,
+) {}
