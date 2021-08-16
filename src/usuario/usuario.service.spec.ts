@@ -3,7 +3,7 @@ import { UsuarioService } from './usuario.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Usuario } from './entities/usuario.entity';
 import { FactoryMock, MockType } from '../testing/factory.mock';
-import { Repository, UpdateResult } from 'typeorm';
+import { FindConditions, Repository, UpdateResult } from 'typeorm';
 import { UsuarioStub } from '../testing/usuario.stub';
 import {
   NotFoundException,
@@ -37,6 +37,16 @@ describe('UsuarioService', () => {
     jest.spyOn(repository, 'find').mockReturnValue(UsuarioStub.getEntities());
 
     const response = await service.findAll();
+
+    expect(response).toBeInstanceOf(Array);
+  });
+
+  it('deve retornar uma lista de usuários ao utilizar um critério', async () => {
+    jest.spyOn(repository, 'find').mockReturnValue(UsuarioStub.getEntities());
+
+    const response = await service.findAll({
+      nome: 'teste',
+    } as FindConditions<Usuario>);
 
     expect(response).toBeInstanceOf(Array);
   });

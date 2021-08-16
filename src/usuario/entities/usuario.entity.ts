@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column } from 'typeorm';
 import { DefaultEntity } from '../../default.entity';
 import { Estado, Genero, Tipo } from './usuario.enum';
 import { Exclude } from 'class-transformer';

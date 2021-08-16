@@ -20,6 +20,7 @@ export class Aluno extends DefaultEntity {
 
   @OneToOne(() => Usuario, {
     nullable: false,
+    eager: true,
   })
   @JoinColumn()
   usuario: Usuario;
