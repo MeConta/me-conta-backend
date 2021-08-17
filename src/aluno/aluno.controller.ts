@@ -1,14 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Param, Patch, Post } from '@nestjs/common';
 import { AlunoService } from './aluno.service';
 import { CreateAlunoDto } from './dto/create-aluno.dto';
 import { DefaultController } from '../default.controller';
