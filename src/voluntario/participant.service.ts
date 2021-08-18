@@ -24,18 +24,35 @@ export function ParticipantService(
   >(Entity) {
     @Inject(UsuarioService) usuarioService: UsuarioService;
 
-    async create(dto: any): Promise<typeof Entity> {
+    async create(dto: typeof CreateDto): Promise<typeof Entity> {
       try {
-        const usuarioDto: CreateUsuarioDto = {
-          ...dto,
+        const {
+          email,
+          genero,
+          cidade,
+          UF,
+          nome,
+          senha,
+          dataNascimento,
+          telefone,
+          ...participant
+        } = dto;
+        const usuario = await this.usuarioService.create({
+          email,
+          genero,
+          cidade,
+          UF,
+          nome,
+          senha,
+          dataNascimento,
+          telefone,
           tipoUsuario: tipo,
-        };
-        const usuario = await this.usuarioService.create(usuarioDto);
-        dto = {
-          ...dto,
+        } as CreateUsuarioDto);
+
+        return await super.create({
+          ...participant,
           usuario,
-        };
-        return await super.create(dto);
+        });
       } catch (e) {
         throw new UnprocessableEntityException(Erros.USUARIO_JA_CADASTRADO);
       }
@@ -67,7 +84,7 @@ export function ParticipantService(
         telefone,
       } as UpdateUsuarioDto);
 
-      return await super.update(id, participant);
+      return super.update(id, participant);
     }
   }
   return ParticipantServiceHost;

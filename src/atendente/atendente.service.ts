@@ -1,26 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAtendenteDto } from './dto/create-atendente.dto';
 import { UpdateAtendenteDto } from './dto/update-atendente.dto';
+import { Atendente } from './entities/atendente.entity';
+import { Tipo } from '../usuario/entities/usuario.enum';
+import { VoluntarioService } from '../voluntario/voluntario.service';
 
 @Injectable()
-export class AtendenteService {
-  create(createAtendenteDto: CreateAtendenteDto) {
-    return 'This action adds a new atendente';
-  }
-
-  findAll() {
-    return `This action returns all atendente`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} atendente`;
-  }
-
-  update(id: number, updateAtendenteDto: UpdateAtendenteDto) {
-    return `This action updates a #${id} atendente`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} atendente`;
-  }
-}
+export class AtendenteService extends VoluntarioService(
+  Atendente,
+  Tipo.ATENDENTE,
+  CreateAtendenteDto,
+  UpdateAtendenteDto,
+) {}

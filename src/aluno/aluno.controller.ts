@@ -5,13 +5,10 @@ import { DefaultController } from '../default.controller';
 import { Aluno } from './entities/aluno.entity';
 import { UpdateAlunoDto } from './dto/update-aluno.dto';
 
-export class AlunoController extends DefaultController(
-  'aluno',
-  Aluno,
+export class AlunoController extends DefaultController<
   CreateAlunoDto,
-  UpdateAlunoDto,
-  AlunoService,
-) {
+  UpdateAlunoDto
+>('aluno', Aluno, AlunoService) {
   @Post()
   create(@Body() dto: CreateAlunoDto): Promise<Aluno> {
     return super.create(dto);

@@ -1,34 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Post, Body, Patch, Param } from '@nestjs/common';
 import { FrenteAtuacaoService } from './frente-atuacao.service';
 import { CreateFrenteAtuacaoDto } from './dto/create-frente-atuacao.dto';
 import { UpdateFrenteAtuacaoDto } from './dto/update-frente-atuacao.dto';
+import { DefaultController } from '../default.controller';
+import { FrenteAtuacao } from './entities/frente-atuacao.entity';
 
-@Controller('frente-atuacao')
-export class FrenteAtuacaoController {
-  constructor(private readonly frenteAtuacaoService: FrenteAtuacaoService) {}
-
+export class FrenteAtuacaoController extends DefaultController<
+  CreateFrenteAtuacaoDto,
+  UpdateFrenteAtuacaoDto
+>('frente-atuacao', FrenteAtuacao, FrenteAtuacaoService) {
   @Post()
-  create(@Body() createFrenteAtuacaoDto: CreateFrenteAtuacaoDto) {
-    return this.frenteAtuacaoService.create(createFrenteAtuacaoDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.frenteAtuacaoService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.frenteAtuacaoService.findOne(+id);
+  create(@Body() dto: CreateFrenteAtuacaoDto): Promise<FrenteAtuacao> {
+    return super.create(dto);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFrenteAtuacaoDto: UpdateFrenteAtuacaoDto) {
-    return this.frenteAtuacaoService.update(+id, updateFrenteAtuacaoDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.frenteAtuacaoService.remove(+id);
+  update(
+    @Param('id') id: string,
+    @Body() dto: UpdateFrenteAtuacaoDto,
+  ): Promise<FrenteAtuacao> {
+    return super.update(id, dto);
   }
 }

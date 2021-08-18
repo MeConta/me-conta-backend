@@ -13,16 +13,21 @@ export abstract class Voluntario extends DefaultEntity {
   @Column()
   instituicao: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   aprovado: boolean;
 
   @OneToOne(() => Usuario, {
-    nullable: false,
+    eager: true,
+    cascade: true,
   })
   @JoinColumn()
   usuario: Usuario;
 
-  @ManyToMany(() => FrenteAtuacao)
+  @ManyToMany(() => FrenteAtuacao, {
+    eager: true,
+  })
   @JoinTable()
   frentesAtuacao: FrenteAtuacao[];
 }
