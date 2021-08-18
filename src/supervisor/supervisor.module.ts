@@ -4,6 +4,6 @@ import { SupervisorController } from './supervisor.controller';
 
 @Module({
   controllers: [SupervisorController],
-  providers: [SupervisorService]
+  providers: [SupervisorService],
 })
 export class SupervisorModule {}

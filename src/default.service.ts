@@ -47,7 +47,7 @@ export function DefaultService<CreateDto, UpdateDto>(
       try {
         return await this.repository.save(this.repository.create(dto));
       } catch (e) {
-        throw new UnprocessableEntityException(e);
+        throw new UnprocessableEntityException(Erros.EMAIL_DUPLICADO);
       }
     }
 

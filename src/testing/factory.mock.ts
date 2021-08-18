@@ -1,8 +1,7 @@
 import { Repository } from 'typeorm';
-import { plainToClass } from 'class-transformer';
 
 export type MockType<T> = {
-  [P in keyof T]?: jest.Mock<{}>;
+  [P in keyof T]?: jest.Mock;
 };
 
 export class FactoryMock {

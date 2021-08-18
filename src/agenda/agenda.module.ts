@@ -4,6 +4,6 @@ import { AgendaController } from './agenda.controller';
 
 @Module({
   controllers: [AgendaController],
-  providers: [AgendaService]
+  providers: [AgendaService],
 })
 export class AgendaModule {}

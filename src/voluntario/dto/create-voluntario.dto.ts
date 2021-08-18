@@ -1,5 +1,5 @@
 import { CreateUsuarioDto } from '../../usuario/dto/create-usuario.dto';
-import { IsArray, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 import { FrenteAtuacao } from '../../frente-atuacao/entities/frente-atuacao.entity';
 import { Transform, Type } from 'class-transformer';
 import { Usuario } from '../../usuario/entities/usuario.entity';

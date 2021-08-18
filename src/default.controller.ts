@@ -10,8 +10,6 @@ import {
   Patch,
   Post,
   Type,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { IDefaultService } from './default.service';
 

@@ -4,7 +4,6 @@ import { FrenteAtuacaoController } from './frente-atuacao.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FrenteAtuacao } from './entities/frente-atuacao.entity';
 import { UsuarioModule } from '../usuario/usuario.module';
-import { UsuarioService } from '../usuario/usuario.service';
 
 @Module({
   imports: [UsuarioModule, TypeOrmModule.forFeature([FrenteAtuacao])],

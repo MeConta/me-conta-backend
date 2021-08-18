@@ -1,5 +1,5 @@
 import { Estado, Genero, Tipo } from '../entities/usuario.enum';
-import { IsDate, IsEmail, IsEnum, IsNotEmpty, Length } from 'class-validator';
+import { IsDate, IsEmail, IsEnum, IsNotEmpty } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateUsuarioDto {

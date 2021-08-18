@@ -16,7 +16,7 @@ export class AlunoStub {
 
   static getUpdateDto(): UpdateAlunoDto {
     return {
-      email: 'teste-alterado@teste.com',
+      tipoEscola: TipoEscola.PUBLICA,
     };
   }
 

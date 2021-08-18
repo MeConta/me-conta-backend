@@ -2,12 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { UsuarioModule } from '../src/usuario/usuario.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { Usuario } from '../src/usuario/entities/usuario.entity';
 import { Connection } from 'typeorm';
 import { UsuarioStub } from '../src/testing/usuario.stub';
-import { createDeflateRaw } from 'zlib';
-import { CreateUsuarioDto } from '../src/usuario/dto/create-usuario.dto';
 import { DbE2eModule } from './db.e2e.module';
 
 describe('AppController (e2e)', () => {
