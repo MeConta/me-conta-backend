@@ -14,6 +14,11 @@ const database = registerAs('database', () => {
     cli: {
       migrationsDir: 'migration',
     },
+    extra: {
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    },
   } as ConnectionOptions;
 });
 
