@@ -59,13 +59,7 @@ export function DefaultService<CreateDto, UpdateDto>(
     async findAll(
       conditions: FindConditions<typeof Entity> = null,
     ): Promise<typeof Entity[]> {
-      return this.repository.find(
-        conditions
-          ? {
-              where: conditions,
-            }
-          : null,
-      );
+      return this.repository.find(conditions ? conditions : null);
     }
 
     /***

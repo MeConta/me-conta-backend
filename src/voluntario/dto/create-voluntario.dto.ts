@@ -1,8 +1,7 @@
 import { CreateUsuarioDto } from '../../usuario/dto/create-usuario.dto';
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { ArrayMinSize, IsArray, IsNotEmpty, IsNumber } from 'class-validator';
 import { FrenteAtuacao } from '../../frente-atuacao/entities/frente-atuacao.entity';
-import { Transform, Type } from 'class-transformer';
-import { Usuario } from '../../usuario/entities/usuario.entity';
+import { Type } from 'class-transformer';
 import { OmitType } from '@nestjs/mapped-types';
 
 export abstract class CreateVoluntarioDto extends OmitType(CreateUsuarioDto, [
@@ -17,16 +16,14 @@ export abstract class CreateVoluntarioDto extends OmitType(CreateUsuarioDto, [
   @IsNotEmpty()
   instituicao: string;
 
-  @Transform(({ value }) => value.id)
-  usuario: Usuario;
-
   @Type(() => FrenteAtuacao)
-  @IsNotEmpty()
   @IsNumber(
     {},
     {
       each: true,
     },
   )
+  @IsArray()
+  @ArrayMinSize(1)
   frentesAtuacao: FrenteAtuacao[];
 }

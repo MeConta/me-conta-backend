@@ -24,4 +24,8 @@ export class FrenteAtuacaoStub {
       dataAlteracao: new Date(),
     };
   }
+
+  static getEntities(numero = 1): FrenteAtuacao[] {
+    return Array<FrenteAtuacao>(numero).fill(this.getEntity());
+  }
 }
