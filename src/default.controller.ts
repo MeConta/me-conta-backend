@@ -35,18 +35,22 @@ export interface IDefaultController<Entity, CreateDto, UpdateDto> {
  * @param path {string} Caminho do controller
  * @param Entity {?} Entidade do TypeOrm
  * @param service {DefaultService} Serviço utilizado
+ * @param CreateDto {?} DTO de criação da entidade
+ * @param UpdateDto {?} DTO de atualização de entidade
  */
-export function DefaultController<CreateDto, UpdateDto>(
+export function DefaultController(
   path: string,
   Entity,
   service,
-): Type<IDefaultController<typeof Entity, CreateDto, UpdateDto>> {
+  CreateDto,
+  UpdateDto,
+): Type<IDefaultController<typeof Entity, typeof CreateDto, typeof UpdateDto>> {
   @Controller(path)
   class DefaultControllerHost {
     @Inject(service) service: IDefaultService<
       typeof Entity,
-      CreateDto,
-      UpdateDto
+      typeof CreateDto,
+      typeof UpdateDto
     >;
 
     /***
@@ -55,7 +59,7 @@ export function DefaultController<CreateDto, UpdateDto>(
      * @returns {Promise<?>} Entidade TypeORM criada
      */
     @Post()
-    create(@Body() dto: CreateDto): Promise<typeof Entity> {
+    create(@Body() dto: typeof CreateDto): Promise<typeof Entity> {
       return this.service.create(dto);
     }
 
@@ -87,7 +91,7 @@ export function DefaultController<CreateDto, UpdateDto>(
     @Patch(':id')
     update(
       @Param('id') id: string,
-      @Body() dto: UpdateDto,
+      @Body() dto: typeof UpdateDto,
     ): Promise<typeof Entity> {
       return this.service.update(+id, dto);
     }
