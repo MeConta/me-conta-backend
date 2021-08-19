@@ -26,8 +26,6 @@ export class AtendenteStub {
 
   static getUpdateDto(): UpdateAtendenteDto {
     return {
-      ...AtendenteStub.getCreateDto(),
-      anoFormacao: 1999,
       supervisor: null,
       aprovado: true,
     };

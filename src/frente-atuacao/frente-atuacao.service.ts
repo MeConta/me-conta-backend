@@ -5,7 +5,8 @@ import { DefaultService } from '../default.service';
 import { FrenteAtuacao } from './entities/frente-atuacao.entity';
 
 @Injectable()
-export class FrenteAtuacaoService extends DefaultService<
+export class FrenteAtuacaoService extends DefaultService(
+  FrenteAtuacao,
   CreateFrenteAtuacaoDto,
-  UpdateFrenteAtuacaoDto
->(FrenteAtuacao) {}
+  UpdateFrenteAtuacaoDto,
+) {}

@@ -26,12 +26,15 @@ export interface IDefaultService<Entity, CreateDto, UpdateDto> {
  * - Delete
  * @param Entity {?} Entidade TypeOrm relacionada a este serviço
  */
-export function DefaultService<CreateDto, UpdateDto>(
+export function DefaultService(
   Entity,
-): Type<IDefaultService<typeof Entity, CreateDto, UpdateDto>> {
+  CreateDto,
+  UpdateDto,
+): Type<IDefaultService<typeof Entity, typeof CreateDto, typeof UpdateDto>> {
   @Injectable()
   class DefaultServiceHost
-    implements IDefaultService<typeof Entity, CreateDto, UpdateDto>
+    implements
+      IDefaultService<typeof Entity, typeof CreateDto, typeof UpdateDto>
   {
     @InjectRepository(Entity)
     repository: Repository<typeof Entity>;
@@ -43,7 +46,7 @@ export function DefaultService<CreateDto, UpdateDto>(
      * podendo ser necessário sobrescrever essa implementação caso precise de um tratamento mais fino
      * @returns {Promise<?>} A entidade salva no banco
      */
-    async create(dto: CreateDto): Promise<typeof Entity> {
+    async create(dto: typeof CreateDto): Promise<typeof Entity> {
       try {
         return await this.repository.save(this.repository.create(dto));
       } catch (e) {
@@ -84,7 +87,7 @@ export function DefaultService<CreateDto, UpdateDto>(
      * @throws {UnprocessableEntityException} é possível que o banco retorne 422,
      * podendo ser necessário sobrescrever essa implementação caso precise de um tratamento mais fino
      */
-    async update(id: number, dto: UpdateDto) {
+    async update(id: number, dto: typeof UpdateDto) {
       await this.findOne(id);
       try {
         await this.repository.save<typeof Entity>({

@@ -18,10 +18,11 @@ export function ParticipantService(
   UpdateDto,
 ): Type<IDefaultService<typeof Entity, typeof CreateDto, typeof UpdateDto>> {
   @Injectable()
-  class ParticipantServiceHost extends DefaultService<
-    typeof CreateDto,
-    typeof UpdateDto
-  >(Entity) {
+  class ParticipantServiceHost extends DefaultService(
+    Entity,
+    CreateDto,
+    UpdateDto,
+  ) {
     @Inject(UsuarioService) usuarioService: UsuarioService;
 
     async create(dto: typeof CreateDto): Promise<typeof Entity> {
@@ -51,6 +52,7 @@ export function ParticipantService(
 
         return await super.create({
           ...participant,
+          aprovado: null,
           usuario,
         });
       } catch (e) {

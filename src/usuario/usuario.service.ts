@@ -5,7 +5,8 @@ import { Usuario } from './entities/usuario.entity';
 import { DefaultService } from '../default.service';
 
 @Injectable()
-export class UsuarioService extends DefaultService<
+export class UsuarioService extends DefaultService(
+  Usuario,
   CreateUsuarioDto,
-  UpdateUsuarioDto
->(Usuario) {}
+  UpdateUsuarioDto,
+) {}
