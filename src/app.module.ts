@@ -10,6 +10,7 @@ import { AgendaModule } from './agenda/agenda.module';
 import { ConsultaModule } from './consulta/consulta.module';
 import { AvaliacaoModule } from './avaliacao/avaliacao.module';
 import database from './config/database.config';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -33,7 +34,7 @@ import database from './config/database.config';
     AgendaModule,
     ConsultaModule,
     AvaliacaoModule,
-    AppModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}
