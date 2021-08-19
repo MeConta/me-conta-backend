@@ -33,6 +33,7 @@ import database from './config/database.config';
     AgendaModule,
     ConsultaModule,
     AvaliacaoModule,
+    AppModule,
   ],
 })
 export class AppModule {}
