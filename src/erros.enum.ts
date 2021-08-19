@@ -4,4 +4,5 @@ export enum Erros {
   PARAMETROS_INCORRETOS = 'Parâmetros incorretos',
   USUARIO_JA_CADASTRADO = 'Usuário já cadastrado',
   FRENTE_ATUACAO_INEXISTENTE = 'Frente de atuação não existe',
+  FRENTE_ATUACAO_INVALIDA = 'Frente de atuação inválida',
 }

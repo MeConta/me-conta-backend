@@ -1,5 +1,6 @@
 import { ParticipantService } from './participant.service';
 import {
+  BadRequestException,
   Inject,
   Injectable,
   Post,
@@ -12,6 +13,8 @@ import { FrenteAtuacaoService } from '../frente-atuacao/frente-atuacao.service';
 import { FindConditions, In } from 'typeorm';
 import { Voluntario } from './entity/voluntario.entity';
 import { Erros } from '../erros.enum';
+import { FrenteAtuacao } from '../frente-atuacao/entities/frente-atuacao.entity';
+import { isNumber, isNumberString } from 'class-validator';
 
 export function VoluntarioService(
   Entity,
@@ -32,12 +35,19 @@ export function VoluntarioService(
     async create(dto: typeof CreateDto): Promise<typeof Entity> {
       const frentes = await this.frenteAtuacaoService.findAll({
         where: {
-          id: In(dto.frentesAtuacao),
+          id: In(
+            dto.frentesAtuacao.map((frente) => {
+              if (!isNumber(frente.id)) {
+                throw new BadRequestException(Erros.FRENTE_ATUACAO_INVALIDA);
+              }
+              return frente.id;
+            }),
+          ),
         },
       } as FindConditions<Voluntario>);
       if (
-        !Array.from(dto.frentesAtuacao).every(
-          (val, index) => val === frentes[index]?.id,
+        !Array.from<FrenteAtuacao>(dto.frentesAtuacao).every(
+          (val: FrenteAtuacao, index) => val.id === frentes[index]?.id,
         )
       ) {
         throw new UnprocessableEntityException(

@@ -10,7 +10,10 @@ import { Repository } from 'typeorm';
 import { Aluno } from '../aluno/entities/aluno.entity';
 import { AtendenteStub } from '../testing/atendente.stub';
 import { AlunoStub } from '../testing/aluno.stub';
-import { UnprocessableEntityException } from '@nestjs/common';
+import {
+  BadRequestException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { FrenteAtuacaoStub } from '../testing/FrenteAtuacao.stub';
 
 describe('AtendenteService', () => {
@@ -49,19 +52,21 @@ describe('AtendenteService', () => {
     expect(service).toBeDefined();
   });
 
-  // it('deve criar um atendente', async () => {
-  //   jest.spyOn(repository, 'create').mockReturnValue(AtendenteStub.getEntity());
-  //   jest.spyOn(repository, 'save').mockReturnValue(AtendenteStub.getEntity());
-  //   jest.spyOn(frenteAtuacaoService, 'findAll').mockResolvedValue(FrenteAtuacaoStub.getEntities());
-  //
-  //   const response = await service.create(AtendenteStub.getCreateDto());
-  //
-  //   expect(response).toBeDefined();
-  //   expect(repository.save).toBeCalled();
-  //   expect(response.id).toEqual(AtendenteStub.getEntity().id);
-  // });
+  it('deve criar um atendente', async () => {
+    jest.spyOn(repository, 'create').mockReturnValue(AtendenteStub.getEntity());
+    jest.spyOn(repository, 'save').mockReturnValue(AtendenteStub.getEntity());
+    jest
+      .spyOn(frenteAtuacaoService, 'findAll')
+      .mockResolvedValue(FrenteAtuacaoStub.getEntities());
 
-  it('não deve criar um atendente com frente de atuação inválida', async () => {
+    const response = await service.create(AtendenteStub.getCreateDto());
+
+    expect(response).toBeDefined();
+    expect(repository.save).toBeCalled();
+    expect(response.id).toEqual(AtendenteStub.getEntity().id);
+  });
+
+  it('não deve criar um atendente com frente de atuação inexistente', async () => {
     jest.spyOn(repository, 'create').mockReturnValue(AtendenteStub.getEntity());
     jest.spyOn(repository, 'save').mockReturnValue(AtendenteStub.getEntity());
     jest.spyOn(frenteAtuacaoService, 'findAll').mockResolvedValue([]);
@@ -69,5 +74,18 @@ describe('AtendenteService', () => {
     await expect(() =>
       service.create(AtendenteStub.getCreateDto()),
     ).rejects.toThrow(UnprocessableEntityException);
+  });
+
+  it('não deve criar um atendente com frente de atuação inválidas', async () => {
+    jest.spyOn(repository, 'create').mockReturnValue(AtendenteStub.getEntity());
+    jest.spyOn(repository, 'save').mockReturnValue(AtendenteStub.getEntity());
+    jest.spyOn(frenteAtuacaoService, 'findAll').mockResolvedValue([]);
+
+    const request = AtendenteStub.getCreateDto();
+    request.frentesAtuacao[0].id = NaN;
+
+    await expect(() => service.create(request)).rejects.toThrow(
+      BadRequestException,
+    );
   });
 });
