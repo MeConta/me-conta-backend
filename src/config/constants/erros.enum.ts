@@ -6,4 +6,5 @@ export enum Erros {
   FRENTE_ATUACAO_INEXISTENTE = 'Frente de atuação não existe',
   FRENTE_ATUACAO_INVALIDA = 'Frente de atuação inválida',
   ERRO_AO_ENVIAR_EMAIL = 'Erro ao enviar e-mail',
+  SUPERVISOR_NAO_ENCONTRADO = 'Supervisor não encontrado',
 }

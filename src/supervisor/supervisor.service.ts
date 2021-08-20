@@ -1,26 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSupervisorDto } from './dto/create-supervisor.dto';
 import { UpdateSupervisorDto } from './dto/update-supervisor.dto';
+import { VoluntarioService } from '../voluntario/voluntario.service';
+import { Tipo } from '../usuario/entities/usuario.enum';
+import { Supervisor } from './entities/supervisor.entity';
 
 @Injectable()
-export class SupervisorService {
-  create(createSupervisorDto: CreateSupervisorDto) {
-    return 'This action adds a new supervisor';
-  }
-
-  findAll() {
-    return `This action returns all supervisor`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} supervisor`;
-  }
-
-  update(id: number, updateSupervisorDto: UpdateSupervisorDto) {
-    return `This action updates a #${id} supervisor`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} supervisor`;
-  }
-}
+export class SupervisorService extends VoluntarioService(
+  Supervisor,
+  Tipo.SUPERVISOR,
+  CreateSupervisorDto,
+  UpdateSupervisorDto,
+) {}
