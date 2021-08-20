@@ -23,4 +23,16 @@ export class FactoryMock {
     update: jest.fn(),
     remove: jest.fn(),
   }));
+
+  static mailerServiceMockFactory: () => MockType<any> = jest.fn(() => ({
+    sendMail: jest.fn(),
+  }));
+
+  static mailServiceMockFactory: () => MockType<any> = jest.fn(() => ({
+    sendContact: jest.fn(),
+  }));
+
+  static contatoServiceMockFactory: () => MockType<any> = jest.fn(() => ({
+    send: jest.fn(),
+  }));
 }

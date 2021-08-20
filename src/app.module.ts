@@ -11,6 +11,8 @@ import { ConsultaModule } from './consulta/consulta.module';
 import { AvaliacaoModule } from './avaliacao/avaliacao.module';
 import database from './config/database.config';
 import { AppController } from './app.controller';
+import { MailModule } from './mail/mail.module';
+import { ContatoModule } from './contato/contato.module';
 
 @Module({
   imports: [
@@ -34,6 +36,8 @@ import { AppController } from './app.controller';
     AgendaModule,
     ConsultaModule,
     AvaliacaoModule,
+    MailModule,
+    ContatoModule,
   ],
   controllers: [AppController],
 })
