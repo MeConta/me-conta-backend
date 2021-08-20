@@ -4,17 +4,17 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Atendente } from './entities/atendente.entity';
 import { FactoryMock, MockType } from '../testing/factory.mock';
 import { UsuarioService } from '../usuario/usuario.service';
-import { FrenteAtuacaoModule } from '../frente-atuacao/frente-atuacao.module';
 import { FrenteAtuacaoService } from '../frente-atuacao/frente-atuacao.service';
 import { Repository } from 'typeorm';
-import { Aluno } from '../aluno/entities/aluno.entity';
 import { AtendenteStub } from '../testing/atendente.stub';
-import { AlunoStub } from '../testing/aluno.stub';
 import {
   BadRequestException,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { FrenteAtuacaoStub } from '../testing/FrenteAtuacao.stub';
+import { UsuarioStub } from '../testing/usuario.stub';
+import { FrenteAtuacao } from '../frente-atuacao/entities/frente-atuacao.entity';
+import { UpdateAtendenteDto } from './dto/update-atendente.dto';
 
 describe('AtendenteService', () => {
   let service: AtendenteService;
@@ -64,6 +64,7 @@ describe('AtendenteService', () => {
     expect(response).toBeDefined();
     expect(repository.save).toBeCalled();
     expect(response.id).toEqual(AtendenteStub.getEntity().id);
+    expect(usuarioService.create).toBeCalled();
   });
 
   it('não deve criar um atendente com frente de atuação inexistente', async () => {
@@ -87,5 +88,56 @@ describe('AtendenteService', () => {
     await expect(() => service.create(request)).rejects.toThrow(
       BadRequestException,
     );
+  });
+
+  it('não deve criar um atendente com frente de atuação inexistente', async () => {
+    jest.spyOn(repository, 'create').mockReturnValue(AtendenteStub.getEntity());
+    jest.spyOn(repository, 'save').mockReturnValue(AtendenteStub.getEntity());
+    jest.spyOn(frenteAtuacaoService, 'findAll').mockRejectedValue(null);
+
+    const request = AtendenteStub.getCreateDto();
+
+    await expect(() => service.create(request)).rejects.toThrow(
+      UnprocessableEntityException,
+    );
+  });
+
+  describe('Atualização de atendente', () => {
+    let request: UpdateAtendenteDto;
+
+    beforeEach(() => {
+      jest
+        .spyOn(repository, 'create')
+        .mockReturnValue(AtendenteStub.getEntity());
+      jest.spyOn(repository, 'save').mockReturnValue(AtendenteStub.getEntity());
+      jest
+        .spyOn(repository, 'findOne')
+        .mockReturnValue(AtendenteStub.getEntity());
+      jest
+        .spyOn(frenteAtuacaoService, 'findAll')
+        .mockResolvedValue(FrenteAtuacaoStub.getEntities());
+      jest
+        .spyOn(usuarioService, 'findOne')
+        .mockResolvedValue(UsuarioStub.getEntity());
+
+      request = AtendenteStub.getUpdateDto();
+    });
+
+    it('Deve atualizar um atendente', async () => {
+      const response = await service.update(1, request);
+      expect(response.id).toBeDefined();
+      expect(repository.save).toBeCalled();
+    });
+
+    it('Deve atualizar a frente de Atuação de um atendente', async () => {
+      request.frentesAtuacao = [
+        {
+          id: 1,
+        } as FrenteAtuacao,
+      ];
+      const response = await service.update(1, request);
+      expect(response.id).toBeDefined();
+      expect(repository.save).toBeCalled();
+    });
   });
 });

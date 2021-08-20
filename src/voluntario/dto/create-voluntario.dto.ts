@@ -4,7 +4,7 @@ import { FrenteAtuacao } from '../../frente-atuacao/entities/frente-atuacao.enti
 import { Transform, Type } from 'class-transformer';
 import { OmitType } from '@nestjs/mapped-types';
 
-export abstract class CreateVoluntarioDto extends OmitType(CreateUsuarioDto, [
+export class CreateVoluntarioDto extends OmitType(CreateUsuarioDto, [
   'tipoUsuario',
 ] as const) {
   @IsNotEmpty()
