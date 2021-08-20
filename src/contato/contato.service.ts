@@ -9,9 +9,6 @@ export class ContatoService {
     private readonly mailService: MailService,
   ) {}
   send(createContatoDto: CreateContatoDto) {
-    return this.mailService.sendContact(
-      createContatoDto,
-      process.env.EMAIL_CONTACT_TO,
-    );
+    return this.mailService.sendContact(createContatoDto);
   }
 }

@@ -9,8 +9,6 @@ describe('MailService', () => {
   let service: MailService;
   let mailerService: MailerService;
 
-  const EMAIL = 'teste@teste.com';
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -31,7 +29,7 @@ describe('MailService', () => {
   });
 
   it('Deve enviar um e-mail', async () => {
-    await service.sendContact(ContactStub.getContactForm(), EMAIL);
+    await service.sendContact(ContactStub.getContactForm());
     expect(mailerService.sendMail).toBeCalled();
   });
 
@@ -40,7 +38,7 @@ describe('MailService', () => {
       .spyOn(mailerService, 'sendMail')
       .mockRejectedValue(new InternalServerErrorException());
     await expect(() =>
-      service.sendContact(ContactStub.getContactForm(), EMAIL),
+      service.sendContact(ContactStub.getContactForm()),
     ).rejects.toThrow(InternalServerErrorException);
   });
 });

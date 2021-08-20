@@ -8,7 +8,7 @@ import { DefaultService, IDefaultService } from '../default.service';
 import { UsuarioService } from '../usuario/usuario.service';
 import { CreateUsuarioDto } from '../usuario/dto/create-usuario.dto';
 import { Tipo } from '../usuario/entities/usuario.enum';
-import { Erros } from '../erros.enum';
+import { Erros } from '../config/constants/erros.enum';
 import { UpdateUsuarioDto } from '../usuario/dto/update-usuario.dto';
 
 export function ParticipantService(

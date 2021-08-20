@@ -13,7 +13,7 @@ import { Tipo } from '../usuario/entities/usuario.enum';
 import { FrenteAtuacaoService } from '../frente-atuacao/frente-atuacao.service';
 import { FindConditions, In } from 'typeorm';
 import { Voluntario } from './entity/voluntario.entity';
-import { Erros } from '../erros.enum';
+import { Erros } from '../config/constants/erros.enum';
 import { FrenteAtuacao } from '../frente-atuacao/entities/frente-atuacao.entity';
 import { isNumber } from 'class-validator';
 

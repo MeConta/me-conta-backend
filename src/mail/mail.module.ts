@@ -12,8 +12,10 @@ import { ConfigService } from '@nestjs/config';
       useFactory: async (config: ConfigService) => ({
         transport: {
           host: config.get('EMAIL_SMTP_HOST'),
-          port: config.get('EMAIL_SMTP_PORT'), // change to configured tls port for smtp server
+          port: config.get('EMAIL_SMTP_PORT'),
           secure: true,
+          logger: process.env.NODE_ENV === 'development',
+          debug: process.env.NODE_ENV === 'development',
           auth: {
             type: 'login',
             user: config.get('EMAIL_SMTP_USERNAME'),

@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindConditions, Repository } from 'typeorm';
-import { Erros } from './erros.enum';
+import { Erros } from './config/constants/erros.enum';
 
 export interface IDefaultService<Entity, CreateDto, UpdateDto> {
   repository: Repository<Entity>;
