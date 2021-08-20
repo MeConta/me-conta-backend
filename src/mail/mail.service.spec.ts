@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { MailService } from './mail.service';
 import { MailerService } from '@nestjs-modules/mailer';
 import { FactoryMock } from '../testing/factory.mock';
-import { IContact } from './templates/contact.interface';
 import { InternalServerErrorException } from '@nestjs/common';
 import { ContactStub } from '../testing/contact.stub';
 
