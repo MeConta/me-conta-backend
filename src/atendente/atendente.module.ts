@@ -4,9 +4,14 @@ import { AtendenteController } from './atendente.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Atendente } from './entities/atendente.entity';
 import { VoluntarioModule } from '../voluntario/voluntario.module';
+import { SupervisorModule } from '../supervisor/supervisor.module';
 
 @Module({
-  imports: [VoluntarioModule, TypeOrmModule.forFeature([Atendente])],
+  imports: [
+    VoluntarioModule,
+    SupervisorModule,
+    TypeOrmModule.forFeature([Atendente]),
+  ],
   controllers: [AtendenteController],
   providers: [AtendenteService],
 })

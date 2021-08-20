@@ -3,11 +3,12 @@ import { CreateAtendenteDto } from './create-atendente.dto';
 import { Transform } from 'class-transformer';
 import { Supervisor } from '../../supervisor/entities/supervisor.entity';
 import { UpdateVoluntarioDto } from '../../voluntario/dto/update-voluntario.dto';
+import { IsInt } from 'class-validator';
 
 export class UpdateAtendenteDto extends IntersectionType(
   PartialType(CreateAtendenteDto),
   PartialType(UpdateVoluntarioDto),
 ) {
-  @Transform(({ value }) => value.id)
+  @Transform(({ value }) => ({ id: value } as Supervisor))
   supervisor: Supervisor;
 }

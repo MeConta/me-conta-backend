@@ -72,11 +72,15 @@ export function DefaultService(
      * @throws {NotFoundException} É possível o retorno de um 404
      */
     async findOne(id: number): Promise<typeof Entity> {
-      const usuario = await this.repository.findOne(id);
-      if (!usuario) {
+      const entity = await this.repository.findOne({
+        where: {
+          id,
+        },
+      });
+      if (!entity) {
         throw new NotFoundException(Erros.NAO_ENCONTRADO);
       }
-      return usuario;
+      return entity;
     }
 
     /***

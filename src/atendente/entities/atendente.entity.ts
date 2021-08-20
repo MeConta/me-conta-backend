@@ -18,7 +18,9 @@ export class Atendente extends Voluntario {
   })
   anoFormacao: number;
 
-  @OneToOne(() => Supervisor)
+  @OneToOne(() => Supervisor, {
+    eager: true,
+  })
   @JoinColumn()
   supervisor: Supervisor;
 
