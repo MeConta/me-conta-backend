@@ -14,7 +14,7 @@ describe('ConsultaController', () => {
       providers: [
         {
           provide: ConsultaService,
-          useFactory: FactoryMock.serviceMockFactory,
+          useFactory: FactoryMock.crudServiceMockFactory,
         },
       ],
     }).compile();

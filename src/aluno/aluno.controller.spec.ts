@@ -14,7 +14,7 @@ describe('AlunoController', () => {
       providers: [
         {
           provide: AlunoService,
-          useFactory: FactoryMock.serviceMockFactory,
+          useFactory: FactoryMock.crudServiceMockFactory,
         },
       ],
     }).compile();

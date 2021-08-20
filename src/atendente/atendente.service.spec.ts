@@ -31,11 +31,11 @@ describe('AtendenteService', () => {
         },
         {
           provide: UsuarioService,
-          useFactory: FactoryMock.serviceMockFactory,
+          useFactory: FactoryMock.crudServiceMockFactory,
         },
         {
           provide: FrenteAtuacaoService,
-          useFactory: FactoryMock.serviceMockFactory,
+          useFactory: FactoryMock.crudServiceMockFactory,
         },
         AtendenteService,
       ],

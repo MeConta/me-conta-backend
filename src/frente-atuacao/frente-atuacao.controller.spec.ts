@@ -14,7 +14,7 @@ describe('FrenteAtuacaoController', () => {
       providers: [
         {
           provide: FrenteAtuacaoService,
-          useFactory: FactoryMock.serviceMockFactory,
+          useFactory: FactoryMock.crudServiceMockFactory,
         },
       ],
     }).compile();

@@ -14,7 +14,7 @@ describe('UsuarioController', () => {
       providers: [
         {
           provide: UsuarioService,
-          useFactory: FactoryMock.serviceMockFactory,
+          useFactory: FactoryMock.crudServiceMockFactory,
         },
       ],
     }).compile();

@@ -14,7 +14,7 @@ describe('AtendenteController', () => {
       providers: [
         {
           provide: AtendenteService,
-          useFactory: FactoryMock.serviceMockFactory,
+          useFactory: FactoryMock.crudServiceMockFactory,
         },
       ],
     }).compile();

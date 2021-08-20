@@ -22,7 +22,7 @@ describe('AlunoService', () => {
         },
         {
           provide: UsuarioService,
-          useFactory: FactoryMock.serviceMockFactory,
+          useFactory: FactoryMock.crudServiceMockFactory,
         },
         AlunoService,
       ],

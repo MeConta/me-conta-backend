@@ -16,7 +16,7 @@ export class FactoryMock {
     }),
   );
 
-  static serviceMockFactory: () => MockType<any> = jest.fn(() => ({
+  static crudServiceMockFactory: () => MockType<any> = jest.fn(() => ({
     create: jest.fn(),
     findAll: jest.fn(),
     findOne: jest.fn(),
