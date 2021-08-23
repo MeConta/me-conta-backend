@@ -14,5 +14,6 @@ import { SupervisorModule } from '../supervisor/supervisor.module';
   ],
   controllers: [AtendenteController],
   providers: [AtendenteService],
+  exports: [AtendenteService],
 })
 export class AtendenteModule {}

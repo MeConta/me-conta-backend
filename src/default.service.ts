@@ -50,7 +50,7 @@ export function DefaultService(
       try {
         return await this.repository.save(this.repository.create(dto));
       } catch (e) {
-        throw new UnprocessableEntityException(Erros.EMAIL_DUPLICADO);
+        throw new UnprocessableEntityException(e.error);
       }
     }
 

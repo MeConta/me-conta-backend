@@ -5,7 +5,6 @@ import { UpdateAtendenteDto } from './dto/update-atendente.dto';
 import { DefaultController } from '../default.controller';
 import { Atendente } from './entities/atendente.entity';
 
-@Controller('atendente')
 export class AtendenteController extends DefaultController(
   'atendente',
   Atendente,

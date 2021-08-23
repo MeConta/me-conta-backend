@@ -9,5 +9,6 @@ import { UsuarioModule } from '../usuario/usuario.module';
   imports: [TypeOrmModule.forFeature([Aluno]), UsuarioModule],
   controllers: [AlunoController],
   providers: [AlunoService],
+  exports: [AlunoService],
 })
 export class AlunoModule {}
