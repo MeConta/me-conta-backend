@@ -23,7 +23,7 @@ describe('AtendenteController', () => {
     service = module.get<AtendenteService>(AtendenteService);
   });
 
-  it('should be defined', () => {
+  it('deve ser definido', () => {
     expect(controller).toBeDefined();
   });
 

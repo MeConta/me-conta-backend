@@ -10,7 +10,4 @@ export class CreateSupervisorDto extends CreateVoluntarioDto {
 
   @IsNotEmpty()
   crp: string;
-
-  @Transform(({ value }) => value.map((obj) => obj.id))
-  atendentes: Atendente[];
 }
