@@ -13,7 +13,7 @@ export function getEmailInfo(email: Emails): IEmail {
     case Emails.CONTATO:
       return {
         to: process.env.EMAIL_CONTACT_TO,
-        from: null,
+        from: `"No Reply" <${process.env.EMAIL_FROM}>`,
         subject: 'E-mail de contato Me Conta?',
         template: './contact',
       };

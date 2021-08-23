@@ -15,6 +15,7 @@ import { FrenteAtuacaoStub } from '../testing/FrenteAtuacao.stub';
 import { UsuarioStub } from '../testing/usuario.stub';
 import { FrenteAtuacao } from '../frente-atuacao/entities/frente-atuacao.entity';
 import { UpdateAtendenteDto } from './dto/update-atendente.dto';
+import { SupervisorService } from '../supervisor/supervisor.service';
 
 describe('AtendenteService', () => {
   let service: AtendenteService;
@@ -35,6 +36,10 @@ describe('AtendenteService', () => {
         },
         {
           provide: FrenteAtuacaoService,
+          useFactory: FactoryMock.crudServiceMockFactory,
+        },
+        {
+          provide: SupervisorService,
           useFactory: FactoryMock.crudServiceMockFactory,
         },
         AtendenteService,

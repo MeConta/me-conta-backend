@@ -1,6 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateContatoDto } from './dto/create-contato.dto';
 import { MailService } from '../mail/mail.service';
+import { Emails } from '../config/constants';
+import { IContact } from '../mail/templates/contact.interface';
 
 @Injectable()
 export class ContatoService {
@@ -8,7 +10,7 @@ export class ContatoService {
     @Inject(MailService)
     private readonly mailService: MailService,
   ) {}
-  send(createContatoDto: CreateContatoDto) {
-    return this.mailService.sendContact(createContatoDto);
+  send(dto: CreateContatoDto) {
+    return this.mailService.sendEmail(Emails.CONTATO, dto);
   }
 }

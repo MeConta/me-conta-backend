@@ -29,6 +29,6 @@ describe('ContatoService', () => {
 
   it('deve enviar e-mail', () => {
     service.send(ContactStub.getContactForm());
-    expect(mailService.sendContact).toBeCalled();
+    expect(mailService.sendEmail).toBeCalled();
   });
 });

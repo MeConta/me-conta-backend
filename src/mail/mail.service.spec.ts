@@ -4,6 +4,7 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { FactoryMock } from '../testing/factory.mock';
 import { InternalServerErrorException } from '@nestjs/common';
 import { ContactStub } from '../testing/contact.stub';
+import { Emails } from '../config/constants';
 
 describe('MailService', () => {
   let service: MailService;
@@ -29,7 +30,7 @@ describe('MailService', () => {
   });
 
   it('Deve enviar um e-mail', async () => {
-    await service.sendContact(ContactStub.getContactForm());
+    await service.sendEmail(Emails.CONTATO, ContactStub.getContactForm());
     expect(mailerService.sendMail).toBeCalled();
   });
 
@@ -38,7 +39,7 @@ describe('MailService', () => {
       .spyOn(mailerService, 'sendMail')
       .mockRejectedValue(new InternalServerErrorException());
     await expect(() =>
-      service.sendContact(ContactStub.getContactForm()),
+      service.sendEmail(Emails.CONTATO, ContactStub.getContactForm()),
     ).rejects.toThrow(InternalServerErrorException);
   });
 });

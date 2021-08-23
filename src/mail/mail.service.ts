@@ -13,34 +13,16 @@ export class MailService {
     @Inject(MailerService)
     private readonly mailerService: MailerService,
   ) {}
-  private async sendEmail(email: Emails, context?: any) {
+  public async sendEmail(email: Emails, context?: any): Promise<void> {
     const { to, from, subject, template } = getEmailInfo(email);
-    /* await this.mailerService.sendMail({
-      to: to,
-      // from: '"Support Team" <support@example.com>', // override default from
-      subject: 'E-mail de contato Me Conta?',
-      template: './contact', // `.hbs` extension is appended automatically
-      context: {
-        nome: context.nome,
-        email: context.email,
-        mensagem: context.mensagem,
-      } as IContact,
-    }); */
-    return this.mailerService.sendMail({
-      to,
-      from,
-      subject,
-      template,
-      context,
-    });
-  }
-  async sendContact(info: IContact) {
     try {
-      await this.sendEmail(Emails.CONTATO, {
-        nome: info.nome,
-        email: info.email,
-        mensagem: info.mensagem,
-      } as IContact);
+      await this.mailerService.sendMail({
+        to,
+        from,
+        subject,
+        template,
+        context,
+      });
     } catch (e) {
       throw new InternalServerErrorException(Erros.ERRO_AO_ENVIAR_EMAIL);
     }
