@@ -15,6 +15,10 @@ export class AtendenteStub {
     };
   }
 
+  static getEntities(n = 1): Atendente[] {
+    return Array<Atendente>().fill(this.getEntity(), n);
+  }
+
   static getCreateDto(): CreateAtendenteDto {
     return {
       ...VoluntarioStub.getCreateDto(),

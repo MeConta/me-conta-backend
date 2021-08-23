@@ -25,7 +25,7 @@ export class AtendenteService extends VoluntarioService(
 
   @Patch()
   async update(id: number, dto: UpdateAtendenteDto): Promise<Atendente> {
-    if (dto.supervisor || dto.supervisor?.id === null) {
+    if (dto.supervisor) {
       let supervisor: Supervisor = null;
       if (dto.supervisor.id) {
         try {

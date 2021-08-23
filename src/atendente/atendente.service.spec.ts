@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { AtendenteStub } from '../testing/atendente.stub';
 import {
   BadRequestException,
+  NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { FrenteAtuacaoStub } from '../testing/FrenteAtuacao.stub';
@@ -16,11 +17,14 @@ import { UsuarioStub } from '../testing/usuario.stub';
 import { FrenteAtuacao } from '../frente-atuacao/entities/frente-atuacao.entity';
 import { UpdateAtendenteDto } from './dto/update-atendente.dto';
 import { SupervisorService } from '../supervisor/supervisor.service';
+import { SupervisorStub } from '../testing/supervisor.stub';
+import { Supervisor } from '../supervisor/entities/supervisor.entity';
 
 describe('AtendenteService', () => {
   let service: AtendenteService;
   let repository: MockType<Repository<Atendente>>;
   let usuarioService: UsuarioService;
+  let supervisorService: SupervisorService;
   let frenteAtuacaoService: FrenteAtuacaoService;
 
   beforeEach(async () => {
@@ -51,6 +55,7 @@ describe('AtendenteService', () => {
     frenteAtuacaoService =
       module.get<FrenteAtuacaoService>(FrenteAtuacaoService);
     usuarioService = module.get<UsuarioService>(UsuarioService);
+    supervisorService = module.get<SupervisorService>(SupervisorService);
   });
 
   it('deve ser definido', () => {
@@ -143,6 +148,48 @@ describe('AtendenteService', () => {
       const response = await service.update(1, request);
       expect(response.id).toBeDefined();
       expect(repository.save).toBeCalled();
+    });
+
+    it('Deve atualizar o supervisor de um atendente', async () => {
+      jest
+        .spyOn(supervisorService, 'findOne')
+        .mockResolvedValue(SupervisorStub.getEntity());
+
+      request.supervisor = {
+        id: 1,
+      } as Supervisor;
+
+      const response = await service.update(1, request);
+
+      expect(repository.save).toBeCalled();
+      expect(response.id).toBeDefined();
+      expect(response.supervisor).toBeDefined();
+    });
+
+    it('Deve remover o supervisor de um atendente', async () => {
+      request.supervisor = {
+        id: null,
+      } as Supervisor;
+
+      const response = await service.update(1, request);
+
+      expect(repository.save).toBeCalled();
+      expect(response.id).toBeDefined();
+      expect(response.supervisor).toBeNull();
+    });
+
+    it('Deve dar erro de supervisor não encontrado quando este não existir', async () => {
+      jest
+        .spyOn(supervisorService, 'findOne')
+        .mockRejectedValue(new NotFoundException());
+
+      request.supervisor = {
+        id: 1,
+      } as Supervisor;
+
+      await expect(() => service.update(1, request)).rejects.toThrow(
+        UnprocessableEntityException,
+      );
     });
   });
 });
