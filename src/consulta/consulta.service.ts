@@ -11,7 +11,6 @@ import { Consulta } from './entities/consulta.entity';
 import { AlunoService } from '../aluno/aluno.service';
 import { AgendaService } from '../agenda/agenda.service';
 import { AtendenteService } from '../atendente/atendente.service';
-import { NotFoundError } from 'rxjs';
 import { Erros } from '../config/constants';
 
 @Injectable()
@@ -26,21 +25,15 @@ export class ConsultaService extends DefaultService(
 
   async create(dto: CreateConsultaDto): Promise<Consulta> {
     try {
-      // const aluno = await this.alunoService.findOne(dto.aluno.id);
-      // const agenda = await this.agendaService.findOne(dto.agenda.id);
-      // const atendente = await this.atendenteService.findOne(dto.atendente.id);
-      return super.create(dto);
+      return await super.create(dto);
     } catch (e) {
-      throw new UnprocessableEntityException(
-        {
-          column: e.column,
+      throw new UnprocessableEntityException({
+        details: {
+          table: e.response.table,
+          column: e.response.column,
         },
-        Erros.NAO_ENCONTRADO,
-      );
-      /*if (e instanceof NotFoundException) {
-
-      }*/
-      // throw e;
+        message: Erros.NAO_ENCONTRADO,
+      });
     }
   }
 }

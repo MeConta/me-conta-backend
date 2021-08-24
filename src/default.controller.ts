@@ -59,9 +59,7 @@ export function DefaultController(
      * @returns {Promise<?>} Entidade TypeORM criada
      */
     @Post()
-    create(
-      @Body() dto: typeof CreateDto,
-    ): Promise<typeof Entity> {
+    create(@Body() dto: typeof CreateDto): Promise<typeof Entity> {
       return this.service.create(dto);
     }
 
