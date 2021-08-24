@@ -23,7 +23,11 @@
     "typeorm:migration:create": "npm run typeorm -- migration:create -n",
     "typeorm:migration:generate": "npm run typeorm -- migration:generate -n",
     "typeorm:migration:run": "npm run typeorm -- migration:run",
-    "typeorm:migration:revert": "npm run typeorm -- migration:revert"
+    "typeorm:migration:revert": "npm run typeorm -- migration:revert",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "src/**/*.ts": ["npm run lint --max-warnings=0", "npm run test --find-related-tests src/"]
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.6.0",
@@ -58,7 +62,9 @@
     "eslint": "^7.30.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
+    "husky": "^7.0.1",
     "jest": "27.0.6",
+    "lint-staged": "^11.1.2",
     "prettier": "^2.3.2",
     "supertest": "^6.1.3",
     "ts-jest": "^27.0.3",
