@@ -1,7 +1,6 @@
 import {
   Inject,
   Injectable,
-  NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { CreateConsultaDto } from './dto/create-consulta.dto';
@@ -31,6 +30,7 @@ export class ConsultaService extends DefaultService(
         details: {
           table: e.response.table,
           column: e.response.column,
+          detail: e.response.detail,
         },
         message: Erros.NAO_ENCONTRADO,
       });
