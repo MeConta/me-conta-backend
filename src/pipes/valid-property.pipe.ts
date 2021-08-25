@@ -16,7 +16,7 @@ export function IsValidProperty(
       options: validationOptions,
       validator: {
         validate(value: any) {
-          return validatorFn(value);
+          return value ? validatorFn(value) : false;
         },
         defaultMessage: buildMessage(
           () => `$property is not valid`,

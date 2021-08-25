@@ -1,40 +1,42 @@
-import { IsValidProperty } from './valid-property.pipe';
 import { CreateConsultaDto } from '../consulta/dto/create-consulta.dto';
 import { ArgumentMetadata, ValidationPipe } from '@nestjs/common';
+import { Atendente } from '../atendente/entities/atendente.entity';
+import { Aluno } from '../aluno/entities/aluno.entity';
+import { Agenda } from '../agenda/entities/agenda.entity';
 
 describe('ValidIdPipe', () => {
-  /*let registerDecorator;
+  let target: ValidationPipe;
+  let metadata: ArgumentMetadata;
+
   beforeEach(() => {
-    registerDecorator = jest.fn((decorator) => decorator.validator.validate());
-    jest.mock('class-validator', () => ({
-      __esModule: true,
-      registerDecorator,
-      buildMessage: jest.fn(),
-      // isInt: jest.fn().mockReturnValue(true),
-    }));
-  });
-  // jest.spyOn(object, methodName).mockImplementation(() => customImplementation)
-  it('Deve ser definido', () => {
-    expect(IsValidProperty(jest.fn())).toBeDefined();
-  });*/
-
-  it('true', () => {
-    expect(true).toBeTruthy();
+    target = new ValidationPipe({
+      transform: true,
+    });
+    metadata = {
+      type: 'body',
+      metatype: CreateConsultaDto,
+      data: '',
+    };
   });
 
-  // it('validate DTO', async () => {
-  //   const target: ValidationPipe = new ValidationPipe({
-  //     transform: true
-  //   });
-  //   const metadata: ArgumentMetadata = {
-  //     type: 'body',
-  //     metatype: CreateConsultaDto,
-  //     data: JSON.stringify({ aluno: 1, atendente: 1, agenda: 1 }),
-  //   };
-  //   await target.transform(<CreateConsultaDto>{}, metadata).catch((err) => {
-  //     console.log('AAAAAA', err);
-  //     expect(true).toBeTruthy();
-  //     //expect(err.message).toEqual(['atendente is not valid']);
-  //   });
-  // });
+  it('validate DTO', async () => {
+    await target
+      .transform(
+        <CreateConsultaDto>{
+          aluno: {} as Aluno,
+          atendente: {} as Atendente,
+          agenda: {} as Agenda,
+        },
+        metadata,
+      )
+      .catch((err) => {
+        expect(err.message).toBeDefined();
+      });
+  });
+
+  it('validate empty DTO', async () => {
+    await target.transform(<CreateConsultaDto>{}, metadata).catch((err) => {
+      expect(err.message).toBeDefined();
+    });
+  });
 });
