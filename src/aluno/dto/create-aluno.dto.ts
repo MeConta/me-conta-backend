@@ -1,4 +1,3 @@
-import { Usuario } from '../../usuario/entities/usuario.entity';
 import { GrauEnsinoMedio, TipoEscola } from '../entities/aluno.enum';
 import { IsEnum } from 'class-validator';
 import { Transform } from 'class-transformer';
@@ -8,9 +7,6 @@ import { OmitType } from '@nestjs/mapped-types';
 export class CreateAlunoDto extends OmitType(CreateUsuarioDto, [
   'tipoUsuario',
 ] as const) {
-  @Transform(({ value }) => value.id)
-  usuario: Usuario;
-
   @IsEnum(TipoEscola)
   tipoEscola: TipoEscola;
 

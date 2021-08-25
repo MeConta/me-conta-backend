@@ -8,7 +8,6 @@ export class AlunoStub {
   static getCreateDto(): CreateAlunoDto {
     return {
       ...UsuarioStub.getCreateDto(),
-      usuario: UsuarioStub.getEntity(),
       tipoEscola: TipoEscola.PUBLICA,
       grauEnsinoMedio: GrauEnsinoMedio.PRIMEIRO,
     };
