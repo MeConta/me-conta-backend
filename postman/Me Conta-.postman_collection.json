@@ -1,0 +1,872 @@
+{
+	"info": {
+		"_postman_id": "3fe7ff91-bac2-4ea2-a3c3-4afbc82d842c",
+		"name": "Me Conta?",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Usuário",
+			"item": [
+				{
+					"name": "Usuário",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/usuario/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"usuario",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Usuário",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/usuario/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"usuario",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Usuário",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"{{$randomFullName}}\",\n    \"senha\": \"12345678\",\n    \"dataNascimento\": \"{{$randomDatePast}}\",\n    \"genero\": \"M\",\n    \"UF\": \"SP\",\n    \"cidade\": \"São Paulo\",\n    \"telefone\": \"{{$randomPhoneNumber}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"tipoUsuario\": \"ADMINISTRADOR\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/usuario",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Usuário",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"nome\": \"Guilherme\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/usuario/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"usuario",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Frentes de Atuação",
+			"item": [
+				{
+					"name": "Frente Atuacao",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/frente-atuacao/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"frente-atuacao",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Frente Atuacao",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"{{$randomLoremWord}}\",\n    \"descricao\": \"{{$randomLoremWords}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/frente-atuacao",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"frente-atuacao"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Frente Atuacao",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/frente-atuacao/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"frente-atuacao",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fremte Atuacao",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tipoEscola\": \"PARTICULAR\",\n    \"nome\": \"João Roberto\",\n    \"UF\": \"GO\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/frente-atuacao/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"frente-atuacao",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "12"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Atendente",
+			"item": [
+				{
+					"name": "Atendente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/atendente/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"atendente",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atendente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"{{$randomFullName}}\",\n    \"senha\": \"{{$randomPassword}}\",\n    \"dataNascimento\": \"{{$randomDatePast}}\",\n    \"genero\": \"M\",\n    \"UF\": \"SP\",\n    \"cidade\": \"São Paulo\",\n    \"telefone\": \"5511947899138\",\n    \"email\": \"{{$randomEmail}}\",\n    \"formado\": false,\n    \"semestre\": 1,\n    \"anoFormacao\": \"2020\",\n    \"especializacao\": \"teste\",\n    \"descricao\": \"teste\",\n    \"instituicao\": \"faculdade\",\n    \"frentesAtuacao\": [\n        1,\n        2,\n        3\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/atendente",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"atendente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atendente",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/atendente/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"atendente",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atendente",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"{{$randomFullName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"aprovado\": true,\n    \"supervisor\": 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/atendente/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"atendente",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Consulta",
+			"item": [
+				{
+					"name": "Consulta",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/consulta/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"consulta",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consulta",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"atendente\": 1,\n    \"aluno\": 1,\n    \"agenda\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/consulta",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"consulta"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consulta",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/consulta/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"consulta",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consulta",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"{{$randomFullName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"aprovado\": true,\n    \"supervisor\": 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/consulta/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"consulta",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Agenda",
+			"item": [
+				{
+					"name": "Agenda",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/agenda/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"agenda",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Agenda",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data\": \"{{$randomDateFuture}}\",\n    \"atendente\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/agenda",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"agenda"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Agenda",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/agenda/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"agenda",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Agenda",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"{{$randomFullName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"aprovado\": true,\n    \"supervisor\": 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/agenda/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"agenda",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Supervisor",
+			"item": [
+				{
+					"name": "Supervisor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/supervisor/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"supervisor",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Supervisor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"{{$randomFullName}}\",\n    \"senha\": \"{{$randomPassword}}\",\n    \"dataNascimento\": \"{{$randomDatePast}}\",\n    \"genero\": \"M\",\n    \"UF\": \"SP\",\n    \"cidade\": \"São Paulo\",\n    \"telefone\": \"5511947899138\",\n    \"email\": \"{{$randomEmail}}\",\n    \"formado\": false,\n    \"semestre\": 1,\n    \"anoFormacao\": \"2020\",\n    \"especializacao\": \"teste\",\n    \"descricao\": \"teste\",\n    \"instituicao\": \"faculdade\",\n    \"areaAtuacao\": \"PROFESSOR\",\n    \"crp\": \"{{$randomLoremWords}}\",\n    \"frentesAtuacao\": [\n        1,\n        2,\n        3\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/supervisor",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"supervisor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Supervisor",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/supervisor/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"supervisor",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Supervisor",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"João de Teste\",\n    \"email\": \"Aida.Jacobson@yahoo.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/supervisor/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"supervisor",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Aluno",
+			"item": [
+				{
+					"name": "Aluno",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/aluno/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"aluno",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Aluno",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"{{$randomFullName}}\",\n    \"senha\": \"{{$randomPassword}}\",\n    \"dataNascimento\": \"{{$randomDatePast}}\",\n    \"genero\": \"M\",\n    \"UF\": \"SP\",\n    \"cidade\": \"São Paulo\",\n    \"telefone\": \"5511947899138\",\n    \"email\": \"{{$randomEmail}}\",\n    \"tipoEscola\": \"PARTICULAR\",\n    \"grauEnsinoMedio\": 2,\n    \"tipoUsuario\": \"ADMINISTRADOR\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/aluno",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"aluno"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Aluno",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/aluno/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"aluno",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Aluno",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tipoEscola\": \"PARTICULAR\",\n    \"nome\": \"João Roberto\",\n    \"UF\": \"GO\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/aluno/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"aluno",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "12"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contato",
+			"item": [
+				{
+					"name": "Contato",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"{{$randomFullName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"mensagem\": \"{{$randomLoremParagraph}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/contato/",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"contato",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Home",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/",
+					"protocol": "{{PROTOCOL}}",
+					"host": [
+						"{{HOST}}{{PORT}}"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
