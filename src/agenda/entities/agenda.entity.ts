@@ -14,7 +14,7 @@ export class Agenda extends DefaultEntity {
   @Column()
   data: Date;
 
-  @OneToOne(() => Consulta, {
+  @OneToOne(() => Consulta, (consulta) => consulta.agenda, {
     nullable: true,
     eager: true,
   })
