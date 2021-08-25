@@ -27,7 +27,10 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "src/**/*.ts": ["npm run lint --max-warnings=0", "npm run test --find-related-tests src/"]
+    "src/**/*.ts": [
+      "npm run lint --max-warnings=0",
+      "npm run test --find-related-tests src/"
+    ]
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.6.0",
@@ -49,6 +52,8 @@
     "typeorm": "^0.2.36"
   },
   "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
     "@nestjs/cli": "^8.0.0",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
