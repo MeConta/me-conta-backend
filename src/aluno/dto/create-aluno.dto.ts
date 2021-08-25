@@ -1,6 +1,5 @@
 import { GrauEnsinoMedio, TipoEscola } from '../entities/aluno.enum';
 import { IsEnum } from 'class-validator';
-import { Transform } from 'class-transformer';
 import { CreateUsuarioDto } from '../../usuario/dto/create-usuario.dto';
 import { OmitType } from '@nestjs/mapped-types';
 
