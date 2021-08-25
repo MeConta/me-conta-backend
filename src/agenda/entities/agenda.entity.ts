@@ -5,7 +5,9 @@ import { Consulta } from '../../consulta/entities/consulta.entity';
 
 @Entity('agenda')
 export class Agenda extends DefaultEntity {
-  @OneToOne(() => Atendente)
+  @OneToOne(() => Atendente, {
+    eager: true,
+  })
   @JoinColumn()
   atendente: Atendente;
 
@@ -14,6 +16,8 @@ export class Agenda extends DefaultEntity {
 
   @OneToOne(() => Consulta, {
     nullable: true,
+    eager: true,
   })
+  @JoinColumn()
   consulta: Consulta;
 }

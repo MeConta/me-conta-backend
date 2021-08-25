@@ -1,26 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAgendaDto } from './dto/create-agenda.dto';
 import { UpdateAgendaDto } from './dto/update-agenda.dto';
+import { DefaultService } from '../default.service';
+import { Agenda } from './entities/agenda.entity';
 
 @Injectable()
-export class AgendaService {
-  create(createAgendaDto: CreateAgendaDto) {
-    return 'This action adds a new agenda';
-  }
-
-  findAll() {
-    return `This action returns all agenda`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} agenda`;
-  }
-
-  update(id: number, updateAgendaDto: UpdateAgendaDto) {
-    return `This action updates a #${id} agenda`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} agenda`;
-  }
-}
+export class AgendaService extends DefaultService(
+  Agenda,
+  CreateAgendaDto,
+  UpdateAgendaDto,
+) {}

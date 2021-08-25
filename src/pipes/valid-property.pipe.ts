@@ -11,7 +11,7 @@ export function IsValidProperty(
   return function (object: any, propertyName: string) {
     registerDecorator({
       name: 'isValidProperty',
-      target: object,
+      target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
       validator: {
