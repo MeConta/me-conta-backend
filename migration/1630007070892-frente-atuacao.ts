@@ -1,6 +1,6 @@
 import {MigrationInterface, QueryRunner} from "typeorm";
 
-export class frentesAtuacao1630004141434 implements MigrationInterface {
+export class frenteAtuacao1630007070892 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`INSERT INTO public."frente-atuacao" (id, "dataCriacao", "dataAlteracao", "dataExclusao", nome, descricao)
@@ -27,6 +27,5 @@ export class frentesAtuacao1630004141434 implements MigrationInterface {
             `DELETE FROM public."frente-atuacao" WHERE nome = 'Orientação vocacional'`,
         );
     }
-
 
 }

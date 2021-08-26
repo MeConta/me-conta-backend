@@ -1,15 +1,19 @@
 import { DefaultEntity } from '../../default.entity';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { Aluno } from '../../aluno/entities/aluno.entity';
 import { Consulta } from '../../consulta/entities/consulta.entity';
 
 @Entity('avaliacao')
 export class Avaliacao extends DefaultEntity {
-  @OneToOne(() => Aluno)
+  @ManyToOne(() => Aluno, {
+    eager: true,
+  })
   @JoinColumn()
   aluno: Aluno;
 
-  @OneToOne(() => Consulta)
+  @OneToOne(() => Consulta, {
+    eager: true,
+  })
   @JoinColumn()
   consulta: Consulta;
 
@@ -19,12 +23,18 @@ export class Avaliacao extends DefaultEntity {
   @Column()
   comentario: string;
 
-  @Column()
+  @Column({
+    default: true,
+  })
   mostrar: boolean;
 
-  @Column()
+  @Column({
+    default: false,
+  })
   anonimo: boolean;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   aprovado: boolean;
 }

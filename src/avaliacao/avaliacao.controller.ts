@@ -1,45 +1,24 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Post, Patch, Body } from '@nestjs/common';
 import { AvaliacaoService } from './avaliacao.service';
 import { CreateAvaliacaoDto } from './dto/create-avaliacao.dto';
 import { UpdateAvaliacaoDto } from './dto/update-avaliacao.dto';
+import { DefaultController } from '../default.controller';
+import { Avaliacao } from './entities/avaliacao.entity';
 
-@Controller('avaliacao')
-export class AvaliacaoController {
-  constructor(private readonly avaliacaoService: AvaliacaoService) {}
-
+export class AvaliacaoController extends DefaultController(
+  'avaliacao',
+  Avaliacao,
+  AvaliacaoService,
+  CreateAvaliacaoDto,
+  UpdateAvaliacaoDto,
+) {
   @Post()
-  create(@Body() createAvaliacaoDto: CreateAvaliacaoDto) {
-    return this.avaliacaoService.create(createAvaliacaoDto);
+  create(@Body() dto: CreateAvaliacaoDto): Promise<Avaliacao> {
+    return super.create(dto);
   }
 
-  @Get()
-  findAll() {
-    return this.avaliacaoService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.avaliacaoService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateAvaliacaoDto: UpdateAvaliacaoDto,
-  ) {
-    return this.avaliacaoService.update(+id, updateAvaliacaoDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.avaliacaoService.remove(+id);
+  @Patch()
+  update(id: string, @Body() dto: UpdateAvaliacaoDto): Promise<Avaliacao> {
+    return super.update(id, dto);
   }
 }
