@@ -17,7 +17,7 @@ export class AgendaController extends DefaultController(
     return super.create(dto);
   }
 
-  @Patch()
+  @Patch(':id')
   update(id: string, dto: UpdateAgendaDto): Promise<Agenda> {
     return super.update(id, dto);
   }

@@ -4,15 +4,13 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Consulta } from './entities/consulta.entity';
 import { FactoryMock, MockType } from '../testing/factory.mock';
 import { ConsultaStub } from '../testing/consulta.stub';
-import { AlunoService } from '../aluno/aluno.service';
 import { AgendaService } from '../agenda/agenda.service';
-import { AtendenteService } from '../atendente/atendente.service';
 import { Repository } from 'typeorm';
+import { UnprocessableEntityException } from '@nestjs/common';
+import { AgendaStub } from '../testing/agenda.stub';
 
 describe('ConsultaService', () => {
-  let alunoService: AlunoService;
   let agendaService: AgendaService;
-  let atendenteService: AtendenteService;
   let service: ConsultaService;
   let repository: MockType<Repository<Consulta>>;
 
@@ -24,15 +22,7 @@ describe('ConsultaService', () => {
           useFactory: FactoryMock.repositoryMockFactory,
         },
         {
-          provide: AlunoService,
-          useFactory: FactoryMock.crudServiceMockFactory,
-        },
-        {
           provide: AgendaService,
-          useFactory: FactoryMock.crudServiceMockFactory,
-        },
-        {
-          provide: AtendenteService,
           useFactory: FactoryMock.crudServiceMockFactory,
         },
         ConsultaService,
@@ -41,8 +31,6 @@ describe('ConsultaService', () => {
 
     repository = module.get(getRepositoryToken(Consulta));
     agendaService = module.get<AgendaService>(AgendaService);
-    alunoService = module.get<AlunoService>(AlunoService);
-    atendenteService = module.get<AtendenteService>(AtendenteService);
     service = module.get<ConsultaService>(ConsultaService);
   });
 
@@ -63,5 +51,17 @@ describe('ConsultaService', () => {
       expect(err.response.details.table).toBe('mock');
       expect(err.response.details.column).toBe('mock');
     }
+  });
+
+  it('Não deve cadastrar duas consultas em uma mesma agenda', async () => {
+    const agenda = AgendaStub.getEntity();
+    agenda.consulta = ConsultaStub.getEntity();
+    jest.spyOn(agendaService, 'findOne').mockResolvedValue(agenda);
+
+    const request = ConsultaStub.getCreateDto();
+
+    await expect(() => service.create(request)).rejects.toThrow(
+      UnprocessableEntityException,
+    );
   });
 });

@@ -28,8 +28,7 @@
   },
   "lint-staged": {
     "src/**/*.ts": [
-      "npm run lint --max-warnings=0",
-      "npm run test --find-related-tests src/"
+      "npm run lint --max-warnings=0"
     ]
   },
   "dependencies": {

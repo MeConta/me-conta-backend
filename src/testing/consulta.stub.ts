@@ -7,7 +7,6 @@ import { TipoEscola } from '../aluno/entities/aluno.enum';
 import { Consulta } from '../consulta/entities/consulta.entity';
 import { AgendaStub } from './agenda.stub';
 import { AlunoStub } from './aluno.stub';
-import { AtendenteStub } from './atendente.stub';
 
 export class ConsultaStub {
   static getCreateDto(): CreateConsultaDto {
@@ -36,10 +35,12 @@ export class ConsultaStub {
       id: 1,
       agenda: AgendaStub.getEntity(),
       aluno: AlunoStub.getEntity(),
-      atendente: AtendenteStub.getEntity(),
       dataAlteracao: new Date(),
       dataCriacao: new Date(),
       dataExclusao: new Date(),
     };
+  }
+  static getEntities(n = 1): Consulta[] {
+    return Array(n).fill(this.getEntity());
   }
 }

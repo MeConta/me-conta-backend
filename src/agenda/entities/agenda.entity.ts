@@ -1,11 +1,11 @@
 import { DefaultEntity } from '../../default.entity';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { Atendente } from '../../atendente/entities/atendente.entity';
 import { Consulta } from '../../consulta/entities/consulta.entity';
 
 @Entity('agenda')
 export class Agenda extends DefaultEntity {
-  @OneToOne(() => Atendente, {
+  @ManyToOne(() => Atendente, (atendente) => atendente.agendas, {
     eager: true,
   })
   @JoinColumn()
@@ -16,8 +16,6 @@ export class Agenda extends DefaultEntity {
 
   @OneToOne(() => Consulta, (consulta) => consulta.agenda, {
     nullable: true,
-    eager: true,
   })
-  @JoinColumn()
   consulta: Consulta;
 }

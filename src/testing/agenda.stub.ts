@@ -4,7 +4,6 @@ import { UpdateAgendaDto } from '../agenda/dto/update-agenda.dto';
 import { Consulta } from '../consulta/entities/consulta.entity';
 import { Agenda } from '../agenda/entities/agenda.entity';
 import { AtendenteStub } from './atendente.stub';
-import { ConsultaStub } from './consulta.stub';
 
 export class AgendaStub {
   static getCreateDto(): CreateAgendaDto {
@@ -26,10 +25,14 @@ export class AgendaStub {
       id: 1,
       data: new Date(),
       atendente: AtendenteStub.getEntity(),
-      consulta: ConsultaStub.getEntity(),
+      consulta: null,
       dataExclusao: new Date(),
       dataCriacao: new Date(),
       dataAlteracao: new Date(),
     };
+  }
+
+  static getEntities(n = 1): Agenda[] {
+    return Array<Agenda>(n).fill(this.getEntity());
   }
 }
