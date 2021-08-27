@@ -1,7 +1,6 @@
 import {
   Inject,
   Injectable,
-  Patch,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { CreateAtendenteDto } from './dto/create-atendente.dto';
@@ -23,7 +22,6 @@ export class AtendenteService extends VoluntarioService(
   @Inject(SupervisorService)
   private readonly supervisorService: SupervisorService;
 
-  @Patch()
   async update(id: number, dto: UpdateAtendenteDto): Promise<Atendente> {
     if (dto.supervisor) {
       let supervisor: Supervisor = null;

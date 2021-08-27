@@ -1,23 +1,28 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   HttpCode,
   HttpStatus,
   Inject,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
+  Query,
   Type,
 } from '@nestjs/common';
 import { IDefaultService } from './default.service';
+import { Pagination } from 'nestjs-typeorm-paginate';
 
 export interface IDefaultController<Entity, CreateDto, UpdateDto> {
   service: IDefaultService<Entity, CreateDto, UpdateDto>;
   create(dto: CreateDto): Promise<Entity>;
-  findAll(): Promise<Entity[]>;
-  findOne(id: string): Promise<Entity>;
+  findAll(page: number, limit: number): Promise<Pagination<Entity>>;
+  findOne(id: number): Promise<Entity>;
+  // TODO: Trocar de string para number
   update(id: string, dto: UpdateDto): Promise<Entity>;
   remove(id: string);
 }
@@ -68,8 +73,21 @@ export function DefaultController(
      * @returns {Promise<?[]>} Entidades TypeORM
      */
     @Get()
-    findAll(): Promise<typeof Entity[]> {
-      return this.service.findAll();
+    findAll(
+      @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
+      @Query(
+        'limit',
+        new DefaultValuePipe(process.env.DEFAULT_PAGE_SIZE || 10),
+        ParseIntPipe,
+      )
+      limit = 10,
+    ): Promise<Pagination<typeof Entity>> {
+      // Caso o controller receba 0, mandar o valor padrão
+      limit = limit || +process.env.DEFAULT_PAGE_SIZE || 10;
+      return this.service.findAll({
+        page,
+        limit,
+      });
     }
 
     /***
@@ -78,7 +96,7 @@ export function DefaultController(
      * @returns {Promise<?>} Entidade TypeORM
      */
     @Get(':id')
-    findOne(@Param('id') id: string): Promise<typeof Entity> {
+    findOne(@Param('id', ParseIntPipe) id: number): Promise<typeof Entity> {
       return this.service.findOne(+id);
     }
 

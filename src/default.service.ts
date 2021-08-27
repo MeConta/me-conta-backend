@@ -6,15 +6,27 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindConditions, Repository } from 'typeorm';
-import { Erros } from './config/constants/erros.enum';
+import { Erros } from './config/constants';
+import {
+  IPaginationOptions,
+  paginate,
+  Pagination,
+} from 'nestjs-typeorm-paginate';
 
 export interface IDefaultService<Entity, CreateDto, UpdateDto> {
-  repository: Repository<Entity>;
+  readonly repository: Repository<Entity>;
   create(dto: CreateDto): Promise<Entity>;
-  findAll(conditions?: FindConditions<Entity>): Promise<Entity[]>;
+  findAll(
+    pagination?: IPaginationOptions,
+    conditions?: FindConditions<Entity>,
+  ): Promise<Pagination<Entity>>;
   findOne(id: number): Promise<Entity>;
   update(id: number, dto: UpdateDto): Promise<Entity>;
   remove(id: number): Promise<Entity>;
+  paginate(
+    pagination: IPaginationOptions,
+    conditions: FindConditions<Entity>,
+  ): Promise<Pagination<Entity>>;
 }
 
 /***
@@ -25,6 +37,8 @@ export interface IDefaultService<Entity, CreateDto, UpdateDto> {
  * - Update
  * - Delete
  * @param Entity {?} Entidade TypeOrm relacionada a este serviço
+ * @param CreateDto {?} Objeto de DTO para create
+ * @param UpdateDto {?} Objeto de DTO para update
  */
 export function DefaultService(
   Entity,
@@ -37,7 +51,7 @@ export function DefaultService(
       IDefaultService<typeof Entity, typeof CreateDto, typeof UpdateDto>
   {
     @InjectRepository(Entity)
-    repository: Repository<typeof Entity>;
+    readonly repository: Repository<typeof Entity>;
 
     /***
      * Criação de entidade
@@ -57,12 +71,17 @@ export function DefaultService(
     /***
      * Retornar todas as entidades
      * @param conditions {FindConditions<?>} é possível utilizar campos da entidade para fazer um where
-     * @returns {Promise<?[]>} Uma promise de entidades TypeORM
+     * @param pagination {IPaginationOptions} Opções de paginação
+     * @returns {Promise<Pagination<?>>} Uma promise de pagination das entidades TypeORM
      */
     async findAll(
+      pagination: IPaginationOptions = {
+        limit: process.env.DEFAULT_PAGE_SIZE || 10,
+        page: 1,
+      },
       conditions: FindConditions<typeof Entity> = null,
-    ): Promise<typeof Entity[]> {
-      return this.repository.find(conditions ? conditions : null);
+    ): Promise<Pagination<typeof Entity>> {
+      return this.paginate(pagination, conditions);
     }
 
     /***
@@ -112,6 +131,23 @@ export function DefaultService(
      */
     async remove(id: number): Promise<typeof Entity> {
       return this.repository.softRemove([await this.findOne(id)]);
+    }
+
+    // TODO: rever essa paginação, pois não conseguimos mockar o paginate
+    /***
+     * Método de paginação
+     * @param pagination {IPaginationOptions} opções de paginação
+     * @param conditions {FindConditions<?>} opções de busca
+     */
+    paginate(
+      pagination: IPaginationOptions,
+      conditions: FindConditions<typeof Entity>,
+    ): Promise<Pagination<typeof Entity>> {
+      return paginate<typeof Entity>(
+        this.repository,
+        pagination,
+        conditions || null,
+      );
     }
   }
   return DefaultServiceHost;

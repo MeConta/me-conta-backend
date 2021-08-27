@@ -33,6 +33,12 @@ describe('AgendaService', () => {
     repository = module.get(getRepositoryToken(Agenda));
   });
 
+  beforeEach(async () => {
+    jest
+      .spyOn(service, 'paginate')
+      .mockResolvedValue(AgendaStub.getPaginatedEntities());
+  });
+
   it('deve ser definido', () => {
     expect(service).toBeDefined();
   });
@@ -40,20 +46,20 @@ describe('AgendaService', () => {
   it('deve retornar agendas com consultas', async () => {
     jest
       .spyOn(consultaService, 'findAll')
-      .mockResolvedValue(ConsultaStub.getEntities());
+      .mockResolvedValue(ConsultaStub.getPaginatedEntities());
 
     jest.spyOn(repository, 'find').mockResolvedValue(AgendaStub.getEntities());
 
     const response = await service.findAll();
 
     expect(response).toBeDefined();
-    expect(response[0].consulta.id).toBe(ConsultaStub.getEntity().id);
+    expect(response.items[0].consulta.id).toBe(ConsultaStub.getEntity().id);
   });
 
   it('deve retornar uma agenda com consultas', async () => {
     jest
       .spyOn(consultaService, 'findAll')
-      .mockResolvedValue(ConsultaStub.getEntities());
+      .mockResolvedValue(ConsultaStub.getPaginatedEntities());
 
     jest.spyOn(repository, 'findOne').mockResolvedValue(AgendaStub.getEntity());
 

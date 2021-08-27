@@ -2,8 +2,25 @@ import { Atendente } from '../atendente/entities/atendente.entity';
 import { CreateAtendenteDto } from '../atendente/dto/create-atendente.dto';
 import { VoluntarioStub } from './voluntario.stub';
 import { UpdateAtendenteDto } from '../atendente/dto/update-atendente.dto';
+import { Pagination } from 'nestjs-typeorm-paginate';
 
 export class AtendenteStub {
+  static getCreateDto(): CreateAtendenteDto {
+    return {
+      ...VoluntarioStub.getCreateDto(),
+      formado: true,
+      semestre: 3,
+      anoFormacao: 1994,
+    };
+  }
+
+  static getUpdateDto(): UpdateAtendenteDto {
+    return {
+      supervisor: null,
+      aprovado: true,
+    };
+  }
+
   static getEntity(): Atendente {
     return {
       ...VoluntarioStub.getEntity(),
@@ -19,19 +36,13 @@ export class AtendenteStub {
     return Array<Atendente>().fill(this.getEntity(), n);
   }
 
-  static getCreateDto(): CreateAtendenteDto {
-    return {
-      ...VoluntarioStub.getCreateDto(),
-      formado: true,
-      semestre: 3,
-      anoFormacao: 1994,
-    };
-  }
-
-  static getUpdateDto(): UpdateAtendenteDto {
-    return {
-      supervisor: null,
-      aprovado: true,
-    };
+  static getPaginatedEntities(n = 1): Pagination<Atendente> {
+    return new Pagination(this.getEntities(n), {
+      currentPage: 1,
+      itemCount: n,
+      itemsPerPage: 10,
+      totalItems: n,
+      totalPages: 1,
+    });
   }
 }

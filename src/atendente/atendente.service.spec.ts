@@ -12,7 +12,7 @@ import {
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { FrenteAtuacaoStub } from '../testing/FrenteAtuacao.stub';
+import { FrenteAtuacaoStub } from '../testing/frente-atuacao.stub';
 import { UsuarioStub } from '../testing/usuario.stub';
 import { FrenteAtuacao } from '../frente-atuacao/entities/frente-atuacao.entity';
 import { UpdateAtendenteDto } from './dto/update-atendente.dto';
@@ -67,7 +67,7 @@ describe('AtendenteService', () => {
     jest.spyOn(repository, 'save').mockReturnValue(AtendenteStub.getEntity());
     jest
       .spyOn(frenteAtuacaoService, 'findAll')
-      .mockResolvedValue(FrenteAtuacaoStub.getEntities());
+      .mockResolvedValue(FrenteAtuacaoStub.getPaginatedEntities());
 
     const response = await service.create(AtendenteStub.getCreateDto());
 
@@ -80,7 +80,9 @@ describe('AtendenteService', () => {
   it('não deve criar um atendente com frente de atuação inexistente', async () => {
     jest.spyOn(repository, 'create').mockReturnValue(AtendenteStub.getEntity());
     jest.spyOn(repository, 'save').mockReturnValue(AtendenteStub.getEntity());
-    jest.spyOn(frenteAtuacaoService, 'findAll').mockResolvedValue([]);
+    jest
+      .spyOn(frenteAtuacaoService, 'findAll')
+      .mockResolvedValue(AtendenteStub.getPaginatedEntities(0));
 
     await expect(() =>
       service.create(AtendenteStub.getCreateDto()),
@@ -90,7 +92,9 @@ describe('AtendenteService', () => {
   it('não deve criar um atendente com frente de atuação inválidas', async () => {
     jest.spyOn(repository, 'create').mockReturnValue(AtendenteStub.getEntity());
     jest.spyOn(repository, 'save').mockReturnValue(AtendenteStub.getEntity());
-    jest.spyOn(frenteAtuacaoService, 'findAll').mockResolvedValue([]);
+    jest
+      .spyOn(frenteAtuacaoService, 'findAll')
+      .mockResolvedValue(AtendenteStub.getPaginatedEntities(0));
 
     const request = AtendenteStub.getCreateDto();
     request.frentesAtuacao[0].id = NaN;
@@ -125,7 +129,7 @@ describe('AtendenteService', () => {
         .mockReturnValue(AtendenteStub.getEntity());
       jest
         .spyOn(frenteAtuacaoService, 'findAll')
-        .mockResolvedValue(FrenteAtuacaoStub.getEntities());
+        .mockResolvedValue(FrenteAtuacaoStub.getPaginatedEntities());
       jest
         .spyOn(usuarioService, 'findOne')
         .mockResolvedValue(UsuarioStub.getEntity());

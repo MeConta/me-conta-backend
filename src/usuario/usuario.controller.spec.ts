@@ -35,13 +35,13 @@ describe('UsuarioController', () => {
 
   it('Deve chamar o serviço de encontrar os usuários', () => {
     jest.spyOn(service, 'findAll');
-    controller.findAll();
+    controller.findAll(1, 10);
     expect(service.findAll).toBeCalled();
   });
 
   it('Deve chamar o serviço de encontrar um usuário', () => {
     jest.spyOn(service, 'findOne');
-    controller.findOne('1');
+    controller.findOne(1);
     expect(service.findOne).toBeCalled();
   });
 

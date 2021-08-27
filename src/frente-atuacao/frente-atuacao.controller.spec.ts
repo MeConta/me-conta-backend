@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { FrenteAtuacaoController } from './frente-atuacao.controller';
 import { FrenteAtuacaoService } from './frente-atuacao.service';
 import { FactoryMock } from '../testing/factory.mock';
-import { FrenteAtuacaoStub } from '../testing/FrenteAtuacao.stub';
+import { FrenteAtuacaoStub } from '../testing/frente-atuacao.stub';
 
 describe('FrenteAtuacaoController', () => {
   let controller: FrenteAtuacaoController;

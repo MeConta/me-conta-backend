@@ -7,6 +7,7 @@ import { TipoEscola } from '../aluno/entities/aluno.enum';
 import { Consulta } from '../consulta/entities/consulta.entity';
 import { AgendaStub } from './agenda.stub';
 import { AlunoStub } from './aluno.stub';
+import { Pagination } from 'nestjs-typeorm-paginate';
 
 export class ConsultaStub {
   static getCreateDto(): CreateConsultaDto {
@@ -40,7 +41,18 @@ export class ConsultaStub {
       dataExclusao: new Date(),
     };
   }
+
   static getEntities(n = 1): Consulta[] {
     return Array(n).fill(this.getEntity());
+  }
+
+  static getPaginatedEntities(n = 1): Pagination<Consulta> {
+    return new Pagination(this.getEntities(n), {
+      currentPage: 1,
+      itemCount: n,
+      itemsPerPage: 10,
+      totalItems: n,
+      totalPages: 1,
+    });
   }
 }

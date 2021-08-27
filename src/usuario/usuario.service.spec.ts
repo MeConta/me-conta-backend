@@ -9,6 +9,7 @@ import {
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
+import { Pagination } from 'nestjs-typeorm-paginate';
 
 describe('UsuarioService', () => {
   let service: UsuarioService;
@@ -29,6 +30,12 @@ describe('UsuarioService', () => {
     repository = module.get(getRepositoryToken(Usuario));
   });
 
+  beforeEach(() => {
+    jest
+      .spyOn(service, 'paginate')
+      .mockResolvedValue(UsuarioStub.getPaginatedEntities());
+  });
+
   it('deve ser definido', () => {
     expect(service).toBeDefined();
   });
@@ -38,17 +45,23 @@ describe('UsuarioService', () => {
 
     const response = await service.findAll();
 
-    expect(response).toBeInstanceOf(Array);
+    expect(response).toBeInstanceOf(Pagination);
   });
 
   it('deve retornar uma lista de usuários ao utilizar um critério', async () => {
     jest.spyOn(repository, 'find').mockReturnValue(UsuarioStub.getEntities());
 
-    const response = await service.findAll({
-      nome: 'teste',
-    } as FindConditions<Usuario>);
+    const response = await service.findAll(
+      {
+        page: 1,
+        limit: 10,
+      },
+      {
+        nome: 'teste',
+      } as FindConditions<Usuario>,
+    );
 
-    expect(response).toBeInstanceOf(Array);
+    expect(response).toBeInstanceOf(Pagination);
   });
 
   it('deve encontrar um usuário', async () => {

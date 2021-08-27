@@ -1,7 +1,7 @@
 import { CreateVoluntarioDto } from '../voluntario/dto/create-voluntario.dto';
 import { UsuarioStub } from './usuario.stub';
 import { Voluntario } from '../voluntario/entity/voluntario.entity';
-import { FrenteAtuacaoStub } from './FrenteAtuacao.stub';
+import { FrenteAtuacaoStub } from './frente-atuacao.stub';
 
 export class VoluntarioStub {
   static getCreateDto(): CreateVoluntarioDto {

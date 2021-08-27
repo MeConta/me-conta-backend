@@ -13,7 +13,7 @@ import { Tipo } from '../usuario/entities/usuario.enum';
 import { FrenteAtuacaoService } from '../frente-atuacao/frente-atuacao.service';
 import { FindConditions, In } from 'typeorm';
 import { Voluntario } from './entity/voluntario.entity';
-import { Erros } from '../config/constants/erros.enum';
+import { Erros } from '../config/constants';
 import { FrenteAtuacao } from '../frente-atuacao/entities/frente-atuacao.entity';
 import { isNumber } from 'class-validator';
 
@@ -40,11 +40,13 @@ export function VoluntarioService(
         return frente.id;
       });
       try {
-        return await this.frenteAtuacaoService.findAll({
-          where: {
-            id: In(ids),
-          },
-        } as FindConditions<Voluntario>);
+        return (
+          await this.frenteAtuacaoService.findAll(null, {
+            where: {
+              id: In(ids),
+            },
+          } as FindConditions<Voluntario>)
+        ).items;
       } catch (e) {
         throw new UnprocessableEntityException(
           Erros.FRENTE_ATUACAO_INEXISTENTE,
