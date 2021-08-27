@@ -22,12 +22,12 @@ export class ConsultaService extends DefaultService(
 
   async create(dto: CreateConsultaDto): Promise<Consulta> {
     const agenda = await this.agendaService.findOne(dto.agenda.id);
-    if (agenda.consulta) {
+    if (agenda?.consulta) {
       throw new UnprocessableEntityException({
         message: Erros.CONFLITO_DE_AGENDA,
       });
     }
 
-    return await super.create(dto);
+    return super.create(dto);
   }
 }

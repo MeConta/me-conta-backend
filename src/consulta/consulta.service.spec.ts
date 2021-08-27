@@ -40,8 +40,10 @@ describe('ConsultaService', () => {
 
   it('Não cadastrar caso algum dos dados não exista', async () => {
     jest.spyOn(repository, 'save').mockRejectedValue({
-      table: 'mock',
-      column: 'mock',
+      details: {
+        table: 'mock',
+        column: 'mock',
+      },
     });
 
     try {
