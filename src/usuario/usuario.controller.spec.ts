@@ -3,6 +3,7 @@ import { UsuarioController } from './usuario.controller';
 import { UsuarioService } from './usuario.service';
 import { FactoryMock } from '../testing/factory.mock';
 import { UsuarioStub } from '../testing/usuario.stub';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 
 describe('UsuarioController', () => {
   let controller: UsuarioController;
@@ -35,8 +36,23 @@ describe('UsuarioController', () => {
 
   it('Deve chamar o serviço de encontrar os usuários', () => {
     jest.spyOn(service, 'findAll');
-    controller.findAll(1, 10);
+    controller.findAll();
     expect(service.findAll).toBeCalled();
+  });
+
+  it('Deve chamar o serviço de encontrar os usuários com paginação', () => {
+    jest.spyOn(service, 'findAll');
+    controller.findAll();
+    expect(service.findAll).toBeCalled();
+  });
+
+  it('Deve chamar o serviço de encontrar os usuários com padrão ao tentar colocar limit = 0', () => {
+    jest.spyOn(service, 'findAll');
+    controller.findAll(1, 0);
+    expect(service.findAll).toBeCalledWith({
+      limit: 10,
+      page: 1,
+    } as IPaginationOptions);
   });
 
   it('Deve chamar o serviço de encontrar um usuário', () => {

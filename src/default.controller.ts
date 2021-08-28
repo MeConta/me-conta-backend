@@ -20,7 +20,7 @@ import { Pagination } from 'nestjs-typeorm-paginate';
 export interface IDefaultController<Entity, CreateDto, UpdateDto> {
   service: IDefaultService<Entity, CreateDto, UpdateDto>;
   create(dto: CreateDto): Promise<Entity>;
-  findAll(page: number, limit: number): Promise<Pagination<Entity>>;
+  findAll(page?: number, limit?: number): Promise<Pagination<Entity>>;
   findOne(id: number): Promise<Entity>;
   // TODO: Trocar de string para number
   update(id: string, dto: UpdateDto): Promise<Entity>;
@@ -82,11 +82,10 @@ export function DefaultController(
       )
       limit = 10,
     ): Promise<Pagination<typeof Entity>> {
-      // Caso o controller receba 0, mandar o valor padrão
-      limit = limit || +process.env.DEFAULT_PAGE_SIZE || 10;
       return this.service.findAll({
         page,
-        limit,
+        // Caso o controller receba 0, mandar o valor padrão
+        limit: limit || +process.env.DEFAULT_PAGE_SIZE || 10,
       });
     }
 
