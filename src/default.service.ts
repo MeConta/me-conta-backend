@@ -133,7 +133,7 @@ export function DefaultService(
       return this.repository.softRemove([await this.findOne(id)]);
     }
 
-    // TODO: rever essa paginação, pois não conseguimos mockar o paginate
+    // TODO: remover este método, chamando o paginate direto no findAll
     /***
      * Método de paginação
      * @param pagination {IPaginationOptions} opções de paginação
