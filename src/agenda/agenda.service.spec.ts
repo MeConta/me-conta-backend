@@ -7,6 +7,9 @@ import { Repository } from 'typeorm';
 import { ConsultaService } from '../consulta/consulta.service';
 import { AgendaStub } from '../testing/agenda.stub';
 import { ConsultaStub } from '../testing/consulta.stub';
+import * as PaginateSpy from 'nestjs-typeorm-paginate';
+
+jest.mock('nestjs-typeorm-paginate');
 
 describe('AgendaService', () => {
   let service: AgendaService;
@@ -33,9 +36,9 @@ describe('AgendaService', () => {
     repository = module.get(getRepositoryToken(Agenda));
   });
 
-  beforeEach(async () => {
+  beforeEach(() => {
     jest
-      .spyOn(service, 'paginate')
+      .spyOn(PaginateSpy, 'paginate')
       .mockResolvedValue(AgendaStub.getPaginatedEntities());
   });
 

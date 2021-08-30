@@ -23,10 +23,6 @@ export interface IDefaultService<Entity, CreateDto, UpdateDto> {
   findOne(id: number): Promise<Entity>;
   update(id: number, dto: UpdateDto): Promise<Entity>;
   remove(id: number): Promise<Entity>;
-  paginate(
-    pagination: IPaginationOptions,
-    conditions: FindConditions<Entity>,
-  ): Promise<Pagination<Entity>>;
 }
 
 /***
@@ -81,7 +77,11 @@ export function DefaultService(
       },
       conditions: FindConditions<typeof Entity> = null,
     ): Promise<Pagination<typeof Entity>> {
-      return this.paginate(pagination, conditions);
+      return paginate<typeof Entity>(
+        this.repository,
+        pagination,
+        conditions || null,
+      );
     }
 
     /***
@@ -131,23 +131,6 @@ export function DefaultService(
      */
     async remove(id: number): Promise<typeof Entity> {
       return this.repository.softRemove([await this.findOne(id)]);
-    }
-
-    // TODO: remover este método, chamando o paginate direto no findAll
-    /***
-     * Método de paginação
-     * @param pagination {IPaginationOptions} opções de paginação
-     * @param conditions {FindConditions<?>} opções de busca
-     */
-    paginate(
-      pagination: IPaginationOptions,
-      conditions: FindConditions<typeof Entity>,
-    ): Promise<Pagination<typeof Entity>> {
-      return paginate<typeof Entity>(
-        this.repository,
-        pagination,
-        conditions || null,
-      );
     }
   }
   return DefaultServiceHost;

@@ -9,14 +9,14 @@ import { Pagination } from 'nestjs-typeorm-paginate';
 export class AgendaStub {
   static getCreateDto(): CreateAgendaDto {
     return {
-      data: new Date(),
+      data: new Date('06-04-2021'),
       atendente: { id: 1 } as Atendente,
     };
   }
 
   static getUpdateDto(): UpdateAgendaDto {
     return {
-      data: new Date(),
+      data: new Date('06-04-2021'),
       consulta: { id: 1 } as Consulta,
     };
   }
@@ -24,12 +24,12 @@ export class AgendaStub {
   static getEntity(): Agenda {
     return {
       id: 1,
-      data: new Date(),
+      data: new Date('06-04-2021'),
       atendente: AtendenteStub.getEntity(),
       consulta: null,
-      dataExclusao: new Date(),
-      dataCriacao: new Date(),
-      dataAlteracao: new Date(),
+      dataExclusao: null,
+      dataCriacao: new Date('06-04-2021'),
+      dataAlteracao: new Date('06-04-2021'),
     };
   }
 
@@ -38,12 +38,15 @@ export class AgendaStub {
   }
 
   static getPaginatedEntities(n = 1): Pagination<Agenda> {
-    return new Pagination(this.getEntities(n), {
-      currentPage: 1,
-      itemCount: n,
-      itemsPerPage: 10,
-      totalItems: n,
-      totalPages: 1,
-    });
+    return {
+      items: this.getEntities(n),
+      meta: {
+        currentPage: 1,
+        itemCount: n,
+        itemsPerPage: 10,
+        totalItems: n,
+        totalPages: 1,
+      },
+    };
   }
 }

@@ -8,7 +8,7 @@ export class UsuarioStub {
   static getCreateDto(): CreateUsuarioDto {
     return {
       cidade: 'São Paulo',
-      dataNascimento: new Date(),
+      dataNascimento: new Date('06-05-1997'),
       email: 'teste@teste.com',
       genero: Genero.FEMININO,
       nome: 'João da Silva',
@@ -29,15 +29,15 @@ export class UsuarioStub {
     return {
       id: 1,
       cidade: 'São Paulo',
-      dataNascimento: new Date(),
+      dataNascimento: new Date('06-05-1997'),
       email: 'teste@teste.com',
       genero: Genero.FEMININO,
       nome: 'João da Silva',
       senha: 'teste',
       UF: Estado.AC,
       telefone: '5511947866489',
-      dataCriacao: new Date(),
-      dataAlteracao: new Date(),
+      dataCriacao: new Date('08-29-2021'),
+      dataAlteracao: new Date('08-30-2021'),
       tipoUsuario: Tipo.ADMINISTRADOR,
     };
   }
@@ -47,12 +47,15 @@ export class UsuarioStub {
   }
 
   static getPaginatedEntities(n = 1): Pagination<Usuario> {
-    return new Pagination(this.getEntities(n), {
-      currentPage: 1,
-      itemCount: n,
-      itemsPerPage: 10,
-      totalItems: n,
-      totalPages: 1,
-    });
+    return {
+      items: this.getEntities(n),
+      meta: {
+        currentPage: 1,
+        itemCount: n,
+        itemsPerPage: 10,
+        totalItems: n,
+        totalPages: 1,
+      },
+    };
   }
 }

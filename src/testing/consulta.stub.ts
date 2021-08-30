@@ -47,12 +47,15 @@ export class ConsultaStub {
   }
 
   static getPaginatedEntities(n = 1): Pagination<Consulta> {
-    return new Pagination(this.getEntities(n), {
-      currentPage: 1,
-      itemCount: n,
-      itemsPerPage: 10,
-      totalItems: n,
-      totalPages: 1,
-    });
+    return {
+      items: this.getEntities(n),
+      meta: {
+        currentPage: 1,
+        itemCount: n,
+        itemsPerPage: 10,
+        totalItems: n,
+        totalPages: 1,
+      },
+    };
   }
 }

@@ -43,11 +43,11 @@ describe('UsuarioService', () => {
   });
 
   it('deve retornar uma lista de usuários', async () => {
-    jest.spyOn(repository, 'find').mockReturnValue(UsuarioStub.getEntities());
-
+    const entities = UsuarioStub.getEntities();
     const response = await service.findAll();
 
-    expect(response).toBeInstanceOf(PaginateSpy.Pagination);
+    expect(PaginateSpy.paginate).toBeCalled();
+    expect(response.items).toStrictEqual(UsuarioStub.getEntities());
   });
 
   it('deve retornar uma lista de usuários ao utilizar um critério', async () => {
@@ -63,7 +63,8 @@ describe('UsuarioService', () => {
       } as FindConditions<Usuario>,
     );
 
-    expect(response).toBeInstanceOf(PaginateSpy.Pagination);
+    expect(response.items).toBeDefined();
+    expect(response.items).toStrictEqual(UsuarioStub.getEntities());
   });
 
   it('deve encontrar um usuário', async () => {
