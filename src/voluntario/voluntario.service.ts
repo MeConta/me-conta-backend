@@ -41,11 +41,17 @@ export function VoluntarioService(
       });
       try {
         return (
-          await this.frenteAtuacaoService.findAll(null, {
-            where: {
-              id: In(ids),
+          await this.frenteAtuacaoService.findAll(
+            {
+              page: 1,
+              limit: 0,
             },
-          } as FindConditions<Voluntario>)
+            {
+              where: {
+                id: In(ids),
+              },
+            } as FindConditions<Voluntario>,
+          )
         ).items;
       } catch (e) {
         throw new UnprocessableEntityException(

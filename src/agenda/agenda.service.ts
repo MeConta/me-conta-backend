@@ -21,8 +21,8 @@ export class AgendaService extends DefaultService(
   ): Promise<Pagination<Consulta>> {
     return this.consultaService.findAll(
       {
-        limit: 0,
         page: 1,
+        limit: 0,
       },
       {
         agenda: In(agendas.map((a) => a.id)),

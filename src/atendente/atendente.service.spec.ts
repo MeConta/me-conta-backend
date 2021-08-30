@@ -5,7 +5,7 @@ import { Atendente } from './entities/atendente.entity';
 import { FactoryMock, MockType } from '../testing/factory.mock';
 import { UsuarioService } from '../usuario/usuario.service';
 import { FrenteAtuacaoService } from '../frente-atuacao/frente-atuacao.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { AtendenteStub } from '../testing/atendente.stub';
 import {
   BadRequestException,
@@ -72,6 +72,17 @@ describe('AtendenteService', () => {
     const response = await service.create(AtendenteStub.getCreateDto());
 
     expect(response).toBeDefined();
+    expect(frenteAtuacaoService.findAll).toBeCalledWith(
+      {
+        page: 1,
+        limit: 0,
+      },
+      {
+        where: {
+          id: In([1]),
+        },
+      },
+    );
     expect(repository.save).toBeCalled();
     expect(response.id).toEqual(AtendenteStub.getEntity().id);
     expect(usuarioService.create).toBeCalled();
