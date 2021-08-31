@@ -1,7 +1,16 @@
 import { Estado, Genero, Tipo } from '../entities/usuario.enum';
-import { IsDate, IsEmail, IsEnum, IsNotEmpty } from 'class-validator';
+import {
+  IsDate,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsPhoneNumber,
+  Matches,
+  MinLength,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
+import { Erros, Regex } from 'src/config/constants';
 
 export class CreateUsuarioDto {
   @ApiProperty({
@@ -10,13 +19,19 @@ export class CreateUsuarioDto {
   @IsNotEmpty()
   nome: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    minLength: 8,
+    description: Erros.VALIDACAO_SENHA,
+    pattern: Regex.SENHA,
+  })
   @IsNotEmpty()
+  @Matches(new RegExp(Regex.SENHA), {
+    message: () => `$property ${Erros.VALIDACAO_SENHA}`,
+  })
   senha: string;
 
   @ApiProperty({
-    format: process.env.CONSULTA_DATA_FORMAT || 'DD/MM/YYYY hh:mm',
-    type: Date,
+    format: process.env.CONSULTA_DATA_FORMAT || 'YYYY-MM-DD',
   })
   @IsDate()
   @Type(() => Date)
@@ -36,15 +51,28 @@ export class CreateUsuarioDto {
   @IsEnum(Estado)
   UF: Estado;
 
-  @ApiProperty()
+  @ApiProperty({
+    example: 'Acrelândia',
+  })
   @IsNotEmpty()
   cidade: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: Erros.VALIDACAO_SENHA,
+    pattern: Regex.TELEFONE,
+    example: '(81) 91234-5678',
+  })
   @IsNotEmpty()
+  // Não use @IsPhoneNumber('BR') pois o formato permite números estrangeiros.
+  @Matches(new RegExp(Regex.TELEFONE), {
+    message: () => `$property ${Erros.VALIDACAO_TELEFONE}`,
+  })
   telefone: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'email válido',
+    example: 'teste@teste.com',
+  })
   @IsEmail()
   email: string;
 

@@ -8,4 +8,6 @@ export enum Erros {
   ERRO_AO_ENVIAR_EMAIL = 'Erro ao enviar e-mail',
   SUPERVISOR_NAO_ENCONTRADO = 'Supervisor não encontrado',
   CONFLITO_DE_AGENDA = 'Conflito de agenda',
+  VALIDACAO_SENHA = 'deve ter pelo menos 8 caracteres: uma letra minúscula, uma maiúscula, um número, e um caractere especial',
+  VALIDACAO_TELEFONE = 'deve seguir um dos seguintes formatos: (XX) XXXXX-XXXX, (XX) XXXX-XXXX',
 }

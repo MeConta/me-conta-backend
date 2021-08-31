@@ -9,14 +9,14 @@ export class CreateAgendaDto {
   @Transform(({ value }) =>
     moment(
       value,
-      process.env.CONSULTA_DATA_FORMAT || 'DD/MM/YYYY hh:mm',
+      process.env.DATETIME_FORMAT || 'YYYY-MM-DDThh:mm',
       true,
     ).toDate(),
   )
   @IsDate({
     message: () =>
       `$property must be a Date instance (format: ${
-        process.env.CONSULTA_DATA_FORMAT || 'DD/MM/YYYY hh:mm'
+        process.env.DATETIME_FORMAT || 'YYYY-MM-DDThh:mm'
       })`,
   })
   @MinDate(
