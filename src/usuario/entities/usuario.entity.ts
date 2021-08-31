@@ -17,7 +17,9 @@ export class Usuario extends DefaultEntity {
   @Column()
   nome: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    example: 'teste@teste.com',
+  })
   @Column({
     unique: true,
   })
@@ -27,7 +29,9 @@ export class Usuario extends DefaultEntity {
   @Exclude()
   senha: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'ISO8601 datetime',
+  })
   @Column()
   dataNascimento: Date;
 
@@ -50,11 +54,15 @@ export class Usuario extends DefaultEntity {
   })
   UF: Estado;
 
-  @ApiProperty()
+  @ApiProperty({
+    example: 'Serra Talhada',
+  })
   @Column()
   cidade: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    example: '(82) 91234-5678',
+  })
   @Column()
   telefone: string;
 
