@@ -1,4 +1,4 @@
-import { IntersectionType, PartialType } from '@nestjs/mapped-types';
+import { IntersectionType, PartialType } from '@nestjs/swagger';
 import { CreateAtendenteDto } from './create-atendente.dto';
 import { Transform } from 'class-transformer';
 import { Supervisor } from '../../supervisor/entities/supervisor.entity';
