@@ -1,7 +1,7 @@
 import {MigrationInterface, QueryRunner} from "typeorm";
 
-export class migracaoInicial1630007042584 implements MigrationInterface {
-    name = 'migracaoInicial1630007042584'
+export class modeloInicial1630424419015 implements MigrationInterface {
+    name = 'modeloInicial1630424419015'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE "frente-atuacao" ("id" SERIAL NOT NULL, "dataCriacao" TIMESTAMP NOT NULL DEFAULT now(), "dataAlteracao" TIMESTAMP NOT NULL DEFAULT now(), "dataExclusao" TIMESTAMP, "nome" character varying NOT NULL, "descricao" character varying NOT NULL, CONSTRAINT "PK_71c1423cb508ce9beb38a96e9b2" PRIMARY KEY ("id"))`);
@@ -11,7 +11,7 @@ export class migracaoInicial1630007042584 implements MigrationInterface {
         await queryRunner.query(`CREATE TABLE "aluno" ("id" SERIAL NOT NULL, "dataCriacao" TIMESTAMP NOT NULL DEFAULT now(), "dataAlteracao" TIMESTAMP NOT NULL DEFAULT now(), "dataExclusao" TIMESTAMP, "tipoEscola" character varying NOT NULL DEFAULT 'PUBLICA', "grauEnsinoMedio" integer NOT NULL, "usuarioId" integer NOT NULL, CONSTRAINT "REL_8fbcdd66cfdb4304b8764d97e8" UNIQUE ("usuarioId"), CONSTRAINT "PK_9611d4cf7a77574063439cf46b2" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "consulta" ("id" SERIAL NOT NULL, "dataCriacao" TIMESTAMP NOT NULL DEFAULT now(), "dataAlteracao" TIMESTAMP NOT NULL DEFAULT now(), "dataExclusao" TIMESTAMP, "alunoId" integer NOT NULL, "agendaId" integer NOT NULL, CONSTRAINT "PK_248230d7f1e2536f83b4d07c955" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "agenda" ("id" SERIAL NOT NULL, "dataCriacao" TIMESTAMP NOT NULL DEFAULT now(), "dataAlteracao" TIMESTAMP NOT NULL DEFAULT now(), "dataExclusao" TIMESTAMP, "data" TIMESTAMP NOT NULL, "atendenteId" integer, CONSTRAINT "PK_49397cfc20589bebaac8b43251d" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "avaliacao" ("id" SERIAL NOT NULL, "dataCriacao" TIMESTAMP NOT NULL DEFAULT now(), "dataAlteracao" TIMESTAMP NOT NULL DEFAULT now(), "dataExclusao" TIMESTAMP, "nota" integer NOT NULL, "comentario" character varying NOT NULL, "mostrar" boolean NOT NULL DEFAULT true, "anonimo" boolean NOT NULL DEFAULT false, "aprovado" boolean, "alunoId" integer, "consultaId" integer, CONSTRAINT "REL_535bd2104071fc1fc23a464cc2" UNIQUE ("consultaId"), CONSTRAINT "PK_fd3e156019eb4b68c6c9f746d51" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "avaliacao" ("id" SERIAL NOT NULL, "dataCriacao" TIMESTAMP NOT NULL DEFAULT now(), "dataAlteracao" TIMESTAMP NOT NULL DEFAULT now(), "dataExclusao" TIMESTAMP, "nota" integer NOT NULL, "comentario" character varying NOT NULL, "mostrar" boolean NOT NULL DEFAULT true, "anonimo" boolean NOT NULL DEFAULT false, "aprovado" boolean, "data" TIMESTAMP NOT NULL DEFAULT '"2021-08-31T15:40:22.378Z"', "consultaId" integer, CONSTRAINT "REL_535bd2104071fc1fc23a464cc2" UNIQUE ("consultaId"), CONSTRAINT "PK_fd3e156019eb4b68c6c9f746d51" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "supervisor_frentes_atuacao_frente-atuacao" ("supervisorId" integer NOT NULL, "frenteAtuacaoId" integer NOT NULL, CONSTRAINT "PK_8ea29b2870cbccef4ac77f1b678" PRIMARY KEY ("supervisorId", "frenteAtuacaoId"))`);
         await queryRunner.query(`CREATE INDEX "IDX_8e9d7232771ab12e0ac0430fea" ON "supervisor_frentes_atuacao_frente-atuacao" ("supervisorId") `);
         await queryRunner.query(`CREATE INDEX "IDX_84518ac7579128b68f2d53ba1a" ON "supervisor_frentes_atuacao_frente-atuacao" ("frenteAtuacaoId") `);
@@ -25,7 +25,6 @@ export class migracaoInicial1630007042584 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "consulta" ADD CONSTRAINT "FK_4031e5f37ca2454252328df45a3" FOREIGN KEY ("alunoId") REFERENCES "aluno"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "consulta" ADD CONSTRAINT "FK_9ba0fd5a307d333a3330e45a0d2" FOREIGN KEY ("agendaId") REFERENCES "agenda"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "agenda" ADD CONSTRAINT "FK_5f1654821006a11534e34a02f72" FOREIGN KEY ("atendenteId") REFERENCES "atendente"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "avaliacao" ADD CONSTRAINT "FK_8f9f744a4c7be36f38df59fea02" FOREIGN KEY ("alunoId") REFERENCES "aluno"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "avaliacao" ADD CONSTRAINT "FK_535bd2104071fc1fc23a464cc21" FOREIGN KEY ("consultaId") REFERENCES "consulta"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "supervisor_frentes_atuacao_frente-atuacao" ADD CONSTRAINT "FK_8e9d7232771ab12e0ac0430feac" FOREIGN KEY ("supervisorId") REFERENCES "supervisor"("id") ON DELETE CASCADE ON UPDATE CASCADE`);
         await queryRunner.query(`ALTER TABLE "supervisor_frentes_atuacao_frente-atuacao" ADD CONSTRAINT "FK_84518ac7579128b68f2d53ba1a7" FOREIGN KEY ("frenteAtuacaoId") REFERENCES "frente-atuacao"("id") ON DELETE CASCADE ON UPDATE CASCADE`);
@@ -39,7 +38,6 @@ export class migracaoInicial1630007042584 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "supervisor_frentes_atuacao_frente-atuacao" DROP CONSTRAINT "FK_84518ac7579128b68f2d53ba1a7"`);
         await queryRunner.query(`ALTER TABLE "supervisor_frentes_atuacao_frente-atuacao" DROP CONSTRAINT "FK_8e9d7232771ab12e0ac0430feac"`);
         await queryRunner.query(`ALTER TABLE "avaliacao" DROP CONSTRAINT "FK_535bd2104071fc1fc23a464cc21"`);
-        await queryRunner.query(`ALTER TABLE "avaliacao" DROP CONSTRAINT "FK_8f9f744a4c7be36f38df59fea02"`);
         await queryRunner.query(`ALTER TABLE "agenda" DROP CONSTRAINT "FK_5f1654821006a11534e34a02f72"`);
         await queryRunner.query(`ALTER TABLE "consulta" DROP CONSTRAINT "FK_9ba0fd5a307d333a3330e45a0d2"`);
         await queryRunner.query(`ALTER TABLE "consulta" DROP CONSTRAINT "FK_4031e5f37ca2454252328df45a3"`);
