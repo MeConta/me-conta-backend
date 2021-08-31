@@ -1,14 +1,9 @@
-import { Aluno } from '../../aluno/entities/aluno.entity';
 import { Transform } from 'class-transformer';
 import { Consulta } from '../../consulta/entities/consulta.entity';
 import { isInt, IsNotEmpty, Max, Min } from 'class-validator';
 import { IsValidProperty } from '../../pipes';
 
 export class CreateAvaliacaoDto {
-  @Transform(({ value }) => ({ id: value } as Aluno))
-  @IsValidProperty(({ id }) => isInt(id))
-  aluno: Aluno;
-
   @Transform(({ value }) => ({ id: value } as Consulta))
   @IsValidProperty(({ id }) => isInt(id))
   consulta: Consulta;

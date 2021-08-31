@@ -17,7 +17,7 @@ export class AvaliacaoController extends DefaultController(
     return super.create(dto);
   }
 
-  @Patch()
+  @Patch(':id')
   update(id: string, @Body() dto: UpdateAvaliacaoDto): Promise<Avaliacao> {
     return super.update(id, dto);
   }
