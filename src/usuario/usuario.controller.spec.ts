@@ -63,13 +63,13 @@ describe('UsuarioController', () => {
 
   it('Deve chamar o serviço de alterar um usuário', () => {
     jest.spyOn(service, 'update');
-    controller.update('1', UsuarioStub.getUpdateDto());
+    controller.update(1, UsuarioStub.getUpdateDto());
     expect(service.update).toBeCalled();
   });
 
   it('Deve chamar o serviço de remover um usuário', () => {
     jest.spyOn(service, 'remove');
-    controller.remove('1');
+    controller.remove(1);
     expect(service.remove).toBeCalled();
   });
 });

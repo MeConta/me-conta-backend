@@ -4,7 +4,6 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
-import { IContact } from './templates/contact.interface';
 import { Erros, Emails, getEmailInfo } from '../config/constants';
 
 @Injectable()

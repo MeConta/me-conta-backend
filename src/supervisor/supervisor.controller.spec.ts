@@ -43,7 +43,7 @@ describe('SupervisorController', () => {
   });
 
   it('deve chamar o update', async () => {
-    await controller.update('1', SupervisorStub.getUpdateDto());
+    await controller.update(1, SupervisorStub.getUpdateDto());
     expect(service.update).toBeCalled();
   });
 });

@@ -35,7 +35,7 @@ describe('AgendaController', () => {
 
   it('Deve chamar o serviço de atualização de agenda', () => {
     jest.spyOn(service, 'create');
-    controller.update('1', AgendaStub.getUpdateDto());
+    controller.update(1, AgendaStub.getUpdateDto());
     expect(service.update).toBeCalled();
   });
 });

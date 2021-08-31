@@ -33,7 +33,7 @@ describe('ConsultaController', () => {
   });
 
   it('deve chamar o update', async () => {
-    await controller.update('1', ConsultaStub.getUpdateDto());
+    await controller.update(1, ConsultaStub.getUpdateDto());
     expect(service.update).toBeCalled();
   });
 });

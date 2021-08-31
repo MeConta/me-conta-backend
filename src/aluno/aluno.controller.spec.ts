@@ -33,7 +33,7 @@ describe('AlunoController', () => {
   });
 
   it('deve chamar o update', async () => {
-    await controller.update('1', AlunoStub.getUpdateDto());
+    await controller.update(1, AlunoStub.getUpdateDto());
     expect(service.update).toBeCalled();
   });
 });

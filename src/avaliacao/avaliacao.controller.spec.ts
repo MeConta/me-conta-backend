@@ -33,7 +33,7 @@ describe('AvaliacaoController', () => {
   });
 
   it('deve chamar o update', async () => {
-    await controller.update('1', AvaliacaoStub.getUpdateDto());
+    await controller.update(1, AvaliacaoStub.getUpdateDto());
     expect(service.update).toBeCalled();
   });
 });

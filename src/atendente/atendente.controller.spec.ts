@@ -33,7 +33,7 @@ describe('AtendenteController', () => {
   });
 
   it('deve chamar o update', async () => {
-    await controller.update('1', AtendenteStub.getUpdateDto());
+    await controller.update(1, AtendenteStub.getUpdateDto());
     expect(service.update).toBeCalled();
   });
 });

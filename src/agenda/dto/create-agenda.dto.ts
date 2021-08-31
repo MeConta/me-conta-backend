@@ -3,6 +3,7 @@ import { Transform } from 'class-transformer';
 import { Atendente } from '../../atendente/entities/atendente.entity';
 import { IsValidProperty } from '../../pipes';
 import * as moment from 'moment';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateAgendaDto {
   @Transform(({ value }) =>
@@ -30,8 +31,11 @@ export class CreateAgendaDto {
       .endOf('month')
       .toDate(),
   )
+  @ApiProperty()
+  @IsDate()
   data: Date;
 
+  @ApiProperty()
   @Transform(({ value }) => ({ id: value } as Atendente))
   @IsValidProperty(({ id }) => isInt(id))
   atendente: Atendente;

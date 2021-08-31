@@ -2,6 +2,7 @@ import { Entity, Column } from 'typeorm';
 import { DefaultEntity } from '../../default.entity';
 import { Estado, Genero, Tipo } from './usuario.enum';
 import { Exclude } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('usuario')
 export class Usuario extends DefaultEntity {
@@ -10,9 +11,13 @@ export class Usuario extends DefaultEntity {
     Object.assign(this, partial);
   }
 
+  @ApiProperty({
+    example: 'Maria',
+  })
   @Column()
   nome: string;
 
+  @ApiProperty()
   @Column({
     unique: true,
   })
@@ -22,9 +27,13 @@ export class Usuario extends DefaultEntity {
   @Exclude()
   senha: string;
 
+  @ApiProperty()
   @Column()
   dataNascimento: Date;
 
+  @ApiProperty({
+    enum: Genero,
+  })
   @Column({
     type: 'varchar',
     enum: Genero,
@@ -32,18 +41,26 @@ export class Usuario extends DefaultEntity {
   })
   genero: Genero;
 
+  @ApiProperty({
+    enum: Estado,
+  })
   @Column({
     type: 'varchar',
     enum: Estado,
   })
   UF: Estado;
 
+  @ApiProperty()
   @Column()
   cidade: string;
 
+  @ApiProperty()
   @Column()
   telefone: string;
 
+  @ApiProperty({
+    enum: Tipo,
+  })
   @Column({
     type: 'varchar',
     enum: Tipo,

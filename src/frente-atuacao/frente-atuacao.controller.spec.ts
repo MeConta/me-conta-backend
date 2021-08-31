@@ -33,7 +33,7 @@ describe('FrenteAtuacaoController', () => {
   });
 
   it('deve chamar o update', async () => {
-    await controller.update('1', FrenteAtuacaoStub.getUpdateDto());
+    await controller.update(1, FrenteAtuacaoStub.getUpdateDto());
     expect(service.update).toBeCalled();
   });
 });

@@ -4,7 +4,9 @@ import { CreateAvaliacaoDto } from './dto/create-avaliacao.dto';
 import { UpdateAvaliacaoDto } from './dto/update-avaliacao.dto';
 import { DefaultController } from '../default.controller';
 import { Avaliacao } from './entities/avaliacao.entity';
+import { ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Avaliação')
 export class AvaliacaoController extends DefaultController(
   'avaliacao',
   Avaliacao,
@@ -13,12 +15,21 @@ export class AvaliacaoController extends DefaultController(
   UpdateAvaliacaoDto,
 ) {
   @Post()
+  @ApiOkResponse({
+    description: `Item Criado com sucesso`,
+  })
   create(@Body() dto: CreateAvaliacaoDto): Promise<Avaliacao> {
     return super.create(dto);
   }
 
   @Patch(':id')
-  update(id: string, @Body() dto: UpdateAvaliacaoDto): Promise<Avaliacao> {
+  @ApiOkResponse({
+    description: `Item Atualizado com sucesso`,
+  })
+  @ApiNotFoundResponse({
+    description: `Item não encontrado`,
+  })
+  update(id: number, @Body() dto: UpdateAvaliacaoDto): Promise<Avaliacao> {
     return super.update(id, dto);
   }
 }

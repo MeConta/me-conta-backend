@@ -8,7 +8,9 @@ import {
 } from '@nestjs/common';
 import { ContatoService } from './contato.service';
 import { CreateContatoDto } from './dto/create-contato.dto';
+import { ApiNoContentResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Contato')
 @Controller('contato')
 export class ContatoController {
   constructor(
@@ -17,6 +19,9 @@ export class ContatoController {
   ) {}
 
   @Post()
+  @ApiNoContentResponse({
+    description: `Mensagem enviada com sucesso`,
+  })
   @HttpCode(HttpStatus.NO_CONTENT)
   create(@Body() createContatoDto: CreateContatoDto) {
     return this.contatoService.send(createContatoDto);

@@ -16,15 +16,21 @@ import {
 } from '@nestjs/common';
 import { IDefaultService } from './default.service';
 import { Pagination } from 'nestjs-typeorm-paginate';
+import {
+  ApiCreatedResponse,
+  ApiNoContentResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 export interface IDefaultController<Entity, CreateDto, UpdateDto> {
   service: IDefaultService<Entity, CreateDto, UpdateDto>;
   create(dto: CreateDto): Promise<Entity>;
   findAll(page?: number, limit?: number): Promise<Pagination<Entity>>;
   findOne(id: number): Promise<Entity>;
-  // TODO: Trocar de string para number
-  update(id: string, dto: UpdateDto): Promise<Entity>;
-  remove(id: string);
+  update(id: number, dto: UpdateDto): Promise<Entity>;
+  remove(id: number);
 }
 
 /***
@@ -50,6 +56,7 @@ export function DefaultController(
   CreateDto,
   UpdateDto,
 ): Type<IDefaultController<typeof Entity, typeof CreateDto, typeof UpdateDto>> {
+  @ApiTags(path)
   @Controller(path)
   class DefaultControllerHost {
     @Inject(service) service: IDefaultService<
@@ -64,6 +71,9 @@ export function DefaultController(
      * @returns {Promise<?>} Entidade TypeORM criada
      */
     @Post()
+    @ApiCreatedResponse({
+      description: `Item criado com sucesso`,
+    })
     create(@Body() dto: typeof CreateDto): Promise<typeof Entity> {
       return this.service.create(dto);
     }
@@ -73,6 +83,9 @@ export function DefaultController(
      * @returns {Promise<?[]>} Entidades TypeORM
      */
     @Get()
+    @ApiOkResponse({
+      description: `Lista paginada com sucesso`,
+    })
     findAll(
       @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
       @Query(
@@ -95,6 +108,13 @@ export function DefaultController(
      * @returns {Promise<?>} Entidade TypeORM
      */
     @Get(':id')
+    @ApiOkResponse({
+      description: `Item buscado com sucesso`,
+      type: Entity,
+    })
+    @ApiNotFoundResponse({
+      description: `Item não encontrado`,
+    })
     findOne(@Param('id', ParseIntPipe) id: number): Promise<typeof Entity> {
       return this.service.findOne(+id);
     }
@@ -106,8 +126,14 @@ export function DefaultController(
      * @returns {Promise<?>} Entidade TypeORM
      */
     @Patch(':id')
+    @ApiOkResponse({
+      description: `Item Atualizado com sucesso`,
+    })
+    @ApiNotFoundResponse({
+      description: `Item não encontrado`,
+    })
     update(
-      @Param('id') id: string,
+      @Param('id') id: number,
       @Body() dto: typeof UpdateDto,
     ): Promise<typeof Entity> {
       return this.service.update(+id, dto);
@@ -120,7 +146,13 @@ export function DefaultController(
      */
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
-    remove(@Param('id') id: string): Promise<typeof Entity> {
+    @ApiNoContentResponse({
+      description: `Item deletado com sucesso`,
+    })
+    @ApiNotFoundResponse({
+      description: `Item não encontrado`,
+    })
+    remove(@Param('id') id: number): Promise<typeof Entity> {
       return this.service.remove(+id);
     }
   }
