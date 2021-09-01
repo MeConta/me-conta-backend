@@ -30,7 +30,7 @@ export class Avaliacao extends DefaultEntity {
   aprovado: boolean;
 
   @Column({
-    default: new Date(),
+    default: () => 'NOW()',
   })
   data: Date;
 }
