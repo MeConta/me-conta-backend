@@ -1,4 +1,4 @@
-import { IntersectionType, PartialType } from '@nestjs/swagger';
+import { ApiProperty, IntersectionType, PartialType } from '@nestjs/swagger';
 import { CreateAtendenteDto } from './create-atendente.dto';
 import { Transform } from 'class-transformer';
 import { Supervisor } from '../../supervisor/entities/supervisor.entity';
@@ -8,6 +8,9 @@ export class UpdateAtendenteDto extends IntersectionType(
   PartialType(CreateAtendenteDto),
   PartialType(UpdateVoluntarioDto),
 ) {
+  @ApiProperty({
+    type: () => Number,
+  })
   @Transform(({ value }) => ({ id: value } as Supervisor))
   supervisor: Supervisor;
 }

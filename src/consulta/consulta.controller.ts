@@ -4,7 +4,12 @@ import { CreateConsultaDto } from './dto/create-consulta.dto';
 import { UpdateConsultaDto } from './dto/update-consulta.dto';
 import { DefaultController } from '../default.controller';
 import { Consulta } from './entities/consulta.entity';
-import { ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiNotFoundResponse,
+  ApiTags,
+  ApiUnprocessableEntityResponse,
+} from '@nestjs/swagger';
 
 @ApiTags('Consulta')
 export class ConsultaController extends DefaultController(
@@ -15,19 +20,25 @@ export class ConsultaController extends DefaultController(
   UpdateConsultaDto,
 ) {
   @Post()
-  @ApiOkResponse({
-    description: `Item Criado com sucesso`,
+  @ApiBadRequestResponse({
+    description: `Requisição inválida`,
+  })
+  @ApiUnprocessableEntityResponse({
+    description: `Violação de regra de negócio`,
   })
   create(@Body() dto: CreateConsultaDto): Promise<Consulta> {
     return super.create(dto);
   }
 
   @Patch(':id')
-  @ApiOkResponse({
-    description: `Item Atualizado com sucesso`,
-  })
   @ApiNotFoundResponse({
     description: `Item não encontrado`,
+  })
+  @ApiBadRequestResponse({
+    description: `Requisição inválida`,
+  })
+  @ApiUnprocessableEntityResponse({
+    description: `Violação de regra de negócio`,
   })
   update(
     @Param('id') id: number,

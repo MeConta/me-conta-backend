@@ -7,17 +7,23 @@ import { IsValidProperty } from '../../pipes';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateConsultaDto {
-  @ApiProperty()
+  @ApiProperty({
+    type: () => Number,
+  })
   @IsValidProperty(({ id }) => isInt(id))
   @Transform(({ value }) => ({ id: value } as Atendente))
   atendente: Atendente;
 
-  @ApiProperty()
+  @ApiProperty({
+    type: () => Number,
+  })
   @Transform(({ value }) => ({ id: value } as Aluno))
   @IsValidProperty(({ id }) => isInt(id))
   aluno: Aluno;
 
-  @ApiProperty()
+  @ApiProperty({
+    type: () => Number,
+  })
   @Transform(({ value }) => ({ id: value } as Agenda))
   @IsValidProperty(({ id }) => isInt(id))
   agenda: Agenda;

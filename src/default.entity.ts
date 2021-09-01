@@ -5,7 +5,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 
 export abstract class DefaultEntity {
   @ApiProperty({
@@ -14,14 +14,17 @@ export abstract class DefaultEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiHideProperty()
   @CreateDateColumn()
   @Exclude()
   dataCriacao!: Date;
 
+  @ApiHideProperty()
   @UpdateDateColumn()
   @Exclude()
   dataAlteracao!: Date;
 
+  @ApiHideProperty()
   @DeleteDateColumn()
   @Exclude()
   dataExclusao?: Date;

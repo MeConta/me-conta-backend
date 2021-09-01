@@ -5,10 +5,10 @@ import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { DefaultController } from '../default.controller';
 import { Usuario } from './entities/usuario.entity';
 import {
-  ApiCreatedResponse,
+  ApiBadRequestResponse,
   ApiNotFoundResponse,
-  ApiOkResponse,
   ApiTags,
+  ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 
 @ApiTags('Usuário')
@@ -20,23 +20,25 @@ export class UsuarioController extends DefaultController(
   UpdateUsuarioDto,
 ) {
   @Post()
-  @ApiCreatedResponse({
-    description: `Usuário criado com sucesso`,
-    type: Usuario,
+  @ApiBadRequestResponse({
+    description: `Requisição inválida`,
+  })
+  @ApiUnprocessableEntityResponse({
+    description: `Violação de regra de negócio`,
   })
   create(@Body() dto: CreateUsuarioDto): Promise<Usuario> {
     return super.create(dto);
   }
 
   @Patch(':id')
-  @ApiOkResponse({
-    description: `Item Atualizado com sucesso`,
-  })
   @ApiNotFoundResponse({
     description: `Item não encontrado`,
   })
-  @ApiNotFoundResponse({
-    description: `Item não encontrado`,
+  @ApiBadRequestResponse({
+    description: `Requisição inválida`,
+  })
+  @ApiUnprocessableEntityResponse({
+    description: `Violação de regra de negócio`,
   })
   update(
     @Param('id') id: number,

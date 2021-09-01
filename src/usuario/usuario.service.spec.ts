@@ -47,7 +47,7 @@ describe('UsuarioService', () => {
     const response = await service.findAll();
 
     expect(PaginateSpy.paginate).toBeCalled();
-    expect(response.items).toStrictEqual(UsuarioStub.getEntities());
+    expect(response.items).toStrictEqual(entities);
   });
 
   it('deve retornar uma lista de usuários ao utilizar um critério', async () => {

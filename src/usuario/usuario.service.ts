@@ -11,13 +11,26 @@ export class UsuarioService extends DefaultService(
   CreateUsuarioDto,
   UpdateUsuarioDto,
 ) {
+  private static checkErrorType(e: Error) {
+    if (e instanceof UnprocessableEntityException) {
+      throw new UnprocessableEntityException(Erros.EMAIL_DUPLICADO);
+    }
+  }
+
+  async create(dto: CreateUsuarioDto): Promise<Usuario> {
+    try {
+      return await super.create(dto);
+    } catch (e) {
+      UsuarioService.checkErrorType(e);
+      throw e;
+    }
+  }
+
   async update(id: number, dto: UpdateUsuarioDto): Promise<Usuario> {
     try {
       return await super.update(id, dto);
     } catch (e) {
-      if (e instanceof UnprocessableEntityException) {
-        throw new UnprocessableEntityException(Erros.EMAIL_DUPLICADO);
-      }
+      UsuarioService.checkErrorType(e);
       throw e;
     }
   }

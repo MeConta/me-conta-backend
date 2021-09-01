@@ -6,10 +6,9 @@ import { DefaultController } from '../default.controller';
 import { Agenda } from './entities/agenda.entity';
 import {
   ApiBadRequestResponse,
-  ApiCreatedResponse,
   ApiNotFoundResponse,
-  ApiOkResponse,
   ApiTags,
+  ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 
 @ApiTags('Agenda')
@@ -21,25 +20,25 @@ export class AgendaController extends DefaultController(
   UpdateAgendaDto,
 ) {
   @Post()
-  @ApiCreatedResponse({
-    description: `Item criado com sucesso`,
-  })
   @ApiBadRequestResponse({
     description: `Requisição inválida`,
+  })
+  @ApiUnprocessableEntityResponse({
+    description: `Violação de regra de negócio`,
   })
   create(dto: CreateAgendaDto): Promise<Agenda> {
     return super.create(dto);
   }
 
   @Patch(':id')
-  @ApiOkResponse({
-    description: `Item Atualizado com sucesso`,
-  })
   @ApiNotFoundResponse({
     description: `Item não encontrado`,
   })
   @ApiBadRequestResponse({
     description: `Requisição inválida`,
+  })
+  @ApiUnprocessableEntityResponse({
+    description: `Violação de regra de negócio`,
   })
   update(id: number, dto: UpdateAgendaDto): Promise<Agenda> {
     return super.update(id, dto);

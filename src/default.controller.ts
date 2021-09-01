@@ -7,6 +7,7 @@ import {
   HttpCode,
   HttpStatus,
   Inject,
+  NotFoundException,
   Param,
   ParseIntPipe,
   Patch,
@@ -17,7 +18,6 @@ import {
 import { IDefaultService } from './default.service';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import {
-  ApiCreatedResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -29,7 +29,7 @@ export interface IDefaultController<Entity, CreateDto, UpdateDto> {
   create(dto: CreateDto): Promise<Entity>;
   findAll(page?: number, limit?: number): Promise<Pagination<Entity>>;
   findOne(id: number): Promise<Entity>;
-  update(id: number, dto: UpdateDto): Promise<Entity>;
+  update(id: number, dto: UpdateDto): Promise<Entity | NotFoundException>;
   remove(id: number);
 }
 
@@ -71,9 +71,6 @@ export function DefaultController(
      * @returns {Promise<?>} Entidade TypeORM criada
      */
     @Post()
-    @ApiCreatedResponse({
-      description: `Item criado com sucesso`,
-    })
     create(@Body() dto: typeof CreateDto): Promise<typeof Entity> {
       return this.service.create(dto);
     }
@@ -82,9 +79,10 @@ export function DefaultController(
      * Endpoint de GET (FindAll)
      * @returns {Promise<?[]>} Entidades TypeORM
      */
+    // TODO: fix(#3): swagger Verificar como retornar o tipo no swagger
     @Get()
     @ApiOkResponse({
-      description: `Lista paginada com sucesso`,
+      description: `Lista paginada de items com sucesso`,
     })
     findAll(
       @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
@@ -109,8 +107,7 @@ export function DefaultController(
      */
     @Get(':id')
     @ApiOkResponse({
-      description: `Item buscado com sucesso`,
-      type: Entity,
+      type: () => Entity,
     })
     @ApiNotFoundResponse({
       description: `Item não encontrado`,
@@ -126,12 +123,6 @@ export function DefaultController(
      * @returns {Promise<?>} Entidade TypeORM
      */
     @Patch(':id')
-    @ApiOkResponse({
-      description: `Item Atualizado com sucesso`,
-    })
-    @ApiNotFoundResponse({
-      description: `Item não encontrado`,
-    })
     update(
       @Param('id') id: number,
       @Body() dto: typeof UpdateDto,

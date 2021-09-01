@@ -4,7 +4,12 @@ import { CreateAlunoDto } from './dto/create-aluno.dto';
 import { DefaultController } from '../default.controller';
 import { Aluno } from './entities/aluno.entity';
 import { UpdateAlunoDto } from './dto/update-aluno.dto';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiNotFoundResponse,
+  ApiTags,
+  ApiUnprocessableEntityResponse,
+} from '@nestjs/swagger';
 
 @ApiTags('Aluno')
 export class AlunoController extends DefaultController(
@@ -15,16 +20,25 @@ export class AlunoController extends DefaultController(
   UpdateAlunoDto,
 ) {
   @Post()
-  @ApiOkResponse({
-    description: `Item Criado com sucesso`,
+  @ApiBadRequestResponse({
+    description: `Requisição inválida`,
+  })
+  @ApiUnprocessableEntityResponse({
+    description: `Violação de regra de negócio`,
   })
   create(@Body() dto: CreateAlunoDto): Promise<Aluno> {
     return super.create(dto);
   }
 
   @Patch(':id')
-  @ApiOkResponse({
-    description: `Item Atualizado com sucesso`,
+  @ApiNotFoundResponse({
+    description: `Item não encontrado`,
+  })
+  @ApiBadRequestResponse({
+    description: `Requisição inválida`,
+  })
+  @ApiUnprocessableEntityResponse({
+    description: `Violação de regra de negócio`,
   })
   update(@Param('id') id: number, @Body() dto: UpdateAlunoDto): Promise<Aluno> {
     return super.update(id, dto);

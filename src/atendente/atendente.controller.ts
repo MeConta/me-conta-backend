@@ -4,7 +4,12 @@ import { CreateAtendenteDto } from './dto/create-atendente.dto';
 import { UpdateAtendenteDto } from './dto/update-atendente.dto';
 import { DefaultController } from '../default.controller';
 import { Atendente } from './entities/atendente.entity';
-import { ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiNotFoundResponse,
+  ApiTags,
+  ApiUnprocessableEntityResponse,
+} from '@nestjs/swagger';
 
 @ApiTags('Atendente')
 export class AtendenteController extends DefaultController(
@@ -15,21 +20,30 @@ export class AtendenteController extends DefaultController(
   UpdateAtendenteDto,
 ) {
   @Post()
-  @ApiOkResponse({
-    description: `Item Criado com sucesso`,
+  @ApiBadRequestResponse({
+    description: `Requisição inválida`,
   })
-  create(@Body() dto: CreateAtendenteDto) {
+  @ApiUnprocessableEntityResponse({
+    description: `Violação de regra de negócio`,
+  })
+  create(@Body() dto: CreateAtendenteDto): Promise<Atendente> {
     return super.create(dto);
   }
 
   @Patch(':id')
-  @ApiOkResponse({
-    description: `Item Atualizado com sucesso`,
-  })
   @ApiNotFoundResponse({
     description: `Item não encontrado`,
   })
-  update(@Param('id') id: number, @Body() dto: UpdateAtendenteDto) {
+  @ApiBadRequestResponse({
+    description: `Requisição inválida`,
+  })
+  @ApiUnprocessableEntityResponse({
+    description: `Violação de regra de negócio`,
+  })
+  update(
+    @Param('id') id: number,
+    @Body() dto: UpdateAtendenteDto,
+  ): Promise<Atendente> {
     return super.update(id, dto);
   }
 }

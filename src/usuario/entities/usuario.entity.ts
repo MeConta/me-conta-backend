@@ -2,7 +2,7 @@ import { Entity, Column } from 'typeorm';
 import { DefaultEntity } from '../../default.entity';
 import { Estado, Genero, Tipo } from './usuario.enum';
 import { Exclude } from 'class-transformer';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiHideProperty } from '@nestjs/swagger';
 
 @Entity('usuario')
 export class Usuario extends DefaultEntity {
@@ -11,33 +11,31 @@ export class Usuario extends DefaultEntity {
     Object.assign(this, partial);
   }
 
-  @ApiProperty({
-    example: 'Maria',
-  })
+  /***
+   * @example 'Maria'
+   */
   @Column()
   nome: string;
 
-  @ApiProperty({
-    example: 'teste@teste.com',
-  })
+  /***
+   * @example 'teste@teste.com'
+   */
   @Column({
     unique: true,
   })
   email: string;
 
+  @ApiHideProperty()
   @Column()
   @Exclude()
   senha: string;
 
-  @ApiProperty({
-    description: 'ISO8601 datetime',
-  })
+  /***
+   * ISO8601 datetime
+   */
   @Column()
   dataNascimento: Date;
 
-  @ApiProperty({
-    enum: Genero,
-  })
   @Column({
     type: 'varchar',
     enum: Genero,
@@ -45,30 +43,24 @@ export class Usuario extends DefaultEntity {
   })
   genero: Genero;
 
-  @ApiProperty({
-    enum: Estado,
-  })
   @Column({
     type: 'varchar',
     enum: Estado,
   })
   UF: Estado;
 
-  @ApiProperty({
-    example: 'Serra Talhada',
-  })
+  /***
+   * @example 'Serra Talhada'
+   */
   @Column()
   cidade: string;
 
-  @ApiProperty({
-    example: '(82) 91234-5678',
-  })
+  /***
+   * @example '(82) 91234-5678'
+   */
   @Column()
   telefone: string;
 
-  @ApiProperty({
-    enum: Tipo,
-  })
   @Column({
     type: 'varchar',
     enum: Tipo,
