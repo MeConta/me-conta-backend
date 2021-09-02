@@ -4,6 +4,9 @@ import { UsuarioService } from './usuario.service';
 import { FactoryMock } from '../testing/factory.mock';
 import { UsuarioStub } from '../testing/usuario.stub';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 describe('UsuarioController', () => {
   let controller: UsuarioController;
@@ -50,7 +53,16 @@ describe('UsuarioController', () => {
     jest.spyOn(service, 'findAll');
     controller.findAll(1, 0);
     expect(service.findAll).toBeCalledWith({
-      limit: 10,
+      limit: +process.env.DEFAULT_PAGE_SIZE,
+      page: 1,
+    } as IPaginationOptions);
+  });
+
+  it('Deve chamar o serviço de encontrar os usuários com o máximo ao tentar colocar limit além do máximo', () => {
+    jest.spyOn(service, 'findAll');
+    controller.findAll(1, Number.MAX_SAFE_INTEGER);
+    expect(service.findAll).toBeCalledWith({
+      limit: +process.env.MAX_PAGE_SIZE,
       page: 1,
     } as IPaginationOptions);
   });

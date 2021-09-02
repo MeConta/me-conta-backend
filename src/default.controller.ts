@@ -104,11 +104,14 @@ export function DefaultController(
       )
       limit = 10,
     ): Promise<Pagination<typeof Entity>> {
-      return this.service.findAll({
-        page,
-        // Caso o controller receba 0, mandar o valor padrão
-        limit: limit || +process.env.DEFAULT_PAGE_SIZE || 10,
-      });
+      // Caso o controller receba 0, mandar o valor padrão
+      limit = limit || +process.env.DEFAULT_PAGE_SIZE || 10;
+      const max = +process.env.MAX_PAGE_SIZE || 100;
+      if (limit > max) {
+        limit = max;
+      }
+
+      return this.service.findAll({ page, limit });
     }
 
     /***
