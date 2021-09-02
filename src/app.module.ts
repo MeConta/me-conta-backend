@@ -13,6 +13,7 @@ import database from './config/database.config';
 import { AppController } from './app.controller';
 import { MailModule } from './mail/mail.module';
 import { ContatoModule } from './contato/contato.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { ContatoModule } from './contato/contato.module';
     AvaliacaoModule,
     MailModule,
     ContatoModule,
+    AuthModule,
   ],
   controllers: [AppController],
 })

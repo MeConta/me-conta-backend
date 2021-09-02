@@ -34,4 +34,8 @@ export class UsuarioService extends DefaultService(
       throw e;
     }
   }
+
+  async findOneByEmail(email: string): Promise<Usuario> {
+    return this.repository.findOne({ where: { email: email } });
+  }
 }
