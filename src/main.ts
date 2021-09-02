@@ -18,10 +18,14 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   // Swagger
-  if (process.env.NODE_ENV !== 'production') {
+  // TODO: ajustar para não aparecer no ambiente de produção
+  /* if (process.env.NODE_ENV !== 'production') {
     const document = SwaggerModule.createDocument(app, SwaggerConfig);
     SwaggerModule.setup('api', app, document);
-  }
+  } */
+
+  const document = SwaggerModule.createDocument(app, SwaggerConfig);
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(process.env.PORT || 3000);
 }
