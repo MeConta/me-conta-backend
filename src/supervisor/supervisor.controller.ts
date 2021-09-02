@@ -26,7 +26,7 @@ export class SupervisorController extends DefaultController(
   @ApiUnprocessableEntityResponse({
     description: `Violação de regra de negócio`,
   })
-  create(@Body() dto: CreateSupervisorDto) {
+  async create(@Body() dto: CreateSupervisorDto): Promise<Supervisor> {
     return super.create(dto);
   }
 
@@ -40,7 +40,10 @@ export class SupervisorController extends DefaultController(
   @ApiUnprocessableEntityResponse({
     description: `Violação de regra de negócio`,
   })
-  update(@Param('id') id: number, @Body() dto: UpdateSupervisorDto) {
+  async update(
+    @Param('id') id: number,
+    @Body() dto: UpdateSupervisorDto,
+  ): Promise<Supervisor> {
     return super.update(id, dto);
   }
 }
