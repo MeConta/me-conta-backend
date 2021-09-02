@@ -10,4 +10,5 @@ export enum Erros {
   CONFLITO_DE_AGENDA = 'Conflito de agenda',
   VALIDACAO_SENHA = 'deve ter pelo menos 8 caracteres: uma letra minúscula, uma maiúscula, um número, e um caractere especial',
   VALIDACAO_TELEFONE = 'deve seguir um dos seguintes formatos: (XX) XXXXX-XXXX, (XX) XXXX-XXXX',
+  IDADE_MINIMA = 'deve possuir no mínimo 18 anos de idade.',
 }

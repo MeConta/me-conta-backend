@@ -10,7 +10,7 @@ export class AtendenteStub {
       ...VoluntarioStub.getCreateDto(),
       formado: true,
       semestre: 3,
-      anoFormacao: 1994,
+      anoConclusao: 1994,
     };
   }
 
@@ -26,7 +26,7 @@ export class AtendenteStub {
       ...VoluntarioStub.getEntity(),
       formado: true,
       semestre: 3,
-      anoFormacao: 1994,
+      anoConclusao: 1994,
       supervisor: null,
       agendas: [],
     };

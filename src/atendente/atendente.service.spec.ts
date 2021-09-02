@@ -19,6 +19,7 @@ import { UpdateAtendenteDto } from './dto/update-atendente.dto';
 import { SupervisorService } from '../supervisor/supervisor.service';
 import { SupervisorStub } from '../testing/supervisor.stub';
 import { Supervisor } from '../supervisor/entities/supervisor.entity';
+import * as moment from 'moment';
 
 describe('AtendenteService', () => {
   let service: AtendenteService;
@@ -100,6 +101,40 @@ describe('AtendenteService', () => {
     ).rejects.toThrow(UnprocessableEntityException);
   });
 
+  it('deve criar um atendente com superior completo somente se tiver ano de conclusão e crp', async () => {
+    jest.spyOn(repository, 'create').mockReturnValue(AtendenteStub.getEntity());
+    jest.spyOn(repository, 'save').mockReturnValue(AtendenteStub.getEntity());
+    jest
+      .spyOn(frenteAtuacaoService, 'findAll')
+      .mockResolvedValue(FrenteAtuacaoStub.getPaginatedEntities());
+
+    const request = AtendenteStub.getCreateDto();
+    request.crp = 'crp';
+    request.anoConclusao = 2004;
+
+    const response = await service.create(request);
+
+    expect(repository.save).toBeCalled();
+    expect(response).toBeDefined();
+  });
+
+  it('não deve criar um atendente com superior caso não tenha ano de conclusão ou crp', async () => {
+    jest.spyOn(repository, 'create').mockReturnValue(AtendenteStub.getEntity());
+    jest.spyOn(repository, 'save').mockReturnValue(AtendenteStub.getEntity());
+    jest
+      .spyOn(frenteAtuacaoService, 'findAll')
+      .mockResolvedValue(FrenteAtuacaoStub.getPaginatedEntities());
+
+    const request = AtendenteStub.getCreateDto();
+    request.crp = 'crp';
+    request.anoConclusao = 2004;
+
+    const response = await service.create(request);
+
+    expect(repository.save).toBeCalled();
+    expect(response).toBeDefined();
+  });
+
   it('não deve criar um atendente com frente de atuação inválidas', async () => {
     jest.spyOn(repository, 'create').mockReturnValue(AtendenteStub.getEntity());
     jest.spyOn(repository, 'save').mockReturnValue(AtendenteStub.getEntity());
@@ -121,6 +156,18 @@ describe('AtendenteService', () => {
     jest.spyOn(frenteAtuacaoService, 'findAll').mockRejectedValue(null);
 
     const request = AtendenteStub.getCreateDto();
+
+    await expect(() => service.create(request)).rejects.toThrow(
+      UnprocessableEntityException,
+    );
+  });
+
+  it('não deve criar um atendente com idade inferior a 18 anos', async () => {
+    const request = AtendenteStub.getCreateDto();
+    jest
+      .spyOn(frenteAtuacaoService, 'findAll')
+      .mockResolvedValue(FrenteAtuacaoStub.getPaginatedEntities());
+    request.dataNascimento = moment().toDate();
 
     await expect(() => service.create(request)).rejects.toThrow(
       UnprocessableEntityException,

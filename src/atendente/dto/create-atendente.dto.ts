@@ -1,4 +1,4 @@
-import { IsNotEmpty, Length, Max, Min } from 'class-validator';
+import { IsNotEmpty, Length, Max, Min, ValidateIf } from 'class-validator';
 import { CreateVoluntarioDto } from '../../voluntario/dto/create-voluntario.dto';
 
 export class CreateAtendenteDto extends CreateVoluntarioDto {
@@ -10,5 +10,11 @@ export class CreateAtendenteDto extends CreateVoluntarioDto {
   semestre: number;
 
   @Length(4, 4)
-  anoFormacao: number;
+  anoConclusao?: number;
+
+  @ValidateIf((dto: CreateAtendenteDto) => !!dto.anoConclusao)
+  especializacao?: string;
+
+  @ValidateIf((dto: CreateAtendenteDto) => !!dto.anoConclusao)
+  crp?: string;
 }

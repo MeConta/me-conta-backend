@@ -7,7 +7,6 @@ const database = registerAs('database', () => {
     logging: true,
     url: process.env.DATABASE_URL,
     autoLoadEntities: true,
-    synchronize: process.env.NODE_ENV === 'development',
     logger: process.env.NODE_ENV === 'development' ? 'advanced-console' : null,
     entities: ['dist/**/*.entity.js'],
     migrations: ['dist/migration/*.js'],
