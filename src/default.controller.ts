@@ -21,6 +21,7 @@ import {
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 
@@ -84,6 +85,16 @@ export function DefaultController(
     @ApiOkResponse({
       description: `Lista paginada de items com sucesso`,
     })
+    @ApiQuery({
+      name: 'page',
+      type: Number,
+      required: false,
+    })
+    @ApiQuery({
+      name: 'limit',
+      type: Number,
+      required: false,
+    })
     findAll(
       @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
       @Query(
@@ -107,7 +118,7 @@ export function DefaultController(
      */
     @Get(':id')
     @ApiOkResponse({
-      type: () => Entity,
+      type: Entity,
     })
     @ApiNotFoundResponse({
       description: `Item não encontrado`,
