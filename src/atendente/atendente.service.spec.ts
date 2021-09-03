@@ -109,8 +109,11 @@ describe('AtendenteService', () => {
       .mockResolvedValue(FrenteAtuacaoStub.getPaginatedEntities());
 
     const request = AtendenteStub.getCreateDto();
-    request.crp = 'crp';
-    request.anoConclusao = 2004;
+    request.conclusao = {
+      crp: 'crp',
+      anoConclusao: 2004,
+      especializacao: null,
+    };
 
     const response = await service.create(request);
 
@@ -126,8 +129,11 @@ describe('AtendenteService', () => {
       .mockResolvedValue(FrenteAtuacaoStub.getPaginatedEntities());
 
     const request = AtendenteStub.getCreateDto();
-    request.crp = 'crp';
-    request.anoConclusao = 2004;
+    request.conclusao = {
+      crp: 'crp',
+      anoConclusao: 2004,
+      especializacao: null,
+    };
 
     const response = await service.create(request);
 

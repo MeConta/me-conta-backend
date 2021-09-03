@@ -1,20 +1,16 @@
-import { IsNotEmpty, Length, Max, Min, ValidateIf } from 'class-validator';
+import { IntersectionType, PartialType } from '@nestjs/swagger';
+import { IsNotEmpty, Max, Min } from 'class-validator';
+import { ConclusaoDto } from 'src/voluntario/dto/common/conclusao.dto';
 import { CreateVoluntarioDto } from '../../voluntario/dto/create-voluntario.dto';
 
-export class CreateAtendenteDto extends CreateVoluntarioDto {
+export class CreateAtendenteDto extends IntersectionType(
+  CreateVoluntarioDto,
+  PartialType(ConclusaoDto),
+) {
   @IsNotEmpty()
   formado: boolean;
 
   @Min(1)
   @Max(10)
   semestre: number;
-
-  @Length(4, 4)
-  anoConclusao?: number;
-
-  @ValidateIf((dto: CreateAtendenteDto) => !!dto.anoConclusao)
-  especializacao?: string;
-
-  @ValidateIf((dto: CreateAtendenteDto) => !!dto.anoConclusao)
-  crp?: string;
 }

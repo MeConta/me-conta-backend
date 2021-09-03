@@ -9,9 +9,6 @@ export class CreateVoluntarioDto extends OmitType(CreateUsuarioDto, [
   'tipoUsuario',
 ] as const) {
   @IsNotEmpty()
-  especializacao?: string;
-
-  @IsNotEmpty()
   descricao: string;
 
   @IsNotEmpty()
@@ -26,7 +23,4 @@ export class CreateVoluntarioDto extends OmitType(CreateUsuarioDto, [
   @IsArray()
   @ArrayMinSize(1)
   frentesAtuacao: FrenteAtuacao[];
-
-  @IsNotEmpty()
-  crp?: string;
 }

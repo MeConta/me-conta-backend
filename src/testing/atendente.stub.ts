@@ -10,7 +10,9 @@ export class AtendenteStub {
       ...VoluntarioStub.getCreateDto(),
       formado: true,
       semestre: 3,
+      crp: 'teste',
       anoConclusao: 1994,
+      especializacao: 'Semântica',
     };
   }
 
