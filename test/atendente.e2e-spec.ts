@@ -1,43 +1,42 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import {
-  ClassSerializerInterceptor,
   INestApplication,
-  ValidationPipe,
 } from '@nestjs/common';
 import * as request from 'supertest';
 import { DbE2eModule } from './db.e2e.module';
 import { AtendenteModule } from '../src/atendente/atendente.module';
 import { AtendenteStub } from '../src/testing/atendente.stub';
 import * as moment from 'moment';
-import { Reflector } from '@nestjs/core';
+import {setupApp} from "../src/config/app.config";
+import {FrenteAtuacaoService} from "../src/frente-atuacao/frente-atuacao.service";
+import {VoluntarioModule} from "../src/voluntario/voluntario.module";
+import {FrenteAtuacaoStub} from "../src/testing/frente-atuacao.stub";
 
 describe('Atendente (e2e)', () => {
   let app: INestApplication;
+  let frenteAtuacaoService: FrenteAtuacaoService;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [DbE2eModule, AtendenteModule],
+      imports: [DbE2eModule, AtendenteModule, VoluntarioModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app = setupApp(app);
 
-    app.useGlobalPipes(
-      new ValidationPipe({
-        transform: true,
-      }),
-    );
-
-    app.useGlobalInterceptors(
-      new ClassSerializerInterceptor(app.get(Reflector)),
-    );
+    frenteAtuacaoService = app.get(FrenteAtuacaoService);
 
     await app.init();
   });
 
-  // beforeAll(async () => {});
+  beforeAll(async () => {
+    await frenteAtuacaoService.create(FrenteAtuacaoStub.getCreateDto());
+    await frenteAtuacaoService.create(FrenteAtuacaoStub.getCreateDto());
+    await frenteAtuacaoService.create(FrenteAtuacaoStub.getCreateDto());
+  });
 
   it('/atendente (POST)', async () => {
-    const boneco = {
+    const stub = {
       ...AtendenteStub.getCreateDto(),
       frentesAtuacao: [1, 2, 3],
       dataNascimento: moment('1990-09-25').toISOString(),
@@ -45,10 +44,9 @@ describe('Atendente (e2e)', () => {
 
     const response = await request(app.getHttpServer())
       .post('/atendente')
-      .send(boneco);
+      .send(stub);
 
     expect(response.status).toBe(201);
-
     expect(response.body).toBeDefined();
   });
 
