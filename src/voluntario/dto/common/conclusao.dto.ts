@@ -1,18 +1,15 @@
-import { IsNotEmpty, Length, ValidateIf } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, ValidateIf } from 'class-validator';
 
 export class ConclusaoDto {
-  @Length(4, 4)
+  @IsOptional()
+  @IsNumber()
   anoConclusao: number;
 
-  @ValidateIf((dto: ConclusaoDto) => dto.anoConclusao != null, {
-    always: true,
-  })
+  @ValidateIf((dto: ConclusaoDto) => !!dto.anoConclusao)
   @IsNotEmpty()
   especializacao: string;
 
-  @ValidateIf((dto: ConclusaoDto) => dto.anoConclusao != null, {
-    always: true,
-  })
+  @ValidateIf((dto: ConclusaoDto) => !!dto.anoConclusao)
   @IsNotEmpty()
   crp: string;
 }
