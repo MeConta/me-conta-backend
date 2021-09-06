@@ -8,11 +8,8 @@ export class AtendenteStub {
   static getCreateDto(): CreateAtendenteDto {
     return {
       ...VoluntarioStub.getCreateDto(),
-      formado: true,
+      formado: false,
       semestre: 3,
-      crp: 'teste',
-      anoConclusao: 1994,
-      especializacao: 'Semântica',
     };
   }
 
@@ -26,9 +23,10 @@ export class AtendenteStub {
   static getEntity(): Atendente {
     return {
       ...VoluntarioStub.getEntity(),
-      formado: true,
+      formado: false,
       semestre: 3,
-      anoConclusao: 1994,
+      crp: null,
+      anoConclusao: null,
       supervisor: null,
       agendas: [],
     };

@@ -1,15 +1,36 @@
-import { IsNotEmpty, IsNumber, IsOptional, ValidateIf } from 'class-validator';
+import { IsNotEmpty, IsNumber, Max, Min, ValidateIf } from 'class-validator';
 
 export class ConclusaoDto {
-  @IsOptional()
+  @IsNotEmpty()
+  formado?: boolean;
+
+  /***
+   * Validar o anoConclusão caso o atendente/supervisor SEJA formado
+   */
+  @ValidateIf((dto: ConclusaoDto) => !!dto.formado)
   @IsNumber()
-  anoConclusao: number;
+  anoConclusao?: number;
 
-  @ValidateIf((dto: ConclusaoDto) => !!dto.anoConclusao)
+  /***
+   * Validar a especialização caso o atendente/supervisor SEJA formado
+   */
+  @ValidateIf((dto: ConclusaoDto) => !!dto.formado)
   @IsNotEmpty()
-  especializacao: string;
+  especializacao?: string;
 
-  @ValidateIf((dto: ConclusaoDto) => !!dto.anoConclusao)
+  /***
+   * Validar o CRP caso o atendente/supervisor SEJA formado
+   */
+  @ValidateIf((dto: ConclusaoDto) => !!dto.formado)
   @IsNotEmpty()
-  crp: string;
+  crp?: string;
+
+  /***
+   * Validar o semestre caso o atendente NÃO seja formado
+   */
+  @ValidateIf((dto: ConclusaoDto) => !!!dto.formado)
+  @IsNotEmpty()
+  @Min(1)
+  @Max(10)
+  semestre?: number;
 }

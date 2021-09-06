@@ -101,46 +101,6 @@ describe('AtendenteService', () => {
     ).rejects.toThrow(UnprocessableEntityException);
   });
 
-  it('deve criar um atendente com superior completo somente se tiver ano de conclusão e crp', async () => {
-    jest.spyOn(repository, 'create').mockReturnValue(AtendenteStub.getEntity());
-    jest.spyOn(repository, 'save').mockReturnValue(AtendenteStub.getEntity());
-    jest
-      .spyOn(frenteAtuacaoService, 'findAll')
-      .mockResolvedValue(FrenteAtuacaoStub.getPaginatedEntities());
-
-    const request = AtendenteStub.getCreateDto();
-    request.conclusao = {
-      crp: 'crp',
-      anoConclusao: 2004,
-      especializacao: null,
-    };
-
-    const response = await service.create(request);
-
-    expect(repository.save).toBeCalled();
-    expect(response).toBeDefined();
-  });
-
-  it('não deve criar um atendente com superior caso não tenha ano de conclusão ou crp', async () => {
-    jest.spyOn(repository, 'create').mockReturnValue(AtendenteStub.getEntity());
-    jest.spyOn(repository, 'save').mockReturnValue(AtendenteStub.getEntity());
-    jest
-      .spyOn(frenteAtuacaoService, 'findAll')
-      .mockResolvedValue(FrenteAtuacaoStub.getPaginatedEntities());
-
-    const request = AtendenteStub.getCreateDto();
-    request.conclusao = {
-      crp: 'crp',
-      anoConclusao: 2004,
-      especializacao: null,
-    };
-
-    const response = await service.create(request);
-
-    expect(repository.save).toBeCalled();
-    expect(response).toBeDefined();
-  });
-
   it('não deve criar um atendente com frente de atuação inválidas', async () => {
     jest.spyOn(repository, 'create').mockReturnValue(AtendenteStub.getEntity());
     jest.spyOn(repository, 'save').mockReturnValue(AtendenteStub.getEntity());
