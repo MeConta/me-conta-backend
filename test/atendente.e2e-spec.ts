@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { HttpStatus, INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { DbE2eModule } from './db.e2e.module';
 import { AtendenteModule } from '../src/atendente/atendente.module';
@@ -9,6 +9,7 @@ import { setupApp } from '../src/config/app.config';
 import { FrenteAtuacaoService } from '../src/frente-atuacao/frente-atuacao.service';
 import { VoluntarioModule } from '../src/voluntario/voluntario.module';
 import { FrenteAtuacaoStub } from '../src/testing/frente-atuacao.stub';
+import { internet, name } from 'faker/locale/pt_BR';
 
 describe('Atendente (e2e)', () => {
   let app: INestApplication;
@@ -28,24 +29,92 @@ describe('Atendente (e2e)', () => {
   });
 
   beforeAll(async () => {
-    await frenteAtuacaoService.create(FrenteAtuacaoStub.getCreateDto());
-    await frenteAtuacaoService.create(FrenteAtuacaoStub.getCreateDto());
-    await frenteAtuacaoService.create(FrenteAtuacaoStub.getCreateDto());
+    for (const i of Array(3)) {
+      await frenteAtuacaoService.create({
+        ...FrenteAtuacaoStub.getCreateDto(),
+        nome: `Frente #${i}`,
+      });
+    }
   });
 
-  it('/atendente (POST)', async () => {
-    const stub = {
+  describe('/atendente (POST)', () => {
+    let req = {
       ...AtendenteStub.getCreateDto(),
       frentesAtuacao: [1, 2, 3],
       dataNascimento: moment('1990-09-25').toISOString(),
     };
+    beforeEach(() => {
+      req = {
+        ...req,
+        email: internet.email(),
+      };
+    });
 
-    const response = await request(app.getHttpServer())
-      .post('/atendente')
-      .send(stub);
+    it('Deve criar um atendente formado', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/atendente')
+        .send({
+          ...req,
+          formado: true,
+          anoConclusao: 2020,
+          crp: 'RANDOM CRP',
+          especializacao: 'Especialização',
+        })
+        .expect(HttpStatus.CREATED);
+      expect(response.body).toBeDefined();
+      expect(response.body.id).toBeDefined();
+    });
 
-    expect(response.status).toBe(201);
-    expect(response.body).toBeDefined();
+    it('Deve criar um atendente não formado', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/atendente')
+        .send({
+          ...req,
+          formado: false,
+          semestre: 6,
+          frentesAtuacao: [1, 2, 3],
+        })
+        .expect(HttpStatus.CREATED);
+      expect(response.body).toBeDefined();
+    });
+
+    it('Não deve criar um atendente formado sem anoConclusão, CRP e especialização', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/atendente')
+        .send({ ...req, formado: true })
+        .expect(HttpStatus.BAD_REQUEST);
+      expect(response.body).toBeDefined();
+      expect(response.body.message).toBeInstanceOf(Array);
+      expect(response.body.message).toHaveLength(3);
+      expect(response.body.message).toContain(
+        'anoConclusao must be a number conforming to the specified constraints',
+      );
+      expect(response.body.message).toContain(
+        'especializacao should not be empty',
+      );
+      expect(response.body.message).toContain('crp should not be empty');
+    });
+
+    it('Não deve criar um atendente em formação sem semestre', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/atendente')
+        .send({
+          ...req,
+          formado: false,
+          semestre: undefined,
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+      expect(response.body).toBeDefined();
+      expect(response.body.message).toBeInstanceOf(Array);
+      expect(response.body.message).toHaveLength(3);
+      expect(response.body.message).toContain(
+        'semestre must not be greater than 10',
+      );
+      expect(response.body.message).toContain(
+        'semestre must not be less than 1',
+      );
+      expect(response.body.message).toContain('semestre should not be empty');
+    });
   });
 
   it('/atendente (GET)', async () => {
@@ -58,17 +127,20 @@ describe('Atendente (e2e)', () => {
   });
 
   it('/atendente (PATCH)', async () => {
+    const NOME = name.findName();
     const response = await request(app.getHttpServer())
       .patch(`/atendente/1`)
       .send({
-        nome: 'teste',
-      } as any)
-      .expect(200);
-    expect(response.body.usuario.nome).toBe('teste');
+        nome: NOME,
+      })
+      .expect(HttpStatus.OK);
+    expect(response.body.usuario.nome).toBe(NOME);
   });
 
   it('/atendente (DELETE)', async () => {
-    await request(app.getHttpServer()).delete(`/atendente/1`).expect(204);
+    await request(app.getHttpServer())
+      .delete(`/atendente/1`)
+      .expect(HttpStatus.NO_CONTENT);
   });
 
   afterAll(async () => {
