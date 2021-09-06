@@ -12,9 +12,9 @@ export class UsuarioStub {
       email: 'teste@teste.com',
       genero: Genero.FEMININO,
       nome: 'João da Silva',
-      senha: 'teste',
+      senha: 's3Nh@123',
       UF: Estado.AC,
-      telefone: '5511947866489',
+      telefone: '(11) 94786-6489',
       tipoUsuario: Tipo.ADMINISTRADOR,
     };
   }
