@@ -1,16 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  INestApplication,
-} from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { DbE2eModule } from './db.e2e.module';
 import { AtendenteModule } from '../src/atendente/atendente.module';
 import { AtendenteStub } from '../src/testing/atendente.stub';
 import * as moment from 'moment';
-import {setupApp} from "../src/config/app.config";
-import {FrenteAtuacaoService} from "../src/frente-atuacao/frente-atuacao.service";
-import {VoluntarioModule} from "../src/voluntario/voluntario.module";
-import {FrenteAtuacaoStub} from "../src/testing/frente-atuacao.stub";
+import { setupApp } from '../src/config/app.config';
+import { FrenteAtuacaoService } from '../src/frente-atuacao/frente-atuacao.service';
+import { VoluntarioModule } from '../src/voluntario/voluntario.module';
+import { FrenteAtuacaoStub } from '../src/testing/frente-atuacao.stub';
 
 describe('Atendente (e2e)', () => {
   let app: INestApplication;
