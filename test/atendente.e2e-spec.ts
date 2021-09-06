@@ -64,7 +64,7 @@ describe('Atendente (e2e)', () => {
         nome: 'teste',
       } as any)
       .expect(200);
-    expect(response.body.nome).toBe('teste');
+    expect(response.body.usuario.nome).toBe('teste');
   });
 
   it('/atendente (DELETE)', async () => {

@@ -15,6 +15,9 @@ export class AtendenteStub {
 
   static getUpdateDto(): UpdateAtendenteDto {
     return {
+      descricao: null,
+      instituicao: null,
+      frentesAtuacao: [],
       supervisor: null,
       aprovado: true,
     };

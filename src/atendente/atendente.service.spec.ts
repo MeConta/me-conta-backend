@@ -194,6 +194,18 @@ describe('AtendenteService', () => {
       expect(response.supervisor).toBeDefined();
     });
 
+    it('Deve atualizar o supervisor sem passar Frentes de Atuação', async () => {
+      jest
+        .spyOn(supervisorService, 'findOne')
+        .mockResolvedValue(SupervisorStub.getEntity());
+
+      request.frentesAtuacao = null;
+
+      await service.update(1, request);
+
+      expect(repository.save).toBeCalled();
+    });
+
     it('Deve remover o supervisor de um atendente', async () => {
       request.supervisor = {
         id: null,
