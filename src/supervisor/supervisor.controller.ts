@@ -1,4 +1,4 @@
-import { Body, Patch, Param, Post } from '@nestjs/common';
+import { Body, Patch, Param, Post, UseGuards } from '@nestjs/common';
 import { SupervisorService } from './supervisor.service';
 import { CreateSupervisorDto } from './dto/create-supervisor.dto';
 import { UpdateSupervisorDto } from './dto/update-supervisor.dto';
@@ -10,8 +10,10 @@ import {
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Supervisor')
+@UseGuards(JwtAuthGuard)
 export class SupervisorController extends DefaultController(
   'supervisor',
   Supervisor,

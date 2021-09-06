@@ -1,4 +1,4 @@
-import { Post, Patch, Body } from '@nestjs/common';
+import { Post, Patch, Body, UseGuards } from '@nestjs/common';
 import { AvaliacaoService } from './avaliacao.service';
 import { CreateAvaliacaoDto } from './dto/create-avaliacao.dto';
 import { UpdateAvaliacaoDto } from './dto/update-avaliacao.dto';
@@ -10,8 +10,10 @@ import {
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Avaliação')
+@UseGuards(JwtAuthGuard)
 export class AvaliacaoController extends DefaultController(
   'avaliacao',
   Avaliacao,

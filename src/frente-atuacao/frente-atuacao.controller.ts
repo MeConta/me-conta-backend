@@ -1,4 +1,4 @@
-import { Post, Body, Patch, Param } from '@nestjs/common';
+import { Post, Body, Patch, Param, UseGuards } from '@nestjs/common';
 import { FrenteAtuacaoService } from './frente-atuacao.service';
 import { CreateFrenteAtuacaoDto } from './dto/create-frente-atuacao.dto';
 import { UpdateFrenteAtuacaoDto } from './dto/update-frente-atuacao.dto';
@@ -10,8 +10,10 @@ import {
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Frentes de Atuação')
+@UseGuards(JwtAuthGuard)
 export class FrenteAtuacaoController extends DefaultController(
   'frente-atuacao',
   FrenteAtuacao,

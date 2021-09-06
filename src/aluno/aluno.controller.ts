@@ -1,4 +1,4 @@
-import { Body, Param, Patch, Post } from '@nestjs/common';
+import { Body, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { AlunoService } from './aluno.service';
 import { CreateAlunoDto } from './dto/create-aluno.dto';
 import { DefaultController } from '../default.controller';
@@ -10,8 +10,10 @@ import {
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Aluno')
+@UseGuards(JwtAuthGuard)
 export class AlunoController extends DefaultController(
   'aluno',
   Aluno,

@@ -1,4 +1,4 @@
-import { Post, Patch } from '@nestjs/common';
+import { Post, Patch, UseGuards } from '@nestjs/common';
 import { AgendaService } from './agenda.service';
 import { CreateAgendaDto } from './dto/create-agenda.dto';
 import { UpdateAgendaDto } from './dto/update-agenda.dto';
@@ -10,8 +10,10 @@ import {
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Agenda')
+@UseGuards(JwtAuthGuard)
 export class AgendaController extends DefaultController(
   'agenda',
   Agenda,

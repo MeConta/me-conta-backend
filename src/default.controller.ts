@@ -14,7 +14,6 @@ import {
   Post,
   Query,
   Type,
-  UseGuards,
 } from '@nestjs/common';
 import { IDefaultService } from './default.service';
 import { Pagination } from 'nestjs-typeorm-paginate';
@@ -25,7 +24,6 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
 
 export interface IDefaultController<Entity, CreateDto, UpdateDto> {
   service: IDefaultService<Entity, CreateDto, UpdateDto>;
@@ -84,7 +82,6 @@ export function DefaultController(
      */
     // TODO: fix(#3): swagger Verificar como retornar o tipo no swagger
     @Get()
-    @UseGuards(AuthGuard('jwt'))
     @ApiOkResponse({
       description: `Lista paginada de items com sucesso`,
     })

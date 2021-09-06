@@ -1,4 +1,4 @@
-import { Post, Body, Patch, Param } from '@nestjs/common';
+import { Post, Body, Patch, Param, UseGuards } from '@nestjs/common';
 import { ConsultaService } from './consulta.service';
 import { CreateConsultaDto } from './dto/create-consulta.dto';
 import { UpdateConsultaDto } from './dto/update-consulta.dto';
@@ -10,8 +10,10 @@ import {
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Consulta')
+@UseGuards(JwtAuthGuard)
 export class ConsultaController extends DefaultController(
   'consulta',
   Consulta,
@@ -20,6 +22,7 @@ export class ConsultaController extends DefaultController(
   UpdateConsultaDto,
 ) {
   @Post()
+  @UseGuards(JwtAuthGuard)
   @ApiBadRequestResponse({
     description: `Requisição inválida`,
   })
