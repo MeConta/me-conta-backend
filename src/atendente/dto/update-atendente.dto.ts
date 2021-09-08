@@ -11,8 +11,7 @@ export class UpdateAtendenteDto extends IntersectionType(
   ConclusaoDto,
 ) {
   /**
-   * Quick FIX: composição utilizando PartialType e IntersectionType
-   * não funcionais com Nest.js.
+   * TODO: fix(#19): composição utilizando PartialType e IntersectionType não funcionais com Nest.js.
    */
 
   @IsNotEmpty()
