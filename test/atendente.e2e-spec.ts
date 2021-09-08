@@ -10,6 +10,7 @@ import { FrenteAtuacaoService } from '../src/frente-atuacao/frente-atuacao.servi
 import { VoluntarioModule } from '../src/voluntario/voluntario.module';
 import { FrenteAtuacaoStub } from '../src/testing/frente-atuacao.stub';
 import { internet, name } from 'faker/locale/pt_BR';
+import { UpdateAtendenteDto } from '../src/atendente/dto/update-atendente.dto';
 
 describe('Atendente (e2e)', () => {
   let app: INestApplication;
@@ -43,6 +44,7 @@ describe('Atendente (e2e)', () => {
       frentesAtuacao: [1, 2, 3],
       dataNascimento: moment('1990-09-25').toISOString(),
     };
+
     beforeEach(() => {
       req = {
         ...req,
@@ -126,15 +128,73 @@ describe('Atendente (e2e)', () => {
     expect(response.body.items[0]).toBeDefined();
   });
 
-  it('/atendente (PATCH)', async () => {
-    const NOME = name.findName();
-    const response = await request(app.getHttpServer())
-      .patch(`/atendente/1`)
-      .send({
-        nome: NOME,
-      })
-      .expect(HttpStatus.OK);
-    expect(response.body.usuario.nome).toBe(NOME);
+  describe('/atendente (PATCH)', () => {
+    const req = {
+      ...AtendenteStub.getCreateDto(),
+      frentesAtuacao: [1, 2, 3],
+      dataNascimento: moment('1990-09-25').toISOString(),
+    };
+    let ID = null;
+    beforeAll(async () => {
+      const response = await request(app.getHttpServer())
+        .post('/atendente')
+        .send(req);
+      ID = response.body.id;
+    });
+    it('Deve alterar uma propriedade', async () => {
+      const NOME = name.findName();
+      const response = await request(app.getHttpServer())
+        .patch(`/atendente/${ID}`)
+        .send({
+          nome: NOME,
+        })
+        .expect(HttpStatus.OK);
+      expect(response.body.usuario.nome).toBe(NOME);
+    });
+
+    it('Não deve alterar caso formação seja VERDADEIRA e não passe os campos necessários', async () => {
+      await request(app.getHttpServer())
+        .patch(`/atendente/${ID}`)
+        .send({
+          formado: true,
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('Não deve alterar caso formação seja FALSA e não passe os campos necessários', async () => {
+      await request(app.getHttpServer())
+        .patch(`/atendente/${ID}`)
+        .send({
+          formado: false,
+        })
+        .expect(HttpStatus.BAD_REQUEST);
+    });
+
+    it('O semestre deve ser NULO caso a formação seja VERDADEIRA', async () => {
+      const response = await request(app.getHttpServer())
+        .patch(`/atendente/${ID}`)
+        .send({
+          formado: true,
+          anoConclusao: 2020,
+          crp: 'CRP',
+          especializacao: 'teste',
+        } as UpdateAtendenteDto)
+        .expect(HttpStatus.OK);
+      expect(response.body.semestre).toBeNull();
+    });
+
+    it('AnoConclusão, CRP e especialização devem ser NULOS caso a formação seja FALSA', async () => {
+      const response = await request(app.getHttpServer())
+        .patch(`/atendente/${ID}`)
+        .send({
+          formado: false,
+          semestre: 3,
+        } as UpdateAtendenteDto)
+        .expect(HttpStatus.OK);
+      expect(response.body.anoConclusao).toBeNull();
+      expect(response.body.crp).toBeNull();
+      expect(response.body.especializacao).toBeNull();
+    });
   });
 
   it('/atendente (DELETE)', async () => {
