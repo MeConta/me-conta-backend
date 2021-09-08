@@ -218,6 +218,48 @@ describe('AtendenteService', () => {
       expect(response.supervisor).toBeNull();
     });
 
+    it('Deve forçar semestre como NULO caso formado seja verdadeiro', async () => {
+      jest
+        .spyOn(frenteAtuacaoService, 'findAll')
+        .mockResolvedValue(FrenteAtuacaoStub.getPaginatedEntities(0));
+
+      request = {
+        ...request,
+        formado: true,
+        anoConclusao: 2020,
+        crp: 'CRP',
+        especializacao: 'teste',
+      };
+
+      await service.update(1, request);
+      expect(repository.save).toBeCalledWith({
+        ...request,
+        id: 1,
+        semestre: null,
+      });
+    });
+
+    it('Deve forçar os campos de formação como NULOS caso formado seja falso', async () => {
+      jest
+        .spyOn(frenteAtuacaoService, 'findAll')
+        .mockResolvedValue(FrenteAtuacaoStub.getPaginatedEntities(0));
+
+      request = {
+        ...request,
+        formado: false,
+        semestre: 3,
+      };
+
+      await service.update(1, request);
+      expect(repository.save).toBeCalledWith({
+        ...request,
+        id: 1,
+        anoConclusao: null,
+        crp: null,
+        especializacao: null,
+      });
+    });
+
     it('Deve dar erro de supervisor não encontrado quando este não existir', async () => {
       jest
         .spyOn(supervisorService, 'findOne')
