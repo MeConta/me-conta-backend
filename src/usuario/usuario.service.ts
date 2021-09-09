@@ -13,20 +13,22 @@ export class UsuarioService extends DefaultService(
   UpdateUsuarioDto,
 ) {
   async create(dto: CreateUsuarioDto): Promise<Usuario> {
-    dto.senha = await bcrypt.hash(dto.senha, process.env.SALT);
+    const salt = await bcrypt.genSalt();
+    dto.senha = await bcrypt.hash(dto.senha, salt);
     try {
-      return await super.create(dto);
+      return await super.create({ ...dto, salt });
     } catch (e) {
       throw new UnprocessableEntityException(Erros.EMAIL_DUPLICADO);
     }
   }
 
   async update(id: number, dto: UpdateUsuarioDto): Promise<Usuario> {
+    const usuario = await super.findOne(id);
     if (dto.senha) {
-      dto.senha = await bcrypt.hash(dto.senha, process.env.SALT);
+      dto.senha = await bcrypt.hash(dto.senha, usuario.salt);
     }
     try {
-      return await super.update(id, dto);
+      return await this.repository.save(this.repository.create({ ...dto, id }));
     } catch (e) {
       if (e instanceof UnprocessableEntityException) {
         throw new UnprocessableEntityException(Erros.EMAIL_DUPLICADO);

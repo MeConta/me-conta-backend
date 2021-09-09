@@ -67,4 +67,8 @@ export class Usuario extends DefaultEntity {
     default: Tipo.ALUNO,
   })
   tipoUsuario: Tipo;
+
+  @Column()
+  @Exclude()
+  salt: string;
 }

@@ -5,6 +5,7 @@ import { UpdateUsuarioDto } from '../usuario/dto/update-usuario.dto';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import * as bcrypt from 'bcrypt';
 
+const MOCKED_SALT = bcrypt.genSaltSync();
 export class UsuarioStub {
   static getCreateDto(): CreateUsuarioDto {
     return {
@@ -40,6 +41,7 @@ export class UsuarioStub {
       dataCriacao: new Date('08-29-2021'),
       dataAlteracao: new Date('08-30-2021'),
       tipoUsuario: Tipo.ADMINISTRADOR,
+      salt: MOCKED_SALT,
     };
   }
 
