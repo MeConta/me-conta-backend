@@ -32,7 +32,7 @@ export class CreateUsuarioDto {
   @ApiProperty({
     format: 'YYYY-MM-DD',
   })
-  @IsDate()
+  @IsDate({ message: Erros.VALIDACAO_DATA })
   @Type(() => Date)
   dataNascimento: Date;
 
@@ -65,7 +65,10 @@ export class CreateUsuarioDto {
    * Um e-mail válido
    * @example 'teste@teste.com'
    */
-  @IsEmail()
+  @ApiProperty({
+    description: Erros.VALIDACAO_EMAIL,
+  })
+  @IsEmail({}, { message: Erros.VALIDACAO_EMAIL })
   email: string;
 
   @IsEnum(Tipo)

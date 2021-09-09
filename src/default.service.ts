@@ -72,7 +72,7 @@ export function DefaultService(
      */
     async findAll(
       pagination: IPaginationOptions = {
-        limit: process.env.DEFAULT_PAGE_SIZE || 10,
+        limit: process.env.DEFAULT_PAGE_SIZE,
         page: 1,
       },
       conditions: FindConditions<typeof Entity> = null,

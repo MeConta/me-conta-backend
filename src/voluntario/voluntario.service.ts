@@ -16,6 +16,7 @@ import { Voluntario } from './entity/voluntario.entity';
 import { Erros } from '../config/constants';
 import { FrenteAtuacao } from '../frente-atuacao/entities/frente-atuacao.entity';
 import { isNumber } from 'class-validator';
+import * as moment from 'moment';
 
 export function VoluntarioService(
   Entity,
@@ -79,6 +80,9 @@ export function VoluntarioService(
 
     @Post()
     async create(dto: typeof CreateDto): Promise<typeof Entity> {
+      if (moment().diff(dto.dataNascimento, 'years') < 18) {
+        throw new UnprocessableEntityException(Erros.IDADE_MINIMA);
+      }
       dto = await this.checkFrentes(dto);
       return super.create(dto);
     }

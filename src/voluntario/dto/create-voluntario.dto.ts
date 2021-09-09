@@ -9,9 +9,6 @@ export class CreateVoluntarioDto extends OmitType(CreateUsuarioDto, [
   'tipoUsuario',
 ] as const) {
   @IsNotEmpty()
-  especializacao: string;
-
-  @IsNotEmpty()
   descricao: string;
 
   @IsNotEmpty()

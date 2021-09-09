@@ -14,7 +14,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
+    "test": "npm run test:cov && npm run test:e2e",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
@@ -42,6 +42,7 @@
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/swagger": "^5.0.9",
     "@nestjs/typeorm": "^8.0.2",
+    "bcrypt": "^5.0.1",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "dotenv": "^8.6.0",
@@ -65,7 +66,9 @@
     "@nestjs/cli": "^8.0.0",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
+    "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.13",
+    "@types/faker": "^5.5.8",
     "@types/jest": "^26.0.24",
     "@types/node": "^16.0.0",
     "@types/passport-jwt": "^3.0.6",
@@ -78,6 +81,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-unused-imports": "^1.1.4",
+    "faker": "^5.5.3",
     "husky": "^7.0.1",
     "jest": "27.0.6",
     "lint-staged": "^11.1.2",
@@ -88,33 +92,6 @@
     "ts-node": "^10.0.0",
     "tsconfig-paths": "^3.10.1",
     "typescript": "^4.3.5"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s",
-      "!**/*.module.ts",
-      "!**/index.ts",
-      "!**/*.stub.ts",
-      "!**/*.mock.ts",
-      "!**/*.entity.ts",
-      "!**/*.dto.ts",
-      "!**/*.enum.ts",
-      "!**/*.config.ts",
-      "!**/testing/",
-      "!**/main.ts"
-    ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
   },
   "main": ".eslintrc.js",
   "directories": {

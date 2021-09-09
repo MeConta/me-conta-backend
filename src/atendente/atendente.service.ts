@@ -39,6 +39,16 @@ export class AtendenteService extends VoluntarioService(
         supervisor,
       };
     }
+
+    if (dto.formado === true) {
+      dto.semestre = null;
+    }
+
+    if (dto.formado === false) {
+      dto.anoConclusao = null;
+      dto.especializacao = null;
+      dto.crp = null;
+    }
     return super.update(id, dto);
   }
 }

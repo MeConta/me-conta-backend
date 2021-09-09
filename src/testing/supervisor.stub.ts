@@ -18,8 +18,10 @@ export class SupervisorStub {
   static getCreateDto(): CreateSupervisorDto {
     return {
       ...VoluntarioStub.getCreateDto(),
-      crp: 'teste',
       areaAtuacao: AreaAtuacao.PROFESSOR,
+      crp: 'CRP',
+      anoConclusao: 2020,
+      especializacao: 'especialização',
     };
   }
 
