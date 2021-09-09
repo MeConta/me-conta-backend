@@ -99,14 +99,14 @@ export function DefaultController(
       @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
       @Query(
         'limit',
-        new DefaultValuePipe(process.env.DEFAULT_PAGE_SIZE || 10),
+        new DefaultValuePipe(process.env.DEFAULT_PAGE_SIZE),
         ParseIntPipe,
       )
       limit = 10,
     ): Promise<Pagination<typeof Entity>> {
-      // Caso o controller receba 0, mandar o valor padrão
-      limit = limit || +process.env.DEFAULT_PAGE_SIZE || 10;
-      const max = +process.env.MAX_PAGE_SIZE || 100;
+      // Caso o controller receba 0 ou valores negativos, mandar o valor padrão
+      limit = limit || +process.env.DEFAULT_PAGE_SIZE;
+      const max = +process.env.MAX_PAGE_SIZE;
       if (limit > max) {
         limit = max;
       }

@@ -40,6 +40,7 @@
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/swagger": "^5.0.9",
     "@nestjs/typeorm": "^8.0.2",
+    "bcrypt": "^5.0.1",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "dotenv": "^8.6.0",
@@ -60,6 +61,7 @@
     "@nestjs/cli": "^8.0.0",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
+    "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.13",
     "@types/faker": "^5.5.8",
     "@types/jest": "^26.0.24",
@@ -83,33 +85,6 @@
     "ts-node": "^10.0.0",
     "tsconfig-paths": "^3.10.1",
     "typescript": "^4.3.5"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s",
-      "!**/*.module.ts",
-      "!**/index.ts",
-      "!**/*.stub.ts",
-      "!**/*.mock.ts",
-      "!**/*.entity.ts",
-      "!**/*.dto.ts",
-      "!**/*.enum.ts",
-      "!**/*.config.ts",
-      "!**/testing/",
-      "!**/main.ts"
-    ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
   },
   "main": ".eslintrc.js",
   "directories": {
