@@ -39,7 +39,7 @@ import { AuthModule } from './auth/auth.module';
     AvaliacaoModule,
     MailModule,
     ContatoModule,
-    AuthModule,
+    AuthModule.forRoot(),
   ],
   controllers: [AppController],
 })
