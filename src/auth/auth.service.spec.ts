@@ -2,6 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { UsuarioService } from '../usuario/usuario.service';
 import { JwtService } from '@nestjs/jwt';
+import { FactoryMock } from '../testing/factory.mock';
+import { UsuarioStub } from '../testing/usuario.stub';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -13,11 +15,14 @@ describe('AuthService', () => {
       providers: [
         {
           provide: UsuarioService,
-          useValue: { findOneByEmail: jest.fn() },
+          useValue: {
+            ...FactoryMock.crudServiceMockFactory(),
+            findOneByEmail: jest.fn(),
+          },
         },
         {
           provide: JwtService,
-          useValue: [{ sign: jest.fn() }],
+          useValue: { sign: jest.fn() },
         },
         AuthService,
       ],
@@ -25,16 +30,56 @@ describe('AuthService', () => {
 
     service = module.get<AuthService>(AuthService);
     usuarioService = module.get<UsuarioService>(UsuarioService);
+    jwtService = module.get<JwtService>(JwtService);
   });
 
-  it('should validate user login', () => {
-    //jest
-    //    .spyOn(usuarioService, 'findOneByEmail')
-    //    .mockResolvedValue(UsuarioStub.getEntity());
-    // expect(service.validateUser('teste', 'teste')).toBe('teste');
+  it('deve ser definido', async () => {
+    expect(service).toBeDefined();
   });
 
-  it('should be defined', () => {
-    // expect(service).toBeDefined();
+  describe('validateUser', () => {
+    it('deve retornar um usuário válido', async () => {
+      jest
+        .spyOn(usuarioService, 'findOneByEmail')
+        .mockResolvedValue(UsuarioStub.getEntity());
+      const req = UsuarioStub.getCreateDto();
+
+      const response = await service.validateUser(req.email, req.senha);
+      expect(response).toBeDefined();
+    });
+
+    it('deve retornar nulo quando o usuário não for válido', async () => {
+      jest
+        .spyOn(usuarioService, 'findOneByEmail')
+        .mockResolvedValue(UsuarioStub.getEntity());
+      const req = {
+        ...UsuarioStub.getCreateDto(),
+        senha: 'outraS3nh@',
+      };
+      const response = await service.validateUser(req.email, req.senha);
+      expect(response).toBeNull();
+    });
+
+    it('deve retornar nulo quando o usuário não existir', async () => {
+      jest.spyOn(usuarioService, 'findOneByEmail').mockResolvedValue(null);
+      const req = UsuarioStub.getCreateDto();
+
+      const response = await service.validateUser(req.email, req.senha);
+      expect(response).toBeNull();
+    });
+  });
+
+  describe('login', () => {
+    it('deve assinar um jwt', async () => {
+      const req = UsuarioStub.getEntity();
+      await service.login({
+        email: req.email,
+        id: req.id,
+      });
+      expect(jwtService.sign).toBeCalledWith({
+        email: req.email,
+        sub: req.id,
+      });
+    });
   });
 });

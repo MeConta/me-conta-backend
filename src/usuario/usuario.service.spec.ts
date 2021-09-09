@@ -76,6 +76,14 @@ describe('UsuarioService', () => {
     expect(response.id).toEqual(UsuarioStub.getEntity().id);
   });
 
+  it('deve encontrar um usuário via e-mail', async () => {
+    jest.spyOn(repository, 'findOne').mockReturnValue(UsuarioStub.getEntity());
+
+    const response = await service.findOneByEmail('teste@teste.com');
+
+    expect(response).toBeDefined();
+  });
+
   it('não deve retornar um usuário', async () => {
     jest.spyOn(repository, 'findOne').mockReturnValue(undefined);
 

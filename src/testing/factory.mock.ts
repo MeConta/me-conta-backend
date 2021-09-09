@@ -35,4 +35,8 @@ export class FactoryMock {
   static contatoServiceMockFactory: () => MockType<any> = jest.fn(() => ({
     send: jest.fn(),
   }));
+
+  static authServiceMockFactory: () => MockType<any> = jest.fn(() => ({
+    login: jest.fn(),
+  }));
 }

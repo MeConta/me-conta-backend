@@ -1,20 +1,23 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { UsuarioService } from '../usuario/usuario.service';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
   constructor(
+    @Inject(UsuarioService)
     private usuarioService: UsuarioService,
+
+    @Inject(JwtService)
     private jwtService: JwtService,
   ) {}
 
   async validateUser(username: string, pass: string): Promise<any> {
     const usuario = await this.usuarioService.findOneByEmail(username);
 
-    if (usuario && usuario.senha == pass) {
-      const { senha, ...result } = usuario;
-      return result;
+    if (usuario?.senha == (await bcrypt.hash(pass, process.env.SALT))) {
+      return usuario;
     }
 
     return null;

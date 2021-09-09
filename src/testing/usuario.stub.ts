@@ -3,6 +3,7 @@ import { Estado, Genero, Tipo } from '../usuario/entities/usuario.enum';
 import { CreateUsuarioDto } from '../usuario/dto/create-usuario.dto';
 import { UpdateUsuarioDto } from '../usuario/dto/update-usuario.dto';
 import { Pagination } from 'nestjs-typeorm-paginate';
+import * as bcrypt from 'bcrypt';
 
 export class UsuarioStub {
   static getCreateDto(): CreateUsuarioDto {
@@ -33,9 +34,9 @@ export class UsuarioStub {
       email: 'teste@teste.com',
       genero: Genero.FEMININO,
       nome: 'João da Silva',
-      senha: 'teste',
+      senha: bcrypt.hashSync('s3Nh@123', process.env.SALT),
       UF: Estado.AC,
-      telefone: '5511947866489',
+      telefone: '(11) 94786-6489',
       dataCriacao: new Date('08-29-2021'),
       dataAlteracao: new Date('08-30-2021'),
       tipoUsuario: Tipo.ADMINISTRADOR,
