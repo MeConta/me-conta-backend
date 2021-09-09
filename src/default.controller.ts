@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  DefaultValuePipe,
   Delete,
   Get,
   HttpCode,
@@ -96,16 +95,13 @@ export function DefaultController(
       required: false,
     })
     findAll(
-      @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
-      @Query(
-        'limit',
-        new DefaultValuePipe(process.env.DEFAULT_PAGE_SIZE),
-        ParseIntPipe,
-      )
-      limit = 10,
+      @Query('page') page?: number,
+      @Query('limit')
+      limit?: number,
     ): Promise<Pagination<typeof Entity>> {
       // Caso o controller receba 0 ou valores negativos, mandar o valor padrão
       limit = limit || +process.env.DEFAULT_PAGE_SIZE;
+      page = page || 1;
       const max = +process.env.MAX_PAGE_SIZE;
       if (limit > max) {
         limit = max;
