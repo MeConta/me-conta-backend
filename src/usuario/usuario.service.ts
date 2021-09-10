@@ -30,10 +30,7 @@ export class UsuarioService extends DefaultService(
     try {
       return await this.repository.save(this.repository.create({ ...dto, id }));
     } catch (e) {
-      if (e instanceof UnprocessableEntityException) {
-        throw new UnprocessableEntityException(Erros.EMAIL_DUPLICADO);
-      }
-      throw e;
+      throw new UnprocessableEntityException(Erros.PARAMETROS_INCORRETOS);
     }
   }
 
