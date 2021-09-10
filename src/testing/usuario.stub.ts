@@ -4,8 +4,8 @@ import { CreateUsuarioDto } from '../usuario/dto/create-usuario.dto';
 import { UpdateUsuarioDto } from '../usuario/dto/update-usuario.dto';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import * as bcrypt from 'bcrypt';
+import { MOCKED_SALT } from '../../jest.setup';
 
-const MOCKED_SALT = bcrypt.genSaltSync();
 export class UsuarioStub {
   static getCreateDto(): CreateUsuarioDto {
     return {
@@ -35,7 +35,7 @@ export class UsuarioStub {
       email: 'teste@teste.com',
       genero: Genero.FEMININO,
       nome: 'João da Silva',
-      senha: bcrypt.hashSync('s3Nh@123', process.env.SALT),
+      senha: bcrypt.hashSync('s3Nh@123', MOCKED_SALT),
       UF: Estado.AC,
       telefone: '(11) 94786-6489',
       dataCriacao: new Date('08-29-2021'),

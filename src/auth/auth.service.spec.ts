@@ -72,10 +72,7 @@ describe('AuthService', () => {
   describe('login', () => {
     it('deve assinar um jwt', async () => {
       const req = UsuarioStub.getEntity();
-      await service.login({
-        email: req.email,
-        id: req.id,
-      });
+      await service.login(req);
       expect(jwtService.sign).toBeCalledWith({
         email: req.email,
         sub: req.id,

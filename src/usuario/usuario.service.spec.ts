@@ -118,8 +118,9 @@ describe('UsuarioService', () => {
   });
 
   it('Deve atualizar a senha de um usuário', async () => {
-    jest.spyOn(repository, 'save').mockReturnValue(UsuarioStub.getEntity());
-    jest.spyOn(repository, 'findOne').mockReturnValue(UsuarioStub.getEntity());
+    const entity = UsuarioStub.getEntity();
+    jest.spyOn(repository, 'save').mockReturnValue(entity);
+    jest.spyOn(repository, 'findOne').mockReturnValue(entity);
 
     const SENHA = 'outraS3nh@';
     const request = { ...UsuarioStub.getUpdateDto(), senha: SENHA };
@@ -128,12 +129,12 @@ describe('UsuarioService', () => {
     expect(repository.save).toBeCalledWith({
       ...request,
       id: 1,
-      senha: await bcrypt.hash(SENHA, process.env.SALT),
+      senha: await bcrypt.hash(SENHA, entity.salt),
     });
   });
 
   it('Não deve encontrar o usuário para alterar', async () => {
-    jest.spyOn(service, 'findOne').mockRejectedValue(new NotFoundException());
+    jest.spyOn(repository, 'findOne').mockReturnValue(null);
 
     await expect(() =>
       service.update(1, UsuarioStub.getUpdateDto()),
@@ -141,7 +142,9 @@ describe('UsuarioService', () => {
   });
 
   it('Não deve alterar o usuário pois os parâmetros estão incorretos', async () => {
-    jest.spyOn(repository, 'save').mockImplementation(() => Promise.reject());
+    jest.spyOn(repository, 'findOne').mockReturnValue(UsuarioStub.getEntity());
+    // jest.spyOn(repository, 'save').mockImplementation(() => Promise.reject());
+    jest.spyOn(repository, 'save').mockRejectedValue(new Error());
 
     await expect(() =>
       service.update(1, UsuarioStub.getUpdateDto()),

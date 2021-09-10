@@ -167,6 +167,13 @@ describe('AtendenteService', () => {
       expect(repository.save).toBeCalled();
     });
 
+    it('Não deve atualizar um atendente pois os parâmetros estão incorretos', async () => {
+      jest.spyOn(repository, 'save').mockRejectedValue(new Error());
+      await expect(() =>
+        service.update(1, AtendenteStub.getUpdateDto()),
+      ).rejects.toThrow(UnprocessableEntityException);
+    });
+
     it('Deve atualizar a frente de Atuação de um atendente', async () => {
       request.frentesAtuacao = [
         {
