@@ -1,18 +1,11 @@
-import { Body, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Param } from '@nestjs/common';
 import { AlunoService } from './aluno.service';
 import { CreateAlunoDto } from './dto/create-aluno.dto';
 import { DefaultController } from '../default.controller';
 import { Aluno } from './entities/aluno.entity';
 import { UpdateAlunoDto } from './dto/update-aluno.dto';
-import {
-  ApiBadRequestResponse,
-  ApiBearerAuth,
-  ApiNotFoundResponse,
-  ApiTags,
-  ApiUnprocessableEntityResponse,
-} from '@nestjs/swagger';
-import { TOKEN_NAME } from '../config/swagger.config';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { ApiTags } from '@nestjs/swagger';
+import { Auth, PatchApi, PostApi } from '../decorators';
 
 @ApiTags('Aluno')
 export class AlunoController extends DefaultController(
@@ -22,29 +15,13 @@ export class AlunoController extends DefaultController(
   CreateAlunoDto,
   UpdateAlunoDto,
 ) {
-  @Post()
-  @ApiBadRequestResponse({
-    description: `Requisição inválida`,
-  })
-  @ApiUnprocessableEntityResponse({
-    description: `Violação de regra de negócio`,
-  })
+  @PostApi()
   create(@Body() dto: CreateAlunoDto): Promise<Aluno> {
     return super.create(dto);
   }
 
-  @Patch(':id')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth(TOKEN_NAME)
-  @ApiNotFoundResponse({
-    description: `Item não encontrado`,
-  })
-  @ApiBadRequestResponse({
-    description: `Requisição inválida`,
-  })
-  @ApiUnprocessableEntityResponse({
-    description: `Violação de regra de negócio`,
-  })
+  @PatchApi()
+  @Auth()
   update(@Param('id') id: number, @Body() dto: UpdateAlunoDto): Promise<Aluno> {
     return super.update(id, dto);
   }

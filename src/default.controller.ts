@@ -1,32 +1,25 @@
 import {
   Body,
   Controller,
-  Delete,
-  Get,
-  HttpCode,
-  HttpStatus,
   Inject,
   NotFoundException,
   Param,
   ParseIntPipe,
-  Patch,
   Post,
   Query,
   Type,
-  UseGuards,
 } from '@nestjs/common';
 import { IDefaultService } from './default.service';
 import { Pagination } from 'nestjs-typeorm-paginate';
+import { ApiTags } from '@nestjs/swagger';
 import {
-  ApiBearerAuth,
-  ApiNoContentResponse,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-  ApiQuery,
-  ApiTags,
-} from '@nestjs/swagger';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
-import { TOKEN_NAME } from './config/swagger.config';
+  DeleteApi,
+  GetApi,
+  GetOneApi,
+  PaginatedApi,
+  PatchApi,
+} from './decorators';
+import { Auth } from './decorators';
 
 export interface IDefaultController<Entity, CreateDto, UpdateDto> {
   service: IDefaultService<Entity, CreateDto, UpdateDto>;
@@ -84,20 +77,8 @@ export function DefaultController(
      * @returns {Promise<?[]>} Entidades TypeORM
      */
     // TODO: fix(#3): swagger Verificar como retornar o tipo no swagger
-    @Get()
-    @ApiOkResponse({
-      description: `Lista paginada de items com sucesso`,
-    })
-    @ApiQuery({
-      name: 'page',
-      type: Number,
-      required: false,
-    })
-    @ApiQuery({
-      name: 'limit',
-      type: Number,
-      required: false,
-    })
+    @GetApi()
+    @PaginatedApi()
     findAll(
       @Query('page') page?: number,
       @Query('limit')
@@ -119,13 +100,7 @@ export function DefaultController(
      * @param id {string} id, via param
      * @returns {Promise<?>} Entidade TypeORM
      */
-    @Get(':id')
-    @ApiOkResponse({
-      type: Entity,
-    })
-    @ApiNotFoundResponse({
-      description: `Item não encontrado`,
-    })
+    @GetOneApi(Entity)
     findOne(@Param('id', ParseIntPipe) id: number): Promise<typeof Entity> {
       return this.service.findOne(+id);
     }
@@ -136,9 +111,8 @@ export function DefaultController(
      * @param dto {?} Dto de atualização de entidade
      * @returns {Promise<?>} Entidade TypeORM
      */
-    @Patch(':id')
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth(TOKEN_NAME)
+    @PatchApi()
+    @Auth()
     update(
       @Param('id') id: number,
       @Body() dto: typeof UpdateDto,
@@ -151,16 +125,8 @@ export function DefaultController(
      * @param id {string} id, via param
      * @returns {Promise<?>} Entidade TypeORM
      */
-    @Delete(':id')
-    @UseGuards(JwtAuthGuard)
-    @ApiBearerAuth(TOKEN_NAME)
-    @HttpCode(HttpStatus.NO_CONTENT)
-    @ApiNoContentResponse({
-      description: `Item deletado com sucesso`,
-    })
-    @ApiNotFoundResponse({
-      description: `Item não encontrado`,
-    })
+    @DeleteApi()
+    @Auth()
     remove(@Param('id') id: number): Promise<typeof Entity> {
       return this.service.remove(+id);
     }

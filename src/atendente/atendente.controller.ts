@@ -1,18 +1,12 @@
-import { Post, Body, Patch, Param, UseGuards } from '@nestjs/common';
+import { Body, Param } from '@nestjs/common';
 import { AtendenteService } from './atendente.service';
 import { CreateAtendenteDto } from './dto/create-atendente.dto';
 import { UpdateAtendenteDto } from './dto/update-atendente.dto';
 import { DefaultController } from '../default.controller';
 import { Atendente } from './entities/atendente.entity';
-import {
-  ApiBadRequestResponse,
-  ApiBearerAuth,
-  ApiNotFoundResponse,
-  ApiTags,
-  ApiUnprocessableEntityResponse,
-} from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { TOKEN_NAME } from '../config/swagger.config';
+import { ApiTags } from '@nestjs/swagger';
+import { PatchApi, PostApi } from '../decorators';
+import { Auth } from '../decorators';
 
 @ApiTags('Atendente')
 export class AtendenteController extends DefaultController(
@@ -22,29 +16,13 @@ export class AtendenteController extends DefaultController(
   CreateAtendenteDto,
   UpdateAtendenteDto,
 ) {
-  @Post()
-  @ApiBadRequestResponse({
-    description: `Requisição inválida`,
-  })
-  @ApiUnprocessableEntityResponse({
-    description: `Violação de regra de negócio`,
-  })
+  @PostApi()
   create(@Body() dto: CreateAtendenteDto): Promise<Atendente> {
     return super.create(dto);
   }
 
-  @Patch(':id')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth(TOKEN_NAME)
-  @ApiNotFoundResponse({
-    description: `Item não encontrado`,
-  })
-  @ApiBadRequestResponse({
-    description: `Requisição inválida`,
-  })
-  @ApiUnprocessableEntityResponse({
-    description: `Violação de regra de negócio`,
-  })
+  @PatchApi()
+  @Auth()
   update(
     @Param('id') id: number,
     @Body() dto: UpdateAtendenteDto,
