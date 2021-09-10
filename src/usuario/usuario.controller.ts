@@ -1,4 +1,4 @@
-import { Body, Param, Patch, Post } from '@nestjs/common';
+import { Body, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
@@ -6,13 +6,15 @@ import { DefaultController } from '../default.controller';
 import { Usuario } from './entities/usuario.entity';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { TOKEN_NAME } from '../config/swagger.config';
 
 @ApiTags('Usuário')
-// @UseGuards(JwtAuthGuard)
 export class UsuarioController extends DefaultController(
   'usuario',
   Usuario,
@@ -32,6 +34,8 @@ export class UsuarioController extends DefaultController(
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth(TOKEN_NAME)
   @ApiNotFoundResponse({
     description: `Item não encontrado`,
   })

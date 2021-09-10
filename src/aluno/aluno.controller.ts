@@ -11,12 +11,10 @@ import {
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { TOKEN_NAME } from '../config/swagger.config';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Aluno')
-@ApiBearerAuth(TOKEN_NAME)
-@UseGuards(JwtAuthGuard)
 export class AlunoController extends DefaultController(
   'aluno',
   Aluno,
@@ -36,6 +34,8 @@ export class AlunoController extends DefaultController(
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth(TOKEN_NAME)
   @ApiNotFoundResponse({
     description: `Item não encontrado`,
   })

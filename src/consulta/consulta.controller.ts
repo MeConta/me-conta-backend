@@ -6,14 +6,15 @@ import { DefaultController } from '../default.controller';
 import { Consulta } from './entities/consulta.entity';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { TOKEN_NAME } from '../config/swagger.config';
 
 @ApiTags('Consulta')
-@UseGuards(JwtAuthGuard)
 export class ConsultaController extends DefaultController(
   'consulta',
   Consulta,
@@ -23,6 +24,7 @@ export class ConsultaController extends DefaultController(
 ) {
   @Post()
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth(TOKEN_NAME)
   @ApiBadRequestResponse({
     description: `Requisição inválida`,
   })
@@ -34,6 +36,8 @@ export class ConsultaController extends DefaultController(
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth(TOKEN_NAME)
   @ApiNotFoundResponse({
     description: `Item não encontrado`,
   })

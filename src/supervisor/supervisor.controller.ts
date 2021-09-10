@@ -6,14 +6,15 @@ import { DefaultController } from '../default.controller';
 import { Supervisor } from './entities/supervisor.entity';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { TOKEN_NAME } from '../config/swagger.config';
 
 @ApiTags('Supervisor')
-@UseGuards(JwtAuthGuard)
 export class SupervisorController extends DefaultController(
   'supervisor',
   Supervisor,
@@ -33,6 +34,8 @@ export class SupervisorController extends DefaultController(
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth(TOKEN_NAME)
   @ApiNotFoundResponse({
     description: `Item não encontrado`,
   })

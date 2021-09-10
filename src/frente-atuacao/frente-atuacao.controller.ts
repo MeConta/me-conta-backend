@@ -6,14 +6,15 @@ import { DefaultController } from '../default.controller';
 import { FrenteAtuacao } from './entities/frente-atuacao.entity';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { TOKEN_NAME } from '../config/swagger.config';
 
 @ApiTags('Frentes de Atuação')
-@UseGuards(JwtAuthGuard)
 export class FrenteAtuacaoController extends DefaultController(
   'frente-atuacao',
   FrenteAtuacao,
@@ -22,6 +23,8 @@ export class FrenteAtuacaoController extends DefaultController(
   UpdateFrenteAtuacaoDto,
 ) {
   @Post()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth(TOKEN_NAME)
   @ApiBadRequestResponse({
     description: `Requisição inválida`,
   })
@@ -33,6 +36,7 @@ export class FrenteAtuacaoController extends DefaultController(
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiNotFoundResponse({
     description: `Item não encontrado`,
   })

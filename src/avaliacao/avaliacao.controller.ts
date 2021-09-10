@@ -6,14 +6,15 @@ import { DefaultController } from '../default.controller';
 import { Avaliacao } from './entities/avaliacao.entity';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { TOKEN_NAME } from '../config/swagger.config';
 
 @ApiTags('Avaliação')
-@UseGuards(JwtAuthGuard)
 export class AvaliacaoController extends DefaultController(
   'avaliacao',
   Avaliacao,
@@ -22,6 +23,7 @@ export class AvaliacaoController extends DefaultController(
   UpdateAvaliacaoDto,
 ) {
   @Post()
+  @ApiBearerAuth(TOKEN_NAME)
   @ApiBadRequestResponse({
     description: `Requisição inválida`,
   })
@@ -33,6 +35,8 @@ export class AvaliacaoController extends DefaultController(
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth(TOKEN_NAME)
   @ApiNotFoundResponse({
     description: `Item não encontrado`,
   })

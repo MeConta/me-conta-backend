@@ -6,14 +6,15 @@ import { DefaultController } from '../default.controller';
 import { Agenda } from './entities/agenda.entity';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { TOKEN_NAME } from '../config/swagger.config';
 
 @ApiTags('Agenda')
-@UseGuards(JwtAuthGuard)
 export class AgendaController extends DefaultController(
   'agenda',
   Agenda,
@@ -22,6 +23,8 @@ export class AgendaController extends DefaultController(
   UpdateAgendaDto,
 ) {
   @Post()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth(TOKEN_NAME)
   @ApiBadRequestResponse({
     description: `Requisição inválida`,
   })
@@ -33,6 +36,8 @@ export class AgendaController extends DefaultController(
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth(TOKEN_NAME)
   @ApiNotFoundResponse({
     description: `Item não encontrado`,
   })

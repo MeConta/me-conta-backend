@@ -6,14 +6,15 @@ import { DefaultController } from '../default.controller';
 import { Atendente } from './entities/atendente.entity';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { TOKEN_NAME } from '../config/swagger.config';
 
 @ApiTags('Atendente')
-@UseGuards(JwtAuthGuard)
 export class AtendenteController extends DefaultController(
   'atendente',
   Atendente,
@@ -33,6 +34,8 @@ export class AtendenteController extends DefaultController(
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth(TOKEN_NAME)
   @ApiNotFoundResponse({
     description: `Item não encontrado`,
   })

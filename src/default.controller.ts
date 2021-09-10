@@ -13,16 +13,20 @@ import {
   Post,
   Query,
   Type,
+  UseGuards,
 } from '@nestjs/common';
 import { IDefaultService } from './default.service';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import {
+  ApiBearerAuth,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { TOKEN_NAME } from './config/swagger.config';
 
 export interface IDefaultController<Entity, CreateDto, UpdateDto> {
   service: IDefaultService<Entity, CreateDto, UpdateDto>;
@@ -133,6 +137,8 @@ export function DefaultController(
      * @returns {Promise<?>} Entidade TypeORM
      */
     @Patch(':id')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth(TOKEN_NAME)
     update(
       @Param('id') id: number,
       @Body() dto: typeof UpdateDto,
@@ -146,6 +152,8 @@ export function DefaultController(
      * @returns {Promise<?>} Entidade TypeORM
      */
     @Delete(':id')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth(TOKEN_NAME)
     @HttpCode(HttpStatus.NO_CONTENT)
     @ApiNoContentResponse({
       description: `Item deletado com sucesso`,
