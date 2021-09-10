@@ -6,13 +6,16 @@ import { Aluno } from './entities/aluno.entity';
 import { UpdateAlunoDto } from './dto/update-aluno.dto';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiNotFoundResponse,
   ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { TOKEN_NAME } from '../config/swagger.config';
 
 @ApiTags('Aluno')
+@ApiBearerAuth(TOKEN_NAME)
 @UseGuards(JwtAuthGuard)
 export class AlunoController extends DefaultController(
   'aluno',

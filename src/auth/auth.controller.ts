@@ -9,8 +9,17 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
+import {
+  ApiBasicAuth,
+  ApiBody,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import { AuthRequestDto, LoginDto, TokenDto } from './dto';
 
-@Controller()
+@Controller('auth')
+@ApiBasicAuth()
+@ApiTags('Auth')
 export class AuthController {
   constructor(
     @Inject(AuthService)
@@ -18,9 +27,15 @@ export class AuthController {
   ) {}
 
   @UseGuards(LocalAuthGuard)
-  @Post('auth/login')
+  @Post('login')
   @HttpCode(HttpStatus.OK)
-  async login(@Request() req) {
+  @ApiUnauthorizedResponse({
+    description: `Usuário ou senha incorretos`,
+  })
+  @ApiBody({
+    type: AuthRequestDto,
+  })
+  async login(@Request() req: LoginDto): Promise<TokenDto> {
     return this.authService.login(req.user);
   }
 }
