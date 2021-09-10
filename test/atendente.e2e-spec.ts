@@ -11,14 +11,24 @@ import { VoluntarioModule } from '../src/voluntario/voluntario.module';
 import { FrenteAtuacaoStub } from '../src/testing/frente-atuacao.stub';
 import { internet, name } from 'faker/locale/pt_BR';
 import { UpdateAtendenteDto } from '../src/atendente/dto/update-atendente.dto';
+import { AuthModule } from '../src/auth/auth.module';
+import { getAuthToken } from './utils.test';
 
 describe('Atendente (e2e)', () => {
   let app: INestApplication;
   let frenteAtuacaoService: FrenteAtuacaoService;
 
+  let ID = null;
+  let TOKEN = null;
+
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [DbE2eModule, AtendenteModule, VoluntarioModule],
+      imports: [
+        DbE2eModule,
+        AtendenteModule,
+        VoluntarioModule,
+        AuthModule.forRoot(),
+      ],
     }).compile();
 
     app = moduleFixture.createNestApplication();
@@ -134,17 +144,19 @@ describe('Atendente (e2e)', () => {
       frentesAtuacao: [1, 2, 3],
       dataNascimento: moment('1990-09-25').toISOString(),
     };
-    let ID = null;
+
     beforeAll(async () => {
       const response = await request(app.getHttpServer())
         .post('/atendente')
         .send(req);
       ID = response.body.id;
+      TOKEN = await getAuthToken(app, response.body.email, req.senha);
     });
     it('Deve alterar uma propriedade', async () => {
       const NOME = name.findName();
       const response = await request(app.getHttpServer())
         .patch(`/atendente/${ID}`)
+        .set('Authorization', `Bearer ${TOKEN}`)
         .send({
           nome: NOME,
         })
@@ -155,6 +167,7 @@ describe('Atendente (e2e)', () => {
     it('Não deve alterar caso formação seja VERDADEIRA e não passe os campos necessários', async () => {
       await request(app.getHttpServer())
         .patch(`/atendente/${ID}`)
+        .set('Authorization', `Bearer ${TOKEN}`)
         .send({
           formado: true,
         })
@@ -164,6 +177,7 @@ describe('Atendente (e2e)', () => {
     it('Não deve alterar caso formação seja FALSA e não passe os campos necessários', async () => {
       await request(app.getHttpServer())
         .patch(`/atendente/${ID}`)
+        .set('Authorization', `Bearer ${TOKEN}`)
         .send({
           formado: false,
         })
@@ -173,6 +187,7 @@ describe('Atendente (e2e)', () => {
     it('O semestre deve ser NULO caso a formação seja VERDADEIRA', async () => {
       const response = await request(app.getHttpServer())
         .patch(`/atendente/${ID}`)
+        .set('Authorization', `Bearer ${TOKEN}`)
         .send({
           formado: true,
           anoConclusao: 2020,
@@ -186,6 +201,7 @@ describe('Atendente (e2e)', () => {
     it('AnoConclusão, CRP e especialização devem ser NULOS caso a formação seja FALSA', async () => {
       const response = await request(app.getHttpServer())
         .patch(`/atendente/${ID}`)
+        .set('Authorization', `Bearer ${TOKEN}`)
         .send({
           formado: false,
           semestre: 3,
@@ -199,7 +215,8 @@ describe('Atendente (e2e)', () => {
 
   it('/atendente (DELETE)', async () => {
     await request(app.getHttpServer())
-      .delete(`/atendente/1`)
+      .delete(`/atendente/${ID}`)
+      .set('Authorization', `Bearer ${TOKEN}`)
       .expect(HttpStatus.NO_CONTENT);
   });
 

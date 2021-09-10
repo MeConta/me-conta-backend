@@ -4,6 +4,8 @@ import * as request from 'supertest';
 import { UsuarioModule } from '../src/usuario/usuario.module';
 import { UsuarioStub } from '../src/testing/usuario.stub';
 import { DbE2eModule } from './db.e2e.module';
+import { AuthModule } from '../src/auth/auth.module';
+import { getAuthToken } from './utils.test';
 
 describe('Usuario (e2e)', () => {
   let app: INestApplication;
@@ -11,7 +13,7 @@ describe('Usuario (e2e)', () => {
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [DbE2eModule, UsuarioModule],
+      imports: [DbE2eModule, UsuarioModule, AuthModule.forRoot()],
     }).compile();
 
     app = moduleFixture.createNestApplication();
@@ -41,8 +43,11 @@ describe('Usuario (e2e)', () => {
   });
 
   it('/usuario (PATCH)', async () => {
+    const token = await getAuthToken(app);
+
     const response = await request(app.getHttpServer())
       .patch(`/usuario/1`)
+      .set('Authorization', `Bearer ${token}`)
       .send({
         nome: 'teste',
       } as any)
@@ -51,7 +56,12 @@ describe('Usuario (e2e)', () => {
   });
 
   it('/usuario (DELETE)', async () => {
-    await request(app.getHttpServer()).delete(`/usuario/1`).expect(204);
+    const token = await getAuthToken(app);
+
+    await request(app.getHttpServer())
+      .delete(`/usuario/1`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(204);
   });
 
   afterAll(async () => {

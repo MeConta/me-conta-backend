@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { FactoryMock } from '../testing/factory.mock';
 import { AuthController } from './auth.controller';
+import { Usuario } from '../usuario/entities/usuario.entity';
 
 describe('AuthController', () => {
   let service: AuthService;
@@ -27,7 +28,7 @@ describe('AuthController', () => {
 
   it('deve chamar o serviço de login', async () => {
     await controller.login({
-      user: { email: 'foo@bar.com', senha: 's3nH4VAl1d@' },
+      user: { email: 'foo@bar.com', senha: 's3nH4VAl1d@' } as Usuario,
     });
 
     expect(service.login).toBeCalled();
