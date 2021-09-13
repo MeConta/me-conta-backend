@@ -15,6 +15,7 @@ import { UpdateAtendenteDto } from '../src/atendente/dto/update-atendente.dto';
 describe('Atendente (e2e)', () => {
   let app: INestApplication;
   let frenteAtuacaoService: FrenteAtuacaoService;
+  let ID: number;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -118,6 +119,7 @@ describe('Atendente (e2e)', () => {
       );
       expect(response.body.message).toContain('semestre should not be empty');
     });
+
     it('Deve criar um atendente em formação sem salvar os campos anoConclusão, crp e especialização', async () => {
       const response = await request(app.getHttpServer())
         .post('/atendente')
@@ -136,6 +138,7 @@ describe('Atendente (e2e)', () => {
       expect(response.body.especializacao).toBeNull();
       expect(response.body.crp).toBeNull();
     });
+
     it('Deve criar um atendente formado sem salvar o campo semestre', async () => {
       const response = await request(app.getHttpServer())
         .post('/atendente')
@@ -166,7 +169,6 @@ describe('Atendente (e2e)', () => {
     });
 
     it('/atendente/:id (GET)', async () => {
-      console.log('INFERNO! ID', ID);
       const response = await request(app.getHttpServer())
         .get(`/atendente/${ID}`)
         .expect(200);
