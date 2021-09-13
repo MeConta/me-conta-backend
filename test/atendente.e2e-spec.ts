@@ -118,6 +118,41 @@ describe('Atendente (e2e)', () => {
       );
       expect(response.body.message).toContain('semestre should not be empty');
     });
+    it('Deve criar um atendente em formação sem salvar os campos anoConclusão, crp e especialização', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/atendente')
+        .send({
+          ...req,
+          formado: false,
+          semestre: 6,
+          frentesAtuacao: [1, 2, 3],
+          anoConclusao: 2020,
+          especializacao: 'teste',
+          crp: 'teste',
+        })
+        .expect(HttpStatus.CREATED);
+      expect(response.body).toBeDefined();
+      expect(response.body.anoConclusao).toBeNull();
+      expect(response.body.especializacao).toBeNull();
+      expect(response.body.crp).toBeNull();
+    });
+    it('Deve criar um atendente formado sem salvar o campo semestre', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/atendente')
+        .send({
+          ...req,
+          formado: true,
+          semestre: 6,
+          frentesAtuacao: [1, 2, 3],
+          anoConclusao: 2020,
+          especializacao: 'teste',
+          crp: 'teste',
+        })
+        .expect(HttpStatus.CREATED);
+      expect(response.body).toBeDefined();
+      expect(response.body.semestre).toBeNull();
+    });
+    // TODO: Tratar criação de atendente que já foi excluído (deixar cadastrar novamente um mesmo e-mail)
   });
 
   describe('/atendente (GET)', () => {
