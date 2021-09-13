@@ -4,9 +4,6 @@ import { UsuarioService } from './usuario.service';
 import { FactoryMock } from '../testing/factory.mock';
 import { UsuarioStub } from '../testing/usuario.stub';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
 
 describe('UsuarioController', () => {
   let controller: UsuarioController;

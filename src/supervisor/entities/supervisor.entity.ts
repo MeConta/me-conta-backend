@@ -11,9 +11,6 @@ export class Supervisor extends Voluntario {
   })
   areaAtuacao: AreaAtuacao;
 
-  @Column()
-  crp: string;
-
   @OneToMany(() => Atendente, (atendente) => atendente.supervisor)
   atendentes: Atendente[];
 }

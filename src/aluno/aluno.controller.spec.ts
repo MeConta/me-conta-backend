@@ -32,6 +32,11 @@ describe('AlunoController', () => {
     expect(service.create).toBeCalled();
   });
 
+  it('deve chamar o findAll com parametros padrão', async () => {
+    await controller.findAll(null, null);
+    expect(service.findAll).toBeCalled();
+  });
+
   it('deve chamar o update', async () => {
     await controller.update(1, AlunoStub.getUpdateDto());
     expect(service.update).toBeCalled();

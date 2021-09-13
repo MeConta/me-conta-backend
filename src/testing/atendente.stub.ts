@@ -8,14 +8,16 @@ export class AtendenteStub {
   static getCreateDto(): CreateAtendenteDto {
     return {
       ...VoluntarioStub.getCreateDto(),
-      formado: true,
+      formado: false,
       semestre: 3,
-      anoFormacao: 1994,
     };
   }
 
   static getUpdateDto(): UpdateAtendenteDto {
     return {
+      descricao: null,
+      instituicao: null,
+      frentesAtuacao: [],
       supervisor: null,
       aprovado: true,
     };
@@ -24,9 +26,10 @@ export class AtendenteStub {
   static getEntity(): Atendente {
     return {
       ...VoluntarioStub.getEntity(),
-      formado: true,
+      formado: false,
       semestre: 3,
-      anoFormacao: 1994,
+      crp: null,
+      anoConclusao: null,
       supervisor: null,
       agendas: [],
     };

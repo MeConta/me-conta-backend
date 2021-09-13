@@ -19,6 +19,7 @@ import { UpdateAtendenteDto } from './dto/update-atendente.dto';
 import { SupervisorService } from '../supervisor/supervisor.service';
 import { SupervisorStub } from '../testing/supervisor.stub';
 import { Supervisor } from '../supervisor/entities/supervisor.entity';
+import * as moment from 'moment';
 
 describe('AtendenteService', () => {
   let service: AtendenteService;
@@ -127,6 +128,18 @@ describe('AtendenteService', () => {
     );
   });
 
+  it('não deve criar um atendente com idade inferior a 18 anos', async () => {
+    const request = AtendenteStub.getCreateDto();
+    jest
+      .spyOn(frenteAtuacaoService, 'findAll')
+      .mockResolvedValue(FrenteAtuacaoStub.getPaginatedEntities());
+    request.dataNascimento = moment().toDate();
+
+    await expect(() => service.create(request)).rejects.toThrow(
+      UnprocessableEntityException,
+    );
+  });
+
   describe('Atualização de atendente', () => {
     let request: UpdateAtendenteDto;
 
@@ -181,6 +194,18 @@ describe('AtendenteService', () => {
       expect(response.supervisor).toBeDefined();
     });
 
+    it('Deve atualizar o supervisor sem passar Frentes de Atuação', async () => {
+      jest
+        .spyOn(supervisorService, 'findOne')
+        .mockResolvedValue(SupervisorStub.getEntity());
+
+      request.frentesAtuacao = null;
+
+      await service.update(1, request);
+
+      expect(repository.save).toBeCalled();
+    });
+
     it('Deve remover o supervisor de um atendente', async () => {
       request.supervisor = {
         id: null,
@@ -191,6 +216,48 @@ describe('AtendenteService', () => {
       expect(repository.save).toBeCalled();
       expect(response.id).toBeDefined();
       expect(response.supervisor).toBeNull();
+    });
+
+    it('Deve forçar semestre como NULO caso formado seja verdadeiro', async () => {
+      jest
+        .spyOn(frenteAtuacaoService, 'findAll')
+        .mockResolvedValue(FrenteAtuacaoStub.getPaginatedEntities(0));
+
+      request = {
+        ...request,
+        formado: true,
+        anoConclusao: 2020,
+        crp: 'CRP',
+        especializacao: 'teste',
+      };
+
+      await service.update(1, request);
+      expect(repository.save).toBeCalledWith({
+        ...request,
+        id: 1,
+        semestre: null,
+      });
+    });
+
+    it('Deve forçar os campos de formação como NULOS caso formado seja falso', async () => {
+      jest
+        .spyOn(frenteAtuacaoService, 'findAll')
+        .mockResolvedValue(FrenteAtuacaoStub.getPaginatedEntities(0));
+
+      request = {
+        ...request,
+        formado: false,
+        semestre: 3,
+      };
+
+      await service.update(1, request);
+      expect(repository.save).toBeCalledWith({
+        ...request,
+        id: 1,
+        anoConclusao: null,
+        crp: null,
+        especializacao: null,
+      });
     });
 
     it('Deve dar erro de supervisor não encontrado quando este não existir', async () => {

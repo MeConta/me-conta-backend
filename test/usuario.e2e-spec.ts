@@ -5,7 +5,7 @@ import { UsuarioModule } from '../src/usuario/usuario.module';
 import { UsuarioStub } from '../src/testing/usuario.stub';
 import { DbE2eModule } from './db.e2e.module';
 
-describe('AppController (e2e)', () => {
+describe('Usuario (e2e)', () => {
   let app: INestApplication;
   const BIRTH_DATE = new Date('1960-05-20').toISOString();
 

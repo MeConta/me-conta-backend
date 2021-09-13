@@ -38,12 +38,32 @@ npm run build
 ```bash
 npm run typeorm:migration:run
 ```
+
 ## ▶️ Executando o projeto
 - Inicie o **Nest** em modo de desenvolvimento (live reload)
 ```bash
 npm run start:dev
 ```
+
 Abra [http://localhost:3000](http://localhost:3000) no navegador para ver o resultado
+
+## 🪑 Migrações de banco de dados
+- Ao alterar uma entidade é necessário gerar nova migração para o banco de dados
+```bash
+npm run typeorm:migration:generate [nome da migração]
+```
+- Se necessário, criar uma migração vazia (caso precise incluir algum dado no banco, por exemplo)
+```bash
+npm run typeorm:migration:create [nome da migração]
+```
+- compilar o projeto antes de executar as migrações
+```bash
+npm run build
+```
+- rodar as migrações para efetivar no banco
+```bash
+npm run typeorm:migration:run
+```
 
 ## 🧪 Testes:
 - Testes unitários
@@ -60,6 +80,7 @@ npm run test:cov
 npm run test:e2e
 ```
 ---
+
 ## 🚀 Contribuindo com o projeto
 
 Foi adicionado ao projeto o [husky](https://github.com/typicode/husky) para verificar alguns passos antes de autorizar o commit.

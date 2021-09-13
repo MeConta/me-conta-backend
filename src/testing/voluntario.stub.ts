@@ -7,7 +7,6 @@ export class VoluntarioStub {
   static getCreateDto(): CreateVoluntarioDto {
     return {
       ...UsuarioStub.getCreateDto(),
-      especializacao: 'Teste',
       descricao: 'Teste Descricao',
       instituicao: 'Inst. Teste',
       frentesAtuacao: [FrenteAtuacaoStub.getEntity()],

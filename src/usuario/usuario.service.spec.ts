@@ -3,13 +3,14 @@ import { UsuarioService } from './usuario.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Usuario } from './entities/usuario.entity';
 import { FactoryMock, MockType } from '../testing/factory.mock';
-import { FindConditions, Repository, UpdateResult } from 'typeorm';
+import { FindConditions, Repository } from 'typeorm';
 import { UsuarioStub } from '../testing/usuario.stub';
 import {
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import * as PaginateSpy from 'nestjs-typeorm-paginate';
+import * as bcrypt from 'bcrypt';
 
 jest.mock('nestjs-typeorm-paginate');
 
@@ -101,13 +102,26 @@ describe('UsuarioService', () => {
   });
 
   it('deve atualizar um usuário', async () => {
-    jest.spyOn(repository, 'update').mockReturnValue({
-      affected: 1,
-    } as UpdateResult);
+    jest.spyOn(repository, 'save').mockReturnValue(UsuarioStub.getEntity());
     jest.spyOn(repository, 'findOne').mockReturnValue(UsuarioStub.getEntity());
 
     const result = await service.update(1, UsuarioStub.getUpdateDto());
     expect(result.id).toEqual(UsuarioStub.getEntity().id);
+  });
+
+  it('Deve atualizar a senha de um usuário', async () => {
+    jest.spyOn(repository, 'save').mockReturnValue(UsuarioStub.getEntity());
+    jest.spyOn(repository, 'findOne').mockReturnValue(UsuarioStub.getEntity());
+
+    const SENHA = 'outraS3nh@';
+    const request = { ...UsuarioStub.getUpdateDto(), senha: SENHA };
+
+    await service.update(1, request);
+    expect(repository.save).toBeCalledWith({
+      ...request,
+      id: 1,
+      senha: await bcrypt.hash(SENHA, process.env.SALT),
+    });
   });
 
   it('Não deve encontrar o usuário para alterar', async () => {

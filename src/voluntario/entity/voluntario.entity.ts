@@ -4,8 +4,15 @@ import { FrenteAtuacao } from '../../frente-atuacao/entities/frente-atuacao.enti
 import { Usuario } from '../../usuario/entities/usuario.entity';
 
 export abstract class Voluntario extends DefaultEntity {
-  @Column()
+  @Column({
+    nullable: true,
+  })
   especializacao: string;
+
+  @Column({
+    nullable: true,
+  })
+  crp?: string;
 
   @Column()
   descricao: string;
