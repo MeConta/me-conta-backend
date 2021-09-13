@@ -76,6 +76,7 @@ describe('AuthService', () => {
       expect(jwtService.sign).toBeCalledWith({
         email: req.email,
         sub: req.id,
+        roles: [req.tipoUsuario],
       });
     });
   });

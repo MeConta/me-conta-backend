@@ -1,7 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Tipo } from '../../usuario/entities/usuario.enum';
-import { ExtractJwt } from 'passport-jwt';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -16,13 +15,9 @@ export class RolesGuard implements CanActivate {
     if (!roles) {
       return true;
     }
-    const request = context.switchToHttp().getRequest();
-    const token = ExtractJwt.fromAuthHeaderAsBearerToken();
-    const token2 = ExtractJwt.fromAuthHeaderWithScheme('Bearer');
-    // TODO: feat(#5): autorização jwt
-    const boneco = token(request.headers.authorization);
-    const user = request.user;
 
-    return this.matchRoles(roles, user.roles);
+    const request = context.switchToHttp().getRequest();
+
+    return this.matchRoles(roles, request.user.roles);
   }
 }
