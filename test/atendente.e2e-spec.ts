@@ -65,6 +65,7 @@ describe('Atendente (e2e)', () => {
         .expect(HttpStatus.CREATED);
       expect(response.body).toBeDefined();
       expect(response.body.id).toBeDefined();
+      ID = response.body.id;
     });
 
     it('Deve criar um atendente não formado', async () => {
@@ -119,13 +120,23 @@ describe('Atendente (e2e)', () => {
     });
   });
 
-  it('/atendente (GET)', async () => {
-    const response = await request(app.getHttpServer())
-      .get('/atendente')
-      .expect(200);
-    expect(response.body).toBeDefined();
-    expect(response.body.items).toBeInstanceOf(Array);
-    expect(response.body.items[0]).toBeDefined();
+  describe('/atendente (GET)', () => {
+    it('/atendente (GET)', async () => {
+      const response = await request(app.getHttpServer())
+        .get('/atendente')
+        .expect(200);
+      expect(response.body).toBeDefined();
+      expect(response.body.items).toBeInstanceOf(Array);
+      expect(response.body.items[0]).toBeDefined();
+    });
+
+    it('/atendente/:id (GET)', async () => {
+      console.log('INFERNO! ID', ID);
+      const response = await request(app.getHttpServer())
+        .get(`/atendente/${ID}`)
+        .expect(200);
+      expect(response.body).toBeDefined();
+    });
   });
 
   describe('/atendente (PATCH)', () => {
