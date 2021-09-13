@@ -18,8 +18,6 @@ describe('Atendente (e2e)', () => {
   let app: INestApplication;
   let frenteAtuacaoService: FrenteAtuacaoService;
   let ID: number;
-
-  let ID = null;
   let TOKEN = null;
 
   beforeAll(async () => {
