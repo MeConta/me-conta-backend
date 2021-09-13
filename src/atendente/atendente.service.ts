@@ -22,6 +22,26 @@ export class AtendenteService extends VoluntarioService(
   @Inject(SupervisorService)
   private readonly supervisorService: SupervisorService;
 
+  private static checkFormacao(
+    dto: CreateAtendenteDto | UpdateAtendenteDto,
+  ): CreateAtendenteDto | UpdateAtendenteDto {
+    if (dto.formado === true) {
+      dto.semestre = null;
+    }
+
+    if (dto.formado === false) {
+      dto.anoConclusao = null;
+      dto.especializacao = null;
+      dto.crp = null;
+    }
+    return dto;
+  }
+
+  async create(dto: CreateAtendenteDto): Promise<Atendente> {
+    dto = AtendenteService.checkFormacao(dto) as CreateAtendenteDto;
+    return super.create(dto);
+  }
+
   async update(id: number, dto: UpdateAtendenteDto): Promise<Atendente> {
     if (dto.supervisor) {
       let supervisor: Supervisor = null;
@@ -40,15 +60,8 @@ export class AtendenteService extends VoluntarioService(
       };
     }
 
-    if (dto.formado === true) {
-      dto.semestre = null;
-    }
+    dto = AtendenteService.checkFormacao(dto) as UpdateAtendenteDto;
 
-    if (dto.formado === false) {
-      dto.anoConclusao = null;
-      dto.especializacao = null;
-      dto.crp = null;
-    }
     return super.update(id, dto);
   }
 }

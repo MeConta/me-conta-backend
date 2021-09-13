@@ -17,6 +17,7 @@ import { getAuthToken } from './utils.test';
 describe('Atendente (e2e)', () => {
   let app: INestApplication;
   let frenteAtuacaoService: FrenteAtuacaoService;
+  let ID: number;
 
   let ID = null;
   let TOKEN = null;
@@ -75,6 +76,7 @@ describe('Atendente (e2e)', () => {
         .expect(HttpStatus.CREATED);
       expect(response.body).toBeDefined();
       expect(response.body.id).toBeDefined();
+      ID = response.body.id;
     });
 
     it('Deve criar um atendente não formado', async () => {
@@ -127,15 +129,61 @@ describe('Atendente (e2e)', () => {
       );
       expect(response.body.message).toContain('semestre should not be empty');
     });
+
+    it('Deve criar um atendente em formação sem salvar os campos anoConclusão, crp e especialização', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/atendente')
+        .send({
+          ...req,
+          formado: false,
+          semestre: 6,
+          frentesAtuacao: [1, 2, 3],
+          anoConclusao: 2020,
+          especializacao: 'teste',
+          crp: 'teste',
+        })
+        .expect(HttpStatus.CREATED);
+      expect(response.body).toBeDefined();
+      expect(response.body.anoConclusao).toBeNull();
+      expect(response.body.especializacao).toBeNull();
+      expect(response.body.crp).toBeNull();
+    });
+
+    it('Deve criar um atendente formado sem salvar o campo semestre', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/atendente')
+        .send({
+          ...req,
+          formado: true,
+          semestre: 6,
+          frentesAtuacao: [1, 2, 3],
+          anoConclusao: 2020,
+          especializacao: 'teste',
+          crp: 'teste',
+        })
+        .expect(HttpStatus.CREATED);
+      expect(response.body).toBeDefined();
+      expect(response.body.semestre).toBeNull();
+    });
+    // TODO: Tratar criação de atendente que já foi excluído (deixar cadastrar novamente um mesmo e-mail)
   });
 
-  it('/atendente (GET)', async () => {
-    const response = await request(app.getHttpServer())
-      .get('/atendente')
-      .expect(200);
-    expect(response.body).toBeDefined();
-    expect(response.body.items).toBeInstanceOf(Array);
-    expect(response.body.items[0]).toBeDefined();
+  describe('/atendente (GET)', () => {
+    it('/atendente (GET)', async () => {
+      const response = await request(app.getHttpServer())
+        .get('/atendente')
+        .expect(200);
+      expect(response.body).toBeDefined();
+      expect(response.body.items).toBeInstanceOf(Array);
+      expect(response.body.items[0]).toBeDefined();
+    });
+
+    it('/atendente/:id (GET)', async () => {
+      const response = await request(app.getHttpServer())
+        .get(`/atendente/${ID}`)
+        .expect(200);
+      expect(response.body).toBeDefined();
+    });
   });
 
   describe('/atendente (PATCH)', () => {
