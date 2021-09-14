@@ -7,7 +7,7 @@ export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   private matchRoles(roles: Tipo[], userRoles: Tipo[]): boolean {
-    return !!userRoles.filter((role) => roles.includes(role));
+    return !!userRoles.filter((role) => roles.includes(role)).length;
   }
 
   canActivate(context: ExecutionContext): boolean {
