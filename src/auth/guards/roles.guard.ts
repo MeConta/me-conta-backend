@@ -1,4 +1,4 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Tipo } from '../../usuario/entities/usuario.enum';
 import { Reflector } from '@nestjs/core';
 
@@ -12,7 +12,7 @@ export class RolesGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const roles = this.reflector.get<Tipo[]>('roles', context.getHandler());
-    if (!roles) {
+    if (!roles.length) {
       return true;
     }
 

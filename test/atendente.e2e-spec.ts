@@ -12,13 +12,13 @@ import { FrenteAtuacaoStub } from '../src/testing/frente-atuacao.stub';
 import { internet, name } from 'faker/locale/pt_BR';
 import { UpdateAtendenteDto } from '../src/atendente/dto/update-atendente.dto';
 import { AuthModule } from '../src/auth/auth.module';
-import { getAuthToken } from './utils.test';
+import { getAdminAuthToken } from './utils.test';
 
 describe('Atendente (e2e)', () => {
   let app: INestApplication;
   let frenteAtuacaoService: FrenteAtuacaoService;
   let ID: number;
-  let TOKEN = null;
+  let TOKEN: string;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -45,6 +45,10 @@ describe('Atendente (e2e)', () => {
         nome: `Frente #${i}`,
       });
     }
+  });
+
+  beforeAll(async () => {
+    TOKEN = await getAdminAuthToken(app);
   });
 
   describe('/atendente (POST)', () => {
@@ -185,19 +189,7 @@ describe('Atendente (e2e)', () => {
   });
 
   describe('/atendente (PATCH)', () => {
-    const req = {
-      ...AtendenteStub.getCreateDto(),
-      frentesAtuacao: [1, 2, 3],
-      dataNascimento: moment('1990-09-25').toISOString(),
-    };
-
-    beforeAll(async () => {
-      const response = await request(app.getHttpServer())
-        .post('/atendente')
-        .send(req);
-      ID = response.body.id;
-      TOKEN = await getAuthToken(app, response.body.email, req.senha);
-    });
+    moment('1990-09-25').toISOString();
     it('Deve alterar uma propriedade', async () => {
       const NOME = name.findName();
       const response = await request(app.getHttpServer())

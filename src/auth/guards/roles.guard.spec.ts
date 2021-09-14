@@ -30,7 +30,7 @@ describe('RolesGuard', () => {
   });
 
   it('Deve poder ativar uma rota que não pede role', () => {
-    reflector.get.mockReturnValue(null);
+    reflector.get.mockReturnValue([]);
     guard = new RolesGuard(reflector);
 
     expect(guard.canActivate(mockContext)).toBeTruthy();
