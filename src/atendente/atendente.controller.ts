@@ -5,8 +5,7 @@ import { UpdateAtendenteDto } from './dto/update-atendente.dto';
 import { DefaultController } from '../default.controller';
 import { Atendente } from './entities/atendente.entity';
 import { ApiTags } from '@nestjs/swagger';
-import { PatchApi, PostApi } from '../decorators';
-import { Auth } from '../decorators';
+import { Auth, PatchApi, PostApi } from '../decorators';
 import { Tipo } from '../usuario/entities/usuario.enum';
 
 @ApiTags('Atendente')
@@ -23,7 +22,7 @@ export class AtendenteController extends DefaultController(
   }
 
   @PatchApi()
-  @Auth(Tipo.ADMINISTRADOR)
+  @Auth(Tipo.ADMINISTRADOR, Tipo.ATENDENTE)
   update(
     @Param('id') id: number,
     @Body() dto: UpdateAtendenteDto,

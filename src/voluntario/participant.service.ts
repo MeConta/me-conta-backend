@@ -10,6 +10,7 @@ import { CreateUsuarioDto } from '../usuario/dto/create-usuario.dto';
 import { Tipo } from '../usuario/entities/usuario.enum';
 import { Erros } from '../config/constants/erros.enum';
 import { UpdateUsuarioDto } from '../usuario/dto/update-usuario.dto';
+import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 
 export function ParticipantService(
   Entity,
@@ -24,6 +25,7 @@ export function ParticipantService(
     UpdateDto,
   ) {
     @Inject(UsuarioService) usuarioService: UsuarioService;
+    @Inject(ExecutionContextHost) private context: ExecutionContextHost;
 
     async create(dto: typeof CreateDto): Promise<typeof Entity> {
       try {
@@ -85,7 +87,7 @@ export function ParticipantService(
         dataNascimento,
         telefone,
       } as UpdateUsuarioDto);
-
+      const boneko = this.context.switchToHttp().getRequest();
       return super.update(id, participant);
     }
   }

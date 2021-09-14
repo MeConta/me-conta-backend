@@ -9,6 +9,7 @@ import { In, Repository } from 'typeorm';
 import { AtendenteStub } from '../testing/atendente.stub';
 import {
   BadRequestException,
+  ForbiddenException,
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
@@ -20,6 +21,8 @@ import { SupervisorService } from '../supervisor/supervisor.service';
 import { SupervisorStub } from '../testing/supervisor.stub';
 import { Supervisor } from '../supervisor/entities/supervisor.entity';
 import * as moment from 'moment';
+import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
+import { createMock } from '@golevelup/ts-jest';
 
 describe('AtendenteService', () => {
   let service: AtendenteService;
@@ -46,6 +49,10 @@ describe('AtendenteService', () => {
         {
           provide: SupervisorService,
           useFactory: FactoryMock.crudServiceMockFactory,
+        },
+        {
+          provide: ExecutionContextHost,
+          useValue: createMock<ExecutionContextHost>(),
         },
         AtendenteService,
       ],
@@ -278,6 +285,12 @@ describe('AtendenteService', () => {
 
       await expect(() => service.update(1, request)).rejects.toThrow(
         UnprocessableEntityException,
+      );
+    });
+
+    it('Não deve ser capaz de alterar outro atendente ', async () => {
+      await expect(() => service.update(1, request)).rejects.toThrow(
+        ForbiddenException,
       );
     });
   });
