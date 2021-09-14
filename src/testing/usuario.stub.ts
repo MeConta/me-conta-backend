@@ -4,7 +4,7 @@ import { CreateUsuarioDto } from '../usuario/dto/create-usuario.dto';
 import { UpdateUsuarioDto } from '../usuario/dto/update-usuario.dto';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import * as bcrypt from 'bcrypt';
-import { MOCKED_SALT } from '../../jest.setup';
+import { DEFAULT_PASSWORD, MOCKED_SALT } from '../../jest.setup';
 
 export class UsuarioStub {
   static getCreateDto(): CreateUsuarioDto {
@@ -14,7 +14,7 @@ export class UsuarioStub {
       email: 'teste@teste.com',
       genero: Genero.FEMININO,
       nome: 'João da Silva',
-      senha: 's3Nh@123',
+      senha: DEFAULT_PASSWORD,
       UF: Estado.AC,
       telefone: '(11) 94786-6489',
       tipoUsuario: Tipo.ADMINISTRADOR,
@@ -35,7 +35,7 @@ export class UsuarioStub {
       email: 'teste@teste.com',
       genero: Genero.FEMININO,
       nome: 'João da Silva',
-      senha: bcrypt.hashSync('s3Nh@123', MOCKED_SALT),
+      senha: bcrypt.hashSync(DEFAULT_PASSWORD, MOCKED_SALT),
       UF: Estado.AC,
       telefone: '(11) 94786-6489',
       dataCriacao: new Date('08-29-2021'),

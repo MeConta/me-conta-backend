@@ -13,8 +13,6 @@ const jest: Config.InitialOptions = {
   collectCoverageFrom: [
     '**/*.(t|j)s',
     '!**/*.module.ts',
-    '!**/*.strategy.ts',
-    '!**/*.guard.ts',
     '!**/index.ts',
     '!**/*.stub.ts',
     '!**/*.mock.ts',
