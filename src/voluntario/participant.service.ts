@@ -6,10 +6,8 @@ import {
 } from '@nestjs/common';
 import { DefaultService, IDefaultService } from '../default.service';
 import { UsuarioService } from '../usuario/usuario.service';
-import { CreateUsuarioDto } from '../usuario/dto/create-usuario.dto';
 import { Tipo } from '../usuario/entities/usuario.enum';
 import { Erros } from '../config/constants';
-import { UpdateUsuarioDto } from '../usuario/dto/update-usuario.dto';
 
 export function ParticipantService(
   Entity,
@@ -27,31 +25,16 @@ export function ParticipantService(
 
     async create(dto: typeof CreateDto): Promise<typeof Entity> {
       try {
-        const {
-          email,
-          genero,
-          cidade,
-          UF,
-          nome,
-          senha,
-          dataNascimento,
-          telefone,
-          ...participant
-        } = dto;
-        const usuario = await this.usuarioService.create({
-          email,
-          genero,
-          cidade,
-          UF,
-          nome,
-          senha,
-          dataNascimento,
-          telefone,
-          tipoUsuario: tipo,
-        } as CreateUsuarioDto);
+        const { userDto, outrasInformacoes } =
+          this.usuarioService.extractUserDto<
+            typeof CreateDto,
+            typeof UpdateDto
+          >(dto, tipo);
+
+        const usuario = await this.usuarioService.create(userDto);
 
         return await super.create({
-          ...participant,
+          ...outrasInformacoes,
           aprovado: null,
           usuario,
         });
@@ -63,29 +46,13 @@ export function ParticipantService(
     async update(id: number, dto: typeof UpdateDto): Promise<typeof Entity> {
       const entity = await this.findOne(id);
 
-      const {
-        email,
-        genero,
-        cidade,
-        UF,
-        nome,
-        senha,
-        dataNascimento,
-        telefone,
-        ...participant
-      } = dto;
+      const { userDto, outrasInformacoes } = this.usuarioService.extractUserDto<
+        typeof CreateDto,
+        typeof UpdateDto
+      >(dto, tipo);
 
-      await this.usuarioService.update(entity.usuario.id, {
-        email,
-        genero,
-        cidade,
-        UF,
-        nome,
-        senha,
-        dataNascimento,
-        telefone,
-      } as UpdateUsuarioDto);
-      return super.update(id, participant);
+      await this.usuarioService.update(entity.usuario.id, userDto);
+      return super.update(id, outrasInformacoes);
     }
   }
   return ParticipantServiceHost;
