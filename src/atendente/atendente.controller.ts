@@ -8,6 +8,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Auth, PatchApi, PostApi } from '../decorators';
 import { Tipo } from '../usuario/entities/usuario.enum';
 import { User } from '../decorators/user.decorator';
+import { TokenUser } from '../auth/dto';
 
 @ApiTags('Atendente')
 export class AtendenteController extends DefaultController(
@@ -25,14 +26,18 @@ export class AtendenteController extends DefaultController(
   }
 
   @PatchApi()
-  @Auth(Tipo.ADMINISTRADOR)
+  @Auth(Tipo.ADMINISTRADOR, Tipo.ATENDENTE)
   update(
     @Param('id') id: number,
     @Body() dto: UpdateAtendenteDto,
-    @User() user?,
+    @User() user?: TokenUser,
   ): Promise<Atendente> {
     // TODO: feat(#5): regra de negócio em relação ao usuário logado e edição
-    console.log('USER', user);
+    console.log('INFERNO!', user);
+    /*
+    if (!user.roles.includes(Tipo.ADMINISTRADOR) && user.id != id) {
+      throw new ForbiddenException();
+    }*/
     return super.update(id, dto);
   }
 

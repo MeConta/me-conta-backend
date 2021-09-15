@@ -8,3 +8,9 @@ export interface TokenPayload {
   email: string;
   roles: Tipo[];
 }
+
+export interface TokenUser {
+  id: number;
+  email: string;
+  roles: Tipo[];
+}

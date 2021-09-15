@@ -43,7 +43,7 @@ export class AtendenteService extends VoluntarioService(
   }
 
   async update(id: number, dto: UpdateAtendenteDto): Promise<Atendente> {
-    dto = await this.checkSupervisor.call(this);
+    dto = await this.checkSupervisor(dto);
 
     dto = AtendenteService.checkFormacao(dto) as UpdateAtendenteDto;
 
@@ -51,7 +51,7 @@ export class AtendenteService extends VoluntarioService(
   }
 
   async updateSelf(dto: UpdateAtendenteDto, user: any): Promise<Atendente> {
-    dto = await this.checkSupervisor.call(this);
+    dto = await this.checkSupervisor(dto);
 
     dto = AtendenteService.checkFormacao(dto) as UpdateAtendenteDto;
 
