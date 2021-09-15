@@ -56,6 +56,8 @@ export function ParticipantService(
           usuario,
         });
       } catch (e) {
+        console.log('Erro HEROKU', e);
+
         throw new UnprocessableEntityException(Erros.USUARIO_JA_CADASTRADO);
       }
     }
