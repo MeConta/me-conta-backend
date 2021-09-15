@@ -25,7 +25,7 @@ export class AtendenteController extends DefaultController(
   }
 
   @PatchApi()
-  @Auth(Tipo.ADMINISTRADOR, Tipo.ATENDENTE)
+  @Auth(Tipo.ADMINISTRADOR)
   update(
     @Param('id') id: number,
     @Body() dto: UpdateAtendenteDto,
@@ -34,5 +34,16 @@ export class AtendenteController extends DefaultController(
     // TODO: feat(#5): regra de negócio em relação ao usuário logado e edição
     console.log('USER', user);
     return super.update(id, dto);
+  }
+
+  @PatchApi()
+  @Auth(Tipo.ATENDENTE)
+  updateSelf(
+    @Body() dto: UpdateAtendenteDto,
+    @User() user?,
+  ): Promise<Atendente> {
+    // TODO: feat(#5): regra de negócio em relação ao usuário logado e edição
+    console.log('USER', user);
+    return this.service.updateSelf(dto, user);
   }
 }

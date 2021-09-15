@@ -43,6 +43,24 @@ export class AtendenteService extends VoluntarioService(
   }
 
   async update(id: number, dto: UpdateAtendenteDto): Promise<Atendente> {
+    dto = await this.checkSupervisor.call(this);
+
+    dto = AtendenteService.checkFormacao(dto) as UpdateAtendenteDto;
+
+    return super.update(id, dto);
+  }
+
+  async updateSelf(dto: UpdateAtendenteDto, user: any): Promise<Atendente> {
+    dto = await this.checkSupervisor.call(this);
+
+    dto = AtendenteService.checkFormacao(dto) as UpdateAtendenteDto;
+
+    return super.update(user.id, dto);
+  }
+
+  private async checkSupervisor(
+    dto: UpdateAtendenteDto,
+  ): Promise<UpdateAtendenteDto> {
     if (dto.supervisor) {
       let supervisor: Supervisor = null;
       if (dto.supervisor.id) {
@@ -60,8 +78,6 @@ export class AtendenteService extends VoluntarioService(
       };
     }
 
-    dto = AtendenteService.checkFormacao(dto) as UpdateAtendenteDto;
-
-    return super.update(id, dto);
+    return dto;
   }
 }
