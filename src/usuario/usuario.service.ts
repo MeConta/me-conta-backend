@@ -5,7 +5,6 @@ import { Usuario } from './entities/usuario.entity';
 import { DefaultService } from '../default.service';
 import { Erros } from '../config/constants';
 import * as bcrypt from 'bcrypt';
-import { Tipo } from './entities/usuario.enum';
 
 @Injectable()
 export class UsuarioService extends DefaultService(
@@ -37,35 +36,5 @@ export class UsuarioService extends DefaultService(
 
   async findOneByEmail(email: string): Promise<Usuario> {
     return this.repository.findOne({ where: { email: email } });
-  }
-
-  extractUserDto<
-    CreateDto extends CreateUsuarioDto,
-    UpdateDto extends UpdateUsuarioDto,
-  >(dto: CreateDto | UpdateDto, tipo: Tipo) {
-    const {
-      email,
-      genero,
-      cidade,
-      UF,
-      nome,
-      senha,
-      dataNascimento,
-      telefone,
-      ...outrasInformacoes
-    } = dto;
-
-    const userDto = {
-      email,
-      genero,
-      cidade,
-      UF,
-      nome,
-      senha,
-      dataNascimento,
-      telefone,
-      tipoUsuario: tipo,
-    };
-    return { userDto, outrasInformacoes };
   }
 }
