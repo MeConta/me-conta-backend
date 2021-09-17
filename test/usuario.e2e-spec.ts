@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { UsuarioModule } from '../src/usuario/usuario.module';
-import { UsuarioStub } from '../src/__old/testing/usuario.stub';
+import { UsuarioStub } from '../src/testing/usuario.stub';
 import { DbE2eModule } from './db.e2e.module';
 import { AuthModule } from '../src/auth/auth.module';
 import { getAuthToken } from './utils.test';

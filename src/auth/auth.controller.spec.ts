@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
-import { FactoryMock } from '../__old/testing/factory.mock';
+import { FactoryMock } from '../testing/factory.mock';
 import { AuthController } from './auth.controller';
 import { Usuario } from '../usuario/entities/usuario.entity';
 

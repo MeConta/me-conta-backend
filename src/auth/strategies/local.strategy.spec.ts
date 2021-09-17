@@ -1,7 +1,7 @@
 import { LocalStrategy } from './local.strategy';
 import { createMock } from '@golevelup/ts-jest';
 import { AuthService } from '../auth.service';
-import { UsuarioStub } from '../../__old/testing/usuario.stub';
+import { UsuarioStub } from '../../testing/usuario.stub';
 import { DEFAULT_PASSWORD } from '../../../jest.setup';
 import { UnauthorizedException } from '@nestjs/common';
 
