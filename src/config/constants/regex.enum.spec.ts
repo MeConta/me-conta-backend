@@ -1,4 +1,4 @@
-import { Regex } from '.';
+import { Regex } from './index';
 
 describe('Regex enum test', () => {
   describe('Senha regex test', () => {

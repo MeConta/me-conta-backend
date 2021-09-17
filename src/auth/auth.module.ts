@@ -6,9 +6,6 @@ import { LocalStrategy } from './strategies/local.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
-import { AlunoModule } from '../aluno/aluno.module';
-import { SupervisorModule } from '../supervisor/supervisor.module';
-import { AtendenteModule } from '../atendente/atendente.module';
 
 @Module({
   imports: [PassportModule.register({ defaultStrategy: 'jwt' }), UsuarioModule],
@@ -25,9 +22,6 @@ export class AuthModule {
           signOptions: { expiresIn: `${process.env.JWT_TIMEOUT}` },
         }),
         UsuarioModule,
-        AlunoModule,
-        SupervisorModule,
-        AtendenteModule,
       ],
       module: AuthModule,
     };

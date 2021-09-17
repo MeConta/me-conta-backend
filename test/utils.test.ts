@@ -1,6 +1,6 @@
 import { internet } from 'faker/locale/pt_BR';
 import * as request from 'supertest';
-import { UsuarioStub } from '../src/testing/usuario.stub';
+import { UsuarioStub } from '../src/__old/testing/usuario.stub';
 
 export async function getAuthToken(
   app,

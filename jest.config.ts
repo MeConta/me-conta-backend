@@ -5,6 +5,7 @@ const jest: Config.InitialOptions = {
   verbose: true,
   setupFilesAfterEnv: ['../jest.setup.ts'],
   moduleFileExtensions: ['js', 'json', 'ts'],
+  modulePathIgnorePatterns: ['<rootDir>/__old/'],
   rootDir: 'src',
   testRegex: '.*\\.spec\\.ts$',
   transform: {

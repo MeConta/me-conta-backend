@@ -18,8 +18,8 @@ import {
   GetOneApi,
   PaginatedApi,
   PatchApi,
-} from './decorators';
-import { Auth } from './decorators';
+} from './__old/decorators';
+import { Auth } from './__old/decorators';
 
 export interface IDefaultController<Entity, CreateDto, UpdateDto> {
   service: IDefaultService<Entity, CreateDto, UpdateDto>;

@@ -2,9 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsuarioService } from './usuario.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Usuario } from './entities/usuario.entity';
-import { FactoryMock, MockType } from '../testing/factory.mock';
+import { FactoryMock, MockType } from '../__old/testing/factory.mock';
 import { FindConditions, Repository } from 'typeorm';
-import { UsuarioStub } from '../testing/usuario.stub';
+import { UsuarioStub } from '../__old/testing/usuario.stub';
 import {
   NotFoundException,
   UnprocessableEntityException,

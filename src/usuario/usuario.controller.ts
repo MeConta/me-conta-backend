@@ -5,7 +5,7 @@ import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { DefaultController } from '../default.controller';
 import { Usuario } from './entities/usuario.entity';
 import { ApiTags } from '@nestjs/swagger';
-import { Auth, PatchApi, PostApi } from '../decorators';
+import { Auth, PatchApi, PostApi } from '../__old/decorators';
 import { Tipo } from './entities/usuario.enum';
 
 @ApiTags('Usuário')
