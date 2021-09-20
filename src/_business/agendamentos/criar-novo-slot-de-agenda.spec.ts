@@ -1,5 +1,6 @@
 import {
   CriarNovoSlotDeAgenda,
+  HorarioOcupado,
   UsuarioNaoAtendente,
 } from './criar-novo-slot-de-agenda.feat';
 import { InMemoryAgendaService } from './fakes/in-memory-agenda.service';
@@ -41,5 +42,18 @@ describe('criar novo slot na agenda', () => {
         idUsuario: 'some-aluno-id',
       }),
     ).rejects.toBeInstanceOf(UsuarioNaoAtendente);
+  });
+  it('deve rejeitar se o slot solicitado sobrepuser com outro ja existente', async function () {
+    agendaService.slots.push({
+      inicio: new Date(2022, 11, 31, 10),
+      fim: new Date(2022, 11, 31, 11, 0),
+      idAtendente: 'some-atendente-id',
+    });
+    await expect(
+      sut.execute({
+        inicio: new Date(2022, 11, 31, 9, 30),
+        idUsuario: 'some-atendente-id',
+      }),
+    ).rejects.toBeInstanceOf(HorarioOcupado);
   });
 });

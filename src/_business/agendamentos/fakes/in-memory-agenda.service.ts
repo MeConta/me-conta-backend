@@ -1,6 +1,9 @@
 import { CriarSlotAgendaService } from '../criar-slot-agenda.service';
+import { VerificaHorarioOcupadoAgendaService } from '../verifica-horario-ocupado-agenda.service';
 
-export class InMemoryAgendaService implements CriarSlotAgendaService {
+export class InMemoryAgendaService
+  implements CriarSlotAgendaService, VerificaHorarioOcupadoAgendaService
+{
   slots: {
     inicio: Date;
     fim: Date;
@@ -20,6 +23,15 @@ export class InMemoryAgendaService implements CriarSlotAgendaService {
       inicio: param.inicio,
       fim: param.fim,
       idAtendente: param.idAtendente,
+    });
+  }
+
+  async verificaHorarioOcupado(param: {
+    inicio: Date;
+    fim: Date;
+  }): Promise<boolean> {
+    return this.slots.some((slot) => {
+      return !(param.fim <= slot.inicio || param.inicio >= slot.fim);
     });
   }
 }
