@@ -1,12 +1,9 @@
 import { CriarSlotAgendaService } from './criar-slot-agenda.service';
 import { DateTimeUtils } from './date-time.utils';
 import { Tipo } from '../../usuario/entities/usuario.enum';
+import { AuthorizationService } from '../autorizacao/authorization.service';
 
 type CriarSlotInput = { inicio: Date; idUsuario: string };
-
-export interface AuthorizationService {
-  verificaPertenceAoGrupo(idUsuario: string, grupo: Tipo): Promise<boolean>;
-}
 
 export class CriarNovoSlotDeAgenda {
   constructor(

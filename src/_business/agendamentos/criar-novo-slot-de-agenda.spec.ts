@@ -1,11 +1,12 @@
 import {
-  AuthorizationService,
   CriarNovoSlotDeAgenda,
   UsuarioNaoAtendente,
 } from './criar-novo-slot-de-agenda.feat';
 import { InMemoryAgendaService } from './fakes/in-memory-agenda.service';
 import { DateTimeUtils } from './date-time.utils';
 import { MomentDateTimeUtils } from './fakes/moment-date-time.utils';
+import { FakeAuthorizationService } from '../autorizacao/fakes/fake-authorization.service';
+import { AuthorizationService } from '../autorizacao/authorization.service';
 
 describe('criar novo slot na agenda', () => {
   let agendaService: InMemoryAgendaService;
@@ -15,15 +16,7 @@ describe('criar novo slot na agenda', () => {
   beforeEach(() => {
     agendaService = new InMemoryAgendaService();
     dateTimeUtils = new MomentDateTimeUtils();
-    authorizationService = {
-      verificaPertenceAoGrupo(idUsuario: string): Promise<boolean> {
-        if (idUsuario === 'some-atendente-id') {
-          return Promise.resolve(true);
-        } else {
-          return Promise.resolve(false);
-        }
-      },
-    };
+    authorizationService = new FakeAuthorizationService();
     sut = new CriarNovoSlotDeAgenda(
       agendaService,
       dateTimeUtils,
