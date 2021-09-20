@@ -15,6 +15,34 @@ export class CriarNovoSlotDeAgenda {
   ) {}
 
   async execute(input: CriarSlotInput) {
+    await this.verificaPermissao(input);
+
+    const horarioFim = this.dateTimeHelper.addHours(input.inicio, 1);
+    await this.verificaDisponibilidadeDoHorario(input, horarioFim);
+
+    this.agendaService.criarSlotNovo({
+      inicio: input.inicio,
+      fim: horarioFim,
+      idAtendente: input.idUsuario,
+    });
+  }
+
+  private async verificaDisponibilidadeDoHorario(
+    input: CriarSlotInput,
+    horarioFim: Date,
+  ) {
+    if (
+      await this.agendaService.verificaHorarioOcupado({
+        inicio: input.inicio,
+        fim: horarioFim,
+        idAtendente: input.idUsuario,
+      })
+    ) {
+      throw new HorarioOcupado();
+    }
+  }
+
+  private async verificaPermissao(input: CriarSlotInput) {
     if (
       !(await this.authorizationService.verificaPertenceAoGrupo(
         input.idUsuario,
@@ -23,23 +51,6 @@ export class CriarNovoSlotDeAgenda {
     ) {
       throw new UsuarioNaoAtendente();
     }
-
-    const horarioFim = this.dateTimeHelper.addHours(input.inicio, 1);
-
-    if (
-      await this.agendaService.verificaHorarioOcupado({
-        inicio: input.inicio,
-        fim: horarioFim,
-      })
-    ) {
-      throw new HorarioOcupado();
-    }
-
-    this.agendaService.criarSlotNovo({
-      inicio: input.inicio,
-      fim: horarioFim,
-      idAtendente: input.idUsuario,
-    });
   }
 }
 

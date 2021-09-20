@@ -29,9 +29,13 @@ export class InMemoryAgendaService
   async verificaHorarioOcupado(param: {
     inicio: Date;
     fim: Date;
+    idAtendente: string;
   }): Promise<boolean> {
     return this.slots.some((slot) => {
-      return !(param.fim <= slot.inicio || param.inicio >= slot.fim);
+      return (
+        param.idAtendente === slot.idAtendente &&
+        !(param.fim <= slot.inicio || param.inicio >= slot.fim)
+      );
     });
   }
 }
