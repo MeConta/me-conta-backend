@@ -30,6 +30,7 @@ describe('criar novo slot na agenda', () => {
       idUsuario: 'some-atendente-id',
     });
     expect(agendaService.slots).toContainEqual({
+      id: 0,
       inicio: new Date(2022, 11, 31, 10),
       fim: new Date(2022, 11, 31, 11, 0),
       idAtendente: 'some-atendente-id',
@@ -45,6 +46,7 @@ describe('criar novo slot na agenda', () => {
   });
   it('deve rejeitar se o slot solicitado sobrepuser com outro ja existente', async function () {
     agendaService.slots.push({
+      id: 1,
       inicio: new Date(2022, 11, 31, 10),
       fim: new Date(2022, 11, 31, 11, 0),
       idAtendente: 'some-atendente-id',
