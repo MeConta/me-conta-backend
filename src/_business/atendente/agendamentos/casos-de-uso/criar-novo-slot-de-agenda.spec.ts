@@ -7,7 +7,7 @@ import { InMemoryAgendaService } from '../fakes/in-memory-agenda.service';
 import { DateTimeUtils } from '../interfaces/date-time.utils';
 import { MomentDateTimeUtils } from '../fakes/moment-date-time.utils';
 import { FakeAuthorizationService } from '../../../autorizacao/fakes/fake-authorization.service';
-import { AuthorizationService } from '../../../autorizacao/authorization.service';
+import { AuthorizationService } from '../../../autorizacao/interfaces/authorization.service';
 
 describe('criar novo slot na agenda', () => {
   let agendaService: InMemoryAgendaService;

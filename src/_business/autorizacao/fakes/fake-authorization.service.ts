@@ -1,5 +1,5 @@
 import { Tipo } from '../../../usuario/entities/usuario.enum';
-import { AuthorizationService } from '../authorization.service';
+import { AuthorizationService } from '../interfaces/authorization.service';
 
 export class FakeAuthorizationService implements AuthorizationService {
   verificaPertenceAoGrupo(idUsuario: string, grupo: Tipo): Promise<boolean> {
