@@ -1,6 +1,6 @@
-import { CriarSlotAgendaService } from '../criar-slot-agenda.service';
-import { RecuperaSlotsAgendaService } from '../recupera-slots-agenda.service';
-import { SlotAgenda } from '../slot-agenda';
+import { CriarSlotAgendaService } from '../interfaces/criar-slot-agenda.service';
+import { RecuperaSlotsAgendaService } from '../interfaces/recupera-slots-agenda.service';
+import { SlotAgenda } from '../entidades/slot-agenda';
 
 export class InMemoryAgendaService
   implements CriarSlotAgendaService, RecuperaSlotsAgendaService

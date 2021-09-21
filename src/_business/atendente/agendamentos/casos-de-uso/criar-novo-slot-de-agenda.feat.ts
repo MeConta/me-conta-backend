@@ -1,8 +1,8 @@
-import { CriarSlotAgendaService } from './criar-slot-agenda.service';
-import { DateTimeUtils } from './date-time.utils';
-import { Tipo } from '../../usuario/entities/usuario.enum';
-import { AuthorizationService } from '../autorizacao/authorization.service';
-import { RecuperaSlotsAgendaService } from './recupera-slots-agenda.service';
+import { CriarSlotAgendaService } from '../interfaces/criar-slot-agenda.service';
+import { DateTimeUtils } from '../interfaces/date-time.utils';
+import { Tipo } from '../../../../usuario/entities/usuario.enum';
+import { AuthorizationService } from '../../../autorizacao/authorization.service';
+import { RecuperaSlotsAgendaService } from '../interfaces/recupera-slots-agenda.service';
 
 type CriarSlotInput = { inicio: Date; idUsuario: string };
 

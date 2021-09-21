@@ -1,4 +1,4 @@
-import { DateTimeUtils } from '../date-time.utils';
+import { DateTimeUtils } from '../interfaces/date-time.utils';
 import * as moment from 'moment';
 
 export class MomentDateTimeUtils implements DateTimeUtils {

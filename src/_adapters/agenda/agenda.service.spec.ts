@@ -1,6 +1,6 @@
 import { Connection, createConnection, Repository } from 'typeorm';
 import { TypeOrmAgendaService } from './typeorm-agenda.service';
-import { SlotAgendaDbEntity } from './slot-agenda-db.entity';
+import { SlotAgendaDbEntity } from './entidades/slot-agenda.db-entity';
 
 describe('Agenda Repo', () => {
   let connection: Connection;

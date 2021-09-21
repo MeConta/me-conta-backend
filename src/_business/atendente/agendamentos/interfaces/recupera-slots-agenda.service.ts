@@ -1,4 +1,4 @@
-import { SlotAgenda } from './slot-agenda';
+import { SlotAgenda } from '../entidades/slot-agenda';
 
 export interface RecuperaSlotsAgendaService {
   recuperaSlots(param: {

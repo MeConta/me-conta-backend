@@ -1,8 +1,8 @@
-import { CriarSlotAgendaService } from '../../_business/agendamentos/criar-slot-agenda.service';
-import { RecuperaSlotsAgendaService } from '../../_business/agendamentos/recupera-slots-agenda.service';
+import { CriarSlotAgendaService } from '../../_business/atendente/agendamentos/interfaces/criar-slot-agenda.service';
+import { RecuperaSlotsAgendaService } from '../../_business/atendente/agendamentos/interfaces/recupera-slots-agenda.service';
 import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
-import { SlotAgenda } from '../../_business/agendamentos/slot-agenda';
-import { SlotAgendaDbEntity } from './slot-agenda-db.entity';
+import { SlotAgenda } from '../../_business/atendente/agendamentos/entidades/slot-agenda';
+import { SlotAgendaDbEntity } from './entidades/slot-agenda.db-entity';
 
 export class TypeOrmAgendaService
   implements CriarSlotAgendaService, RecuperaSlotsAgendaService
