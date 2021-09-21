@@ -5,6 +5,7 @@ import database from './config/database.config';
 import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
 import { UsuarioModule } from './usuario/usuario.module';
+import { AgendaModule } from './agenda/agenda.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { UsuarioModule } from './usuario/usuario.module';
     }),
     UsuarioModule,
     AuthModule.forRoot(),
+    AgendaModule,
   ],
   controllers: [AppController],
 })
