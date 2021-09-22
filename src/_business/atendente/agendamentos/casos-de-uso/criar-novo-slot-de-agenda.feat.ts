@@ -4,7 +4,7 @@ import { Tipo } from '../../../../usuario/entities/usuario.enum';
 import { AuthorizationService } from '../../../autorizacao/interfaces/authorization.service';
 import { RecuperaSlotsAgendaService } from '../interfaces/recupera-slots-agenda.service';
 
-type CriarSlotInput = { inicio: Date; idUsuario: string };
+type CriarSlotInput = { inicio: Date; idUsuario: number };
 
 export class CriarNovoSlotDeAgenda {
   constructor(
@@ -36,7 +36,7 @@ export class CriarNovoSlotDeAgenda {
   private async verificaDisponibilidadeDoHorario(
     horarioInicioSlot: Date,
     horarioFimSlot: Date,
-    idAtendente: string,
+    idAtendente: number,
   ) {
     const inicioDoDia = this.dateTimeHelper.startOfDay(horarioInicioSlot);
 
@@ -55,7 +55,7 @@ export class CriarNovoSlotDeAgenda {
     }
   }
 
-  private async verificaPermissao(idUsuario: string) {
+  private async verificaPermissao(idUsuario: number) {
     if (
       !(await this.authorizationService.verificaTipoDoUsuario(
         idUsuario,
