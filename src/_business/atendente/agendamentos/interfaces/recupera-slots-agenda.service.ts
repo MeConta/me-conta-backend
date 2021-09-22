@@ -4,6 +4,6 @@ export interface RecuperaSlotsAgendaService {
   recuperaSlots(param: {
     inicio: Date;
     fim: Date;
-    idAtendente: string;
+    idAtendente: number;
   }): Promise<SlotAgenda[]>;
 }
