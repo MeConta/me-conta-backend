@@ -1,4 +1,7 @@
-import { CriarSlotAgendaService } from '../../_business/atendente/agendamentos/interfaces/criar-slot-agenda.service';
+import {
+  CriarSlotAgendaParams,
+  CriarSlotAgendaService,
+} from '../../_business/atendente/agendamentos/interfaces/criar-slot-agenda.service';
 import { RecuperaSlotsAgendaService } from '../../_business/atendente/agendamentos/interfaces/recupera-slots-agenda.service';
 import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import { SlotAgenda } from '../../_business/atendente/agendamentos/entidades/slot-agenda';
@@ -9,11 +12,7 @@ export class TypeOrmAgendaService
 {
   constructor(private readonly agendaRepo: Repository<SlotAgendaDbEntity>) {}
 
-  async criarSlotNovo(param: {
-    inicio: Date;
-    fim: Date;
-    idAtendente: string;
-  }): Promise<void> {
+  async criarSlotNovo(param: CriarSlotAgendaParams): Promise<void> {
     const entity = this.agendaRepo.create({
       idAtendente: param.idAtendente,
       inicio: param.inicio.getTime(),

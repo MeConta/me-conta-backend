@@ -1,7 +1,8 @@
+export interface CriarSlotAgendaParams {
+  inicio: Date;
+  fim: Date;
+  idAtendente: string;
+}
 export interface CriarSlotAgendaService {
-  criarSlotNovo(param: {
-    inicio: Date;
-    fim: Date;
-    idAtendente: string;
-  }): Promise<void>;
+  criarSlotNovo(param: CriarSlotAgendaParams): Promise<void>;
 }
