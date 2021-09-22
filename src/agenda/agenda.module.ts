@@ -1,7 +1,6 @@
 import { Inject, Module } from '@nestjs/common';
 import { AgendaController } from './agenda.controller';
-import { AgendaService } from './agenda.service';
-import { InjectRepository, TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { SlotAgendaDbEntity } from '../_adapters/agenda/entidades/slot-agenda.db-entity';
 import { CriarNovoSlotDeAgenda } from '../_business/atendente/agendamentos/casos-de-uso/criar-novo-slot-de-agenda.feat';
 import { AuthorizationService } from '../_business/autorizacao/interfaces/authorization.service';
@@ -10,13 +9,12 @@ import { MomentDateTimeUtils } from '../_business/atendente/agendamentos/fakes/m
 import { Tipo } from '../usuario/entities/usuario.enum';
 import { UsuarioService } from '../usuario/usuario.service';
 import { UsuarioModule } from '../usuario/usuario.module';
+import { TypeOrmAgendaService } from '../_adapters/agenda/typeorm-agenda.service';
 
 // TODO: Criar testes.
 class NestAuthorizationService implements AuthorizationService {
-  constructor(
-    @Inject(UsuarioService)
-    private readonly usuarioService: UsuarioService,
-  ) {}
+  @Inject(UsuarioService)
+  private readonly usuarioService: UsuarioService;
   async verificaTipoDoUsuario(
     idUsuario: number,
     tipoGrupo: Tipo,
@@ -28,8 +26,8 @@ class NestAuthorizationService implements AuthorizationService {
 
 class NestCriarNovoSlotDeAgenda extends CriarNovoSlotDeAgenda {
   constructor(
-    @InjectRepository(SlotAgendaDbEntity)
-    agendaService,
+    @Inject(TypeOrmAgendaService)
+    agendaService: TypeOrmAgendaService,
     @Inject(MomentDateTimeUtils)
     dateTimeUtils: DateTimeUtils,
     @Inject(NestAuthorizationService)
@@ -43,8 +41,11 @@ class NestCriarNovoSlotDeAgenda extends CriarNovoSlotDeAgenda {
   imports: [TypeOrmModule.forFeature([SlotAgendaDbEntity]), UsuarioModule],
   controllers: [AgendaController],
   providers: [
-    AgendaService,
-    NestCriarNovoSlotDeAgenda,
+    {
+      provide: CriarNovoSlotDeAgenda,
+      useClass: NestCriarNovoSlotDeAgenda,
+    },
+    TypeOrmAgendaService,
     MomentDateTimeUtils,
     NestAuthorizationService,
   ],

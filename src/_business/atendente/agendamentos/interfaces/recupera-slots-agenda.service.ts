@@ -1,9 +1,10 @@
 import { SlotAgenda } from '../entidades/slot-agenda';
 
+export interface RecuperarSlotsParams {
+  inicio: Date;
+  fim: Date;
+  idAtendente: number;
+}
 export interface RecuperaSlotsAgendaService {
-  recuperaSlots(param: {
-    inicio: Date;
-    fim: Date;
-    idAtendente: number;
-  }): Promise<SlotAgenda[]>;
+  recuperaSlots(param: RecuperarSlotsParams): Promise<SlotAgenda[]>;
 }

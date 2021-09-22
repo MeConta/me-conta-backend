@@ -1,5 +1,11 @@
-import { CriarSlotAgendaService } from '../interfaces/criar-slot-agenda.service';
-import { RecuperaSlotsAgendaService } from '../interfaces/recupera-slots-agenda.service';
+import {
+  CriarSlotAgendaParams,
+  CriarSlotAgendaService,
+} from '../interfaces/criar-slot-agenda.service';
+import {
+  RecuperarSlotsParams,
+  RecuperaSlotsAgendaService,
+} from '../interfaces/recupera-slots-agenda.service';
 import { SlotAgenda } from '../entidades/slot-agenda';
 
 export class InMemoryAgendaService
@@ -11,11 +17,7 @@ export class InMemoryAgendaService
     this.slots = [];
   }
 
-  async criarSlotNovo(param: {
-    inicio: Date;
-    fim: Date;
-    idAtendente: string;
-  }): Promise<void> {
+  async criarSlotNovo(param: CriarSlotAgendaParams): Promise<void> {
     this.slots.push({
       id: this.slots.length,
       inicio: param.inicio,
@@ -24,11 +26,7 @@ export class InMemoryAgendaService
     });
   }
 
-  async recuperaSlots(param: {
-    inicio: Date;
-    fim: Date;
-    idAtendente: string;
-  }): Promise<SlotAgenda[]> {
+  async recuperaSlots(param: RecuperarSlotsParams): Promise<SlotAgenda[]> {
     return this.slots.filter((slot) => {
       return (
         param.idAtendente === slot.idAtendente &&

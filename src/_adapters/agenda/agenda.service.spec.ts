@@ -28,39 +28,39 @@ describe('Agenda Repo', () => {
   });
   it('deve criar um slot de agenda para uma pessoa atendente', async function () {
     await sut.criarSlotNovo({
-      idAtendente: '1',
+      idAtendente: 1,
       inicio: new Date(2022, 11, 31, 9),
       fim: new Date(2022, 11, 31, 10),
     });
     const slots = await repo.find();
     expect(slots).toContainEqual({
       id: expect.any(Number),
-      idAtendente: '1',
+      idAtendente: 1,
       inicio: new Date(2022, 11, 31, 9).getTime(),
       fim: new Date(2022, 11, 31, 10).getTime(),
     });
   });
   it('deve retornar slots do periodo e atendente', async function () {
     await repo.save({
-      idAtendente: '1',
+      idAtendente: 1,
       inicio: new Date(2022, 11, 30, 9).getTime(),
       fim: new Date(2022, 11, 30, 10).getTime(),
     });
     await repo.save({
-      idAtendente: '1',
+      idAtendente: 1,
       inicio: new Date(2022, 11, 31, 9).getTime(),
       fim: new Date(2022, 11, 31, 10).getTime(),
     });
     await expect(
       sut.recuperaSlots({
-        idAtendente: '1',
+        idAtendente: 1,
         inicio: new Date(2022, 11, 31, 0),
         fim: new Date(2022, 11, 31, 23, 59),
       }),
     ).resolves.toEqual([
       {
         id: 2,
-        idAtendente: '1',
+        idAtendente: 1,
         inicio: new Date(2022, 11, 31, 9),
         fim: new Date(2022, 11, 31, 10),
       },
