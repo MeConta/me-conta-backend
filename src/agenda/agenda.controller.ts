@@ -7,7 +7,7 @@ export function isValidDate(value: any): value is Date {
 }
 
 class CriarSlotAgendaDto {
-  inicio: Date;
+  inicio: string;
 }
 
 @Controller('agenda')
@@ -19,13 +19,13 @@ export class AgendaController {
     @Body() dto: CriarSlotAgendaDto,
     @User() user: { id: number },
   ): Promise<void> {
-    dto.inicio = new Date(dto.inicio);
-    if (!isValidDate(dto.inicio)) {
+    const inicioData = new Date(dto.inicio);
+    if (!isValidDate(inicioData)) {
       throw new NotAcceptableException('Data inválida');
     }
     return this.criarNovoSlotDeAgenda.execute({
       idUsuario: user.id,
-      inicio: dto.inicio,
+      inicio: inicioData,
     });
   }
 }
