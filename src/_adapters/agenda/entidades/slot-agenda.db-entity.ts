@@ -8,9 +8,9 @@ export class SlotAgendaDbEntity {
   @Column()
   idAtendente: string;
 
-  @Column()
+  @Column('bigint')
   inicio: number;
 
-  @Column()
+  @Column('bigint')
   fim: number;
 }

@@ -1,23 +1,31 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { AgendaService } from './agenda.service';
-import { CriarSlotAgendaParams } from '../_business/atendente/agendamentos/interfaces/criar-slot-agenda.service';
-import { IsDate, IsNotEmpty } from 'class-validator';
+import { Body, Controller, NotAcceptableException, Post } from '@nestjs/common';
+import { CriarNovoSlotDeAgenda } from '../_business/atendente/agendamentos/casos-de-uso/criar-novo-slot-de-agenda.feat';
+import { User } from '../decorators/user.decorator';
 
-class CriarSlotAgendaDto implements CriarSlotAgendaParams {
-  @IsDate()
+export function isValidDate(value: any): value is Date {
+  return value instanceof Date && !isNaN(value as any);
+}
+
+class CriarSlotAgendaDto {
   inicio: Date;
-  @IsDate()
-  fim: Date;
-  @IsNotEmpty()
-  idAtendente: string;
 }
 
 @Controller('agenda')
 export class AgendaController {
-  constructor(private readonly agendaService: AgendaService) {}
+  constructor(private readonly criarNovoSlotDeAgenda: CriarNovoSlotDeAgenda) {}
 
   @Post()
-  async create(@Body() dto: CriarSlotAgendaDto): Promise<void> {
-    return this.agendaService.criarSlotNovo(dto);
+  async create(
+    @Body() dto: CriarSlotAgendaDto,
+    @User() user: { id: number },
+  ): Promise<void> {
+    dto.inicio = new Date(dto.inicio);
+    if (!isValidDate(dto.inicio)) {
+      throw new NotAcceptableException('Data inválida');
+    }
+    return this.criarNovoSlotDeAgenda.execute({
+      idUsuario: user.id,
+      inicio: dto.inicio,
+    });
   }
 }

@@ -57,7 +57,7 @@ export class CriarNovoSlotDeAgenda {
 
   private async verificaPermissao(idUsuario: string) {
     if (
-      !(await this.authorizationService.verificaPertenceAoGrupo(
+      !(await this.authorizationService.verificaTipoDoUsuario(
         idUsuario,
         Tipo.ATENDENTE,
       ))
