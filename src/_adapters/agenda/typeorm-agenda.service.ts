@@ -20,7 +20,6 @@ export class TypeOrmAgendaService
     @InjectRepository(SlotAgendaDbEntity)
     private readonly agendaRepo: Repository<SlotAgendaDbEntity>,
   ) {}
-
   async criarSlotNovo(param: CriarSlotAgendaParams): Promise<void> {
     const entity = this.agendaRepo.create({
       idAtendente: param.idAtendente,
