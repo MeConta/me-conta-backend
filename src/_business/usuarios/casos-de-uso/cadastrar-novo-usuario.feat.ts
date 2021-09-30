@@ -1,7 +1,9 @@
+import { IHashService } from '../../interfaces/hash.service';
+
 export enum TipoUsuario {
   ALUNO = `Aluno`,
-  SUPERVISOR = `Supervisor`,
-  ATENDENTE = `Atendente`,
+  SUPERVISOR = `Voluntário Supervisor`,
+  ATENDENTE = `Voluntário Atendente`,
   ADMINISTRADOR = `Administrador`,
 }
 export interface NovoUsuario {
@@ -11,11 +13,30 @@ export interface NovoUsuario {
   tipo: TipoUsuario;
 }
 export interface ICadastrarNovoUsuario {
-  cadastrar(param: NovoUsuario): Promise<void>;
+  cadastrar(param: NovoUsuario & { salt: string }): Promise<void>;
 }
+
+export class DuplicatedError extends Error {
+  constructor() {
+    super('e-mail duplicado');
+  }
+}
+
 export class CadastrarNovoUsuario {
-  constructor(private readonly usuarioService: ICadastrarNovoUsuario) {}
+  constructor(
+    private readonly usuarioService: ICadastrarNovoUsuario,
+    private readonly hashService: IHashService,
+  ) {}
   async execute(input: NovoUsuario) {
-    await this.usuarioService.cadastrar(input);
+    try {
+      const SALT = await this.hashService.generateSalt();
+      await this.usuarioService.cadastrar({
+        ...input,
+        senha: await this.hashService.hash(input.senha, SALT),
+        salt: SALT,
+      });
+    } catch (e) {
+      throw new DuplicatedError();
+    }
   }
 }
