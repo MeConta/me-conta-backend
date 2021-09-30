@@ -1,7 +1,7 @@
 import { Usuario } from '../_business/usuarios/entidades/usuario.entity';
-import { Estado, Genero } from '../usuario/entities/usuario.enum';
+import { Estado, Genero } from '../../__old/usuario/entities/usuario.enum';
 import { CreateUsuarioDto } from '../_adapters/usuarios/dto/create-usuario.dto';
-import { UpdateUsuarioDto } from '../usuario/dto/update-usuario.dto';
+import { UpdateUsuarioDto } from '../../__old/usuario/dto/update-usuario.dto';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import * as bcrypt from 'bcrypt';
 import { DEFAULT_PASSWORD, MOCKED_SALT } from '../../jest.setup';

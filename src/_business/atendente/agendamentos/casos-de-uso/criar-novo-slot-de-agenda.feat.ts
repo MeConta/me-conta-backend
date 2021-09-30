@@ -1,6 +1,6 @@
 import { CriarSlotAgendaService } from '../interfaces/criar-slot-agenda.service';
 import { DateTimeUtils } from '../interfaces/date-time.utils';
-import { Tipo } from '../../../../usuario/entities/usuario.enum';
+import { Tipo } from '../../../../../__old/usuario/entities/usuario.enum';
 import { AuthorizationService } from '../../../autorizacao/interfaces/authorization.service';
 import { RecuperaSlotsAgendaService } from '../interfaces/recupera-slots-agenda.service';
 

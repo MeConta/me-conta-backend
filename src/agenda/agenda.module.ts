@@ -6,9 +6,9 @@ import { CriarNovoSlotDeAgenda } from '../_business/atendente/agendamentos/casos
 import { AuthorizationService } from '../_business/autorizacao/interfaces/authorization.service';
 import { DateTimeUtils } from '../_business/atendente/agendamentos/interfaces/date-time.utils';
 import { MomentDateTimeUtils } from '../_business/atendente/agendamentos/fakes/moment-date-time.utils';
-import { Tipo } from '../usuario/entities/usuario.enum';
-import { UsuarioService } from '../usuario/usuario.service';
-import { UsuarioModule } from '../usuario/usuario.module';
+import { Tipo } from '../../__old/usuario/entities/usuario.enum';
+import { UsuarioService } from '../../__old/usuario/usuario.service';
+import { UsuarioModule } from '../../__old/usuario/usuario.module';
 import { TypeOrmAgendaService } from '../_adapters/agenda/typeorm-agenda.service';
 
 // TODO: Criar testes.

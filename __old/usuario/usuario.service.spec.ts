@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsuarioService } from './usuario.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Usuario } from '../_business/usuarios/entidades/usuario.entity';
-import { FactoryMock, MockType } from '../testing/factory.mock';
+import { Usuario } from '../../src/_business/usuarios/entidades/usuario.entity';
+import { FactoryMock, MockType } from '../../src/testing/factory.mock';
 import { FindConditions, Repository } from 'typeorm';
-import { UsuarioStub } from '../testing/usuario.stub';
+import { UsuarioStub } from '../../src/testing/usuario.stub';
 import {
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import * as PaginateSpy from 'nestjs-typeorm-paginate';
 import * as bcrypt from 'bcrypt';
-import { UsuarioDbEntity } from '../_adapters/usuarios/entidades/usuario.db.entity';
+import { UsuarioDbEntity } from '../../src/_adapters/usuarios/entidades/usuario.db.entity';
 
 jest.mock('nestjs-typeorm-paginate');
 

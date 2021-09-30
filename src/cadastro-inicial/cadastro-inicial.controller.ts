@@ -1,16 +1,24 @@
-import { Body, Controller, Inject, Post } from '@nestjs/common';
+import { Body, ConflictException, Controller, Post } from '@nestjs/common';
 import { CreateUsuarioDto } from '../_adapters/usuarios/dto/create-usuario.dto';
-import { TypeormUsuarioService } from '../_adapters/usuarios/typeorm-usuario.service';
-import { CadastrarNovoUsuarioService } from '../_business/usuarios/interfaces/cadastrar-novo-usuario.service';
+import {
+  CadastrarNovoUsuario,
+  DuplicatedError,
+} from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 @Controller('cadastro-inicial')
 export class CadastroInicialController {
-  constructor(
-    @Inject(TypeormUsuarioService)
-    private readonly service: CadastrarNovoUsuarioService,
-  ) {}
+  constructor(private cadastrarNovoUsuario: CadastrarNovoUsuario) {}
   @Post()
-  cadastrar(@Body() dto: CreateUsuarioDto) {
-    return this.service.cadastrar(dto);
+  async cadastrar(@Body() dto: CreateUsuarioDto) {
+    try {
+      await this.cadastrarNovoUsuario.execute(dto);
+    } catch (e) {
+      if (e instanceof DuplicatedError) {
+        throw new ConflictException({
+          code: 409,
+          message: e.message,
+        });
+      }
+    }
   }
 }

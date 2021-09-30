@@ -11,8 +11,8 @@ export class TypeormUsuarioService implements CadastrarNovoUsuarioService {
     @InjectRepository(UsuarioDbEntity)
     private readonly repository: Repository<UsuarioDbEntity>,
   ) {}
-  async cadastrar(usuario: NovoUsuario): Promise<void> {
-    const entity = this.repository.create({ ...usuario, salt: 'salt' });
+  async cadastrar(usuario: NovoUsuario & { salt: string }) {
+    const entity = this.repository.create(usuario);
     await this.repository.save(entity);
   }
 }

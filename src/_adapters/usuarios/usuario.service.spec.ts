@@ -2,10 +2,12 @@ import { Connection, createConnection, Repository } from 'typeorm';
 import { UsuarioDbEntity } from './entidades/usuario.db.entity';
 import { TypeormUsuarioService } from './typeorm-usuario.service';
 import { TipoUsuario } from '../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { IHashService } from '../../_business/interfaces/hash.service';
 
 describe('Usuario', () => {
   let connection: Connection;
   let repository: Repository<UsuarioDbEntity>;
+  let hashService: IHashService;
   let sut: TypeormUsuarioService;
   beforeAll(async () => {
     connection = await createConnection({
@@ -15,11 +17,14 @@ describe('Usuario', () => {
       logging: false,
       entities: [UsuarioDbEntity],
     });
+    hashService = {
+      generateSalt: jest.fn().mockResolvedValue('salt'),
+    };
   });
   beforeEach(async () => {
     await connection.synchronize(true);
     repository = connection.getRepository(UsuarioDbEntity);
-    sut = new TypeormUsuarioService(repository);
+    sut = new TypeormUsuarioService(repository, hashService);
   });
   afterAll(async () => {
     await connection.close();

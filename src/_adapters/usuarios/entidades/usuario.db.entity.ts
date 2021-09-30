@@ -1,5 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { Estado, Genero } from '../../../usuario/entities/usuario.enum';
+import {
+  Estado,
+  Genero,
+} from '../../../../__old/usuario/entities/usuario.enum';
 import { Exclude } from 'class-transformer';
 import { ApiHideProperty } from '@nestjs/swagger';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';

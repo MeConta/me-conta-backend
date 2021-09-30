@@ -1,8 +1,13 @@
 import { CadastroInicialController } from './cadastro-inicial.controller';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeormUsuarioService } from '../_adapters/usuarios/typeorm-usuario.service';
-import { TipoUsuario } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import {
+  ICadastrarNovoUsuario,
+  TipoUsuario,
+} from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { CadastrarNovoUsuarioService } from '../_business/usuarios/interfaces/cadastrar-novo-usuario.service';
+import { BcryptHashService } from '../_adapters/bcrypt-hash.service';
+import { IHashService } from '../_business/interfaces/hash.service';
 
 describe('Cadastro Inicial', () => {
   let controller: CadastroInicialController;
@@ -14,7 +19,15 @@ describe('Cadastro Inicial', () => {
           provide: TypeormUsuarioService,
           useValue: {
             cadastrar: jest.fn(),
-          },
+          } as ICadastrarNovoUsuario,
+        },
+        {
+          provide: BcryptHashService,
+          useValue: {
+            hash: jest.fn(),
+            generateSalt: jest.fn(),
+            compare: jest.fn(),
+          } as IHashService,
         },
       ],
       controllers: [CadastroInicialController],

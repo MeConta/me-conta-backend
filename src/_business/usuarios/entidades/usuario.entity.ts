@@ -1,4 +1,7 @@
-import { Estado, Genero } from '../../../usuario/entities/usuario.enum';
+import {
+  Estado,
+  Genero,
+} from '../../../../__old/usuario/entities/usuario.enum';
 import { TipoUsuario } from '../casos-de-uso/cadastrar-novo-usuario.feat';
 
 export interface Usuario {

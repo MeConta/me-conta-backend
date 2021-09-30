@@ -1,6 +1,6 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { UsuarioModule } from '../usuario/usuario.module';
+import { UsuarioModule } from '../../__old/usuario/usuario.module';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtModule } from '@nestjs/jwt';

@@ -1,11 +1,11 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
-import { CreateUsuarioDto } from '../_adapters/usuarios/dto/create-usuario.dto';
+import { CreateUsuarioDto } from '../../src/_adapters/usuarios/dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
-import { Usuario } from '../_business/usuarios/entidades/usuario.entity';
-import { DefaultService } from '../default.service';
-import { Erros } from '../config/constants';
+import { Usuario } from '../../src/_business/usuarios/entidades/usuario.entity';
+import { DefaultService } from '../../src/default.service';
+import { Erros } from '../../src/config/constants';
 import * as bcrypt from 'bcrypt';
-import { UsuarioDbEntity } from '../_adapters/usuarios/entidades/usuario.db.entity';
+import { UsuarioDbEntity } from '../../src/_adapters/usuarios/entidades/usuario.db.entity';
 
 @Injectable()
 export class UsuarioService extends DefaultService(

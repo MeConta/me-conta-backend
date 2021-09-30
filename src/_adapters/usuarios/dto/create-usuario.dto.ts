@@ -1,4 +1,4 @@
-import { IsEmail, IsEnum, IsNotEmpty, Matches } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Erros, Regex } from '../../../config/constants';
 import {
@@ -32,9 +32,6 @@ export class CreateUsuarioDto implements NovoUsuario {
     pattern: Regex.SENHA,
   })
   @IsNotEmpty()
-  @Matches(new RegExp(Regex.SENHA), {
-    message: () => `$property ${Erros.VALIDACAO_SENHA}`,
-  })
   senha: string;
 
   @IsEnum(TipoUsuario)

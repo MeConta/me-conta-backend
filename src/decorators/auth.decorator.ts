@@ -6,7 +6,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { TOKEN_NAME } from '../config/swagger.config';
-import { Tipo } from '../usuario/entities/usuario.enum';
+import { Tipo } from '../../__old/usuario/entities/usuario.enum';
 import { Roles } from './roles.decorator';
 
 export function Auth(...roles: Tipo[]) {

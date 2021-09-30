@@ -1,4 +1,4 @@
-import { Tipo } from '../../../usuario/entities/usuario.enum';
+import { Tipo } from '../../../../__old/usuario/entities/usuario.enum';
 import { AuthorizationService } from '../interfaces/authorization.service';
 
 export class FakeAuthorizationService implements AuthorizationService {

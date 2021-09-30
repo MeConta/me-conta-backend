@@ -1,7 +1,7 @@
 import { RolesGuard } from './roles.guard';
 import { ExecutionContext } from '@nestjs/common';
 import { createMock } from '@golevelup/ts-jest';
-import { Tipo } from '../../usuario/entities/usuario.enum';
+import { Tipo } from '../../../__old/usuario/entities/usuario.enum';
 import { Reflector } from '@nestjs/core';
 
 describe('RolesGuard', () => {

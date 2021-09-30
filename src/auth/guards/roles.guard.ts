@@ -1,5 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { Tipo } from '../../usuario/entities/usuario.enum';
+import { Tipo } from '../../../__old/usuario/entities/usuario.enum';
 import { Reflector } from '@nestjs/core';
 
 @Injectable()

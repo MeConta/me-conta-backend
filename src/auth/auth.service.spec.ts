@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
-import { UsuarioService } from '../usuario/usuario.service';
+import { UsuarioService } from '../../__old/usuario/usuario.service';
 import { JwtService } from '@nestjs/jwt';
 import { FactoryMock } from '../testing/factory.mock';
 import { UsuarioStub } from '../testing/usuario.stub';

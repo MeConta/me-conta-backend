@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsuarioController } from './usuario.controller';
 import { UsuarioService } from './usuario.service';
-import { FactoryMock } from '../testing/factory.mock';
-import { UsuarioStub } from '../testing/usuario.stub';
+import { FactoryMock } from '../../src/testing/factory.mock';
+import { UsuarioStub } from '../../src/testing/usuario.stub';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 
 describe('UsuarioController', () => {
