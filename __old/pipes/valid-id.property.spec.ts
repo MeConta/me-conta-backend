@@ -1,8 +1,8 @@
-import { CreateConsultaDto } from '../../__old/consulta/dto/create-consulta.dto';
+import { CreateConsultaDto } from '../consulta/dto/create-consulta.dto';
 import { ArgumentMetadata, ValidationPipe } from '@nestjs/common';
-import { Atendente } from '../../__old/atendente/entities/atendente.entity';
-import { Aluno } from '../../__old/aluno/entities/aluno.entity';
-import { Agenda } from '../../__old/agenda/entities/agenda.entity';
+import { Atendente } from '../atendente/entities/atendente.entity';
+import { Aluno } from '../aluno/entities/aluno.entity';
+import { Agenda } from '../agenda/entities/agenda.entity';
 
 describe('ValidIdPipe', () => {
   let target: ValidationPipe;
