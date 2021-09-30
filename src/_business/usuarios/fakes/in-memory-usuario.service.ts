@@ -6,14 +6,17 @@ import { Usuario } from '../entidades/usuario.entity';
 
 export class InMemoryUsuarioService implements ICadastrarNovoUsuario {
   usuarios: Usuario[] = [];
-  cadastrar(param: NovoUsuario): Promise<void> {
+  cadastrar(
+    usuario: NovoUsuario & { salt: string; dataTermos: Date },
+  ): Promise<void> {
     this.usuarios.push({
       id: this.usuarios.length,
-      nome: param.nome,
-      email: param.email,
-      tipoUsuario: param.tipo,
-      senha: param.senha,
-      salt: 'salt',
+      nome: usuario.nome,
+      email: usuario.email,
+      tipoUsuario: usuario.tipo,
+      senha: usuario.senha,
+      salt: usuario.salt,
+      dataTermos: usuario.dataTermos,
     });
     return Promise.resolve();
   }

@@ -9,11 +9,12 @@ export interface Usuario {
   nome: string;
   email: string;
   senha: string;
+  salt: string;
   dataNascimento?: Date;
   genero?: Genero;
   UF?: Estado;
   cidade?: string;
   telefone?: string;
   tipoUsuario?: TipoUsuario;
-  salt: string;
+  dataTermos: Date;
 }

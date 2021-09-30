@@ -36,6 +36,7 @@ describe('Usuario', () => {
       senha: 's3Nh4vAl!d@',
       tipo: TipoUsuario.ALUNO,
       salt: MOCKED_SALT,
+      dataTermos: new Date(),
     });
     const usuarios = await repository.find();
     expect(usuarios[0]).toEqual(
@@ -46,6 +47,7 @@ describe('Usuario', () => {
         senha: 's3Nh4vAl!d@',
         tipoUsuario: TipoUsuario.ALUNO,
         salt: expect.any(String),
+        dataTermos: expect.any(Date),
       } as UsuarioDbEntity),
     );
   });

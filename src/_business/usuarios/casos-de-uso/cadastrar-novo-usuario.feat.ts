@@ -14,7 +14,9 @@ export interface NovoUsuario {
   tipo: TipoUsuario;
 }
 export interface ICadastrarNovoUsuario {
-  cadastrar(param: NovoUsuario & { salt: string }): Promise<void>;
+  cadastrar(
+    usuario: NovoUsuario & { salt: string; dataTermos: Date },
+  ): Promise<void>;
 }
 
 export class DuplicatedError extends Error {
@@ -47,6 +49,7 @@ export class CadastrarNovoUsuario {
         ...input,
         senha: await this.passwordService.hash(input.senha, SALT),
         salt: SALT,
+        dataTermos: new Date(),
       });
     } catch (e) {
       throw new DuplicatedError();

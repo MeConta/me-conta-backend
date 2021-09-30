@@ -36,6 +36,7 @@ export class UsuarioStub {
       telefone: '(11) 94786-6489',
       tipoUsuario: TipoUsuario.ALUNO,
       salt: MOCKED_SALT,
+      dataTermos: new Date(),
     };
   }
 

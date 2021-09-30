@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column } from 'typeorm';
 import {
   Estado,
   Genero,
@@ -7,11 +7,10 @@ import { Exclude } from 'class-transformer';
 import { ApiHideProperty } from '@nestjs/swagger';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { TypeormDefaultEntity } from '../../entidades/typeorm.default.entity';
 
 @Entity('usuario')
-export class UsuarioDbEntity implements Usuario {
-  @PrimaryGeneratedColumn()
-  id: number;
+export class UsuarioDbEntity extends TypeormDefaultEntity implements Usuario {
   /***
    * @example 'Maria'
    */
@@ -30,6 +29,10 @@ export class UsuarioDbEntity implements Usuario {
   @Column()
   @Exclude()
   senha: string;
+
+  @Column()
+  @Exclude()
+  salt: string;
 
   /***
    * ISO8601 datetime
@@ -74,6 +77,5 @@ export class UsuarioDbEntity implements Usuario {
   tipoUsuario?: TipoUsuario;
 
   @Column()
-  @Exclude()
-  salt: string;
+  dataTermos: Date;
 }
