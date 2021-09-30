@@ -1,4 +1,10 @@
-import { Body, ConflictException, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  ConflictException,
+  Controller,
+  InternalServerErrorException,
+  Post,
+} from '@nestjs/common';
 import { CreateUsuarioDto } from '../_adapters/usuarios/dto/create-usuario.dto';
 import {
   CadastrarNovoUsuario,
@@ -19,6 +25,10 @@ export class CadastroInicialController {
           message: e.message,
         });
       }
+      throw new InternalServerErrorException({
+        code: 500,
+        message: 'Internal Server Error',
+      });
     }
   }
 }

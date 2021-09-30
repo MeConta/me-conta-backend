@@ -2,9 +2,14 @@ import { CadastroInicialController } from './cadastro-inicial.controller';
 import { Test, TestingModule } from '@nestjs/testing';
 import {
   CadastrarNovoUsuario,
+  DuplicatedError,
   TipoUsuario,
 } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { createMock } from '@golevelup/ts-jest';
+import {
+  ConflictException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 
 describe('Cadastro Inicial', () => {
   let controller: CadastroInicialController;
@@ -40,5 +45,28 @@ describe('Cadastro Inicial', () => {
       tipo: TipoUsuario.ALUNO,
       senha: 's3nh4F0rt3!',
     });
+  });
+
+  it('Deve dar erro de usuário duplicado', async () => {
+    jest.spyOn(useCase, 'execute').mockRejectedValue(new DuplicatedError());
+    await expect(() =>
+      controller.cadastrar({
+        nome: 'Teste',
+        email: 'teste@teste.com',
+        tipo: TipoUsuario.ALUNO,
+        senha: 's3nh4F0rt3!',
+      }),
+    ).rejects.toThrow(ConflictException);
+  });
+  it('Deve dar erro genérico', async () => {
+    jest.spyOn(useCase, 'execute').mockRejectedValue(new Error());
+    await expect(() =>
+      controller.cadastrar({
+        nome: 'Teste',
+        email: 'teste@teste.com',
+        tipo: TipoUsuario.ALUNO,
+        senha: 's3nh4F0rt3!',
+      }),
+    ).rejects.toThrow(InternalServerErrorException);
   });
 });

@@ -5,6 +5,7 @@ import {
   NovoUsuario,
   TipoUsuario,
 } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { IsPasswordStrong } from '../../../decorators';
 
 export class CreateUsuarioDto implements NovoUsuario {
   /***
@@ -32,6 +33,7 @@ export class CreateUsuarioDto implements NovoUsuario {
     pattern: Regex.SENHA,
   })
   @IsNotEmpty()
+  @IsPasswordStrong()
   senha: string;
 
   @IsEnum(TipoUsuario)

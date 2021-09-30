@@ -8,16 +8,15 @@ import {
   ICadastrarNovoUsuario,
 } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { IHashService } from '../_business/interfaces/hash.service';
-import { IPasswordStrengthService } from '../_business/interfaces/password-strength.service';
-import { PasswordService } from '../_adapters/password.service';
+import { BcryptHashService } from '../_adapters/bcrypt-hash.service';
 
 @Injectable()
 class NestCadastrarNovoUsuario extends CadastrarNovoUsuario {
   constructor(
     @Inject(TypeormUsuarioService)
     usuarioService: ICadastrarNovoUsuario,
-    @Inject(PasswordService)
-    passwordService: IHashService & IPasswordStrengthService,
+    @Inject(BcryptHashService)
+    passwordService: IHashService,
   ) {
     super(usuarioService, passwordService);
   }
@@ -27,7 +26,7 @@ class NestCadastrarNovoUsuario extends CadastrarNovoUsuario {
   imports: [TypeOrmModule.forFeature([UsuarioDbEntity])],
   providers: [
     TypeormUsuarioService,
-    PasswordService,
+    BcryptHashService,
     {
       provide: CadastrarNovoUsuario,
       useClass: NestCadastrarNovoUsuario,
