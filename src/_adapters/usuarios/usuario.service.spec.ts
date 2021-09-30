@@ -2,12 +2,11 @@ import { Connection, createConnection, Repository } from 'typeorm';
 import { UsuarioDbEntity } from './entidades/usuario.db.entity';
 import { TypeormUsuarioService } from './typeorm-usuario.service';
 import { TipoUsuario } from '../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { IHashService } from '../../_business/interfaces/hash.service';
+import { MOCKED_SALT } from '../../../jest.setup';
 
 describe('Usuario', () => {
   let connection: Connection;
   let repository: Repository<UsuarioDbEntity>;
-  let hashService: IHashService;
   let sut: TypeormUsuarioService;
   beforeAll(async () => {
     connection = await createConnection({
@@ -17,14 +16,11 @@ describe('Usuario', () => {
       logging: false,
       entities: [UsuarioDbEntity],
     });
-    hashService = {
-      generateSalt: jest.fn().mockResolvedValue('salt'),
-    };
   });
   beforeEach(async () => {
     await connection.synchronize(true);
     repository = connection.getRepository(UsuarioDbEntity);
-    sut = new TypeormUsuarioService(repository, hashService);
+    sut = new TypeormUsuarioService(repository);
   });
   afterAll(async () => {
     await connection.close();
@@ -39,6 +35,7 @@ describe('Usuario', () => {
       email: 'email@email.com',
       senha: 's3Nh4vAl!d@',
       tipo: TipoUsuario.ALUNO,
+      salt: MOCKED_SALT,
     });
     const usuarios = await repository.find();
     expect(usuarios[0]).toEqual(
