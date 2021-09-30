@@ -3,9 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import database from './config/database.config';
 import { AppController } from './app.controller';
-import { AuthModule } from './auth/auth.module';
-import { UsuarioModule } from './usuario/usuario.module';
-import { AgendaModule } from './agenda/agenda.module';
+import { CadastroInicialModule } from './cadastro-inicial/cadastro-inicial.module';
 
 @Module({
   imports: [
@@ -21,9 +19,10 @@ import { AgendaModule } from './agenda/agenda.module';
         ...configService.get('database'),
       }),
     }),
-    UsuarioModule,
-    AuthModule.forRoot(),
-    AgendaModule,
+    // UsuarioModule,
+    CadastroInicialModule,
+    // AuthModule.forRoot(),
+    // AgendaModule,
   ],
   controllers: [AppController],
 })

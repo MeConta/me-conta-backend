@@ -1,17 +1,18 @@
 import { Body, Param } from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
-import { CreateUsuarioDto } from './dto/create-usuario.dto';
+import { CreateUsuarioDto } from '../_adapters/usuarios/dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { DefaultController } from '../default.controller';
-import { Usuario } from './entities/usuario.entity';
+import { Usuario } from '../_business/usuarios/entidades/usuario.entity';
 import { ApiTags } from '@nestjs/swagger';
 import { Auth, PatchApi, PostApi } from '../decorators';
 import { Tipo } from './entities/usuario.enum';
+import { UsuarioDbEntity } from '../_adapters/usuarios/entidades/usuario.db.entity';
 
 @ApiTags('Usuário')
 export class UsuarioController extends DefaultController(
   'usuario',
-  Usuario,
+  UsuarioDbEntity,
   UsuarioService,
   CreateUsuarioDto,
   UpdateUsuarioDto,

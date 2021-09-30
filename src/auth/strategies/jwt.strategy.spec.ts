@@ -1,14 +1,14 @@
 import { JwtStrategy } from './jwt.strategy';
 import { internet } from 'faker';
 import { TokenPayload } from '../dto';
-import { Tipo } from '../../usuario/entities/usuario.enum';
+import { TipoUsuario } from '../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 describe('JwtStrategy', () => {
   const strategy = new JwtStrategy();
   const payload: TokenPayload = {
     email: internet.email(),
     sub: 1,
-    roles: [Tipo.ADMINISTRADOR],
+    roles: [TipoUsuario.ADMINISTRADOR],
   };
   it('deve retornar um payload', async () => {
     const response = await strategy.validate(payload);

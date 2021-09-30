@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsuarioService } from './usuario.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Usuario } from './entities/usuario.entity';
+import { Usuario } from '../_business/usuarios/entidades/usuario.entity';
 import { FactoryMock, MockType } from '../testing/factory.mock';
 import { FindConditions, Repository } from 'typeorm';
 import { UsuarioStub } from '../testing/usuario.stub';
@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import * as PaginateSpy from 'nestjs-typeorm-paginate';
 import * as bcrypt from 'bcrypt';
+import { UsuarioDbEntity } from '../_adapters/usuarios/entidades/usuario.db.entity';
 
 jest.mock('nestjs-typeorm-paginate');
 
@@ -22,7 +23,7 @@ describe('UsuarioService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
-          provide: getRepositoryToken(Usuario),
+          provide: getRepositoryToken(UsuarioDbEntity),
           useFactory: FactoryMock.repositoryMockFactory,
         },
         UsuarioService,
@@ -30,7 +31,7 @@ describe('UsuarioService', () => {
     }).compile();
 
     service = module.get<UsuarioService>(UsuarioService);
-    repository = module.get(getRepositoryToken(Usuario));
+    repository = module.get(getRepositoryToken(UsuarioDbEntity));
   });
 
   beforeEach(() => {

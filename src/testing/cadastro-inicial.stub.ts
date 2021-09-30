@@ -1,8 +1,9 @@
 import { CreateCadastroInicialDto } from '../cadastro-inicial/dto/create-cadastro-inicial.dto';
 import { Tipo } from '../usuario/entities/usuario.enum';
 import { DEFAULT_PASSWORD, MOCKED_SALT } from '../../jest.setup';
-import { Usuario } from '../usuario/entities/usuario.entity';
+import { Usuario } from '../_business/usuarios/entidades/usuario.entity';
 import * as bcrypt from 'bcrypt';
+import { TipoUsuario } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 export class CadastroInicialStub {
   static getCreateDto(): CreateCadastroInicialDto {
@@ -25,9 +26,7 @@ export class CadastroInicialStub {
       senha: bcrypt.hashSync(DEFAULT_PASSWORD, MOCKED_SALT),
       UF: null,
       telefone: null,
-      dataCriacao: new Date('08-29-2021'),
-      dataAlteracao: new Date('08-30-2021'),
-      tipoUsuario: Tipo.ADMINISTRADOR,
+      tipoUsuario: TipoUsuario.ALUNO,
       salt: MOCKED_SALT,
     };
   }

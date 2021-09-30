@@ -1,4 +1,4 @@
-import { Usuario } from '../../usuario/entities/usuario.entity';
+import { Usuario } from '../../_business/usuarios/entidades/usuario.entity';
 
 export class LoginDto {
   user: Usuario;

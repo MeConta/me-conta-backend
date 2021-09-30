@@ -1,14 +1,11 @@
 import { FactoryMock, MockType } from '../testing/factory.mock';
 import { Repository } from 'typeorm';
-import { Usuario } from '../usuario/entities/usuario.entity';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { CreateCadastroInicialDto } from './dto/create-cadastro-inicial.dto';
-import { UsuarioService } from '../usuario/usuario.service';
-import { Inject } from '@nestjs/common';
-import { CreateUsuarioDto } from '../usuario/dto/create-usuario.dto';
+import { TypeormUsuarioService } from '../_adapters/usuarios/typeorm-usuario.service';
+import { UsuarioDbEntity } from '../_adapters/usuarios/entidades/usuario.db.entity';
 
-export class CadastroInicialService {
+/*export class CadastroInicialService {
   constructor(
     @Inject(UsuarioService)
     private usuarioService: UsuarioService,
@@ -22,29 +19,30 @@ export class CadastroInicialService {
       tipoUsuario: createDto.tipoUsuario,
     });
   }
-}
+}*/
 
 describe('CadastroInicialService', () => {
-  let service: CadastroInicialService;
-  let repository: MockType<Repository<Usuario>>;
+  let service: TypeormUsuarioService;
+  let repository: MockType<Repository<UsuarioDbEntity>>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
-          provide: getRepositoryToken(Usuario),
+          provide: getRepositoryToken(UsuarioDbEntity),
           useFactory: FactoryMock.repositoryMockFactory,
         },
-        CadastroInicialService,
+        TypeormUsuarioService,
       ],
     }).compile();
 
-    service = module.get<CadastroInicialService>(CadastroInicialService);
-    repository = module.get(getRepositoryToken(Usuario));
+    service = module.get<TypeormUsuarioService>(TypeormUsuarioService);
+    repository = module.get(getRepositoryToken(UsuarioDbEntity));
   });
 
   it('deve ser definido', () => {
     expect(service).toBeDefined();
+    expect(repository).toBeDefined();
   });
 
   // it('deve criar um usuário', async () => {
