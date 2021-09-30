@@ -1,4 +1,5 @@
 import { IHashService } from '../../interfaces/hash.service';
+import { IPasswordStrengthService } from '../../interfaces/password-strength.service';
 
 export enum TipoUsuario {
   ALUNO = `Aluno`,
@@ -21,18 +22,30 @@ export class DuplicatedError extends Error {
     super('e-mail duplicado');
   }
 }
+export class WeakPasswordError extends Error {
+  constructor() {
+    super('senha fraca');
+  }
+}
 
 export class CadastrarNovoUsuario {
   constructor(
     private readonly usuarioService: ICadastrarNovoUsuario,
-    private readonly hashService: IHashService,
+    private readonly passwordService: IHashService & IPasswordStrengthService, // private readonly passwordService: IPasswordStrengthService,
   ) {}
   async execute(input: NovoUsuario) {
+    if (
+      this.passwordService.getStrength(input.senha) <=
+      +process.env.PASSWORD_STRENGTH
+    ) {
+      throw new WeakPasswordError();
+    }
+
     try {
-      const SALT = await this.hashService.generateSalt();
+      const SALT = await this.passwordService.generateSalt();
       await this.usuarioService.cadastrar({
         ...input,
-        senha: await this.hashService.hash(input.senha, SALT),
+        senha: await this.passwordService.hash(input.senha, SALT),
         salt: SALT,
       });
     } catch (e) {

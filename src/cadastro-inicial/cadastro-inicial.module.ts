@@ -9,6 +9,8 @@ import {
   ICadastrarNovoUsuario,
 } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { IHashService } from '../_business/interfaces/hash.service';
+import { IPasswordStrengthService } from '../_business/interfaces/password-strength.service';
+import { ZxcvbnPasswordService } from '../_adapters/zxcvbn-password.service';
 
 @Injectable()
 class NestCadastrarNovoUsuario extends CadastrarNovoUsuario {
@@ -16,9 +18,10 @@ class NestCadastrarNovoUsuario extends CadastrarNovoUsuario {
     @Inject(TypeormUsuarioService)
     usuarioService: ICadastrarNovoUsuario,
     @Inject(BcryptHashService)
-    hashService: IHashService,
+    @Inject(ZxcvbnPasswordService)
+    passwordService: IHashService & IPasswordStrengthService,
   ) {
-    super(usuarioService, hashService);
+    super(usuarioService, passwordService);
   }
 }
 
