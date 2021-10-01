@@ -1,17 +1,20 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { Tipo } from '../../../__old/usuario/entities/usuario.enum';
 import { Reflector } from '@nestjs/core';
+import { TipoUsuario } from '../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
-  private matchRoles(roles: Tipo[], userRoles: Tipo[]): boolean {
+  private matchRoles(roles: TipoUsuario[], userRoles: TipoUsuario[]): boolean {
     return !!userRoles.filter((role) => roles.includes(role)).length;
   }
 
   canActivate(context: ExecutionContext): boolean {
-    const roles = this.reflector.get<Tipo[]>('roles', context.getHandler());
+    const roles = this.reflector.get<TipoUsuario[]>(
+      'roles',
+      context.getHandler(),
+    );
     if (!roles.length) {
       return true;
     }

@@ -6,10 +6,10 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { TOKEN_NAME } from '../config/swagger.config';
-import { Tipo } from '../../__old/usuario/entities/usuario.enum';
 import { Roles } from './roles.decorator';
+import { TipoUsuario } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
-export function Auth(...roles: Tipo[]) {
+export function Auth(...roles: TipoUsuario[]) {
   return applyDecorators(
     Roles(...roles),
     UseGuards(JwtAuthGuard, RolesGuard),

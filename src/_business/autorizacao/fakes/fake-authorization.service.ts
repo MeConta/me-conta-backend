@@ -1,9 +1,12 @@
-import { Tipo } from '../../../../__old/usuario/entities/usuario.enum';
 import { AuthorizationService } from '../interfaces/authorization.service';
+import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 export class FakeAuthorizationService implements AuthorizationService {
-  verificaTipoDoUsuario(idUsuario: number, grupo: Tipo): Promise<boolean> {
-    if (idUsuario === 1 && grupo === Tipo.ATENDENTE) {
+  verificaTipoDoUsuario(
+    idUsuario: number,
+    grupo: TipoUsuario,
+  ): Promise<boolean> {
+    if (idUsuario === 1 && grupo === TipoUsuario.ATENDENTE) {
       return Promise.resolve(true);
     } else {
       return Promise.resolve(false);

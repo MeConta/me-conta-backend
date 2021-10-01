@@ -1,11 +1,12 @@
 import { Entity, Column } from 'typeorm';
+
+import { Exclude } from 'class-transformer';
+import { ApiHideProperty } from '@nestjs/swagger';
 import {
   Estado,
   Genero,
-} from '../../../../__old/usuario/entities/usuario.enum';
-import { Exclude } from 'class-transformer';
-import { ApiHideProperty } from '@nestjs/swagger';
-import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
+  Usuario,
+} from '../../../_business/usuarios/entidades/usuario.entity';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { TypeormDefaultEntity } from '../../entidades/typeorm.default.entity';
 

@@ -1,11 +1,11 @@
-import { Usuario } from '../_business/usuarios/entidades/usuario.entity';
-import { Estado, Genero } from '../../__old/usuario/entities/usuario.enum';
-import { CreateUsuarioDto } from '../_adapters/usuarios/dto/create-usuario.dto';
-import { UpdateUsuarioDto } from '../../__old/usuario/dto/update-usuario.dto';
+import { Usuario } from '../../_business/usuarios/entidades/usuario.entity';
+import { Estado, Genero } from '../../../__old/usuario/entities/usuario.enum';
+import { CreateUsuarioDto } from '../../_adapters/usuarios/dto/create-usuario.dto';
+import { UpdateUsuarioDto } from '../../../__old/usuario/dto/update-usuario.dto';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import * as bcrypt from 'bcrypt';
-import { DEFAULT_PASSWORD, MOCKED_SALT } from '../../jest.setup';
-import { TipoUsuario } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { DEFAULT_PASSWORD, MOCKED_SALT } from '../../../jest.setup';
+import { TipoUsuario } from '../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 export class UsuarioStub {
   static getCreateDto(): CreateUsuarioDto {

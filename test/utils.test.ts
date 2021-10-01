@@ -1,6 +1,13 @@
 import { internet } from 'faker/locale/pt_BR';
 import * as request from 'supertest';
-import { UsuarioStub } from '../src/testing/usuario.stub';
+import { createMock } from '@golevelup/ts-jest';
+import { CreateUsuarioDto } from '../src/_adapters/usuarios/dto/create-usuario.dto';
+
+const req = {
+  ...createMock<CreateUsuarioDto>(),
+  email: internet.email(),
+  senha: internet.password(),
+} as CreateUsuarioDto;
 
 export async function getAuthToken(
   app,
@@ -10,8 +17,8 @@ export async function getAuthToken(
   const response = await request(app.getHttpServer())
     .post(`/auth/login`)
     .send({
-      username: email || UsuarioStub.getCreateDto().email,
-      password: senha || UsuarioStub.getCreateDto().senha,
+      username: email || req.email,
+      password: senha || req.senha,
     });
 
   return response.body.token;
@@ -21,7 +28,7 @@ export async function getAdminAuthToken(app): Promise<string> {
   const response = await request(app.getHttpServer())
     .post(`/usuario`)
     .send({
-      ...UsuarioStub.getCreateDto(),
+      ...req,
       email: internet.email(),
     });
 

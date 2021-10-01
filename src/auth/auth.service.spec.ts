@@ -1,24 +1,26 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
-import { UsuarioService } from '../../__old/usuario/usuario.service';
 import { JwtService } from '@nestjs/jwt';
-import { FactoryMock } from '../testing/factory.mock';
-import { UsuarioStub } from '../testing/usuario.stub';
+import { TypeormUsuarioService } from '../_adapters/usuarios/typeorm-usuario.service';
+import { createMock } from '@golevelup/ts-jest';
+import { Usuario } from '../_business/usuarios/entidades/usuario.entity';
+import { CreateUsuarioDto } from '../_adapters/usuarios/dto/create-usuario.dto';
+import { TipoUsuario } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 describe('AuthService', () => {
   let service: AuthService;
-  let usuarioService: UsuarioService;
+  let usuarioService: TypeormUsuarioService;
   let jwtService: JwtService;
+
+  const request = createMock<CreateUsuarioDto>();
+  const entity = createMock<Usuario>();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
-          provide: UsuarioService,
-          useValue: {
-            ...FactoryMock.crudServiceMockFactory(),
-            findOneByEmail: jest.fn(),
-          },
+          provide: TypeormUsuarioService,
+          useValue: createMock<TypeormUsuarioService>(),
         },
         {
           provide: JwtService,
@@ -29,7 +31,7 @@ describe('AuthService', () => {
     }).compile();
 
     service = module.get<AuthService>(AuthService);
-    usuarioService = module.get<UsuarioService>(UsuarioService);
+    usuarioService = module.get<TypeormUsuarioService>(TypeormUsuarioService);
     jwtService = module.get<JwtService>(JwtService);
   });
 
@@ -39,21 +41,16 @@ describe('AuthService', () => {
 
   describe('validateUser', () => {
     it('deve retornar um usuário válido', async () => {
-      jest
-        .spyOn(usuarioService, 'findOneByEmail')
-        .mockResolvedValue(UsuarioStub.getEntity());
-      const req = UsuarioStub.getCreateDto();
+      jest.spyOn(usuarioService, 'findByEmail').mockResolvedValue(entity);
 
-      const response = await service.validateUser(req.email, req.senha);
+      const response = await service.validateUser(request.email, request.senha);
       expect(response).toBeDefined();
     });
 
     it('deve retornar nulo quando o usuário não for válido', async () => {
-      jest
-        .spyOn(usuarioService, 'findOneByEmail')
-        .mockResolvedValue(UsuarioStub.getEntity());
+      jest.spyOn(usuarioService, 'findByEmail').mockResolvedValue(entity);
       const req = {
-        ...UsuarioStub.getCreateDto(),
+        ...request,
         senha: 'outraS3nh@',
       };
       const response = await service.validateUser(req.email, req.senha);
@@ -61,22 +58,25 @@ describe('AuthService', () => {
     });
 
     it('deve retornar nulo quando o usuário não existir', async () => {
-      jest.spyOn(usuarioService, 'findOneByEmail').mockResolvedValue(null);
-      const req = UsuarioStub.getCreateDto();
+      jest.spyOn(usuarioService, 'findByEmail').mockResolvedValue(null);
 
-      const response = await service.validateUser(req.email, req.senha);
+      const response = await service.validateUser(request.email, request.senha);
       expect(response).toBeNull();
     });
   });
 
   describe('login', () => {
     it('deve assinar um jwt', async () => {
-      const req = UsuarioStub.getEntity();
-      await service.login(req);
+      await service.login({
+        ...entity,
+        email: `teste@teste.com`,
+        id: 1,
+        tipoUsuario: TipoUsuario.ADMINISTRADOR,
+      });
       expect(jwtService.sign).toBeCalledWith({
-        email: req.email,
-        sub: req.id,
-        roles: [req.tipoUsuario],
+        email: `teste@teste.com`,
+        sub: 1,
+        roles: [TipoUsuario.ADMINISTRADOR],
       });
     });
   });

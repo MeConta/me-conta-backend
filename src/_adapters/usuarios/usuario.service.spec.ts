@@ -8,6 +8,16 @@ describe('Usuario', () => {
   let connection: Connection;
   let repository: Repository<UsuarioDbEntity>;
   let sut: TypeormUsuarioService;
+
+  const request = {
+    nome: 'Teste',
+    email: 'email@email.com',
+    senha: 's3Nh4vAl!d@',
+    tipo: TipoUsuario.ALUNO,
+    salt: MOCKED_SALT,
+    dataTermos: new Date(),
+  };
+
   beforeAll(async () => {
     connection = await createConnection({
       type: 'better-sqlite3',
@@ -26,18 +36,12 @@ describe('Usuario', () => {
     await connection.close();
   });
 
-  it('should connect', function () {
+  it('deve conectar', function () {
     expect(connection.isConnected).toBeTruthy();
   });
+
   it('Deve cadastrar um novo usuário', async () => {
-    await sut.cadastrar({
-      nome: 'Teste',
-      email: 'email@email.com',
-      senha: 's3Nh4vAl!d@',
-      tipo: TipoUsuario.ALUNO,
-      salt: MOCKED_SALT,
-      dataTermos: new Date(),
-    });
+    await sut.cadastrar(request);
     const usuarios = await repository.find();
     expect(usuarios[0]).toEqual(
       expect.objectContaining({
@@ -49,6 +53,25 @@ describe('Usuario', () => {
         salt: expect.any(String),
         dataTermos: expect.any(Date),
       } as UsuarioDbEntity),
+    );
+  });
+
+  it('Deve buscar um usuário via e-mail', async () => {
+    await sut.cadastrar(request);
+    const response = await sut.findByEmail(request.email);
+    expect(response).toEqual(
+      expect.objectContaining({
+        email: request.email,
+      }),
+    );
+  });
+  it('Deve buscar um usuário via id', async () => {
+    await sut.cadastrar(request);
+    const response = await sut.findById(1);
+    expect(response).toEqual(
+      expect.objectContaining({
+        id: expect.any(Number),
+      }),
     );
   });
 });

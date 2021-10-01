@@ -8,6 +8,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Auth, PatchApi, PostApi } from '../../src/decorators';
 import { Tipo } from './entities/usuario.enum';
 import { UsuarioDbEntity } from '../../src/_adapters/usuarios/entidades/usuario.db.entity';
+import {TipoUsuario} from "../../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat";
 
 @ApiTags('Usuário')
 export class UsuarioController extends DefaultController(
@@ -23,7 +24,7 @@ export class UsuarioController extends DefaultController(
   }
 
   @PatchApi()
-  @Auth(Tipo.ADMINISTRADOR)
+  @Auth(TipoUsuario.ADMINISTRADOR)
   update(
     @Param('id') id: number,
     @Body() dto: UpdateUsuarioDto,

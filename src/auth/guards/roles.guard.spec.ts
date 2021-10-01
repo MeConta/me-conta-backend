@@ -1,8 +1,8 @@
 import { RolesGuard } from './roles.guard';
 import { ExecutionContext } from '@nestjs/common';
 import { createMock } from '@golevelup/ts-jest';
-import { Tipo } from '../../../__old/usuario/entities/usuario.enum';
 import { Reflector } from '@nestjs/core';
+import { TipoUsuario } from '../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 describe('RolesGuard', () => {
   const reflector = createMock<Reflector>();
@@ -10,7 +10,7 @@ describe('RolesGuard', () => {
   let guard: RolesGuard;
 
   it('deve ser definido', () => {
-    reflector.get.mockReturnValue([Tipo.ADMINISTRADOR]);
+    reflector.get.mockReturnValue([TipoUsuario.ADMINISTRADOR]);
     guard = new RolesGuard(reflector);
     expect(guard).toBeDefined();
   });
@@ -19,11 +19,11 @@ describe('RolesGuard', () => {
     const mockContext = createMock<ExecutionContext>();
     mockContext.switchToHttp().getRequest.mockReturnValue({
       user: {
-        roles: [Tipo.ADMINISTRADOR],
+        roles: [TipoUsuario.ADMINISTRADOR],
       },
     });
 
-    reflector.get.mockReturnValue([Tipo.ADMINISTRADOR]);
+    reflector.get.mockReturnValue([TipoUsuario.ADMINISTRADOR]);
     guard = new RolesGuard(reflector);
 
     expect(guard.canActivate(mockContext)).toBeTruthy();

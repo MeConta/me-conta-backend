@@ -1,8 +1,8 @@
 import { CriarSlotAgendaService } from '../interfaces/criar-slot-agenda.service';
 import { DateTimeUtils } from '../interfaces/date-time.utils';
-import { Tipo } from '../../../../../__old/usuario/entities/usuario.enum';
 import { AuthorizationService } from '../../../autorizacao/interfaces/authorization.service';
 import { RecuperaSlotsAgendaService } from '../interfaces/recupera-slots-agenda.service';
+import { TipoUsuario } from '../../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 type CriarSlotInput = { inicio: Date; idUsuario: number };
 
@@ -59,7 +59,7 @@ export class CriarNovoSlotDeAgenda {
     if (
       !(await this.authorizationService.verificaTipoDoUsuario(
         idUsuario,
-        Tipo.ATENDENTE,
+        TipoUsuario.ATENDENTE,
       ))
     ) {
       throw new UsuarioNaoAtendente();

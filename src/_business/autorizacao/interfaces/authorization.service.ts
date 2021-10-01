@@ -1,5 +1,8 @@
-import { Tipo } from '../../../../__old/usuario/entities/usuario.enum';
+import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 export interface AuthorizationService {
-  verificaTipoDoUsuario(idUsuario: number, grupo: Tipo): Promise<boolean>;
+  verificaTipoDoUsuario(
+    idUsuario: number,
+    grupo: TipoUsuario,
+  ): Promise<boolean>;
 }

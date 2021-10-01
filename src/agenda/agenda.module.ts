@@ -6,20 +6,21 @@ import { CriarNovoSlotDeAgenda } from '../_business/atendente/agendamentos/casos
 import { AuthorizationService } from '../_business/autorizacao/interfaces/authorization.service';
 import { DateTimeUtils } from '../_business/atendente/agendamentos/interfaces/date-time.utils';
 import { MomentDateTimeUtils } from '../_business/atendente/agendamentos/fakes/moment-date-time.utils';
-import { Tipo } from '../../__old/usuario/entities/usuario.enum';
-import { UsuarioService } from '../../__old/usuario/usuario.service';
-import { UsuarioModule } from '../../__old/usuario/usuario.module';
 import { TypeOrmAgendaService } from '../_adapters/agenda/typeorm-agenda.service';
+import { TipoUsuario } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { TypeormUsuarioService } from '../_adapters/usuarios/typeorm-usuario.service';
+import { IBuscarUsuarioViaId } from '../_business/usuarios/casos-de-uso/buscar-usuario.id.feat';
+import { UsuarioDbEntity } from '../_adapters/usuarios/entidades/usuario.db.entity';
 
 // TODO: Criar testes.
 class NestAuthorizationService implements AuthorizationService {
-  @Inject(UsuarioService)
-  private readonly usuarioService: UsuarioService;
+  @Inject(TypeormUsuarioService)
+  private readonly usuarioService: IBuscarUsuarioViaId;
   async verificaTipoDoUsuario(
     idUsuario: number,
-    tipoGrupo: Tipo,
+    tipoGrupo: TipoUsuario,
   ): Promise<boolean> {
-    const user = await this.usuarioService.findOne(idUsuario);
+    const user = await this.usuarioService.findById(idUsuario);
     return user.tipoUsuario === tipoGrupo;
   }
 }
@@ -38,13 +39,14 @@ class NestCriarNovoSlotDeAgenda extends CriarNovoSlotDeAgenda {
 }
 
 @Module({
-  imports: [TypeOrmModule.forFeature([SlotAgendaDbEntity]), UsuarioModule],
+  imports: [TypeOrmModule.forFeature([SlotAgendaDbEntity, UsuarioDbEntity])],
   controllers: [AgendaController],
   providers: [
     {
       provide: CriarNovoSlotDeAgenda,
       useClass: NestCriarNovoSlotDeAgenda,
     },
+    TypeormUsuarioService,
     TypeOrmAgendaService,
     MomentDateTimeUtils,
     NestAuthorizationService,

@@ -1,4 +1,4 @@
 import { SetMetadata } from '@nestjs/common';
-import { Tipo } from '../../__old/usuario/entities/usuario.enum';
+import { TipoUsuario } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
-export const Roles = (...roles: Tipo[]) => SetMetadata('roles', roles);
+export const Roles = (...roles: TipoUsuario[]) => SetMetadata('roles', roles);
