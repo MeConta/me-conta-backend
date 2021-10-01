@@ -2,6 +2,8 @@ import {
   Body,
   ConflictException,
   Controller,
+  HttpCode,
+  HttpStatus,
   InternalServerErrorException,
   Post,
 } from '@nestjs/common';
@@ -10,11 +12,22 @@ import {
   CadastrarNovoUsuario,
   DuplicatedError,
 } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import {
+  ApiConflictResponse,
+  ApiInternalServerErrorResponse,
+} from '@nestjs/swagger';
 
 @Controller('cadastro-inicial')
 export class CadastroInicialController {
   constructor(private cadastrarNovoUsuario: CadastrarNovoUsuario) {}
+  @ApiConflictResponse({
+    description: 'Usuário já cadastrado',
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Erro genérico',
+  })
   @Post()
+  @HttpCode(HttpStatus.NO_CONTENT)
   async cadastrar(@Body() dto: CreateUsuarioDto) {
     try {
       await this.cadastrarNovoUsuario.execute(dto);

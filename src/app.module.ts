@@ -19,7 +19,6 @@ import { CadastroInicialModule } from './cadastro-inicial/cadastro-inicial.modul
         ...configService.get('database'),
       }),
     }),
-    // UsuarioModule,
     CadastroInicialModule,
     // AuthModule.forRoot(),
     // AgendaModule,

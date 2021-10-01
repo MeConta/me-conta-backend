@@ -6,10 +6,13 @@ import { createMock } from '@golevelup/ts-jest';
 import { Usuario } from '../_business/usuarios/entidades/usuario.entity';
 import { CreateUsuarioDto } from '../_adapters/usuarios/dto/create-usuario.dto';
 import { TipoUsuario } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { IHashService } from '../_business/interfaces/hash.service';
+import { BcryptHashService } from '../_adapters/bcrypt-hash.service';
 
 describe('AuthService', () => {
   let service: AuthService;
   let usuarioService: TypeormUsuarioService;
+  let hashService: IHashService;
   let jwtService: JwtService;
 
   const request = createMock<CreateUsuarioDto>();
@@ -23,6 +26,10 @@ describe('AuthService', () => {
           useValue: createMock<TypeormUsuarioService>(),
         },
         {
+          provide: BcryptHashService,
+          useValue: createMock<IHashService>(),
+        },
+        {
           provide: JwtService,
           useValue: { sign: jest.fn() },
         },
@@ -32,7 +39,13 @@ describe('AuthService', () => {
 
     service = module.get<AuthService>(AuthService);
     usuarioService = module.get<TypeormUsuarioService>(TypeormUsuarioService);
+    hashService = module.get<IHashService>(BcryptHashService);
     jwtService = module.get<JwtService>(JwtService);
+  });
+
+  beforeEach(async () => {
+    jest.spyOn(hashService, 'hash').mockResolvedValue(`password`);
+    jest.spyOn(usuarioService, 'findByEmail').mockResolvedValue(entity);
   });
 
   it('deve ser definido', async () => {
@@ -41,19 +54,27 @@ describe('AuthService', () => {
 
   describe('validateUser', () => {
     it('deve retornar um usuário válido', async () => {
-      jest.spyOn(usuarioService, 'findByEmail').mockResolvedValue(entity);
+      const HASHED_PASSWORD = `password`;
+      jest
+        .spyOn(usuarioService, 'findByEmail')
+        .mockResolvedValue({ ...entity, senha: HASHED_PASSWORD });
 
-      const response = await service.validateUser(request.email, request.senha);
-      expect(response).toBeDefined();
+      const response = await service.validateUser(
+        request.email,
+        HASHED_PASSWORD,
+      );
+      expect(response).toEqual(
+        expect.objectContaining({ senha: HASHED_PASSWORD }),
+      );
     });
 
     it('deve retornar nulo quando o usuário não for válido', async () => {
-      jest.spyOn(usuarioService, 'findByEmail').mockResolvedValue(entity);
-      const req = {
-        ...request,
-        senha: 'outraS3nh@',
-      };
-      const response = await service.validateUser(req.email, req.senha);
+      jest
+        .spyOn(usuarioService, 'findByEmail')
+        .mockResolvedValue({ ...entity, senha: `password` });
+      jest.spyOn(hashService, 'hash').mockResolvedValue('another-password');
+
+      const response = await service.validateUser(request.email, 'outraS3nh@');
       expect(response).toBeNull();
     });
 

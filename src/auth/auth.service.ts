@@ -1,10 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
 import { Usuario } from '../_business/usuarios/entidades/usuario.entity';
 import { TokenDto, TokenPayload } from './dto';
 import { TypeormUsuarioService } from '../_adapters/usuarios/typeorm-usuario.service';
 import { IBuscarUsuarioViaEmail } from '../_business/usuarios/casos-de-uso/buscar-usuario-email.feat';
+import { BcryptHashService } from '../_adapters/bcrypt-hash.service';
+import { IHashService } from '../_business/interfaces/hash.service';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +13,8 @@ export class AuthService {
     @Inject(TypeormUsuarioService)
     private usuarioService: IBuscarUsuarioViaEmail,
 
+    @Inject(BcryptHashService)
+    private readonly hashService: IHashService,
     @Inject(JwtService)
     private jwtService: JwtService,
   ) {}
@@ -19,7 +22,10 @@ export class AuthService {
   async validateUser(email: string, pass: string): Promise<Usuario> {
     const usuario = await this.usuarioService.findByEmail(email);
 
-    if (!usuario || usuario.senha !== (await bcrypt.hash(pass, usuario.salt))) {
+    if (
+      !usuario ||
+      usuario.senha !== (await this.hashService.hash(pass, usuario.salt))
+    ) {
       return null;
     }
 
