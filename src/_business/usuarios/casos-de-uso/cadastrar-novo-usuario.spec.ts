@@ -29,7 +29,7 @@ describe('Cadastrar novo usuário', () => {
         id: expect.any(Number),
         nome: 'João',
         email: 'fake@email.com',
-        tipoUsuario: TipoUsuario.ALUNO,
+        tipo: TipoUsuario.ALUNO,
         senha: 's3nh4F0rT#',
         salt: 'salt',
       } as Usuario),

@@ -13,7 +13,7 @@ export class InMemoryUsuarioService implements ICadastrarNovoUsuario {
       id: this.usuarios.length,
       nome: usuario.nome,
       email: usuario.email,
-      tipoUsuario: usuario.tipo,
+      tipo: usuario.tipo,
       senha: usuario.senha,
       salt: usuario.salt,
       dataTermos: usuario.dataTermos,

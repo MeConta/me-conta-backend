@@ -48,6 +48,6 @@ export interface Usuario {
   UF?: Estado;
   cidade?: string;
   telefone?: string;
-  tipoUsuario?: TipoUsuario;
+  tipo?: TipoUsuario;
   dataTermos: Date;
 }

@@ -49,7 +49,7 @@ describe('Usuario', () => {
         nome: 'Teste',
         email: 'email@email.com',
         senha: 's3Nh4vAl!d@',
-        tipoUsuario: TipoUsuario.ALUNO,
+        tipo: TipoUsuario.ALUNO,
         salt: expect.any(String),
         dataTermos: expect.any(Date),
       } as UsuarioDbEntity),

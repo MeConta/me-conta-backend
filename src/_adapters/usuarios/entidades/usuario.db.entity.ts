@@ -44,15 +44,14 @@ export class UsuarioDbEntity extends TypeormDefaultEntity implements Usuario {
   dataNascimento?: Date;
 
   @Column({
-    type: 'varchar',
+    type: 'simple-enum',
     enum: Genero,
-    default: Genero.PREFIRO_NAO_DECLARAR,
     nullable: true,
   })
   genero?: Genero;
 
   @Column({
-    type: 'varchar',
+    type: 'simple-enum',
     enum: Estado,
     nullable: true,
   })
@@ -71,11 +70,11 @@ export class UsuarioDbEntity extends TypeormDefaultEntity implements Usuario {
   telefone?: string;
 
   @Column({
-    type: 'varchar',
+    type: 'simple-enum',
     enum: TipoUsuario,
     default: TipoUsuario.ALUNO,
   })
-  tipoUsuario?: TipoUsuario;
+  tipo?: TipoUsuario;
 
   @Column()
   dataTermos: Date;

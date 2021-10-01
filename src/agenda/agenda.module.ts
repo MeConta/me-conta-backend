@@ -21,7 +21,7 @@ class NestAuthorizationService implements IAuthorizationService {
     tipoGrupo: TipoUsuario,
   ): Promise<boolean> {
     const user = await this.usuarioService.findById(idUsuario);
-    return user.tipoUsuario === tipoGrupo;
+    return user.tipo === tipoGrupo;
   }
 }
 

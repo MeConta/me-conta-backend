@@ -92,7 +92,7 @@ describe('AuthService', () => {
         ...entity,
         email: `teste@teste.com`,
         id: 1,
-        tipoUsuario: TipoUsuario.ADMINISTRADOR,
+        tipo: TipoUsuario.ADMINISTRADOR,
       });
       expect(jwtService.sign).toBeCalledWith({
         email: `teste@teste.com`,
