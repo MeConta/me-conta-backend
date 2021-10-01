@@ -58,7 +58,7 @@ describe('Criar Conta (e2e)', () => {
       await request(app.getHttpServer())
         .post('/cadastro-inicial')
         .send(req)
-        .expect(201);
+        .expect(204);
 
       await request(app.getHttpServer())
         .post('/cadastro-inicial')

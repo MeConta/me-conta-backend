@@ -7,7 +7,7 @@ import { Usuario } from '../_business/usuarios/entidades/usuario.entity';
 import { CreateUsuarioDto } from '../_adapters/usuarios/dto/create-usuario.dto';
 import { TipoUsuario } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { IHashService } from '../_business/usuarios/interfaces/hash.service';
-import { BcryptHashService } from '../_adapters/bcrypt-hash.service';
+import { BcryptHashService } from '../_adapters/usuarios/bcrypt-hash.service';
 
 describe('AuthService', () => {
   let service: AuthService;
