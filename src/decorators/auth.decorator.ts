@@ -1,4 +1,4 @@
-import { applyDecorators, UseGuards } from '@nestjs/common';
+import { applyDecorators, SetMetadata, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard, RolesGuard } from '../auth/guards';
 import {
   ApiBearerAuth,
@@ -6,8 +6,9 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { TOKEN_NAME } from '../config/swagger.config';
-import { Roles } from './roles.decorator';
 import { TipoUsuario } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+
+export const Roles = (...roles: TipoUsuario[]) => SetMetadata('roles', roles);
 
 export function Auth(...roles: TipoUsuario[]) {
   return applyDecorators(
