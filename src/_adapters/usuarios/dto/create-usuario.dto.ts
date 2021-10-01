@@ -1,6 +1,6 @@
-import { IsEmail, IsEnum, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Erros, Regex } from '../../../config/constants';
+import { Erros } from '../../../config/constants';
 import {
   NovoUsuario,
   TipoUsuario,
@@ -12,6 +12,7 @@ export class CreateUsuarioDto implements NovoUsuario {
    * @example 'Maria Silva'
    */
   @IsNotEmpty()
+  @MinLength(2)
   nome: string;
 
   /***
@@ -25,12 +26,10 @@ export class CreateUsuarioDto implements NovoUsuario {
   email: string;
 
   /***
-   * @minLength 8
    * @example 's#nh4Valida'
    */
   @ApiProperty({
     description: Erros.VALIDACAO_SENHA,
-    pattern: Regex.SENHA,
   })
   @IsNotEmpty()
   @IsPasswordStrong()
