@@ -1,46 +1,33 @@
-import { Post, Patch } from '@nestjs/common';
-import { AgendaService } from './agenda.service';
-import { CreateAgendaDto } from './dto/create-agenda.dto';
-import { UpdateAgendaDto } from './dto/update-agenda.dto';
-import { DefaultController } from '../default.controller';
-import { Agenda } from './entities/agenda.entity';
-import {
-  ApiBadRequestResponse,
-  ApiNotFoundResponse,
-  ApiTags,
-  ApiUnprocessableEntityResponse,
-} from '@nestjs/swagger';
+import { Body, Controller, NotAcceptableException, Post } from '@nestjs/common';
+import { CriarNovoSlotDeAgenda } from '../_business/agenda/casos-de-uso/criar-novo-slot-de-agenda.feat';
+import { User } from '../decorators/user.decorator';
+import { Auth } from '../decorators';
 
-@ApiTags('Agenda')
-export class AgendaController extends DefaultController(
-  'agenda',
-  Agenda,
-  AgendaService,
-  CreateAgendaDto,
-  UpdateAgendaDto,
-) {
+export function isValidDate(value: any): value is Date {
+  return value instanceof Date && !isNaN(value as any);
+}
+
+class CriarSlotAgendaDto {
+  inicio: string;
+}
+
+@Controller('agenda')
+export class AgendaController {
+  constructor(private readonly criarNovoSlotDeAgenda: CriarNovoSlotDeAgenda) {}
+
   @Post()
-  @ApiBadRequestResponse({
-    description: `Requisição inválida`,
-  })
-  @ApiUnprocessableEntityResponse({
-    description: `Violação de regra de negócio`,
-  })
-  create(dto: CreateAgendaDto): Promise<Agenda> {
-    return super.create(dto);
-  }
-
-  @Patch(':id')
-  @ApiNotFoundResponse({
-    description: `Item não encontrado`,
-  })
-  @ApiBadRequestResponse({
-    description: `Requisição inválida`,
-  })
-  @ApiUnprocessableEntityResponse({
-    description: `Violação de regra de negócio`,
-  })
-  update(id: number, dto: UpdateAgendaDto): Promise<Agenda> {
-    return super.update(id, dto);
+  @Auth()
+  async create(
+    @Body() dto: CriarSlotAgendaDto,
+    @User() user: { id: number },
+  ): Promise<void> {
+    const inicioData = new Date(dto.inicio);
+    if (!isValidDate(inicioData)) {
+      throw new NotAcceptableException('Data inválida');
+    }
+    return this.criarNovoSlotDeAgenda.execute({
+      idUsuario: user.id,
+      inicio: inicioData,
+    });
   }
 }

@@ -1,10 +1,13 @@
-import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+import { ApiOkResponse } from '@nestjs/swagger';
 
 @Controller()
 export class AppController {
   @Get()
-  @HttpCode(HttpStatus.NO_CONTENT)
-  getHello(): string {
-    return 'Hello World';
+  @ApiOkResponse({
+    type: Date,
+  })
+  getHello(): Date {
+    return new Date();
   }
 }

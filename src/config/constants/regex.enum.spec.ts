@@ -1,38 +1,6 @@
-import { Regex } from '.';
+import { Regex } from './index';
 
 describe('Regex enum test', () => {
-  describe('Senha regex test', () => {
-    const SENHA = new RegExp(Regex.SENHA);
-
-    it('Não deve permitir senha vazia', () => {
-      expect('').not.toMatch(SENHA);
-    });
-
-    it('Não deve permitir senha com menos de 8 caracteres', () => {
-      expect('aB!4567').not.toMatch(SENHA);
-    });
-
-    it('Não deve permitir senha sem números', () => {
-      expect('aB!aaaaaaaaaaa').not.toMatch(SENHA);
-    });
-
-    it('Não deve permitir senha sem letras minúsculas', () => {
-      expect('A!23456789').not.toMatch(SENHA);
-    });
-
-    it('Não deve permitir senha sem letras maiúsculas', () => {
-      expect('a!23456789').not.toMatch(SENHA);
-    });
-
-    it('Não deve permitir senha sem caracteres especiais', () => {
-      expect('aA23456789').not.toMatch(SENHA);
-    });
-
-    it('Deve permitir uma senha válida', () => {
-      expect('aA!23456').toMatch(SENHA);
-    });
-  });
-
   describe('Telefone regex test', () => {
     // (11) 91231-6165
     // (11) 1231-6165

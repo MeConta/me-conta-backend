@@ -1,10 +1,59 @@
 {
 	"info": {
-		"_postman_id": "85aa2428-eb6a-4fc1-957b-72a7abbdf939",
+		"_postman_id": "0a16f78d-8590-4d2d-9f99-914e7edb6890",
 		"name": "Me Conta?",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    const res = pm.response.json();",
+									"    pm.environment.set('BEARER_TOKEN', res.token);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{EMAIL}}\",\n    \"password\": \"{{SENHA}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/auth/login",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
 		{
 			"name": "Usuário",
 			"item": [
@@ -14,20 +63,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/usuario/:id",
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/usuario",
 							"protocol": "{{PROTOCOL}}",
 							"host": [
 								"{{HOST}}{{PORT}}"
 							],
 							"path": [
-								"usuario",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": ""
-								}
+								"usuario"
 							]
 						}
 					},
@@ -60,12 +102,31 @@
 				},
 				{
 					"name": "Usuário",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    const request = JSON.parse(pm.request.body.raw);",
+									"    ",
+									"    const usuario = pm.response.json();",
+									"    ",
+									"    pm.environment.set('EMAIL', usuario.email);",
+									"    pm.environment.set('SENHA', request.senha);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"{{$randomFullName}}\",\n    \"senha\": \"12345678\",\n    \"dataNascimento\": \"{{$randomDatePast}}\",\n    \"genero\": \"M\",\n    \"UF\": \"SP\",\n    \"cidade\": \"São Paulo\",\n    \"telefone\": \"{{$randomPhoneNumber}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"tipoUsuario\": \"ADMINISTRADOR\"\n}",
+							"raw": "{\n    \"nome\": \"{{$randomFullName}}\",\n    \"senha\": \"senh@Valid1\",\n    \"dataNascimento\": \"{{$randomDatePast}}\",\n    \"genero\": \"M\",\n    \"UF\": \"SP\",\n    \"cidade\": \"São Paulo\",\n    \"telefone\": \"(91) 99999-9999\",\n    \"email\": \"{{$randomEmail}}\",\n    \"tipoUsuario\": \"ADMINISTRADOR\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -92,7 +153,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"nome\": \"Guilherme\"\n}",
+							"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"nome\": \"{{$randomFullName}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -119,6 +180,36 @@
 					},
 					"response": []
 				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{BEARER_TOKEN}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
 			]
 		},
 		{
@@ -130,20 +221,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/frente-atuacao/:id",
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/frente-atuacao",
 							"protocol": "{{PROTOCOL}}",
 							"host": [
 								"{{HOST}}{{PORT}}"
 							],
 							"path": [
-								"frente-atuacao",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": ""
-								}
+								"frente-atuacao"
 							]
 						}
 					},
@@ -234,6 +318,36 @@
 						}
 					},
 					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{BEARER_TOKEN}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -351,6 +465,36 @@
 					},
 					"response": []
 				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{BEARER_TOKEN}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
 			]
 		},
 		{
@@ -374,7 +518,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": ""
 								}
 							]
 						}
@@ -388,7 +532,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"atendente\": 1,\n    \"aluno\": 1,\n    \"agenda\": 2\n}",
+							"raw": "{\n    \"atendente\": 1,\n    \"aluno\": 1,\n    \"agenda\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -467,6 +611,36 @@
 					},
 					"response": []
 				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{BEARER_TOKEN}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
 			]
 		},
 		{
@@ -504,7 +678,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"data\": \"02/09/2021 10:20\",\n    \"atendente\": 1\n}",
+							"raw": "{\n    \"data\": \"{{$randomDateFuture}}\",\n    \"atendente\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -542,7 +716,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "10"
+									"value": "1"
 								}
 							]
 						}
@@ -556,7 +730,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tipoEscola\": \"PARTICULAR\",\n    \"nome\": \"João Roberto\",\n    \"UF\": \"GO\"\n}",
+							"raw": "{\n    \"nome\": \"{{$randomFullName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"aprovado\": true,\n    \"supervisor\": 5\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -576,12 +750,42 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "12"
+									"value": "1"
 								}
 							]
 						}
 					},
 					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{BEARER_TOKEN}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -699,6 +903,36 @@
 					},
 					"response": []
 				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{BEARER_TOKEN}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
 			]
 		},
 		{
@@ -815,167 +1049,35 @@
 					},
 					"response": []
 				}
-			]
-		},
-		{
-			"name": "Avaliação",
-			"item": [
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{BEARER_TOKEN}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
 				{
-					"name": "Avaliação",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/avaliacao/:id",
-							"protocol": "{{PROTOCOL}}",
-							"host": [
-								"{{HOST}}{{PORT}}"
-							],
-							"path": [
-								"avaliacao",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": ""
-								}
-							]
-						}
-					},
-					"response": []
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				},
 				{
-					"name": "Avaliação por atendente",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/avaliacao/atendente/:id",
-							"protocol": "{{PROTOCOL}}",
-							"host": [
-								"{{HOST}}{{PORT}}"
-							],
-							"path": [
-								"avaliacao",
-								"atendente",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Avaliação",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"pm.environment.set('DATA', new Date().toISOString());"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"consulta\": 1,\n    \"nota\": 5,\n    \"comentario\": \"{{$randomLoremParagraph}}\",\n    \"mostrar\": true,\n    \"anonimo\": false\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/avaliacao",
-							"protocol": "{{PROTOCOL}}",
-							"host": [
-								"{{HOST}}{{PORT}}"
-							],
-							"path": [
-								"avaliacao"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Avaliação",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/avaliacao/:id",
-							"protocol": "{{PROTOCOL}}",
-							"host": [
-								"{{HOST}}{{PORT}}"
-							],
-							"path": [
-								"avaliacao",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Avaliação",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"aprovado\": true\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/avaliacao/:id",
-							"protocol": "{{PROTOCOL}}",
-							"host": [
-								"{{HOST}}{{PORT}}"
-							],
-							"path": [
-								"avaliacao",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "3"
-								}
-							]
-						}
-					},
-					"response": []
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -1009,6 +1111,36 @@
 						}
 					},
 					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{BEARER_TOKEN}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
