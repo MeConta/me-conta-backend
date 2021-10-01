@@ -1,10 +1,10 @@
 import { IHashService } from '../interfaces/hash.service';
 
 export enum TipoUsuario {
-  ALUNO = `Aluno`,
-  SUPERVISOR = `Voluntário Supervisor`,
-  ATENDENTE = `Voluntário Atendente`,
-  ADMINISTRADOR = `Administrador`,
+  ALUNO,
+  SUPERVISOR,
+  ATENDENTE,
+  ADMINISTRADOR,
 }
 export interface NovoUsuario {
   nome: string;

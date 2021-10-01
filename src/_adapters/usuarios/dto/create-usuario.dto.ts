@@ -9,6 +9,7 @@ import { IsPasswordStrong } from '../../../decorators';
 
 export class CreateUsuarioDto implements NovoUsuario {
   /***
+   * O Nome de usuário
    * @example 'Maria Silva'
    */
   @IsNotEmpty()
@@ -26,6 +27,7 @@ export class CreateUsuarioDto implements NovoUsuario {
   email: string;
 
   /***
+   * Uma senha forte
    * @example 's#nh4Valida'
    */
   @ApiProperty({
@@ -35,6 +37,11 @@ export class CreateUsuarioDto implements NovoUsuario {
   @IsPasswordStrong()
   senha: string;
 
+  /***
+   * Um número do enum de TipoUsuario
+   * @example 0
+   * @type Number
+   */
   @IsEnum(TipoUsuario)
   tipo: TipoUsuario;
 }
