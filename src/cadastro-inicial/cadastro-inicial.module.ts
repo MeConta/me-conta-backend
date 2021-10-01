@@ -7,7 +7,7 @@ import {
   CadastrarNovoUsuario,
   ICadastrarNovoUsuario,
 } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { IHashService } from '../_business/interfaces/hash.service';
+import { IHashService } from '../_business/usuarios/interfaces/hash.service';
 import { BcryptHashService } from '../_adapters/bcrypt-hash.service';
 
 @Injectable()

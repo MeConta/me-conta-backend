@@ -3,9 +3,9 @@ import {
   DuplicatedError,
   TipoUsuario,
 } from './cadastrar-novo-usuario.feat';
-import { InMemoryUsuarioService } from '../fakes/in-memory-usuario.service';
+import { InMemoryUsuarioService } from '../../../_adapters/usuarios/services/in-memory-usuario.service';
 import { Usuario } from '../entidades/usuario.entity';
-import { IHashService } from '../../interfaces/hash.service';
+import { IHashService } from '../interfaces/hash.service';
 import { createMock } from '@golevelup/ts-jest';
 
 describe('Cadastrar novo usuário', () => {

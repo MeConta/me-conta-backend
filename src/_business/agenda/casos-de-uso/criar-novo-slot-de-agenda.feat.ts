@@ -1,8 +1,8 @@
 import { CriarSlotAgendaService } from '../interfaces/criar-slot-agenda.service';
-import { DateTimeUtils } from '../interfaces/date-time.utils';
-import { AuthorizationService } from '../../../autorizacao/interfaces/authorization.service';
+import { DateTimeService } from '../interfaces/date-time.service';
+import { IAuthorizationService } from '../../autorizacao/interfaces/authorization.service';
 import { RecuperaSlotsAgendaService } from '../interfaces/recupera-slots-agenda.service';
-import { TipoUsuario } from '../../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 type CriarSlotInput = { inicio: Date; idUsuario: number };
 
@@ -10,8 +10,8 @@ export class CriarNovoSlotDeAgenda {
   constructor(
     private readonly agendaService: CriarSlotAgendaService &
       RecuperaSlotsAgendaService,
-    private readonly dateTimeHelper: DateTimeUtils,
-    private readonly authorizationService: AuthorizationService,
+    private readonly dateTimeHelper: DateTimeService,
+    private readonly authorizationService: IAuthorizationService,
   ) {}
 
   async execute(input: CriarSlotInput) {

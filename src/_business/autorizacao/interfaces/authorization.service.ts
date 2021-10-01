@@ -1,6 +1,6 @@
 import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
-export interface AuthorizationService {
+export interface IAuthorizationService {
   verificaTipoDoUsuario(
     idUsuario: number,
     grupo: TipoUsuario,

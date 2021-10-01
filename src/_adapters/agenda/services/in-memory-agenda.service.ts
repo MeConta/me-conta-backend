@@ -1,12 +1,12 @@
 import {
   CriarSlotAgendaParams,
   CriarSlotAgendaService,
-} from '../interfaces/criar-slot-agenda.service';
+} from '../../../_business/agenda/interfaces/criar-slot-agenda.service';
 import {
   RecuperarSlotsParams,
   RecuperaSlotsAgendaService,
-} from '../interfaces/recupera-slots-agenda.service';
-import { SlotAgenda } from '../entidades/slot-agenda';
+} from '../../../_business/agenda/interfaces/recupera-slots-agenda.service';
+import { SlotAgenda } from '../../../_business/agenda/entidades/slot-agenda';
 
 export class InMemoryAgendaService
   implements CriarSlotAgendaService, RecuperaSlotsAgendaService

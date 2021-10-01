@@ -3,20 +3,20 @@ import {
   HorarioOcupado,
   UsuarioNaoAtendente,
 } from './criar-novo-slot-de-agenda.feat';
-import { InMemoryAgendaService } from '../fakes/in-memory-agenda.service';
-import { DateTimeUtils } from '../interfaces/date-time.utils';
-import { MomentDateTimeUtils } from '../fakes/moment-date-time.utils';
-import { FakeAuthorizationService } from '../../../autorizacao/fakes/fake-authorization.service';
-import { AuthorizationService } from '../../../autorizacao/interfaces/authorization.service';
+import { InMemoryAgendaService } from '../../../_adapters/agenda/services/in-memory-agenda.service';
+import { DateTimeService } from '../interfaces/date-time.service';
+import { MomentDateTimeService } from '../../../_adapters/agenda/services/moment-date-time.service';
+import { FakeAuthorizationService } from '../../../_adapters/autorizacao/services/fake-authorization.service';
+import { IAuthorizationService } from '../../autorizacao/interfaces/authorization.service';
 
 describe('criar novo slot na agenda', () => {
   let agendaService: InMemoryAgendaService;
   let sut: CriarNovoSlotDeAgenda;
-  let dateTimeUtils: DateTimeUtils;
-  let authorizationService: AuthorizationService;
+  let dateTimeUtils: DateTimeService;
+  let authorizationService: IAuthorizationService;
   beforeEach(() => {
     agendaService = new InMemoryAgendaService();
-    dateTimeUtils = new MomentDateTimeUtils();
+    dateTimeUtils = new MomentDateTimeService();
     authorizationService = new FakeAuthorizationService();
     sut = new CriarNovoSlotDeAgenda(
       agendaService,

@@ -1,4 +1,4 @@
-import { IHashService } from '../_business/interfaces/hash.service';
+import { IHashService } from '../../_business/usuarios/interfaces/hash.service';
 import { BcryptHashService } from './bcrypt-hash.service';
 import * as bcrypt from 'bcrypt';
 

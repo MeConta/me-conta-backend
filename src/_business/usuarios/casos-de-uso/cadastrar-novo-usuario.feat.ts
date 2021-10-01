@@ -1,4 +1,4 @@
-import { IHashService } from '../../interfaces/hash.service';
+import { IHashService } from '../interfaces/hash.service';
 
 export enum TipoUsuario {
   ALUNO = `Aluno`,

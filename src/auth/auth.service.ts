@@ -5,7 +5,7 @@ import { TokenDto, TokenPayload } from './dto';
 import { TypeormUsuarioService } from '../_adapters/usuarios/typeorm-usuario.service';
 import { IBuscarUsuarioViaEmail } from '../_business/usuarios/casos-de-uso/buscar-usuario-email.feat';
 import { BcryptHashService } from '../_adapters/bcrypt-hash.service';
-import { IHashService } from '../_business/interfaces/hash.service';
+import { IHashService } from '../_business/usuarios/interfaces/hash.service';
 
 @Injectable()
 export class AuthService {

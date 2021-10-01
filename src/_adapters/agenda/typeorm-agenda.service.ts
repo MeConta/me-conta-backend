@@ -1,13 +1,13 @@
 import {
   CriarSlotAgendaParams,
   CriarSlotAgendaService,
-} from '../../_business/atendente/agendamentos/interfaces/criar-slot-agenda.service';
+} from '../../_business/agenda/interfaces/criar-slot-agenda.service';
 import {
   RecuperarSlotsParams,
   RecuperaSlotsAgendaService,
-} from '../../_business/atendente/agendamentos/interfaces/recupera-slots-agenda.service';
+} from '../../_business/agenda/interfaces/recupera-slots-agenda.service';
 import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
-import { SlotAgenda } from '../../_business/atendente/agendamentos/entidades/slot-agenda';
+import { SlotAgenda } from '../../_business/agenda/entidades/slot-agenda';
 import { SlotAgendaDbEntity } from './entidades/slot-agenda.db-entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';

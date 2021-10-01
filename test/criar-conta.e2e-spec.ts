@@ -40,20 +40,21 @@ describe('Criar Conta (e2e)', () => {
       tipo: TipoUsuario.ATENDENTE,
     } as CreateUsuarioDto;
 
-    it('Deve Cadastrar um usuário', async () => {
+    it('Deve Cadastrar um usuário com sucesso', async () => {
       await request(app.getHttpServer())
         .post('/cadastro-inicial')
         .send(req)
         .expect(204);
     });
 
-    it('Deve dar erro 400', async () => {
+    it('Deve dar erro 400 ao passar um campo inválido', async () => {
       await request(app.getHttpServer())
         .post('/cadastro-inicial')
         .send({ ...req, nome: null } as CreateUsuarioDto)
         .expect(400);
     });
-    it('Deve dar erro 409', async () => {
+
+    it('Deve dar erro 409 ao tentar cadastrar o mesmo e-mail', async () => {
       await request(app.getHttpServer())
         .post('/cadastro-inicial')
         .send(req)

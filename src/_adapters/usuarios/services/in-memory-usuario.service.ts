@@ -1,8 +1,8 @@
 import {
   ICadastrarNovoUsuario,
   NovoUsuario,
-} from '../casos-de-uso/cadastrar-novo-usuario.feat';
-import { Usuario } from '../entidades/usuario.entity';
+} from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 
 export class InMemoryUsuarioService implements ICadastrarNovoUsuario {
   usuarios: Usuario[] = [];

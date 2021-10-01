@@ -1,7 +1,7 @@
-import { DateTimeUtils } from '../interfaces/date-time.utils';
+import { DateTimeService } from '../../../_business/agenda/interfaces/date-time.service';
 import * as moment from 'moment';
 
-export class MomentDateTimeUtils implements DateTimeUtils {
+export class MomentDateTimeService implements DateTimeService {
   addHours(date: Date, amount: number): Date {
     return moment(date).add(amount, 'hours').toDate();
   }

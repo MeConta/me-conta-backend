@@ -1,4 +1,4 @@
-export interface DateTimeUtils {
+export interface DateTimeService {
   addHours(date: Date, amount: number): Date;
 
   startOfDay(date: Date): Date;

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AgendaController } from './agenda.controller';
 import { createMock } from '@golevelup/ts-jest';
-import { CriarNovoSlotDeAgenda } from '../_business/atendente/agendamentos/casos-de-uso/criar-novo-slot-de-agenda.feat';
+import { CriarNovoSlotDeAgenda } from '../_business/agenda/casos-de-uso/criar-novo-slot-de-agenda.feat';
 import { NotAcceptableException } from '@nestjs/common';
 
 describe('AgendaController', () => {
