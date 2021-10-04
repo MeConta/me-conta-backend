@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { JwtService } from '@nestjs/jwt';
-import { TypeormUsuarioService } from '../_adapters/usuarios/typeorm-usuario.service';
+import { TypeormUsuarioService } from '../../usuarios/typeorm-usuario.service';
 import { createMock } from '@golevelup/ts-jest';
-import { Usuario } from '../_business/usuarios/entidades/usuario.entity';
-import { CreateUsuarioDto } from '../_adapters/usuarios/dto/create-usuario.dto';
-import { TipoUsuario } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { IHashService } from '../_business/usuarios/interfaces/hash.service';
-import { BcryptHashService } from '../_adapters/usuarios/bcrypt-hash.service';
+import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
+import { CreateUsuarioDto } from '../../usuarios/dto/create-usuario.dto';
+import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { IHashService } from '../../../_business/usuarios/interfaces/hash.service';
+import { BcryptHashService } from '../../usuarios/bcrypt-hash.service';
 
 describe('AuthService', () => {
   let service: AuthService;

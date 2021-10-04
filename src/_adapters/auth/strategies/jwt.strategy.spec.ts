@@ -1,7 +1,7 @@
 import { JwtStrategy } from './jwt.strategy';
 import { internet } from 'faker';
 import { TokenPayload } from '../dto';
-import { TipoUsuario } from '../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 describe('JwtStrategy', () => {
   const strategy = new JwtStrategy();

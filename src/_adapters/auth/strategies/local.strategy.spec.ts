@@ -1,9 +1,9 @@
 import { LocalStrategy } from './local.strategy';
 import { createMock } from '@golevelup/ts-jest';
-import { AuthService } from '../auth.service';
-import { DEFAULT_PASSWORD } from '../../../jest.setup';
+import { AuthService } from '../services/auth.service';
+import { DEFAULT_PASSWORD } from '../../../../jest.setup';
 import { UnauthorizedException } from '@nestjs/common';
-import { Usuario } from '../../_business/usuarios/entidades/usuario.entity';
+import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 
 describe('LocalStrategy', () => {
   const authService = createMock<AuthService>();

@@ -7,15 +7,15 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './guards';
+import { AuthService } from '../_adapters/auth/services/auth.service';
+import { LocalAuthGuard } from '../_adapters/auth/guards';
 import {
   ApiBasicAuth,
   ApiBody,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { AuthDto, LoginDto, TokenDto } from './dto';
+import { AuthDto, LoginDto, TokenDto } from '../_adapters/auth/dto';
 
 @Controller('auth')
 @ApiBasicAuth()

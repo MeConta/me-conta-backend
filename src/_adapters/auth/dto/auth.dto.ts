@@ -1,5 +1,5 @@
-import { Usuario } from '../../_business/usuarios/entidades/usuario.entity';
-import { TipoUsuario } from '../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
+import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 export class LoginDto {
   user: Usuario;

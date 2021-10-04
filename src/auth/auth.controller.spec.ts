@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from './auth.service';
+import { AuthService } from '../_adapters/auth/services/auth.service';
 import { AuthController } from './auth.controller';
 import { Usuario } from '../_business/usuarios/entidades/usuario.entity';
 import { createMock } from '@golevelup/ts-jest';

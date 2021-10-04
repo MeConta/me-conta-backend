@@ -2,7 +2,7 @@ import { RolesGuard } from './roles.guard';
 import { ExecutionContext } from '@nestjs/common';
 import { createMock } from '@golevelup/ts-jest';
 import { Reflector } from '@nestjs/core';
-import { TipoUsuario } from '../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 describe('RolesGuard', () => {
   const reflector = createMock<Reflector>();

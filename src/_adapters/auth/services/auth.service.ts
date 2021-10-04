@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Usuario } from '../_business/usuarios/entidades/usuario.entity';
-import { TokenDto, TokenPayload } from './dto';
-import { TypeormUsuarioService } from '../_adapters/usuarios/typeorm-usuario.service';
-import { IBuscarUsuarioViaEmail } from '../_business/usuarios/casos-de-uso/buscar-usuario-email.feat';
-import { IHashService } from '../_business/usuarios/interfaces/hash.service';
-import { BcryptHashService } from '../_adapters/usuarios/bcrypt-hash.service';
+import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
+import { TokenDto, TokenPayload } from '../dto';
+import { TypeormUsuarioService } from '../../usuarios/typeorm-usuario.service';
+import { IBuscarUsuarioViaEmail } from '../../../_business/usuarios/casos-de-uso/buscar-usuario-email.feat';
+import { IHashService } from '../../../_business/usuarios/interfaces/hash.service';
+import { BcryptHashService } from '../../usuarios/bcrypt-hash.service';
 
 @Injectable()
 export class AuthService {
