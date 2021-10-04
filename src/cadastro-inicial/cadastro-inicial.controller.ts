@@ -32,15 +32,10 @@ export class CadastroInicialController {
       await this.cadastrarNovoUsuario.execute(dto);
     } catch (e) {
       if (e instanceof DuplicatedError) {
-        throw new ConflictException({
-          code: 409,
-          message: e.message,
-        });
-      } else if (e instanceof NoAdminCreationError) {
-        throw new ForbiddenException({
-          code: 403,
-          message: e.message,
-        });
+        throw new ConflictException(e);
+      }
+      if (e instanceof NoAdminCreationError) {
+        throw new ForbiddenException(e);
       }
       throw new InternalServerErrorException({
         code: 500,

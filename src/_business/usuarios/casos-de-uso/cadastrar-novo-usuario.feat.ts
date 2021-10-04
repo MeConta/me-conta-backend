@@ -19,15 +19,13 @@ export interface ICadastrarNovoUsuario {
 }
 
 export class DuplicatedError extends Error {
-  constructor() {
-    super('e-mail duplicado');
-  }
+  public code = 409;
+  public message = 'e-mail duplicado';
 }
 
 export class NoAdminCreationError extends Error {
-  constructor() {
-    super('Não pode criar administrador');
-  }
+  public code = 403;
+  public message = 'Não pode criar administrador';
 }
 
 export class CadastrarNovoUsuario {
