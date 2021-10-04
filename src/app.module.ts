@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import database from './config/database.config';
 import { AppController } from './app.controller';
 import { CadastroInicialModule } from './cadastro-inicial/cadastro-inicial.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { CadastroInicialModule } from './cadastro-inicial/cadastro-inicial.modul
       }),
     }),
     CadastroInicialModule,
-    // AuthModule.forRoot(),
+    AuthModule.forRoot(),
     // AgendaModule,
   ],
   controllers: [AppController],

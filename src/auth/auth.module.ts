@@ -8,13 +8,20 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { TypeormUsuarioService } from '../_adapters/usuarios/typeorm-usuario.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsuarioDbEntity } from '../_adapters/usuarios/entidades/usuario.db.entity';
+import { BcryptHashService } from '../_adapters/usuarios/bcrypt-hash.service';
 
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
     TypeOrmModule.forFeature([UsuarioDbEntity]),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy, TypeormUsuarioService],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    TypeormUsuarioService,
+    BcryptHashService,
+  ],
   controllers: [AuthController],
   exports: [PassportModule, AuthService, JwtModule],
 })
