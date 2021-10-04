@@ -7,6 +7,8 @@ import { TipoUsuario } from '../src/_business/usuarios/casos-de-uso/cadastrar-no
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsuarioDbEntity } from '../src/_adapters/usuarios/entidades/usuario.db.entity';
 import { setupApp } from '../src/config/app.config';
+import { createUser, SENHA_PADRAO } from './utils.test';
+import { internet, name } from 'faker/locale/pt_BR';
 
 describe('Criar Conta (e2e)', () => {
   let app: INestApplication;
@@ -34,10 +36,10 @@ describe('Criar Conta (e2e)', () => {
 
   describe('/cadastro-inicial (POST)', () => {
     const req = {
-      nome: 'Teste',
-      email: 'teste@teste.com',
-      senha: 'SenH4F@rt33',
-      tipo: TipoUsuario.ATENDENTE,
+      nome: name.firstName(),
+      email: internet.email(),
+      senha: SENHA_PADRAO,
+      tipo: TipoUsuario.ALUNO,
     } as CreateUsuarioDto;
 
     it('Deve Cadastrar um usuário com sucesso', async () => {
@@ -55,14 +57,11 @@ describe('Criar Conta (e2e)', () => {
     });
 
     it('Deve dar erro 409 ao tentar cadastrar o mesmo e-mail', async () => {
-      await request(app.getHttpServer())
-        .post('/cadastro-inicial')
-        .send(req)
-        .expect(204);
+      const usuario = await createUser(app);
 
       await request(app.getHttpServer())
         .post('/cadastro-inicial')
-        .send(req)
+        .send({ ...req, email: usuario.email } as CreateUsuarioDto)
         .expect(409);
     });
   });

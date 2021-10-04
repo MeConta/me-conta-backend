@@ -1,36 +1,57 @@
-import { internet } from 'faker/locale/pt_BR';
 import * as request from 'supertest';
-import { createMock } from '@golevelup/ts-jest';
 import { CreateUsuarioDto } from '../src/_adapters/usuarios/dto/create-usuario.dto';
+import { INestApplication } from '@nestjs/common';
+import { TipoUsuario } from '../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { IAuth, IToken } from '../src/_business/auth/interfaces/auth';
+import { internet, name } from 'faker/locale/pt_BR';
 
-const req = {
-  ...createMock<CreateUsuarioDto>(),
-  email: internet.email(),
-  senha: internet.password(),
-} as CreateUsuarioDto;
-
-export async function getAuthToken(
-  app,
-  email?: string,
-  senha?: string,
-): Promise<string> {
-  const response = await request(app.getHttpServer())
-    .post(`/auth/login`)
+export const SENHA_PADRAO = 's3nh4Val!d@';
+export async function createUser(
+  app: INestApplication,
+  tipoUsuario: TipoUsuario = TipoUsuario.ALUNO,
+  usuario?: CreateUsuarioDto,
+): Promise<CreateUsuarioDto> {
+  const { nome, email, senha, tipo } = usuario || {
+    nome: name.firstName(),
+    email: internet.email(),
+    senha: SENHA_PADRAO,
+    tipo: tipoUsuario,
+  };
+  await request(app.getHttpServer())
+    .post('/cadastro-inicial')
     .send({
-      username: email || req.email,
-      password: senha || req.senha,
-    });
-
-  return response.body.token;
+      nome,
+      email,
+      senha,
+      tipo,
+    } as CreateUsuarioDto);
+  return Promise.resolve({
+    nome,
+    email,
+    senha,
+    tipo,
+  });
 }
 
-export async function getAdminAuthToken(app): Promise<string> {
-  const response = await request(app.getHttpServer())
-    .post(`/usuario`)
-    .send({
-      ...req,
-      email: internet.email(),
-    });
+export async function getToken(
+  app: INestApplication,
+  login?: IAuth,
+  tipo: TipoUsuario = TipoUsuario.ADMINISTRADOR,
+): Promise<string> {
+  const { username, password } = login || {
+    username: internet.email(),
+    password: SENHA_PADRAO,
+  };
+  await createUser(app, tipo, {
+    nome: name.firstName(),
+    email: username,
+    senha: password,
+    tipo: tipo,
+  });
 
-  return getAuthToken(app, response.body.email);
+  const { body } = await request(app.getHttpServer())
+    .post('/auth/login')
+    .send({ username, password });
+
+  return (body as IToken).token;
 }
