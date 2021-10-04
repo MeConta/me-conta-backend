@@ -18,7 +18,7 @@ const jest: Config.InitialOptions = {
     '!**/*.stub.ts',
     '!**/*.mock.ts',
     '!**/*.entity.ts',
-    '!**/*.dto.ts',
+    '!**/*.auth.dto.ts.ts',
     '!**/*.enum.ts',
     '!**/*.config.ts',
     '!**/testing/',

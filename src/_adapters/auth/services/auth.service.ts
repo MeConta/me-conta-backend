@@ -8,8 +8,8 @@ import { BcryptHashService } from '../../usuarios/bcrypt-hash.service';
 import { IAuthService } from '../../../_business/auth/interfaces/auth.service';
 import { ValidarUsuario } from '../../../_business/auth/casos-de-uso/validar-usuario.feat';
 import { GerarToken } from '../../../_business/auth/casos-de-uso/gerar-token.feat';
-import { IToken } from '../../../_business/auth/interfaces/auth';
 import { IJwtService } from '../../../_business/auth/interfaces/jwt.service';
+import { TokenDto } from '../dto/auth.dto';
 
 @Injectable()
 export class NestAuthService extends ValidarUsuario {
@@ -47,7 +47,7 @@ export class AuthService implements IAuthService {
     return this.auth.execute(email, senha);
   }
 
-  login(user: Usuario): IToken {
+  login(user: Usuario): TokenDto {
     return this.token.execute(user);
   }
 }

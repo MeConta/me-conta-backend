@@ -2,8 +2,8 @@ import * as request from 'supertest';
 import { CreateUsuarioDto } from '../src/_adapters/usuarios/dto/create-usuario.dto';
 import { INestApplication } from '@nestjs/common';
 import { TipoUsuario } from '../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { IAuth, IToken } from '../src/_business/auth/interfaces/auth';
 import { internet, name } from 'faker/locale/pt_BR';
+import { AuthDto, TokenDto } from '../src/_adapters/auth/dto/auth.dto';
 
 export const SENHA_PADRAO = 's3nh4Val!d@';
 export async function createUser(
@@ -35,7 +35,7 @@ export async function createUser(
 
 export async function getToken(
   app: INestApplication,
-  login?: IAuth,
+  login?: AuthDto,
   tipo: TipoUsuario = TipoUsuario.ADMINISTRADOR,
 ): Promise<string> {
   const { username, password } = login || {
@@ -53,5 +53,5 @@ export async function getToken(
     .post('/auth/login')
     .send({ username, password });
 
-  return (body as IToken).token;
+  return (body as TokenDto).token;
 }

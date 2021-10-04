@@ -7,8 +7,8 @@ import { setupApp } from '../src/config/app.config';
 import { createUser } from './utils.test';
 import * as request from 'supertest';
 import { AuthModule } from '../src/auth/auth.module';
-import { IAuth, IToken } from '../src/_business/auth/interfaces/auth';
 import { CreateUsuarioDto } from '../src/_adapters/usuarios/dto/create-usuario.dto';
+import { AuthDto, TokenDto } from '../src/_adapters/auth/dto/auth.dto';
 
 describe('Autenticação (e2)', () => {
   let app: INestApplication;
@@ -46,10 +46,10 @@ describe('Autenticação (e2)', () => {
         .send({
           username: user.email,
           password: user.senha,
-        } as IAuth)
+        } as AuthDto)
         .expect(200);
-      expect((body as IToken).token).toBeDefined();
-      expect((body as IToken).token).toEqual(expect.any(String));
+      expect((body as TokenDto).token).toBeDefined();
+      expect((body as TokenDto).token).toEqual(expect.any(String));
     });
     it('Não Deve logar com senha incorreta', async () => {
       await request(app.getHttpServer())
