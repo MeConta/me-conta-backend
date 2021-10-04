@@ -1,51 +1,35 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from './auth.service';
-import { JwtService } from '@nestjs/jwt';
-import { TypeormUsuarioService } from '../../usuarios/typeorm-usuario.service';
+import { AuthService, NestAuthService, NestLoginService } from './auth.service';
 import { createMock } from '@golevelup/ts-jest';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
-import { CreateUsuarioDto } from '../../usuarios/dto/create-usuario.dto';
-import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { IHashService } from '../../../_business/usuarios/interfaces/hash.service';
-import { BcryptHashService } from '../../usuarios/bcrypt-hash.service';
+import { IBuscarUsuarioViaEmail } from '../../../_business/usuarios/casos-de-uso/buscar-usuario-email.feat';
+import { IJwtService } from '../../../_business/auth/casos-de-uso/gerar-token.feat';
 
 describe('AuthService', () => {
   let service: AuthService;
-  let usuarioService: TypeormUsuarioService;
-  let hashService: IHashService;
-  let jwtService: JwtService;
 
-  const request = createMock<CreateUsuarioDto>();
-  const entity = createMock<Usuario>();
+  let auth: NestAuthService;
+  let login: NestLoginService;
+
+  const entity = {
+    ...createMock<Usuario>(),
+    id: 0,
+    nome: 'Teste',
+    email: 'teste@teste.com',
+  } as Usuario;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        {
-          provide: TypeormUsuarioService,
-          useValue: createMock<TypeormUsuarioService>(),
-        },
-        {
-          provide: BcryptHashService,
-          useValue: createMock<IHashService>(),
-        },
-        {
-          provide: JwtService,
-          useValue: { sign: jest.fn() },
-        },
-        AuthService,
-      ],
-    }).compile();
-
-    service = module.get<AuthService>(AuthService);
-    usuarioService = module.get<TypeormUsuarioService>(TypeormUsuarioService);
-    hashService = module.get<IHashService>(BcryptHashService);
-    jwtService = module.get<JwtService>(JwtService);
+    auth = new NestAuthService(
+      createMock<IBuscarUsuarioViaEmail>(),
+      createMock<IHashService>(),
+    );
+    login = new NestLoginService(createMock<IJwtService>());
+    service = new AuthService(auth, login);
   });
 
   beforeEach(async () => {
-    jest.spyOn(hashService, 'hash').mockResolvedValue(`password`);
-    jest.spyOn(usuarioService, 'findByEmail').mockResolvedValue(entity);
+    jest.spyOn(auth, 'execute').mockResolvedValue(entity);
+    jest.spyOn(login, 'execute').mockReturnValue({ token: 'TOKEN' });
   });
 
   it('deve ser definido', async () => {
@@ -53,52 +37,19 @@ describe('AuthService', () => {
   });
 
   describe('validateUser', () => {
-    it('deve retornar um usuário válido', async () => {
-      const HASHED_PASSWORD = `password`;
-      jest
-        .spyOn(usuarioService, 'findByEmail')
-        .mockResolvedValue({ ...entity, senha: HASHED_PASSWORD });
-
-      const response = await service.validateUser(
-        request.email,
-        HASHED_PASSWORD,
+    it('Deve chamar a validação de usuário', async () => {
+      await service.validateUser(expect.any(String), expect.any(String));
+      expect(auth.execute).toBeCalledWith(
+        expect.any(String),
+        expect.any(String),
       );
-      expect(response).toEqual(
-        expect.objectContaining({ senha: HASHED_PASSWORD }),
-      );
-    });
-
-    it('deve retornar nulo quando o usuário não for válido', async () => {
-      jest
-        .spyOn(usuarioService, 'findByEmail')
-        .mockResolvedValue({ ...entity, senha: `password` });
-      jest.spyOn(hashService, 'hash').mockResolvedValue('another-password');
-
-      const response = await service.validateUser(request.email, 'outraS3nh@');
-      expect(response).toBeNull();
-    });
-
-    it('deve retornar nulo quando o usuário não existir', async () => {
-      jest.spyOn(usuarioService, 'findByEmail').mockResolvedValue(null);
-
-      const response = await service.validateUser(request.email, request.senha);
-      expect(response).toBeNull();
     });
   });
 
   describe('login', () => {
-    it('deve assinar um jwt', async () => {
-      await service.login({
-        ...entity,
-        email: `teste@teste.com`,
-        id: 1,
-        tipo: TipoUsuario.ADMINISTRADOR,
-      });
-      expect(jwtService.sign).toBeCalledWith({
-        email: `teste@teste.com`,
-        sub: 1,
-        roles: [TipoUsuario.ADMINISTRADOR],
-      });
+    it('Deve chamar a assinatura de token', async () => {
+      await service.login(entity);
+      expect(login.execute).toBeCalledWith(entity);
     });
   });
 });

@@ -1,45 +1,55 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
-import { TokenDto, TokenPayload } from '../dto';
+import { Token } from '../dto';
 import { TypeormUsuarioService } from '../../usuarios/typeorm-usuario.service';
 import { IBuscarUsuarioViaEmail } from '../../../_business/usuarios/casos-de-uso/buscar-usuario-email.feat';
 import { IHashService } from '../../../_business/usuarios/interfaces/hash.service';
 import { BcryptHashService } from '../../usuarios/bcrypt-hash.service';
+import { IAuthService } from '../../../_business/auth/interfaces/auth.service';
+import { ValidarUsuario } from '../../../_business/auth/casos-de-uso/validar-usuario.feat';
+import {
+  GerarToken,
+  IJwtService,
+} from '../../../_business/auth/casos-de-uso/gerar-token.feat';
 
 @Injectable()
-export class AuthService {
+export class NestAuthService extends ValidarUsuario {
   constructor(
     @Inject(TypeormUsuarioService)
-    private usuarioService: IBuscarUsuarioViaEmail,
+    usuarioService: IBuscarUsuarioViaEmail,
 
     @Inject(BcryptHashService)
-    private readonly hashService: IHashService,
+    hashService: IHashService,
+  ) {
+    super(usuarioService, hashService);
+  }
+}
+
+@Injectable()
+export class NestLoginService extends GerarToken {
+  constructor(
     @Inject(JwtService)
-    private jwtService: JwtService,
+    jwtService: IJwtService,
+  ) {
+    super(jwtService);
+  }
+}
+
+@Injectable()
+export class AuthService implements IAuthService {
+  constructor(
+    @Inject(NestAuthService)
+    private auth: NestAuthService,
+    @Inject(NestLoginService)
+    private token: GerarToken,
   ) {}
 
-  async validateUser(email: string, pass: string): Promise<Usuario> {
-    const usuario = await this.usuarioService.findByEmail(email);
-
-    if (
-      !usuario ||
-      usuario.senha !== (await this.hashService.hash(pass, usuario.salt))
-    ) {
-      return null;
-    }
-
-    return usuario;
+  async validateUser(email: string, senha: string): Promise<Usuario> {
+    return this.auth.execute(email, senha);
   }
 
-  login(user: Usuario): TokenDto {
-    const payload: TokenPayload = {
-      email: user.email,
-      sub: user.id,
-      roles: [user.tipo],
-    };
-    return {
-      token: this.jwtService.sign(payload),
-    };
+  login(user: Usuario): Token {
+    return this.token.execute(user);
   }
 }

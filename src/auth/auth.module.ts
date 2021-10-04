@@ -1,5 +1,9 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { AuthService } from '../_adapters/auth/services/auth.service';
+import {
+  AuthService,
+  NestAuthService,
+  NestLoginService,
+} from '../_adapters/auth/services/auth.service';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from '../_adapters/auth/strategies/local.strategy';
 import { JwtModule } from '@nestjs/jwt';
@@ -19,6 +23,8 @@ import { BcryptHashService } from '../_adapters/usuarios/bcrypt-hash.service';
     AuthService,
     LocalStrategy,
     JwtStrategy,
+    NestAuthService,
+    NestLoginService,
     TypeormUsuarioService,
     BcryptHashService,
   ],

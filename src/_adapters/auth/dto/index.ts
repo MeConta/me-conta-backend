@@ -1,1 +1,1 @@
-export * from './auth.dto';
+export * from '../../../_business/auth/interfaces/auth';

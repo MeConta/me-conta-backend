@@ -15,7 +15,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { AuthDto, LoginDto, TokenDto } from '../_adapters/auth/dto';
+import { Auth, LoginDto, Token } from '../_adapters/auth/dto';
 
 @Controller('auth')
 @ApiBasicAuth()
@@ -33,9 +33,9 @@ export class AuthController {
     description: `Usuário ou senha incorretos`,
   })
   @ApiBody({
-    type: AuthDto,
+    type: Auth,
   })
-  async login(@Request() req: LoginDto): Promise<TokenDto> {
+  async login(@Request() req: LoginDto): Promise<Token> {
     return this.authService.login(req.user);
   }
 }
