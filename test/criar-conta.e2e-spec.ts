@@ -46,7 +46,7 @@ describe('Criar Conta (e2e)', () => {
       await request(app.getHttpServer())
         .post('/cadastro-inicial')
         .send(req)
-        .expect(204);
+        .expect(201);
     });
 
     it('Deve dar erro 400 ao passar um campo inválido', async () => {
@@ -63,6 +63,14 @@ describe('Criar Conta (e2e)', () => {
         .post('/cadastro-inicial')
         .send({ ...req, email: usuario.email } as CreateUsuarioDto)
         .expect(409);
+    });
+
+    it('Deve dar erro 403 ao tentar cadastrar um administrador', async () => {
+      await createUser(app);
+      await request(app.getHttpServer())
+        .post('/cadastro-inicial')
+        .send({ ...req, tipo: TipoUsuario.ADMINISTRADOR } as CreateUsuarioDto)
+        .expect(403);
     });
   });
 

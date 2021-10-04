@@ -3,11 +3,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import {
   CadastrarNovoUsuario,
   DuplicatedError,
+  NoAdminCreationError,
   TipoUsuario,
 } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { createMock } from '@golevelup/ts-jest';
 import {
   ConflictException,
+  ForbiddenException,
   InternalServerErrorException,
 } from '@nestjs/common';
 
@@ -58,6 +60,21 @@ describe('Cadastro Inicial', () => {
       }),
     ).rejects.toThrow(ConflictException);
   });
+
+  it('Deve dar erro ao tentar cadastrar um administrador', async () => {
+    jest
+      .spyOn(useCase, 'execute')
+      .mockRejectedValue(new NoAdminCreationError());
+    await expect(() =>
+      controller.cadastrar({
+        nome: 'Teste',
+        email: 'teste@teste.com',
+        tipo: TipoUsuario.ADMINISTRADOR,
+        senha: 's3nh4F0rt3!',
+      }),
+    ).rejects.toThrow(ForbiddenException);
+  });
+
   it('Deve dar erro genérico', async () => {
     jest.spyOn(useCase, 'execute').mockRejectedValue(new Error());
     await expect(() =>

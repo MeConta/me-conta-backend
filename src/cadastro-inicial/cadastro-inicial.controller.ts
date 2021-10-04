@@ -2,8 +2,7 @@ import {
   Body,
   ConflictException,
   Controller,
-  HttpCode,
-  HttpStatus,
+  ForbiddenException,
   InternalServerErrorException,
   Post,
 } from '@nestjs/common';
@@ -11,6 +10,7 @@ import { CreateUsuarioDto } from '../_adapters/usuarios/dto/create-usuario.dto';
 import {
   CadastrarNovoUsuario,
   DuplicatedError,
+  NoAdminCreationError,
 } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import {
   ApiConflictResponse,
@@ -27,7 +27,6 @@ export class CadastroInicialController {
     description: 'Erro genérico',
   })
   @Post()
-  @HttpCode(HttpStatus.NO_CONTENT)
   async cadastrar(@Body() dto: CreateUsuarioDto) {
     try {
       await this.cadastrarNovoUsuario.execute(dto);
@@ -37,10 +36,15 @@ export class CadastroInicialController {
           code: 409,
           message: e.message,
         });
+      } else if (e instanceof NoAdminCreationError) {
+        throw new ForbiddenException({
+          code: 403,
+          message: e.message,
+        });
       }
       throw new InternalServerErrorException({
         code: 500,
-        message: 'Internal Server Error',
+        message: 'Erro genérico',
       });
     }
   }

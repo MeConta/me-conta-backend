@@ -1,6 +1,7 @@
 import {
   CadastrarNovoUsuario,
   DuplicatedError,
+  NoAdminCreationError,
   TipoUsuario,
 } from './cadastrar-novo-usuario.feat';
 import { InMemoryUsuarioService } from '../../../_adapters/usuarios/services/in-memory-usuario.service';
@@ -45,5 +46,15 @@ describe('Cadastrar novo usuário', () => {
         senha: 's3nh4F0rT#',
       }),
     ).rejects.toThrow(DuplicatedError);
+  });
+  it('Deve dar erro ao tentar cadastrar um administrador', async () => {
+    await expect(() =>
+      sut.execute({
+        nome: 'João',
+        email: 'fake@email.com',
+        tipo: TipoUsuario.ADMINISTRADOR,
+        senha: 's3nh4F0rT#',
+      }),
+    ).rejects.toThrow(NoAdminCreationError);
   });
 });

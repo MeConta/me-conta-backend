@@ -24,12 +24,21 @@ export class DuplicatedError extends Error {
   }
 }
 
+export class NoAdminCreationError extends Error {
+  constructor() {
+    super('Não pode criar administrador');
+  }
+}
+
 export class CadastrarNovoUsuario {
   constructor(
     private readonly usuarioService: ICadastrarNovoUsuario,
     private readonly passwordService: IHashService,
   ) {}
   async execute(input: NovoUsuario) {
+    if (input.tipo === TipoUsuario.ADMINISTRADOR) {
+      throw new NoAdminCreationError();
+    }
     try {
       const SALT = await this.passwordService.generateSalt();
       await this.usuarioService.cadastrar({
