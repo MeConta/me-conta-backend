@@ -1,17 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
-import { Token } from '../dto';
 import { TypeormUsuarioService } from '../../usuarios/typeorm-usuario.service';
 import { IBuscarUsuarioViaEmail } from '../../../_business/usuarios/casos-de-uso/buscar-usuario-email.feat';
 import { IHashService } from '../../../_business/usuarios/interfaces/hash.service';
 import { BcryptHashService } from '../../usuarios/bcrypt-hash.service';
 import { IAuthService } from '../../../_business/auth/interfaces/auth.service';
 import { ValidarUsuario } from '../../../_business/auth/casos-de-uso/validar-usuario.feat';
-import {
-  GerarToken,
-  IJwtService,
-} from '../../../_business/auth/casos-de-uso/gerar-token.feat';
+import { GerarToken } from '../../../_business/auth/casos-de-uso/gerar-token.feat';
+import { IToken } from '../../../_business/auth/interfaces/auth';
+import { IJwtService } from '../../../_business/auth/interfaces/jwt.service';
 
 @Injectable()
 export class NestAuthService extends ValidarUsuario {
@@ -49,7 +47,7 @@ export class AuthService implements IAuthService {
     return this.auth.execute(email, senha);
   }
 
-  login(user: Usuario): Token {
+  login(user: Usuario): IToken {
     return this.token.execute(user);
   }
 }

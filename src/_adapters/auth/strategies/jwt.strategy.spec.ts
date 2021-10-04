@@ -1,11 +1,11 @@
 import { JwtStrategy } from './jwt.strategy';
 import { internet } from 'faker';
-import { TokenPayload } from '../dto';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { ITokenPayload } from '../../../_business/auth/interfaces/auth';
 
 describe('JwtStrategy', () => {
   const strategy = new JwtStrategy();
-  const payload: TokenPayload = {
+  const payload: ITokenPayload = {
     email: internet.email(),
     sub: 1,
     roles: [TipoUsuario.ADMINISTRADOR],

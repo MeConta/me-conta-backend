@@ -1,27 +1,27 @@
 import { Usuario } from '../../usuarios/entidades/usuario.entity';
 import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
-export class LoginDto {
+export class ILogin {
   user: Usuario;
 }
 
-export interface Token {
+export interface IToken {
   token: string;
 }
 
-export interface TokenPayload {
+export interface ITokenPayload {
   sub: number;
   email: string;
   roles: TipoUsuario[];
 }
 
-export interface TokenUser {
+export interface ITokenUser {
   id: number;
   email: string;
   roles: TipoUsuario[];
 }
 
-export class Auth {
+export class IAuth {
   /***
    * @example teste@teste.com
    */

@@ -1,14 +1,11 @@
 import { Usuario } from '../../usuarios/entidades/usuario.entity';
-import { Token, TokenPayload } from '../interfaces/auth';
-
-export interface IJwtService {
-  sign(payload: any): string;
-}
+import { IToken, ITokenPayload } from '../interfaces/auth';
+import { IJwtService } from '../interfaces/jwt.service';
 
 export class GerarToken {
   constructor(private readonly jwtService: IJwtService) {}
-  execute(usuario: Usuario): Token {
-    const payload: TokenPayload = {
+  execute(usuario: Usuario): IToken {
+    const payload: ITokenPayload = {
       email: usuario.email,
       sub: usuario.id,
       roles: [usuario.tipo],

@@ -1,6 +1,7 @@
-import { GerarToken, IJwtService } from './gerar-token.feat';
+import { GerarToken } from './gerar-token.feat';
 import { createMock } from '@golevelup/ts-jest';
 import { Usuario } from '../../usuarios/entidades/usuario.entity';
+import { IJwtService } from '../interfaces/jwt.service';
 
 describe('Gerar Token', () => {
   let sut: GerarToken;

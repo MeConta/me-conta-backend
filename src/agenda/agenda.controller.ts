@@ -1,6 +1,6 @@
 import { Body, Controller, NotAcceptableException, Post } from '@nestjs/common';
 import { CriarNovoSlotDeAgenda } from '../_business/agenda/casos-de-uso/criar-novo-slot-de-agenda.feat';
-import { User } from '../decorators/user.decorator';
+import { User } from '../_adapters/auth/decorators/user.decorator';
 import { Auth } from '../decorators';
 
 export function isValidDate(value: any): value is Date {
