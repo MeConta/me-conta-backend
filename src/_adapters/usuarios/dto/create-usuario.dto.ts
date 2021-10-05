@@ -9,22 +9,24 @@ import {
   NovoUsuario,
   TipoUsuario,
 } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { IsPasswordStrong } from '../../../decorators';
+import { IsNotEmptyString, IsPasswordStrong } from '../../../decorators';
+import { Transform } from 'class-transformer';
 
 export class CreateUsuarioDto implements NovoUsuario {
   /***
    * O Nome de usuário
    * @example 'Maria Silva'
    */
-  @IsNotEmpty({
-    message: '$property não pode ser vazio',
-  })
   @MinLength(2, {
     message: '$property deve ter mais de 2 caracteres',
   })
   @MaxLength(100, {
     message: '$property deve ter menos de 100 caracteres',
   })
+  @IsNotEmptyString({
+    message: '$property não deve ser vazio',
+  })
+  @Transform((obj) => String(obj.value).trim())
   nome: string;
 
   /***
