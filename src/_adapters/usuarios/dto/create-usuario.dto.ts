@@ -10,18 +10,20 @@ import {
   TipoUsuario,
 } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { IsPasswordStrong } from '../../../decorators';
-import { ApiProperty } from '@nestjs/swagger';
-import { Erros } from '../../../config/constants';
 
 export class CreateUsuarioDto implements NovoUsuario {
   /***
    * O Nome de usuário
    * @example 'Maria Silva'
    */
-  @IsNotEmpty()
-  @MinLength(2)
+  @IsNotEmpty({
+    message: '$property não pode ser vazio',
+  })
+  @MinLength(2, {
+    message: '$property deve ter mais de 2 caracteres',
+  })
   @MaxLength(100, {
-    message: '$property deve ter menos de 300 caracteres',
+    message: '$property deve ter menos de 100 caracteres',
   })
   nome: string;
 
@@ -29,21 +31,20 @@ export class CreateUsuarioDto implements NovoUsuario {
    * Um e-mail válido
    * @example 'teste@teste.com'
    */
-  @ApiProperty({
-    description: Erros.VALIDACAO_EMAIL,
-  })
-  @IsEmail({}, { message: Erros.VALIDACAO_EMAIL })
+
+  @IsEmail({}, { message: '$property deve ser um e-mail válido' })
   email: string;
 
   /***
    * Uma senha forte
    * @example 's#nh4Valida'
    */
-  @ApiProperty({
-    description: Erros.VALIDACAO_SENHA,
+  @IsNotEmpty({
+    message: '$property não pode ser vazio',
   })
-  @IsNotEmpty()
-  @IsPasswordStrong()
+  @IsPasswordStrong(null, {
+    message: '$property deve ser uma senha forte',
+  })
   senha: string;
 
   /***
@@ -51,6 +52,8 @@ export class CreateUsuarioDto implements NovoUsuario {
    * @example 0
    * @type Number
    */
-  @IsEnum(TipoUsuario)
+  @IsEnum(TipoUsuario, {
+    message: '$property deve ser um valor de enum válido',
+  })
   tipo: TipoUsuario;
 }
