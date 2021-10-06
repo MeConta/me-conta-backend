@@ -37,17 +37,20 @@ export enum Estado {
   DF = 'DF',
 }
 
-export interface Usuario {
+export interface Perfil {
+  telefone?: string;
+  dataNascimento?: Date;
+  cidade?: string;
+  estado?: Estado;
+  genero?: Genero;
+}
+
+export interface Usuario extends Perfil {
   id: number;
   nome: string;
   email: string;
   senha: string;
   salt: string;
-  dataNascimento?: Date;
-  genero?: Genero;
-  UF?: Estado;
-  cidade?: string;
-  telefone?: string;
   tipo?: TipoUsuario;
   dataTermos: Date;
 }

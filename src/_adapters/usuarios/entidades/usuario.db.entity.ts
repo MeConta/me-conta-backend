@@ -1,4 +1,4 @@
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Exclude } from 'class-transformer';
 import { ApiHideProperty } from '@nestjs/swagger';
@@ -12,6 +12,8 @@ import { TypeormDefaultEntity } from '../../entidades/typeorm.default.entity';
 
 @Entity('usuario')
 export class UsuarioDbEntity extends TypeormDefaultEntity implements Usuario {
+  @PrimaryGeneratedColumn()
+  id: number;
   /***
    * @example 'Maria'
    */

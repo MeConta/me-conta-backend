@@ -5,6 +5,7 @@ import database from './config/database.config';
 import { AppController } from './app.controller';
 import { CadastroInicialModule } from './cadastro-inicial/cadastro-inicial.module';
 import { AuthModule } from './auth/auth.module';
+import { CadastroVoluntarioModule } from './cadastro-voluntario/cadastro-voluntario.module';
 
 @Module({
   imports: [
@@ -20,8 +21,9 @@ import { AuthModule } from './auth/auth.module';
         ...configService.get('database'),
       }),
     }),
-    CadastroInicialModule,
     AuthModule.forRoot(),
+    CadastroInicialModule,
+    CadastroVoluntarioModule,
     // AgendaModule,
   ],
   controllers: [AppController],
