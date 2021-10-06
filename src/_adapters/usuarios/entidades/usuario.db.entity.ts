@@ -76,7 +76,7 @@ export class UsuarioDbEntity extends TypeormDefaultEntity implements Usuario {
     enum: TipoUsuario,
     default: TipoUsuario.ALUNO,
   })
-  tipo?: TipoUsuario;
+  tipo: TipoUsuario;
 
   @Column()
   dataTermos: Date;

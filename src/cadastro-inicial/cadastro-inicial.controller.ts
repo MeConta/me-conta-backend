@@ -6,7 +6,10 @@ import {
   InternalServerErrorException,
   Post,
 } from '@nestjs/common';
-import { CreateUsuarioDto } from '../_adapters/usuarios/dto/create-usuario.dto';
+import {
+  CreateUsuarioDto,
+  CreateUsuarioResponseDto,
+} from '../_adapters/usuarios/dto/create-usuario.dto';
 import {
   CadastrarNovoUsuario,
   DuplicatedError,
@@ -20,6 +23,7 @@ import {
 @Controller('cadastro-inicial')
 export class CadastroInicialController {
   constructor(private cadastrarNovoUsuario: CadastrarNovoUsuario) {}
+
   @ApiConflictResponse({
     description: 'Usuário já cadastrado',
   })
@@ -27,9 +31,14 @@ export class CadastroInicialController {
     description: 'Erro genérico',
   })
   @Post()
-  async cadastrar(@Body() dto: CreateUsuarioDto) {
+  async cadastrar(
+    @Body() dto: CreateUsuarioDto,
+  ): Promise<CreateUsuarioResponseDto> {
     try {
-      await this.cadastrarNovoUsuario.execute(dto);
+      const { id, nome, tipo, email } = await this.cadastrarNovoUsuario.execute(
+        dto,
+      );
+      return { id, nome, tipo, email };
     } catch (e) {
       if (e instanceof DuplicatedError) {
         throw new ConflictException(e);

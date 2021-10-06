@@ -8,8 +8,8 @@ export class InMemoryUsuarioService implements ICadastrarNovoUsuario {
   usuarios: Usuario[] = [];
   cadastrar(
     usuario: NovoUsuario & { salt: string; dataTermos: Date },
-  ): Promise<void> {
-    this.usuarios.push({
+  ): Promise<Usuario> {
+    const len = this.usuarios.push({
       id: this.usuarios.length,
       nome: usuario.nome,
       email: usuario.email,
@@ -18,6 +18,6 @@ export class InMemoryUsuarioService implements ICadastrarNovoUsuario {
       salt: usuario.salt,
       dataTermos: usuario.dataTermos,
     });
-    return Promise.resolve();
+    return Promise.resolve(this.usuarios[len - 1]);
   }
 }

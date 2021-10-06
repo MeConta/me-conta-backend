@@ -25,9 +25,9 @@ export class TypeormUsuarioService
 
   async cadastrar(
     usuario: NovoUsuario & { salt: string; dataTermos: Date },
-  ): Promise<void> {
+  ): Promise<UsuarioDbEntity> {
     const entity = this.repository.create(usuario);
-    await this.repository.save(entity);
+    return await this.repository.save(entity);
   }
 
   async findByEmail(email: string): Promise<Usuario> {

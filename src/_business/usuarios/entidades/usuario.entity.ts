@@ -51,6 +51,6 @@ export interface Usuario extends Perfil {
   email: string;
   senha: string;
   salt: string;
-  tipo?: TipoUsuario;
+  tipo: TipoUsuario;
   dataTermos: Date;
 }

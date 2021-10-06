@@ -7,6 +7,7 @@ import {
 } from 'class-validator';
 import {
   NovoUsuario,
+  NovoUsuarioResponse,
   TipoUsuario,
 } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { IsNotEmptyString, IsPasswordStrong } from '../../../decorators';
@@ -57,5 +58,26 @@ export class CreateUsuarioDto implements NovoUsuario {
   @IsEnum(TipoUsuario, {
     message: '$property deve ser um valor de enum válido',
   })
+  tipo: TipoUsuario;
+}
+
+export class CreateUsuarioResponseDto implements NovoUsuarioResponse {
+  /***
+   * @example 1
+   */
+  id: number;
+  /***
+   * @example 'maria@teste.com'
+   */
+  email: string;
+  /***
+   * @example 'Maria da Silva'
+   */
+  nome: string;
+  /***
+   * @example 0
+   * @type Number
+   * @enum TipoUsuario
+   */
   tipo: TipoUsuario;
 }

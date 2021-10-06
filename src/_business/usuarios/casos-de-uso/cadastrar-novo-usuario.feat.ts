@@ -1,4 +1,5 @@
 import { IHashService } from '../interfaces/hash.service';
+import { Usuario } from '../entidades/usuario.entity';
 
 export enum TipoUsuario {
   ALUNO,
@@ -6,16 +7,21 @@ export enum TipoUsuario {
   ATENDENTE,
   ADMINISTRADOR,
 }
-export interface NovoUsuario {
+export type NovoUsuario = {
   nome: string;
   email: string;
   senha: string;
   tipo: TipoUsuario;
-}
+};
+
+export type NovoUsuarioResponse = Pick<
+  Usuario,
+  'id' | 'email' | 'nome' | 'tipo'
+>;
 export interface ICadastrarNovoUsuario {
   cadastrar(
     usuario: NovoUsuario & { salt: string; dataTermos: Date },
-  ): Promise<void>;
+  ): Promise<Usuario>;
 }
 
 export class DuplicatedError extends Error {
@@ -33,13 +39,13 @@ export class CadastrarNovoUsuario {
     private readonly usuarioService: ICadastrarNovoUsuario,
     private readonly passwordService: IHashService,
   ) {}
-  async execute(input: NovoUsuario) {
+  async execute(input: NovoUsuario): Promise<Usuario> {
     if (input.tipo === TipoUsuario.ADMINISTRADOR) {
       throw new NoAdminCreationError();
     }
     try {
       const SALT = await this.passwordService.generateSalt();
-      await this.usuarioService.cadastrar({
+      return await this.usuarioService.cadastrar({
         ...input,
         senha: await this.passwordService.hash(input.senha, SALT),
         salt: SALT,
