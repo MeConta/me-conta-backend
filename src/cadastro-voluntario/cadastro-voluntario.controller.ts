@@ -11,6 +11,10 @@ import {
 } from '../_business/usuarios/casos-de-uso/cadastrar-voluntario.feat';
 import { CreateVoluntarioDto } from '../_adapters/voluntarios/dto/create-voluntario.dto';
 import { ApiInternalServerErrorResponse } from '@nestjs/swagger';
+import { Auth } from '../_adapters/auth/decorators/auth.decorator';
+import { TipoUsuario } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { User } from '../_adapters/auth/decorators/user.decorator';
+import { Usuario } from '../_business/usuarios/entidades/usuario.entity';
 
 @Controller('cadastro-voluntario')
 export class CadastroVoluntarioController {
@@ -19,9 +23,16 @@ export class CadastroVoluntarioController {
     description: 'Erro genérico',
   })
   @Post()
-  async cadastrar(@Body() dto: CreateVoluntarioDto): Promise<void> {
+  @Auth(TipoUsuario.ATENDENTE, TipoUsuario.SUPERVISOR)
+  async cadastrar(
+    @Body() dto: CreateVoluntarioDto,
+    @User() user: Usuario,
+  ): Promise<void> {
     try {
-      await this.cadastrarVoluntario.execute(dto);
+      await this.cadastrarVoluntario.execute({
+        ...dto,
+        usuario: user,
+      });
     } catch (e) {
       if (e instanceof UsuarioNaoEncontradoError) {
         throw new NotFoundException(e);

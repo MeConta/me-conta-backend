@@ -15,14 +15,15 @@ import {
   Min,
 } from 'class-validator';
 import { IsPhone } from '../../../decorators/phone.decorator';
-import { Transform, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 import {
   Estado,
   Genero,
-  Usuario,
 } from '../../../_business/usuarios/entidades/usuario.entity';
 
-export class CreateVoluntarioDto implements NovoVoluntario {
+//type XPTO = ;
+
+export class CreateVoluntarioDto implements Omit<NovoVoluntario, 'usuario'> {
   /***
    * Telefone do voluntário
    * @example '(11) 91234-5678'
@@ -144,17 +145,4 @@ export class CreateVoluntarioDto implements NovoVoluntario {
   @IsOptional()
   @IsString()
   crp: string;
-
-  /***
-   * Id de Usuário relacionado a este voluntário
-   * @type Number
-   * @example 1
-   */
-  @IsNotEmpty({
-    message: '$property não deve ser vazio',
-  })
-  @Transform((value) => ({
-    id: value.value,
-  }))
-  usuario: Usuario;
 }

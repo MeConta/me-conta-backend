@@ -6,9 +6,11 @@ import {
   NovoVoluntario,
   Voluntario,
   UsuarioNaoEncontradoError,
+  UsuarioInvalidoError,
 } from './cadastrar-voluntario.feat';
 import { IBuscarUsuarioViaId } from './buscar-usuario.id.feat';
 import { createMock } from '@golevelup/ts-jest';
+import { TipoUsuario } from './cadastrar-novo-usuario.feat';
 
 // ---
 class InMemoryVoluntarioService implements ICadastrarNovoVoluntarioService {
@@ -67,6 +69,15 @@ describe('Cadastrar nova Aluna', () => {
     jest.spyOn(usuarioService, 'findById').mockResolvedValue(null);
     await expect(() => sut.execute(request)).rejects.toThrow(
       UsuarioNaoEncontradoError,
+    );
+  });
+  it('Deve dar erro se o usuário não for um voluntário', async () => {
+    jest.spyOn(usuarioService, 'findById').mockResolvedValue({
+      ...createMock<Usuario>(),
+      tipo: TipoUsuario.ALUNO,
+    });
+    await expect(() => sut.execute(request)).rejects.toThrow(
+      UsuarioInvalidoError,
     );
   });
 });

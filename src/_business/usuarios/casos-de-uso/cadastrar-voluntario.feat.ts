@@ -1,5 +1,6 @@
 import { Perfil, Usuario } from '../entidades/usuario.entity';
 import { IBuscarUsuarioViaId } from './buscar-usuario.id.feat';
+import { TipoUsuario } from './cadastrar-novo-usuario.feat';
 
 export enum FrenteAtuacao {
   SESSAO_ACOLHIMENTO,
@@ -30,6 +31,11 @@ export class UsuarioNaoEncontradoError extends Error {
   public message = 'Usuário não encontrado';
 }
 
+export class UsuarioInvalidoError extends Error {
+  public code = 403;
+  public message = 'Usuário inválido';
+}
+
 // ---
 export class CadastrarVoluntario {
   constructor(
@@ -38,8 +44,14 @@ export class CadastrarVoluntario {
   ) {}
 
   async execute(input: NovoVoluntario) {
-    if (!(await this.usuarioService.findById(input.usuario.id))) {
+    const usuario = await this.usuarioService.findById(input.usuario.id);
+    if (!usuario) {
       throw new UsuarioNaoEncontradoError();
+    }
+    switch (usuario.tipo) {
+      case TipoUsuario.ALUNO:
+      case TipoUsuario.ADMINISTRADOR:
+        throw new UsuarioInvalidoError();
     }
     await this.voluntarioService.cadastrar(input);
   }
