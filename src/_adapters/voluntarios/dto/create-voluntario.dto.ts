@@ -22,6 +22,7 @@ import {
   AreaAtuacao,
   FrenteAtuacao,
 } from '../../../_business/voluntarios/entidades/voluntario.entity';
+import { MinAge } from '../../../decorators';
 
 export class CreateVoluntarioDto implements Omit<NovoVoluntario, 'usuario'> {
   /***
@@ -48,6 +49,9 @@ export class CreateVoluntarioDto implements Omit<NovoVoluntario, 'usuario'> {
     message: '$property deve ser uma data',
   })
   @Type(() => Date)
+  @MinAge(18, {
+    message: '$property deve ser superior a 18 anos',
+  })
   dataNascimento: Date;
 
   /***
