@@ -3,7 +3,7 @@ import {
   CadastrarVoluntario,
   ICadastrarNovoVoluntarioService,
   NovoVoluntario,
-} from '../_business/usuarios/casos-de-uso/cadastrar-voluntario.feat';
+} from '../_business/voluntarios/casos-de-uso/cadastrar-voluntario.feat';
 import { IBuscarUsuarioViaId } from '../_business/usuarios/casos-de-uso/buscar-usuario.id.feat';
 import { TypeormUsuarioService } from '../_adapters/usuarios/typeorm-usuario.service';
 import { InjectRepository, TypeOrmModule } from '@nestjs/typeorm';

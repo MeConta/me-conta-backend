@@ -4,11 +4,13 @@ import {
   InternalServerErrorException,
   NotFoundException,
   Post,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import {
   CadastrarVoluntario,
   UsuarioNaoEncontradoError,
-} from '../_business/usuarios/casos-de-uso/cadastrar-voluntario.feat';
+  CamposDeFormacaoError,
+} from '../_business/voluntarios/casos-de-uso/cadastrar-voluntario.feat';
 import { CreateVoluntarioDto } from '../_adapters/voluntarios/dto/create-voluntario.dto';
 import { ApiInternalServerErrorResponse } from '@nestjs/swagger';
 import { Auth } from '../_adapters/auth/decorators/auth.decorator';
@@ -34,13 +36,17 @@ export class CadastroVoluntarioController {
         usuario: user,
       });
     } catch (e) {
-      if (e instanceof UsuarioNaoEncontradoError) {
-        throw new NotFoundException(e);
+      switch (true) {
+        case e instanceof UsuarioNaoEncontradoError:
+          throw new NotFoundException(e);
+        case e instanceof CamposDeFormacaoError:
+          throw new UnprocessableEntityException(e);
+        default:
+          throw new InternalServerErrorException({
+            code: 500,
+            message: 'Erro genérico',
+          });
       }
-      throw new InternalServerErrorException({
-        code: 500,
-        message: 'Erro genérico',
-      });
     }
   }
 }

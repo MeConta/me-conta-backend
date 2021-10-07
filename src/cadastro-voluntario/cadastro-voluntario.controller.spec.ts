@@ -3,18 +3,22 @@ import { CadastroVoluntarioController } from './cadastro-voluntario.controller';
 import {
   CadastrarVoluntario,
   UsuarioNaoEncontradoError,
-} from '../_business/usuarios/casos-de-uso/cadastrar-voluntario.feat';
+  CamposDeFormacaoError,
+} from '../_business/voluntarios/casos-de-uso/cadastrar-voluntario.feat';
 import { createMock } from '@golevelup/ts-jest';
 import {
   InternalServerErrorException,
   NotFoundException,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { CreateVoluntarioDto } from '../_adapters/voluntarios/dto/create-voluntario.dto';
+import { Usuario } from '../_business/usuarios/entidades/usuario.entity';
 
 describe('Cadastro-voluntario', () => {
   let controller: CadastroVoluntarioController;
   let useCase: CadastrarVoluntario;
   const request = createMock<CreateVoluntarioDto>();
+  const user = createMock<Usuario>();
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -34,20 +38,28 @@ describe('Cadastro-voluntario', () => {
     expect(controller).toBeDefined();
   });
   it('Deve cadastrar um voluntário', async () => {
-    await controller.cadastrar(request);
+    await controller.cadastrar(request, user);
     expect(useCase.execute).toBeCalled();
   });
   it('Deve dar erro de usuário não encontrado', async () => {
     jest
       .spyOn(useCase, 'execute')
       .mockRejectedValue(new UsuarioNaoEncontradoError());
-    await expect(() => controller.cadastrar(request)).rejects.toThrow(
+    await expect(() => controller.cadastrar(request, user)).rejects.toThrow(
       NotFoundException,
+    );
+  });
+  it('Deve dar de usuário formado sem os campos', async () => {
+    jest
+      .spyOn(useCase, 'execute')
+      .mockRejectedValue(new CamposDeFormacaoError());
+    await expect(() => controller.cadastrar(request, user)).rejects.toThrow(
+      UnprocessableEntityException,
     );
   });
   it('Deve dar erro genérico', async () => {
     jest.spyOn(useCase, 'execute').mockRejectedValue(new Error());
-    await expect(() => controller.cadastrar(request)).rejects.toThrow(
+    await expect(() => controller.cadastrar(request, user)).rejects.toThrow(
       InternalServerErrorException,
     );
   });

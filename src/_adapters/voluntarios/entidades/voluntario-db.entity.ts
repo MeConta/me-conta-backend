@@ -6,13 +6,14 @@ import {
   OneToOne,
   PrimaryColumn,
 } from 'typeorm';
-import {
-  FrenteAtuacao,
-  Voluntario,
-} from '../../../_business/usuarios/casos-de-uso/cadastrar-voluntario.feat';
 import { TypeormDefaultEntity } from '../../entidades/typeorm.default.entity';
 import { UsuarioDbEntity } from '../../usuarios/entidades/usuario.db.entity';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
+import {
+  AreaAtuacao,
+  FrenteAtuacao,
+  Voluntario,
+} from '../../../_business/voluntarios/entidades/voluntario.entity';
 
 @Entity('voluntario')
 export class VoluntarioDbEntity
@@ -67,4 +68,16 @@ export class VoluntarioDbEntity
     nullable: true,
   })
   semestre: number;
+
+  @Column({
+    nullable: true,
+    type: 'simple-enum',
+    enum: AreaAtuacao,
+  })
+  areaAtuacao: AreaAtuacao;
+
+  @Column({
+    nullable: true,
+  })
+  especializacoes: string;
 }

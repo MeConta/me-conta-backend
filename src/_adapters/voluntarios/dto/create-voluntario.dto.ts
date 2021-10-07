@@ -1,10 +1,8 @@
-import {
-  FrenteAtuacao,
-  NovoVoluntario,
-} from '../../../_business/usuarios/casos-de-uso/cadastrar-voluntario.feat';
+import { NovoVoluntario } from '../../../_business/voluntarios/casos-de-uso/cadastrar-voluntario.feat';
 import {
   ArrayMinSize,
   IsArray,
+  IsBoolean,
   IsDate,
   IsEnum,
   IsNotEmpty,
@@ -20,8 +18,10 @@ import {
   Estado,
   Genero,
 } from '../../../_business/usuarios/entidades/usuario.entity';
-
-//type XPTO = ;
+import {
+  AreaAtuacao,
+  FrenteAtuacao,
+} from '../../../_business/voluntarios/entidades/voluntario.entity';
 
 export class CreateVoluntarioDto implements Omit<NovoVoluntario, 'usuario'> {
   /***
@@ -56,6 +56,9 @@ export class CreateVoluntarioDto implements Omit<NovoVoluntario, 'usuario'> {
    */
   @IsNotEmpty({
     message: '$property não deve ser vazio',
+  })
+  @IsString({
+    message: '$property deve ser textual',
   })
   cidade: string;
 
@@ -100,6 +103,9 @@ export class CreateVoluntarioDto implements Omit<NovoVoluntario, 'usuario'> {
   @IsNotEmpty({
     message: '$property não deve ser vazio',
   })
+  @IsBoolean({
+    message: '$property deve ser um valor booleano',
+  })
   formado: boolean;
 
   /***
@@ -127,22 +133,65 @@ export class CreateVoluntarioDto implements Omit<NovoVoluntario, 'usuario'> {
    * Semestre de estudo (em caso de estudante)
    */
   @IsOptional()
+  @IsNumber(
+    {},
+    {
+      message: '$property deve ser numérico',
+    },
+  )
   @Min(1)
   @Max(10)
-  @IsNumber()
+  @IsNotEmpty({
+    message: '$property não deve ser vazio',
+  })
   semestre: number;
 
   /***
    * Ano de Formação
    */
   @IsOptional()
-  @IsNumber()
+  @IsNumber(
+    {},
+    {
+      message: '$property deve ser numérico',
+    },
+  )
+  @IsNotEmpty({
+    message: '$property não deve ser vazio',
+  })
   anoFormacao: number;
 
   /***
    * CRP do profissional (quando aplicável)
    */
   @IsOptional()
-  @IsString()
+  @IsString({
+    message: '$property deve ser textual',
+  })
+  @IsNotEmpty({
+    message: '$property não deve ser vazio',
+  })
   crp: string;
+
+  /***
+   * Área de atuação do voluntário
+   * @type AreaAtuacao
+   */
+  @IsOptional()
+  @IsEnum(AreaAtuacao, {
+    message: '$property deve ser um valor de enum válido',
+  })
+  areaAtuacao: AreaAtuacao;
+
+  /***
+   * Especializações (se houver)
+   */
+  @IsOptional()
+  @IsString({
+    message: '$property deve ser textual',
+  })
+  @IsNotEmpty({
+    message: '$property não deve ser vazio',
+  })
+  especializacoes: string;
 }

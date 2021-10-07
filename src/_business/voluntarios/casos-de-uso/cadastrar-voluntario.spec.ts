@@ -1,16 +1,25 @@
-import { Estado, Genero, Perfil, Usuario } from '../entidades/usuario.entity';
+import {
+  Estado,
+  Genero,
+  Perfil,
+  Usuario,
+} from '../../usuarios/entidades/usuario.entity';
 import {
   CadastrarVoluntario,
-  FrenteAtuacao,
   ICadastrarNovoVoluntarioService,
   NovoVoluntario,
-  Voluntario,
-  UsuarioNaoEncontradoError,
+  CamposDeFormacaoError,
   UsuarioInvalidoError,
+  UsuarioNaoEncontradoError,
 } from './cadastrar-voluntario.feat';
-import { IBuscarUsuarioViaId } from './buscar-usuario.id.feat';
+import { IBuscarUsuarioViaId } from '../../usuarios/casos-de-uso/buscar-usuario.id.feat';
 import { createMock } from '@golevelup/ts-jest';
-import { TipoUsuario } from './cadastrar-novo-usuario.feat';
+import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import {
+  AreaAtuacao,
+  FrenteAtuacao,
+  Voluntario,
+} from '../entidades/voluntario.entity';
 
 // ---
 class InMemoryVoluntarioService implements ICadastrarNovoVoluntarioService {
@@ -27,7 +36,7 @@ class InMemoryVoluntarioService implements ICadastrarNovoVoluntarioService {
   }
 }
 
-describe('Cadastrar nova Aluna', () => {
+describe('Cadastrar novo Voluntário', () => {
   let sut: CadastrarVoluntario;
   let usuarioService: IBuscarUsuarioViaId;
   let voluntarioService: InMemoryVoluntarioService;
@@ -42,7 +51,8 @@ describe('Cadastrar nova Aluna', () => {
   const request: NovoVoluntario = {
     ...perfil,
     instituicao: 'Teste',
-    formado: true,
+    formado: false,
+    semestre: 2,
     frentes: [FrenteAtuacao.SESSAO_ACOLHIMENTO],
     usuario: {
       ...createMock<Usuario>(),
@@ -54,6 +64,13 @@ describe('Cadastrar nova Aluna', () => {
     voluntarioService = new InMemoryVoluntarioService();
     sut = new CadastrarVoluntario(voluntarioService, usuarioService);
   });
+
+  beforeEach(async () => {
+    jest
+      .spyOn(usuarioService, 'findById')
+      .mockResolvedValue(createMock<Usuario>());
+  });
+
   it('Deve ser Definido', async () => {
     expect(sut).toBeDefined();
   });
@@ -65,12 +82,14 @@ describe('Cadastrar nova Aluna', () => {
       } as Voluntario),
     );
   });
+
   it('Deve dar erro de usuário não encontrado', async () => {
     jest.spyOn(usuarioService, 'findById').mockResolvedValue(null);
     await expect(() => sut.execute(request)).rejects.toThrow(
       UsuarioNaoEncontradoError,
     );
   });
+
   it('Deve dar erro se o usuário não for um voluntário', async () => {
     jest.spyOn(usuarioService, 'findById').mockResolvedValue({
       ...createMock<Usuario>(),
@@ -79,5 +98,27 @@ describe('Cadastrar nova Aluna', () => {
     await expect(() => sut.execute(request)).rejects.toThrow(
       UsuarioInvalidoError,
     );
+  });
+
+  it('Deve dar erro se ele for formado e não especificar os campos', async () => {
+    await expect(() =>
+      sut.execute({
+        ...request,
+        formado: true,
+        anoFormacao: null,
+        instituicao: null,
+        areaAtuacao: AreaAtuacao.PSICOLOGO,
+        crp: null,
+      }),
+    ).rejects.toThrow(CamposDeFormacaoError);
+  });
+  it('Deve dar erro se ele não for formado e não especificar o semestre', async () => {
+    await expect(() =>
+      sut.execute({
+        ...request,
+        formado: false,
+        semestre: null,
+      }),
+    ).rejects.toThrow(CamposDeFormacaoError);
   });
 });
