@@ -20,6 +20,7 @@ import {
   FrenteAtuacao,
   Voluntario,
 } from '../entidades/voluntario.entity';
+import { ICadastrarPerfilService } from '../../perfil/interfaces/cadastrar-perfil.service';
 
 // ---
 class InMemoryVoluntarioService implements ICadastrarNovoVoluntarioService {
@@ -40,6 +41,7 @@ describe('Cadastrar novo Voluntário', () => {
   let sut: CadastrarVoluntario;
   let usuarioService: IBuscarUsuarioViaId;
   let voluntarioService: InMemoryVoluntarioService;
+  let perfilService: ICadastrarPerfilService;
 
   const perfil: Perfil = {
     telefone: '(11) 91234-5678',
@@ -47,6 +49,7 @@ describe('Cadastrar novo Voluntário', () => {
     cidade: 'Acrelândia',
     estado: Estado.AC,
     genero: Genero.PREFIRO_NAO_DECLARAR,
+    usuario: createMock<Usuario>(),
   };
   const request: NovoVoluntario = {
     ...perfil,
@@ -61,14 +64,20 @@ describe('Cadastrar novo Voluntário', () => {
   };
   beforeEach(async () => {
     usuarioService = createMock<IBuscarUsuarioViaId>();
+    perfilService = createMock<ICadastrarPerfilService>();
     voluntarioService = new InMemoryVoluntarioService();
-    sut = new CadastrarVoluntario(voluntarioService, usuarioService);
+    sut = new CadastrarVoluntario(
+      voluntarioService,
+      usuarioService,
+      perfilService,
+    );
   });
 
   beforeEach(async () => {
     jest
       .spyOn(usuarioService, 'findById')
       .mockResolvedValue(createMock<Usuario>());
+    jest.spyOn(perfilService, 'cadastrar').mockResolvedValue();
   });
 
   it('Deve ser Definido', async () => {

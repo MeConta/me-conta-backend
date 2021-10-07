@@ -2,6 +2,7 @@ import { Perfil } from '../../usuarios/entidades/usuario.entity';
 import { IBuscarUsuarioViaId } from '../../usuarios/casos-de-uso/buscar-usuario.id.feat';
 import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { Voluntario } from '../entidades/voluntario.entity';
+import { ICadastrarPerfilService } from '../../perfil/interfaces/cadastrar-perfil.service';
 
 export type NovoVoluntario = Perfil & Voluntario;
 
@@ -30,6 +31,7 @@ export class CadastrarVoluntario {
   constructor(
     private readonly voluntarioService: ICadastrarNovoVoluntarioService,
     private readonly usuarioService: IBuscarUsuarioViaId,
+    private readonly perfilService: ICadastrarPerfilService,
   ) {}
 
   private checkCampos(keys, input) {
@@ -56,6 +58,7 @@ export class CadastrarVoluntario {
     ) {
       throw new CamposDeFormacaoError();
     }
+    await this.perfilService.cadastrar(input);
     await this.voluntarioService.cadastrar(input);
   }
 }

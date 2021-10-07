@@ -20,22 +20,6 @@ export class VoluntarioDbEntity
   extends TypeormDefaultEntity
   implements Voluntario
 {
-  @PrimaryColumn()
-  usuarioId: number;
-
-  @BeforeInsert()
-  getUsuarioId() {
-    this.usuarioId = this.usuario.id;
-  }
-
-  @OneToOne(() => UsuarioDbEntity, {
-    eager: true,
-  })
-  @JoinColumn({
-    name: 'usuarioId',
-  })
-  usuario: Usuario;
-
   @Column({
     nullable: true,
   })
@@ -80,4 +64,20 @@ export class VoluntarioDbEntity
     nullable: true,
   })
   especializacoes: string;
+
+  @PrimaryColumn()
+  usuarioId: number;
+
+  @BeforeInsert()
+  getUsuarioId() {
+    this.usuarioId = this.usuario.id;
+  }
+
+  @OneToOne(() => UsuarioDbEntity, {
+    eager: true,
+  })
+  @JoinColumn({
+    name: 'usuarioId',
+  })
+  usuario: Usuario;
 }

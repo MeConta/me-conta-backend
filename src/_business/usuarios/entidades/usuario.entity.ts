@@ -43,9 +43,10 @@ export interface Perfil {
   cidade?: string;
   estado?: Estado;
   genero?: Genero;
+  usuario: Usuario;
 }
 
-export interface Usuario extends Perfil {
+export interface Usuario {
   id: number;
   nome: string;
   email: string;
