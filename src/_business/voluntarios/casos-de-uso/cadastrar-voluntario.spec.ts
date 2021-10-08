@@ -6,9 +6,9 @@ import {
 } from '../../usuarios/entidades/usuario.entity';
 import {
   CadastrarVoluntario,
+  CamposDeFormacaoError,
   ICadastrarNovoVoluntarioService,
   NovoVoluntario,
-  CamposDeFormacaoError,
   UsuarioInvalidoError,
   UsuarioNaoEncontradoError,
 } from './cadastrar-voluntario.feat';
@@ -55,7 +55,6 @@ describe('Cadastrar novo Voluntário', () => {
     ...perfil,
     instituicao: 'Teste',
     formado: false,
-    semestre: 2,
     frentes: [FrenteAtuacao.SESSAO_ACOLHIMENTO],
     usuario: {
       ...createMock<Usuario>(),
@@ -83,11 +82,35 @@ describe('Cadastrar novo Voluntário', () => {
   it('Deve ser Definido', async () => {
     expect(sut).toBeDefined();
   });
-  it('Deve cadastrar um novo voluntario', async () => {
-    await sut.execute(request);
+
+  it('Deve cadastrar um novo voluntario em formação', async () => {
+    await sut.execute({ ...request, formado: false, semestre: 2 });
     expect(voluntarioService.voluntarios[0]).toEqual(
       expect.objectContaining({
         ...request,
+        formado: false,
+        semestre: 2,
+      } as Voluntario),
+    );
+  });
+
+  it('Deve cadastrar um novo voluntario formado', async () => {
+    await sut.execute({
+      ...request,
+      formado: true,
+      anoFormacao: 2020,
+      crp: 'CRP',
+      areaAtuacao: AreaAtuacao.PROFESSOR,
+      especializacoes: 'especialização',
+    });
+    expect(voluntarioService.voluntarios[0]).toEqual(
+      expect.objectContaining({
+        ...request,
+        formado: true,
+        anoFormacao: 2020,
+        crp: 'CRP',
+        areaAtuacao: AreaAtuacao.PROFESSOR,
+        especializacoes: 'especialização',
       } as Voluntario),
     );
   });

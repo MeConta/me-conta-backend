@@ -39,26 +39,58 @@ export class CadastrarVoluntario {
   }
 
   async execute(input: NovoVoluntario) {
+    /***
+     * Verificação de existência do usuário
+     */
     const usuario = await this.usuarioService.findById(input.usuario.id);
     if (!usuario) {
       throw new UsuarioNaoEncontradoError();
     }
 
+    /***
+     * Verificação de tipo de usuário:
+     *  Alunos e administradores não podem fazer cadastro de voluntário
+     * */
     switch (usuario.tipo) {
       case TipoUsuario.ALUNO:
       case TipoUsuario.ADMINISTRADOR:
         throw new UsuarioInvalidoError();
     }
 
-    if (
-      !this.checkCampos(
-        input.formado ? ['anoFormacao', 'crp', 'areaAtuacao'] : ['semestre'],
-        input,
-      )
-    ) {
+    /***
+     * Formação:
+     * - Voluntários formados devem preencher os campos ['anoFormacao', 'crp', 'areaAtuacao']
+     * - Voluntários em formação devem preencher os campos ['semestre']
+     */
+    const campos: string[] = input.formado
+      ? ['anoFormacao', 'crp', 'areaAtuacao']
+      : ['semestre'];
+    if (!this.checkCampos(campos, input)) {
       throw new CamposDeFormacaoError();
     }
+    /***
+     * Garantir que os outros campos não sejam preenchidos, a depender da formação
+     */
+    if (input.formado) {
+      input = {
+        ...input,
+        semestre: null,
+      };
+    } else {
+      input = {
+        ...input,
+        anoFormacao: null,
+        crp: null,
+        areaAtuacao: null,
+      };
+    }
+    /***
+     * Cadastrar o perfil
+     */
     await this.perfilService.cadastrar(input);
+    /***
+     * Cadastrar o voluntário
+     */
     await this.voluntarioService.cadastrar(input);
   }
 }
