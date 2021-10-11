@@ -6,8 +6,21 @@ import {
 import { InMemoryAgendaService } from '../../../_adapters/agenda/services/in-memory-agenda.service';
 import { DateTimeService } from '../interfaces/date-time.service';
 import { MomentDateTimeService } from '../../../_adapters/agenda/services/moment-date-time.service';
-import { FakeAuthorizationService } from '../../../_adapters/autorizacao/services/fake-authorization.service';
 import { IAuthorizationService } from '../../autorizacao/interfaces/authorization.service';
+import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+
+export class FakeAuthorizationService implements IAuthorizationService {
+  verificaTipoDoUsuario(
+    idUsuario: number,
+    grupo: TipoUsuario,
+  ): Promise<boolean> {
+    if (idUsuario === 1 && grupo === TipoUsuario.ATENDENTE) {
+      return Promise.resolve(true);
+    } else {
+      return Promise.resolve(false);
+    }
+  }
+}
 
 describe('criar novo slot na agenda', () => {
   let agendaService: InMemoryAgendaService;
