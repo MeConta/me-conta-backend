@@ -9,8 +9,6 @@ import {
   CamposDeFormacaoError,
   ICadastrarNovoVoluntarioService,
   NovoVoluntario,
-  UsuarioInvalidoError,
-  UsuarioNaoEncontradoError,
 } from './cadastrar-voluntario.feat';
 import { IBuscarUsuarioViaId } from '../../usuarios/casos-de-uso/buscar-usuario.id.feat';
 import { createMock } from '@golevelup/ts-jest';
@@ -21,6 +19,10 @@ import {
   Voluntario,
 } from '../entidades/voluntario.entity';
 import { ICadastrarPerfilService } from '../../perfil/interfaces/cadastrar-perfil.service';
+import {
+  UsuarioInvalidoError,
+  UsuarioNaoEncontradoError,
+} from '../../usuarios/erros/erros';
 
 // ---
 class InMemoryVoluntarioService implements ICadastrarNovoVoluntarioService {

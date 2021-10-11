@@ -1,5 +1,6 @@
 import { IBuscarUsuarioViaId } from './buscar-usuario.id.feat';
 import { IBuscarUsuarioViaEmail } from './buscar-usuario-email.feat';
+import { UsuarioNaoEncontradoError } from '../erros/erros';
 
 export interface IAtualizarUsuario {
   nome?: string;
@@ -26,11 +27,6 @@ export class AtualizarUsuario {
     }
     await this.service.atualizar(id, input);
   }
-}
-
-export class UsuarioNaoEncontradoError extends Error {
-  code = 404;
-  message = 'Usuário não encontrado';
 }
 
 export class EmailJaUtilizadoError extends Error {

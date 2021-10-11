@@ -8,7 +8,7 @@ import { DateTimeService } from '../_business/agenda/interfaces/date-time.servic
 import { MomentDateTimeService } from '../_adapters/agenda/services/moment-date-time.service';
 import { TypeOrmAgendaService } from '../_adapters/agenda/typeorm-agenda.service';
 import { TipoUsuario } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { TypeormUsuarioService } from '../_adapters/usuarios/typeorm-usuario.service';
+import { TypeormUsuarioService } from '../_adapters/usuarios/services/typeorm-usuario.service';
 import { IBuscarUsuarioViaId } from '../_business/usuarios/casos-de-uso/buscar-usuario.id.feat';
 import { UsuarioDbEntity } from '../_adapters/usuarios/entidades/usuario.db.entity';
 

@@ -3,22 +3,15 @@ import { IBuscarUsuarioViaId } from '../../usuarios/casos-de-uso/buscar-usuario.
 import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { Voluntario } from '../entidades/voluntario.entity';
 import { ICadastrarPerfilService } from '../../perfil/interfaces/cadastrar-perfil.service';
+import {
+  UsuarioInvalidoError,
+  UsuarioNaoEncontradoError,
+} from '../../usuarios/erros/erros';
 
 export type NovoVoluntario = Perfil & Voluntario;
 
 export interface ICadastrarNovoVoluntarioService {
   cadastrar(voluntario: NovoVoluntario): Promise<void>;
-}
-
-// ---
-export class UsuarioNaoEncontradoError extends Error {
-  public code = 404;
-  public message = 'Usuário não encontrado';
-}
-
-export class UsuarioInvalidoError extends Error {
-  public code = 403;
-  public message = 'Usuário inválido';
 }
 
 export class CamposDeFormacaoError extends Error {
@@ -38,7 +31,7 @@ export class CadastrarVoluntario {
     return keys.every((key) => Object.keys(input).includes(key) && input[key]);
   }
 
-  async execute(input: NovoVoluntario) {
+  async execute(input: NovoVoluntario): Promise<void> {
     /***
      * Verificação de existência do usuário
      */

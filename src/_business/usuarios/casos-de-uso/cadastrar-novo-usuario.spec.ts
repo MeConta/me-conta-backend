@@ -1,13 +1,32 @@
 import {
   CadastrarNovoUsuario,
   DuplicatedError,
+  ICadastrarNovoUsuario,
   NoAdminCreationError,
+  NovoUsuario,
   TipoUsuario,
 } from './cadastrar-novo-usuario.feat';
-import { InMemoryUsuarioService } from '../../../_adapters/usuarios/services/in-memory-usuario.service';
 import { Usuario } from '../entidades/usuario.entity';
 import { IHashService } from '../interfaces/hash.service';
 import { createMock } from '@golevelup/ts-jest';
+
+class InMemoryUsuarioService implements ICadastrarNovoUsuario {
+  usuarios: Usuario[] = [];
+  cadastrar(
+    usuario: NovoUsuario & { salt: string; dataTermos: Date },
+  ): Promise<Usuario> {
+    const len = this.usuarios.push({
+      id: this.usuarios.length,
+      nome: usuario.nome,
+      email: usuario.email,
+      tipo: usuario.tipo,
+      senha: usuario.senha,
+      salt: usuario.salt,
+      dataTermos: usuario.dataTermos,
+    });
+    return Promise.resolve(this.usuarios[len - 1]);
+  }
+}
 
 describe('Cadastrar novo usuário', () => {
   let usuarioService: InMemoryUsuarioService;

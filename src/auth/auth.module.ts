@@ -9,10 +9,10 @@ import { LocalStrategy } from '../_adapters/auth/strategies/local.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from '../_adapters/auth/strategies/jwt.strategy';
-import { TypeormUsuarioService } from '../_adapters/usuarios/typeorm-usuario.service';
+import { TypeormUsuarioService } from '../_adapters/usuarios/services/typeorm-usuario.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsuarioDbEntity } from '../_adapters/usuarios/entidades/usuario.db.entity';
-import { BcryptHashService } from '../_adapters/usuarios/bcrypt-hash.service';
+import { BcryptHashService } from '../_adapters/usuarios/services/bcrypt-hash.service';
 
 @Module({
   imports: [

@@ -1,8 +1,8 @@
 import { Connection, createConnection, Repository } from 'typeorm';
-import { UsuarioDbEntity } from './entidades/usuario.db.entity';
+import { UsuarioDbEntity } from '../entidades/usuario.db.entity';
 import { TypeormUsuarioService } from './typeorm-usuario.service';
-import { TipoUsuario } from '../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { MOCKED_SALT } from '../../../jest.setup';
+import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { MOCKED_SALT } from '../../../../jest.setup';
 
 describe('Usuario', () => {
   let connection: Connection;

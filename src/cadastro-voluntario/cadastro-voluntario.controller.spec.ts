@@ -2,17 +2,21 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CadastroVoluntarioController } from './cadastro-voluntario.controller';
 import {
   CadastrarVoluntario,
-  UsuarioNaoEncontradoError,
   CamposDeFormacaoError,
 } from '../_business/voluntarios/casos-de-uso/cadastrar-voluntario.feat';
 import { createMock } from '@golevelup/ts-jest';
 import {
+  ForbiddenException,
   InternalServerErrorException,
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { CreateVoluntarioDto } from '../_adapters/voluntarios/dto/create-voluntario.dto';
 import { Usuario } from '../_business/usuarios/entidades/usuario.entity';
+import {
+  UsuarioInvalidoError,
+  UsuarioNaoEncontradoError,
+} from '../_business/usuarios/erros/erros';
 
 describe('Cadastro-voluntario', () => {
   let controller: CadastroVoluntarioController;
@@ -41,7 +45,7 @@ describe('Cadastro-voluntario', () => {
     await controller.cadastrar(request, user);
     expect(useCase.execute).toBeCalled();
   });
-  it('Deve dar erro de usuário não encontrado', async () => {
+  it('Deve dar erro de usuário do voluntário não encontrado', async () => {
     jest
       .spyOn(useCase, 'execute')
       .mockRejectedValue(new UsuarioNaoEncontradoError());
@@ -49,6 +53,16 @@ describe('Cadastro-voluntario', () => {
       NotFoundException,
     );
   });
+
+  it('Deve dar erro de tipo de usuário inválido', async () => {
+    jest
+      .spyOn(useCase, 'execute')
+      .mockRejectedValue(new UsuarioInvalidoError());
+    await expect(() => controller.cadastrar(request, user)).rejects.toThrow(
+      ForbiddenException,
+    );
+  });
+
   it('Deve dar de usuário formado sem os campos', async () => {
     jest
       .spyOn(useCase, 'execute')

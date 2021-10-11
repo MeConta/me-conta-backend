@@ -1,6 +1,8 @@
 import {
   Body,
   Controller,
+  ForbiddenException,
+  Inject,
   InternalServerErrorException,
   NotFoundException,
   Post,
@@ -8,19 +10,35 @@ import {
 } from '@nestjs/common';
 import {
   CadastrarVoluntario,
-  UsuarioNaoEncontradoError,
   CamposDeFormacaoError,
 } from '../_business/voluntarios/casos-de-uso/cadastrar-voluntario.feat';
 import { CreateVoluntarioDto } from '../_adapters/voluntarios/dto/create-voluntario.dto';
-import { ApiInternalServerErrorResponse } from '@nestjs/swagger';
+import {
+  ApiForbiddenResponse,
+  ApiInternalServerErrorResponse,
+  ApiUnprocessableEntityResponse,
+} from '@nestjs/swagger';
 import { Auth } from '../_adapters/auth/decorators/auth.decorator';
 import { TipoUsuario } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { User } from '../_adapters/auth/decorators/user.decorator';
 import { Usuario } from '../_business/usuarios/entidades/usuario.entity';
+import {
+  UsuarioInvalidoError,
+  UsuarioNaoEncontradoError,
+} from '../_business/usuarios/erros/erros';
 
 @Controller('cadastro-voluntario')
 export class CadastroVoluntarioController {
-  constructor(private cadastrarVoluntario: CadastrarVoluntario) {}
+  constructor(
+    @Inject(CadastrarVoluntario)
+    private readonly cadastrarVoluntario: CadastrarVoluntario,
+  ) {}
+  @ApiUnprocessableEntityResponse({
+    description: 'Campos de formação incorretos',
+  })
+  @ApiForbiddenResponse({
+    description: 'Este usuário não tem permissão',
+  })
   @ApiInternalServerErrorResponse({
     description: 'Erro genérico',
   })
@@ -41,6 +59,8 @@ export class CadastroVoluntarioController {
           throw new NotFoundException(e);
         case e instanceof CamposDeFormacaoError:
           throw new UnprocessableEntityException(e);
+        case e instanceof UsuarioInvalidoError:
+          throw new ForbiddenException(e);
         default:
           throw new InternalServerErrorException({
             code: 500,

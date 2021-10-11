@@ -8,8 +8,8 @@ import {
   EmailJaUtilizadoError,
   IAtualizarUsuario,
   IAtualizarUsuarioService,
-  UsuarioNaoEncontradoError,
 } from './atualizar-usuario.feat';
+import { UsuarioNaoEncontradoError } from '../erros/erros';
 
 class InMemoryAtualizarService
   implements
