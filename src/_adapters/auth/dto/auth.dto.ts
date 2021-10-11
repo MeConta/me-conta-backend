@@ -14,16 +14,22 @@ export class Login implements ILogin {
 
 export class AuthDto implements IAuth {
   /***
+   * E-mail do usuário
    * @example teste@teste.com
    */
-  password: string;
+  username: string;
+
   /***
+   * Senha do usuário
    * @example s3nN4val!d@
    */
-  username: string;
+  password: string;
 }
 
 export class TokenDto implements IToken {
+  /***
+   * Token JWT
+   */
   token: string;
 }
 
