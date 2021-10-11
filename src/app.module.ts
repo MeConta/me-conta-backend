@@ -7,6 +7,7 @@ import { CadastroInicialModule } from './cadastro-inicial/cadastro-inicial.modul
 import { AuthModule } from './auth/auth.module';
 import { CadastroVoluntarioModule } from './cadastro-voluntario/cadastro-voluntario.module';
 import { PerfilModule } from './perfil/perfil.module';
+import { CadastroAlunoModule } from './cadastro-aluno/cadastro-aluno.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { PerfilModule } from './perfil/perfil.module';
     PerfilModule,
     CadastroInicialModule,
     CadastroVoluntarioModule,
+    CadastroAlunoModule,
     // AgendaModule,
   ],
   controllers: [AppController],
