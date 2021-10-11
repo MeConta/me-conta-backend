@@ -82,7 +82,8 @@ export class CreateAlunoDto implements Omit<NovoAluno, 'usuario'> {
 
   /***
    * Tipo da escola
-   * @type TipoEscola
+   * @type Number
+   * @enum TipoEscola
    */
   @IsNotEmpty({
     message: '$property não deve ser vazio',
@@ -94,6 +95,8 @@ export class CreateAlunoDto implements Omit<NovoAluno, 'usuario'> {
 
   /***
    * Nível de escolaridade
+   * @enum Escolaridade
+   * @type Number
    */
   @IsNotEmpty({
     message: '$property não deve ser vazio',

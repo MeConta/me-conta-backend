@@ -1,17 +1,17 @@
 import { Perfil } from '../../usuarios/entidades/usuario.entity';
 
 export enum Escolaridade {
-  PRIMEIRO_ANO = 'PRIMEIRO_ANO',
-  SEGUNDO_ANO = 'SEGUNDO_ANO',
-  TERCEIRO_ANO = 'TERCEIRO_ANO',
-  CURSINHO = 'CURSINHO',
-  EJA = 'EJA',
-  SUPLETIVO = 'SUPLETIVO',
+  PRIMEIRO_ANO,
+  SEGUNDO_ANO,
+  TERCEIRO_ANO,
+  CURSINHO,
+  EJA,
+  SUPLETIVO,
 }
 
 export enum TipoEscola {
-  PUBLICA = 'PUBLICA',
-  PARTICULAR = 'PARTICULAR',
+  PUBLICA,
+  PARTICULAR,
 }
 
 export interface Aluno {
