@@ -10,7 +10,6 @@ import {
 import { IsDate, IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { IsPhone } from '../../../decorators/phone.decorator';
 import { Type } from 'class-transformer';
-import { MinAge } from '../../../decorators';
 
 export class CreateAlunoDto implements Omit<NovoAluno, 'usuario'> {
   /***
@@ -37,9 +36,6 @@ export class CreateAlunoDto implements Omit<NovoAluno, 'usuario'> {
     message: '$property deve ser uma data',
   })
   @Type(() => Date)
-  @MinAge(18, {
-    message: '$property deve ser superior a 18 anos',
-  })
   dataNascimento: Date;
 
   /***
