@@ -27,7 +27,7 @@ describe('AlunoService', () => {
     dataNascimento: new Date(),
     cidade: 'Acrelândia',
     tipoEscola: TipoEscola.PUBLICA,
-    telefone: '(11) 91234-5678',
+    telefone: '11912345678',
   } as NovoAluno;
 
   beforeAll(async () => {

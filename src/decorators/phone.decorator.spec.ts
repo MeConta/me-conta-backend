@@ -27,19 +27,19 @@ describe('IsPhone', () => {
     await expect(
       target.transform(
         <Testing>{
-          test: '(11) 91234-5678',
+          test: '11912345678',
         },
         metadata,
       ),
     ).resolves.toEqual({
-      test: '(11) 91234-5678',
+      test: '11912345678',
     } as Testing);
   });
   it('Deve dar erro ao utilizar um telefone inválido', async () => {
     await expect(() =>
       target.transform(
         <Testing>{
-          test: '11912345678',
+          test: '11912345678910',
         },
         metadata,
       ),

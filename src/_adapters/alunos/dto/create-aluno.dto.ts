@@ -14,7 +14,7 @@ import { Type } from 'class-transformer';
 export class CreateAlunoDto implements Omit<NovoAluno, 'usuario'> {
   /***
    * Telefone do voluntário
-   * @example '(11) 91234-5678'
+   * @example '11912345678'
    */
   @IsNotEmpty({
     message: '$property não deve ser vazio',

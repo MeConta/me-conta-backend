@@ -46,7 +46,7 @@ describe('Cadastrar novo Voluntário', () => {
   let perfilService: ICadastrarPerfilService;
 
   const perfil: Perfil = {
-    telefone: '(11) 91234-5678',
+    telefone: '11912345678',
     dataNascimento: new Date(1996, 7, 12),
     cidade: 'Acrelândia',
     estado: Estado.AC,

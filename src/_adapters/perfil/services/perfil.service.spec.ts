@@ -53,7 +53,7 @@ describe('PerfilService', function () {
       estado: Estado.AC,
       genero: Genero.PREFIRO_NAO_DECLARAR,
       usuario: { id: 1 } as Usuario,
-      telefone: '(11) 91234-5678',
+      telefone: '11912345678',
     });
     const perfis = await repository.find();
     expect(perfis[0]).toEqual(
@@ -63,7 +63,7 @@ describe('PerfilService', function () {
         /*estado: expect.any(Any),
         genero: expect.any(String),*/
         usuario: expect.any(Object),
-        telefone: '(11) 91234-5678',
+        telefone: '11912345678',
       }),
     );
   });

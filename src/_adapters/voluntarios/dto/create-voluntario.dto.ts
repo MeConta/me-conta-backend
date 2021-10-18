@@ -27,7 +27,7 @@ import { MinAge } from '../../../decorators';
 export class CreateVoluntarioDto implements Omit<NovoVoluntario, 'usuario'> {
   /***
    * Telefone do voluntário
-   * @example '(11) 91234-5678'
+   * @example '11912345678'
    */
   @IsNotEmpty({
     message: '$property não deve ser vazio',
