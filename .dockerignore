@@ -7,7 +7,13 @@
 /.vscode/
 /.idea/
 *.iml
+/.husky/
+
+.gitignore
 
 Dockerfile
 .dockerignore
 README.md
+
+/postman/
+/__old/
