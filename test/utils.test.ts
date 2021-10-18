@@ -4,6 +4,8 @@ import { INestApplication } from '@nestjs/common';
 import { TipoUsuario } from '../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { internet, name } from 'faker/locale/pt_BR';
 import { AuthDto, TokenDto } from '../src/_adapters/auth/dto/auth.dto';
+import { Test, TestingModule } from '@nestjs/testing';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 export const SENHA_PADRAO = 's3nh4Val!d@';
 export async function createUser(
@@ -54,4 +56,24 @@ export async function getToken(
     .send({ username, password });
 
   return (body as TokenDto).token;
+}
+
+export async function getTestingModule(
+  entities: any[],
+  modules: any[],
+): Promise<TestingModule> {
+  return Test.createTestingModule({
+    imports: [
+      TypeOrmModule.forRoot({
+        type: 'better-sqlite3',
+        database: ':memory:',
+        dropSchema: true,
+        logging: false,
+        autoLoadEntities: true,
+        entities: entities,
+        synchronize: true,
+      }),
+      ...modules,
+    ],
+  }).compile();
 }

@@ -24,6 +24,9 @@ export class CreateUsuarioDto implements NovoUsuario {
   @MaxLength(100, {
     message: '$property deve ter menos de 100 caracteres',
   })
+  @IsNotEmpty({
+    message: '$property não deve ser vazio',
+  })
   @IsNotEmptyString({
     message: '$property não deve ser vazio',
   })

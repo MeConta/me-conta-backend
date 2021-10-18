@@ -1,15 +1,9 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { CadastroInicialModule } from '../src/cadastro-inicial/cadastro-inicial.module';
 import { TipoUsuario } from '../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsuarioDbEntity } from '../src/_adapters/usuarios/entidades/usuario.db.entity';
 import { setupApp } from '../src/config/app.config';
-import { getToken } from './utils.test';
-import { AlunoDbEntity } from '../src/_adapters/alunos/entidades/aluno.db.entity';
-import { PerfilDbEntity } from '../src/_adapters/perfil/entidades/perfil.db.entity';
-import { CadastroAlunoModule } from '../src/cadastro-aluno/cadastro-aluno.module';
+import { getTestingModule, getToken } from './utils.test';
 import { CreateAlunoDto } from '../src/_adapters/alunos/dto/create-aluno.dto';
 import {
   Estado,
@@ -19,29 +13,22 @@ import {
   Escolaridade,
   TipoEscola,
 } from '../src/_business/alunos/entidades/aluno.entity';
+import { UsuarioDbEntity } from '../src/_adapters/usuarios/entidades/usuario.db.entity';
+import { PerfilDbEntity } from '../src/_adapters/perfil/entidades/perfil.db.entity';
+import { AlunoDbEntity } from '../src/_adapters/alunos/entidades/aluno.db.entity';
+import { CadastroInicialModule } from '../src/cadastro-inicial/cadastro-inicial.module';
 import { AuthModule } from '../src/auth/auth.module';
+import { CadastroAlunoModule } from '../src/cadastro-aluno/cadastro-aluno.module';
 
 describe('Criar Conta (e2e)', () => {
   let app: INestApplication;
   let token: string;
 
   beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [
-        TypeOrmModule.forRoot({
-          type: 'better-sqlite3',
-          database: ':memory:',
-          dropSchema: true,
-          logging: false,
-          autoLoadEntities: true,
-          entities: [UsuarioDbEntity, PerfilDbEntity, AlunoDbEntity],
-          synchronize: true,
-        }),
-        AuthModule.forRoot(),
-        CadastroInicialModule,
-        CadastroAlunoModule,
-      ],
-    }).compile();
+    const moduleFixture: TestingModule = await getTestingModule(
+      [UsuarioDbEntity, PerfilDbEntity, AlunoDbEntity],
+      [AuthModule.forRoot(), CadastroInicialModule, CadastroAlunoModule],
+    );
 
     app = await moduleFixture.createNestApplication();
     setupApp(app);
