@@ -8,12 +8,15 @@ import { AuthModule } from './auth/auth.module';
 import { CadastroVoluntarioModule } from './cadastro-voluntario/cadastro-voluntario.module';
 import { PerfilModule } from './perfil/perfil.module';
 import { CadastroAlunoModule } from './cadastro-aluno/cadastro-aluno.module';
+import { RecuperacaoModule } from './recuperacao/recuperacao.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       load: [database],
+      envFilePath: ['.env.local', '.env.production', '.env'],
       expandVariables: true,
       ignoreEnvFile: process.env.NODE_ENV === 'production',
     }),
@@ -24,10 +27,12 @@ import { CadastroAlunoModule } from './cadastro-aluno/cadastro-aluno.module';
       }),
     }),
     AuthModule.forRoot(),
+    MailModule,
     PerfilModule,
     CadastroInicialModule,
     CadastroVoluntarioModule,
     CadastroAlunoModule,
+    RecuperacaoModule,
     // AgendaModule,
   ],
   controllers: [AppController],
