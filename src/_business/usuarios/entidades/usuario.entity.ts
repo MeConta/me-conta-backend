@@ -41,7 +41,7 @@ export interface Perfil {
   telefone?: string;
   dataNascimento?: Date;
   cidade?: string;
-  estado?: Estado;
+  UF?: Estado;
   genero?: Genero;
   usuario: Usuario;
 }

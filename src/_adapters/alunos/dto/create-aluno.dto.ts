@@ -61,7 +61,7 @@ export class CreateAlunoDto implements Omit<NovoAluno, 'usuario'> {
   @IsEnum(Estado, {
     message: '$property deve ser um valor de enum válido',
   })
-  estado: Estado;
+  UF: Estado;
 
   /***
    * Gênero
