@@ -52,7 +52,7 @@ describe('Cadastrar novo Voluntário', () => {
     telefone: '11912345678',
     dataNascimento: new Date(1996, 7, 12),
     cidade: 'Acrelândia',
-    estado: Estado.AC,
+    UF: Estado.AC,
     genero: Genero.PREFIRO_NAO_DECLARAR,
     usuario: createMock<Usuario>(),
   };

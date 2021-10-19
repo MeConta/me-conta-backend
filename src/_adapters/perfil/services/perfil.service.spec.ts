@@ -50,7 +50,7 @@ describe('PerfilService', function () {
     await service.cadastrar({
       cidade: 'Acrelândia',
       dataNascimento: new Date(1996, 7, 12),
-      estado: Estado.AC,
+      UF: Estado.AC,
       genero: Genero.PREFIRO_NAO_DECLARAR,
       usuario: { id: 1 } as Usuario,
       telefone: '11912345678',

@@ -46,7 +46,7 @@ describe('Criar Conta de Voluntário (e2e)', () => {
       telefone: '11912345678',
       dataNascimento: moment().subtract(18, 'year').toDate(),
       cidade: 'Acrelândia',
-      estado: Estado.AC,
+      UF: Estado.AC,
       genero: Genero.PREFIRO_NAO_DECLARAR,
       formado: false,
       semestre: 10,
