@@ -1,14 +1,20 @@
 import { Perfil } from '../../usuarios/entidades/usuario.entity';
 import { IBuscarUsuarioViaId } from '../../usuarios/casos-de-uso/buscar-usuario.id.feat';
-import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import {
+  NovoUsuario,
+  TipoUsuario,
+} from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { Voluntario } from '../entidades/voluntario.entity';
 import { ICadastrarPerfilService } from '../../perfil/interfaces/cadastrar-perfil.service';
 import {
   UsuarioInvalidoError,
   UsuarioNaoEncontradoError,
 } from '../../usuarios/erros/erros';
+import { IAtualizarUsuarioService } from '../../usuarios/casos-de-uso/atualizar-usuario.feat';
 
-export type NovoVoluntario = Perfil & Voluntario;
+export type NovoVoluntario = Perfil &
+  Voluntario &
+  Partial<Pick<NovoUsuario, 'tipo'>>;
 
 export interface ICadastrarNovoVoluntarioService {
   cadastrar(voluntario: NovoVoluntario): Promise<void>;
@@ -23,7 +29,8 @@ export class CamposDeFormacaoError extends Error {
 export class CadastrarVoluntario {
   constructor(
     private readonly voluntarioService: ICadastrarNovoVoluntarioService,
-    private readonly usuarioService: IBuscarUsuarioViaId,
+    private readonly usuarioService: IBuscarUsuarioViaId &
+      IAtualizarUsuarioService,
     private readonly perfilService: ICadastrarPerfilService,
   ) {}
 
@@ -48,6 +55,18 @@ export class CadastrarVoluntario {
       case TipoUsuario.ALUNO:
       case TipoUsuario.ADMINISTRADOR:
         throw new UsuarioInvalidoError();
+    }
+
+    /***
+     * Tipo de Usuário e formação
+     */
+    const { tipo } = input;
+
+    /***
+     * Supervisores devem NECESSARIAMENTE serem formados
+     */
+    if (tipo === TipoUsuario.SUPERVISOR) {
+      input.formado = true;
     }
 
     /***
@@ -77,6 +96,21 @@ export class CadastrarVoluntario {
         areaAtuacao: null,
       };
     }
+
+    /***
+     * Tipo de Usuário:
+     * Se necessário, trocar o tipo de usuário antes do cadastro
+     * Só vale para os tipos de usuário de voluntários
+     */
+    if (
+      [TipoUsuario.SUPERVISOR, TipoUsuario.ATENDENTE].includes(tipo) &&
+      tipo !== usuario.tipo
+    ) {
+      await this.usuarioService.atualizar(usuario.id, {
+        tipo,
+      });
+    }
+
     /***
      * Cadastrar o perfil
      */

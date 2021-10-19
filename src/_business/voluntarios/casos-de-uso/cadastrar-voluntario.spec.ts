@@ -23,6 +23,7 @@ import {
   UsuarioInvalidoError,
   UsuarioNaoEncontradoError,
 } from '../../usuarios/erros/erros';
+import { IAtualizarUsuarioService } from '../../usuarios/casos-de-uso/atualizar-usuario.feat';
 
 // ---
 class InMemoryVoluntarioService implements ICadastrarNovoVoluntarioService {
@@ -31,9 +32,11 @@ class InMemoryVoluntarioService implements ICadastrarNovoVoluntarioService {
     this.voluntarios.push({
       ...aluno,
       usuario: {
-        id: this.voluntarios.length,
         ...createMock<Usuario>(),
-      },
+        ...aluno.usuario,
+        tipo: aluno.tipo,
+        id: this.voluntarios.length,
+      } as Usuario,
     });
     return Promise.resolve();
   }
@@ -41,7 +44,7 @@ class InMemoryVoluntarioService implements ICadastrarNovoVoluntarioService {
 
 describe('Cadastrar novo Voluntário', () => {
   let sut: CadastrarVoluntario;
-  let usuarioService: IBuscarUsuarioViaId;
+  let usuarioService: IBuscarUsuarioViaId & IAtualizarUsuarioService;
   let voluntarioService: InMemoryVoluntarioService;
   let perfilService: ICadastrarPerfilService;
 
@@ -57,6 +60,7 @@ describe('Cadastrar novo Voluntário', () => {
     ...perfil,
     instituicao: 'Teste',
     formado: false,
+    semestre: 10,
     frentes: [FrenteAtuacao.SESSAO_ACOLHIMENTO],
     usuario: {
       ...createMock<Usuario>(),
@@ -64,7 +68,9 @@ describe('Cadastrar novo Voluntário', () => {
     },
   };
   beforeEach(async () => {
-    usuarioService = createMock<IBuscarUsuarioViaId>();
+    usuarioService = createMock<
+      IBuscarUsuarioViaId & IAtualizarUsuarioService
+    >();
     perfilService = createMock<ICadastrarPerfilService>();
     voluntarioService = new InMemoryVoluntarioService();
     sut = new CadastrarVoluntario(
@@ -77,7 +83,7 @@ describe('Cadastrar novo Voluntário', () => {
   beforeEach(async () => {
     jest
       .spyOn(usuarioService, 'findById')
-      .mockResolvedValue(createMock<Usuario>());
+      .mockResolvedValue({ id: 1, ...createMock<Usuario>() } as Usuario);
     jest.spyOn(perfilService, 'cadastrar').mockResolvedValue();
   });
 
@@ -109,6 +115,7 @@ describe('Cadastrar novo Voluntário', () => {
       expect.objectContaining({
         ...request,
         formado: true,
+        semestre: null,
         anoFormacao: 2020,
         crp: 'CRP',
         areaAtuacao: AreaAtuacao.PROFESSOR,
@@ -146,6 +153,7 @@ describe('Cadastrar novo Voluntário', () => {
       }),
     ).rejects.toThrow(CamposDeFormacaoError);
   });
+
   it('Deve dar erro se ele não for formado e não especificar o semestre', async () => {
     await expect(() =>
       sut.execute({
@@ -154,5 +162,50 @@ describe('Cadastrar novo Voluntário', () => {
         semestre: null,
       }),
     ).rejects.toThrow(CamposDeFormacaoError);
+  });
+
+  it('Deve ser capaz de alterar o tipo de usuário', async () => {
+    jest.spyOn(usuarioService, 'findById').mockResolvedValue({
+      ...createMock<Usuario>(),
+      id: 1,
+      tipo: TipoUsuario.ATENDENTE,
+    });
+    jest.spyOn(usuarioService, 'atualizar').mockResolvedValue({
+      ...createMock<Usuario>(),
+      tipo: TipoUsuario.SUPERVISOR,
+    });
+    request.tipo = TipoUsuario.SUPERVISOR;
+
+    const { tipo, ...response } = request;
+
+    await sut.execute({
+      ...request,
+      formado: true,
+      anoFormacao: 2020,
+      crp: 'CRP',
+      areaAtuacao: AreaAtuacao.PROFESSOR,
+      especializacoes: 'especialização',
+      tipo,
+    });
+    expect(usuarioService.atualizar).toBeCalledWith(
+      expect.any(Number),
+      expect.objectContaining({
+        tipo,
+      }),
+    );
+    expect(voluntarioService.voluntarios[0]).toEqual(
+      expect.objectContaining({
+        ...response,
+        formado: true,
+        semestre: null,
+        anoFormacao: 2020,
+        crp: 'CRP',
+        areaAtuacao: AreaAtuacao.PROFESSOR,
+        especializacoes: 'especialização',
+        usuario: expect.objectContaining({
+          tipo,
+        }),
+      } as Voluntario),
+    );
   });
 });

@@ -10,6 +10,7 @@ import {
   IAtualizarUsuarioService,
 } from './atualizar-usuario.feat';
 import { UsuarioNaoEncontradoError } from '../erros/erros';
+import { name, internet } from 'faker/locale/pt_BR';
 
 class InMemoryAtualizarService
   implements
@@ -17,10 +18,10 @@ class InMemoryAtualizarService
     IBuscarUsuarioViaEmail,
     IAtualizarUsuarioService
 {
-  usuario: Usuario = {
+  public usuario: Usuario = {
     ...createMock<Usuario>(),
-    nome: 'Teste',
-    email: 'teste@teste.com',
+    nome: name.firstName(),
+    email: internet.email(),
     senha: DEFAULT_PASSWORD,
   };
   findById(input: number): Promise<Usuario> {
@@ -35,12 +36,12 @@ class InMemoryAtualizarService
     }
     return Promise.resolve(this.usuario);
   }
-
-  atualizar(id: number, usuario: IAtualizarUsuario) {
+  async atualizar(id: number, input: IAtualizarUsuario): Promise<Usuario> {
     this.usuario = {
       ...this.usuario,
-      ...usuario,
-    };
+      ...input,
+    } as Usuario;
+    return this.usuario;
   }
 }
 
@@ -55,12 +56,13 @@ describe('Atualizar Usuario', () => {
     expect(sut).toBeDefined();
   });
   it('Deve atualizar um usuário', async () => {
-    await sut.execute(expect.any(Number), {
-      nome: 'Novo Nome',
+    const nome = 'Novo nome';
+    await sut.execute(1, {
+      nome,
     });
     expect(service.usuario).toEqual(
       expect.objectContaining({
-        nome: 'Novo Nome',
+        nome,
       } as Usuario),
     );
   });

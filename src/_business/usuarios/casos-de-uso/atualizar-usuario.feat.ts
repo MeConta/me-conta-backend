@@ -1,15 +1,12 @@
 import { IBuscarUsuarioViaId } from './buscar-usuario.id.feat';
 import { IBuscarUsuarioViaEmail } from './buscar-usuario-email.feat';
 import { UsuarioNaoEncontradoError } from '../erros/erros';
+import { Usuario } from '../entidades/usuario.entity';
 
-export interface IAtualizarUsuario {
-  nome?: string;
-  email?: string;
-  senha?: string;
-}
+export type IAtualizarUsuario = Partial<Omit<Usuario, 'salt'>>;
 
 export interface IAtualizarUsuarioService {
-  atualizar(id: number, usuario: IAtualizarUsuario);
+  atualizar(id: number, input: IAtualizarUsuario): Promise<Usuario>;
 }
 
 export class AtualizarUsuario {

@@ -23,6 +23,7 @@ import {
   FrenteAtuacao,
 } from '../../../_business/voluntarios/entidades/voluntario.entity';
 import { MinAge } from '../../../decorators';
+import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 export class CreateVoluntarioDto implements Omit<NovoVoluntario, 'usuario'> {
   /***
@@ -198,4 +199,16 @@ export class CreateVoluntarioDto implements Omit<NovoVoluntario, 'usuario'> {
     message: '$property não deve ser vazio',
   })
   especializacoes: string;
+
+  /***
+   * Tipo de usuário
+   * @type Number
+   * @example 1
+   * @enum TipoUsuario
+   */
+  @IsOptional()
+  @IsEnum(TipoUsuario, {
+    message: '$property deve ser um valor de enum válido',
+  })
+  tipo: TipoUsuario;
 }

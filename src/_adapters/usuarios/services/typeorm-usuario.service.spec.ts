@@ -2,7 +2,9 @@ import { Connection, createConnection, Repository } from 'typeorm';
 import { UsuarioDbEntity } from '../entidades/usuario.db.entity';
 import { TypeormUsuarioService } from './typeorm-usuario.service';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { MOCKED_SALT } from '../../../../jest.setup';
+import { DEFAULT_PASSWORD, MOCKED_SALT } from '../../../../jest.setup';
+import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
+import { name, internet } from 'faker/locale/pt_BR';
 
 describe('Usuario', () => {
   let connection: Connection;
@@ -10,9 +12,9 @@ describe('Usuario', () => {
   let sut: TypeormUsuarioService;
 
   const request = {
-    nome: 'Teste',
-    email: 'email@email.com',
-    senha: 's3Nh4vAl!d@',
+    nome: name.firstName(),
+    email: internet.email(),
+    senha: DEFAULT_PASSWORD,
     tipo: TipoUsuario.ALUNO,
     salt: MOCKED_SALT,
     dataTermos: new Date(),
@@ -46,12 +48,12 @@ describe('Usuario', () => {
     expect(usuarios[0]).toEqual(
       expect.objectContaining({
         id: expect.any(Number),
-        nome: 'Teste',
-        email: 'email@email.com',
-        senha: 's3Nh4vAl!d@',
-        tipo: TipoUsuario.ALUNO,
-        salt: expect.any(String),
-        dataTermos: expect.any(Date),
+        nome: request.nome,
+        email: request.email,
+        senha: request.senha,
+        tipo: request.tipo,
+        salt: request.salt,
+        dataTermos: request.dataTermos,
       } as UsuarioDbEntity),
     );
   });
@@ -65,6 +67,7 @@ describe('Usuario', () => {
       }),
     );
   });
+
   it('Deve buscar um usuário via id', async () => {
     await sut.cadastrar(request);
     const response = await sut.findById(1);
@@ -72,6 +75,18 @@ describe('Usuario', () => {
       expect.objectContaining({
         id: expect.any(Number),
       }),
+    );
+  });
+
+  it('Deve atualizar um usuário', async () => {
+    const entity = await repository.save(repository.create(request));
+    const response = await sut.atualizar(entity.id, {
+      nome: 'Novo Nome',
+    });
+    expect(response).toEqual(
+      expect.objectContaining({
+        nome: 'Novo Nome',
+      } as Usuario),
     );
   });
 });

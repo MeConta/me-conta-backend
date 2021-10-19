@@ -9,10 +9,18 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { IBuscarUsuarioViaEmail } from '../../../_business/usuarios/casos-de-uso/buscar-usuario-email.feat';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 import { IBuscarUsuarioViaId } from '../../../_business/usuarios/casos-de-uso/buscar-usuario.id.feat';
+import {
+  IAtualizarUsuario,
+  IAtualizarUsuarioService,
+} from '../../../_business/usuarios/casos-de-uso/atualizar-usuario.feat';
 
 @Injectable()
 export class TypeormUsuarioService
-  implements ICadastrarNovoUsuario, IBuscarUsuarioViaEmail, IBuscarUsuarioViaId
+  implements
+    ICadastrarNovoUsuario,
+    IBuscarUsuarioViaEmail,
+    IBuscarUsuarioViaId,
+    IAtualizarUsuarioService
 {
   constructor(
     @InjectRepository(UsuarioDbEntity)
@@ -35,6 +43,13 @@ export class TypeormUsuarioService
       where: {
         email,
       },
+    });
+  }
+
+  async atualizar(id: number, input: IAtualizarUsuario): Promise<Usuario> {
+    return this.repository.save({
+      ...input,
+      id,
     });
   }
 }

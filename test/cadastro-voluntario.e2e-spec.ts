@@ -16,7 +16,10 @@ import {
   Estado,
   Genero,
 } from '../src/_business/usuarios/entidades/usuario.entity';
-import { FrenteAtuacao } from '../src/_business/voluntarios/entidades/voluntario.entity';
+import {
+  AreaAtuacao,
+  FrenteAtuacao,
+} from '../src/_business/voluntarios/entidades/voluntario.entity';
 import { CadastroVoluntarioModule } from '../src/cadastro-voluntario/cadastro-voluntario.module';
 
 describe('Criar Conta de Voluntário (e2e)', () => {
@@ -56,6 +59,21 @@ describe('Criar Conta de Voluntário (e2e)', () => {
         .post('/cadastro-voluntario')
         .set('Authorization', `Bearer ${token}`)
         .send(req)
+        .expect(201);
+    });
+
+    it('Deve Cadastrar um voluntário alterando o tipo de usuário', async () => {
+      await request(app.getHttpServer())
+        .post('/cadastro-voluntario')
+        .set('Authorization', `Bearer ${token}`)
+        .send({
+          ...req,
+          tipo: TipoUsuario.SUPERVISOR,
+          formado: true,
+          anoFormacao: +moment().format('YYYY'),
+          crp: 'Teste',
+          areaAtuacao: AreaAtuacao.PSICOLOGO,
+        } as CreateVoluntarioDto)
         .expect(201);
     });
 
