@@ -1,7 +1,7 @@
 import { AuthService, NestAuthService, NestLoginService } from './auth.service';
 import { createMock } from '@golevelup/ts-jest';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
-import { IHashService } from '../../../_business/usuarios/interfaces/hash.service';
+import { IHashService } from '../../../_business/usuarios/services/hash.service';
 import { IBuscarUsuarioViaEmail } from '../../../_business/usuarios/casos-de-uso/buscar-usuario-email.feat';
 import { IJwtService } from '../../../_business/auth/interfaces/jwt.service';
 

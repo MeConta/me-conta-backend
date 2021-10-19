@@ -1,4 +1,4 @@
-import { IHashService } from '../interfaces/hash.service';
+import { IHashService } from '../services/hash.service';
 import { Usuario } from '../entidades/usuario.entity';
 
 export enum TipoUsuario {

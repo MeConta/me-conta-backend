@@ -7,7 +7,7 @@ import {
   TipoUsuario,
 } from './cadastrar-novo-usuario.feat';
 import { Usuario } from '../entidades/usuario.entity';
-import { IHashService } from '../interfaces/hash.service';
+import { IHashService } from '../services/hash.service';
 import { createMock } from '@golevelup/ts-jest';
 
 class InMemoryUsuarioService implements ICadastrarNovoUsuario {

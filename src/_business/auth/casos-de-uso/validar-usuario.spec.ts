@@ -1,7 +1,7 @@
 import { createMock } from '@golevelup/ts-jest';
 import { ValidarUsuario } from './validar-usuario.feat';
 import { IBuscarUsuarioViaEmail } from '../../usuarios/casos-de-uso/buscar-usuario-email.feat';
-import { IHashService } from '../../usuarios/interfaces/hash.service';
+import { IHashService } from '../../usuarios/services/hash.service';
 import { Usuario } from '../../usuarios/entidades/usuario.entity';
 
 describe('Validar Usuário', () => {

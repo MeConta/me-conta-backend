@@ -1,6 +1,6 @@
 import { Usuario } from '../../usuarios/entidades/usuario.entity';
 import { IBuscarUsuarioViaEmail } from '../../usuarios/casos-de-uso/buscar-usuario-email.feat';
-import { IHashService } from '../../usuarios/interfaces/hash.service';
+import { IHashService } from '../../usuarios/services/hash.service';
 
 export class ValidarUsuario {
   constructor(
