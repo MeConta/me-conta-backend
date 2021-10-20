@@ -44,7 +44,7 @@ describe('Criar Conta (e2e)', () => {
       telefone: '11912345678',
       cidade: 'Acrelândia',
       dataNascimento: new Date(1996, 7, 12),
-      estado: Estado.AC,
+      UF: Estado.AC,
       genero: Genero.PREFIRO_NAO_DECLARAR,
       tipoEscola: TipoEscola.PUBLICA,
       escolaridade: Escolaridade.PRIMEIRO_ANO,
