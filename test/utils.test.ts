@@ -1,17 +1,19 @@
 import * as request from 'supertest';
 import { CreateUsuarioDto } from '../src/_adapters/usuarios/dto/create-usuario.dto';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, Provider } from '@nestjs/common';
 import { TipoUsuario } from '../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { internet, name } from 'faker/locale/pt_BR';
 import { AuthDto, TokenDto } from '../src/_adapters/auth/dto/auth.dto';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
+import database from '../src/config/database.config';
 
 export const SENHA_PADRAO = 's3nh4Val!d@';
 export async function createUser(
   app: INestApplication,
   tipoUsuario: TipoUsuario = TipoUsuario.ALUNO,
-  usuario?: CreateUsuarioDto,
+  usuario?: Partial<CreateUsuarioDto>,
 ): Promise<CreateUsuarioDto> {
   const { nome, email, senha, tipo } = usuario || {
     nome: name.firstName(),
@@ -61,6 +63,7 @@ export async function getToken(
 export async function getTestingModule(
   entities: any[],
   modules: any[],
+  providers: Provider[] = [],
 ): Promise<TestingModule> {
   return Test.createTestingModule({
     imports: [
@@ -73,7 +76,14 @@ export async function getTestingModule(
         entities: entities,
         synchronize: true,
       }),
+      ConfigModule.forRoot({
+        isGlobal: true,
+        load: [database],
+        envFilePath: ['.env.test'],
+        expandVariables: true,
+      }),
       ...modules,
     ],
+    providers,
   }).compile();
 }

@@ -23,7 +23,8 @@ export class RecuperacaoController {
     try {
       return await this.recuperarSenha.execute(email);
     } catch (e) {
-      console.error(e);
+      // TODO: Log de erro
+      // console.error(e);
       return Promise.resolve();
     }
   }
