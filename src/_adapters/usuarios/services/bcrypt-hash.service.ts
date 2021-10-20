@@ -1,7 +1,13 @@
-import { IHashService } from '../../../_business/usuarios/services/hash.service';
+import {
+  IHashCompareService,
+  IHashGenerateSaltService,
+  IHashHashService,
+} from '../../../_business/usuarios/services/hash.service';
 import * as bcrypt from 'bcrypt';
 
-export class BcryptHashService implements IHashService {
+export class BcryptHashService
+  implements IHashGenerateSaltService, IHashHashService, IHashCompareService
+{
   async generateSalt(): Promise<string> {
     return bcrypt.genSalt();
   }

@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 import { TypeormUsuarioService } from '../../usuarios/services/typeorm-usuario.service';
 import { IBuscarUsuarioViaEmail } from '../../../_business/usuarios/casos-de-uso/buscar-usuario-email.feat';
-import { IHashService } from '../../../_business/usuarios/services/hash.service';
+import { IHashCompareService } from '../../../_business/usuarios/services/hash.service';
 import { BcryptHashService } from '../../usuarios/services/bcrypt-hash.service';
 import { IAuthService } from '../../../_business/auth/interfaces/auth.service';
 import { ValidarUsuario } from '../../../_business/auth/casos-de-uso/validar-usuario.feat';
@@ -18,7 +18,7 @@ export class NestAuthService extends ValidarUsuario {
     usuarioService: IBuscarUsuarioViaEmail,
 
     @Inject(BcryptHashService)
-    hashService: IHashService,
+    hashService: IHashCompareService,
   ) {
     super(usuarioService, hashService);
   }

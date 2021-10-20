@@ -7,7 +7,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { RecuperacaoDbEntity } from '../entidades/recuperacao.db.entity';
 import { Repository } from 'typeorm';
 import { BcryptHashService } from '../../usuarios/services/bcrypt-hash.service';
-import { IHashService } from '../../../_business/usuarios/services/hash.service';
+import {
+  IHashGenerateSaltService,
+  IHashHashService,
+} from '../../../_business/usuarios/services/hash.service';
 import { Recuperacao } from '../../../_business/recuperacao/entidades/recuperacao.entity';
 
 @Injectable()
@@ -18,7 +21,7 @@ export class TypeormRecuperacaoService
     @InjectRepository(RecuperacaoDbEntity)
     private readonly repository: Repository<RecuperacaoDbEntity>,
     @Inject(BcryptHashService)
-    private readonly hashService: IHashService,
+    private readonly hashService: IHashGenerateSaltService & IHashHashService,
   ) {}
 
   async criarHash(): Promise<string> {

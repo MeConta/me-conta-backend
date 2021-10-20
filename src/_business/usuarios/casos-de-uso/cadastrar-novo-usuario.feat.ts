@@ -1,4 +1,7 @@
-import { IHashService } from '../services/hash.service';
+import {
+  IHashGenerateSaltService,
+  IHashHashService,
+} from '../services/hash.service';
 import { Usuario } from '../entidades/usuario.entity';
 
 export enum TipoUsuario {
@@ -37,7 +40,8 @@ export class NoAdminCreationError extends Error {
 export class CadastrarNovoUsuario {
   constructor(
     private readonly usuarioService: ICadastrarNovoUsuario,
-    private readonly passwordService: IHashService,
+    private readonly passwordService: IHashGenerateSaltService &
+      IHashHashService,
   ) {}
   async execute(input: NovoUsuario): Promise<Usuario> {
     if (input.tipo === TipoUsuario.ADMINISTRADOR) {

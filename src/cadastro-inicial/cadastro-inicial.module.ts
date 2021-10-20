@@ -7,7 +7,10 @@ import {
   CadastrarNovoUsuario,
   ICadastrarNovoUsuario,
 } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { IHashService } from '../_business/usuarios/services/hash.service';
+import {
+  IHashGenerateSaltService,
+  IHashHashService,
+} from '../_business/usuarios/services/hash.service';
 import { BcryptHashService } from '../_adapters/usuarios/services/bcrypt-hash.service';
 
 @Injectable()
@@ -16,7 +19,7 @@ class NestCadastrarNovoUsuario extends CadastrarNovoUsuario {
     @Inject(TypeormUsuarioService)
     usuarioService: ICadastrarNovoUsuario,
     @Inject(BcryptHashService)
-    passwordService: IHashService,
+    passwordService: IHashGenerateSaltService & IHashHashService,
   ) {
     super(usuarioService, passwordService);
   }

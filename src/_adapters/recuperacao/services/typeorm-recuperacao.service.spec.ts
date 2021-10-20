@@ -6,7 +6,10 @@ import { Recuperacao } from '../../../_business/recuperacao/entidades/recuperaca
 import { Connection, createConnection, Repository } from 'typeorm';
 import { RecuperacaoDbEntity } from '../entidades/recuperacao.db.entity';
 import { UsuarioDbEntity } from '../../usuarios/entidades/usuario.db.entity';
-import { IHashService } from '../../../_business/usuarios/services/hash.service';
+import {
+  IHashGenerateSaltService,
+  IHashHashService,
+} from '../../../_business/usuarios/services/hash.service';
 import { createMock } from '@golevelup/ts-jest';
 import { MOCKED_SALT } from '../../../../jest.setup';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
@@ -16,7 +19,7 @@ import { TypeormRecuperacaoService } from './typeorm-recuperacao.service';
 describe('RecuperacaoService', () => {
   let connection: Connection;
   let repository: Repository<RecuperacaoDbEntity>;
-  let hashService: IHashService;
+  let hashService: IHashGenerateSaltService & IHashHashService;
   let service: ISalvarHashRecuperacaoService & ICriarHashRecuperacaoService;
 
   beforeAll(async () => {
@@ -30,7 +33,7 @@ describe('RecuperacaoService', () => {
   });
 
   beforeEach(async () => {
-    hashService = createMock<IHashService>();
+    hashService = createMock<IHashGenerateSaltService & IHashHashService>();
     jest.spyOn(hashService, 'generateSalt').mockResolvedValue(MOCKED_SALT);
     jest.spyOn(hashService, 'hash').mockResolvedValue('HASHED_VALUE');
   });

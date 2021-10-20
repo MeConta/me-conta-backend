@@ -7,7 +7,10 @@ import {
   TipoUsuario,
 } from './cadastrar-novo-usuario.feat';
 import { Usuario } from '../entidades/usuario.entity';
-import { IHashService } from '../services/hash.service';
+import {
+  IHashGenerateSaltService,
+  IHashHashService,
+} from '../services/hash.service';
 import { createMock } from '@golevelup/ts-jest';
 
 class InMemoryUsuarioService implements ICadastrarNovoUsuario {
@@ -30,11 +33,11 @@ class InMemoryUsuarioService implements ICadastrarNovoUsuario {
 
 describe('Cadastrar novo usuário', () => {
   let usuarioService: InMemoryUsuarioService;
-  let passwordService: IHashService;
+  let passwordService: IHashGenerateSaltService & IHashHashService;
   let sut: CadastrarNovoUsuario;
   beforeEach(() => {
     usuarioService = new InMemoryUsuarioService();
-    passwordService = createMock<IHashService>();
+    passwordService = createMock<IHashGenerateSaltService & IHashHashService>();
     sut = new CadastrarNovoUsuario(usuarioService, passwordService);
   });
   it('Deve cadastrar novo usuário', async () => {

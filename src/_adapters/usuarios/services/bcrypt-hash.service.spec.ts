@@ -1,9 +1,15 @@
-import { IHashService } from '../../../_business/usuarios/services/hash.service';
+import {
+  IHashCompareService,
+  IHashGenerateSaltService,
+  IHashHashService,
+} from '../../../_business/usuarios/services/hash.service';
 import { BcryptHashService } from './bcrypt-hash.service';
 import * as bcrypt from 'bcrypt';
 
 describe('Hash Service', () => {
-  let service: IHashService;
+  let service: IHashGenerateSaltService &
+    IHashHashService &
+    IHashCompareService;
   jest.mock('bcrypt');
   beforeEach(async () => {
     service = new BcryptHashService();
