@@ -7,3 +7,6 @@ export interface IHashHashService {
 export interface IHashCompareService {
   compare(value: string, hashed: string): Promise<boolean>;
 }
+export interface IHashGenerateRandomString {
+  randomString(size?: number): string;
+}

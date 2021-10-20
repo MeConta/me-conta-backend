@@ -7,6 +7,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { RecuperarSenha } from '../_business/recuperacao/casos-de-uso/recuperar-senha.feat';
+import { RecuperacaoDto } from '../_adapters/recuperacao/recuperacao.dto';
 
 @Controller('recuperacao')
 export class RecuperacaoController {
@@ -17,9 +18,10 @@ export class RecuperacaoController {
 
   @Post()
   @HttpCode(HttpStatus.NO_CONTENT)
-  async recuperar(@Body() input: { email: string }): Promise<void> {
+  async recuperar(@Body() input: RecuperacaoDto): Promise<void> {
+    const { email } = input;
     try {
-      return await this.recuperarSenha.execute(input.email);
+      return await this.recuperarSenha.execute(email);
     } catch (e) {
       console.error(e);
       return Promise.resolve();

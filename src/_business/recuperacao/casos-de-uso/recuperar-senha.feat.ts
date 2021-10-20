@@ -1,13 +1,11 @@
 import { IBuscarUsuarioViaEmail } from '../../usuarios/casos-de-uso/buscar-usuario-email.feat';
 import { UsuarioNaoEncontradoError } from '../../usuarios/erros/erros';
-import {
-  ICriarHashRecuperacaoService,
-  ISalvarHashRecuperacaoService,
-} from '../services/recuperacao.service';
+import { ISalvarHashRecuperacaoService } from '../services/recuperacao.service';
 import {
   EmailOptions,
   ISendEmailService,
 } from '../../mail/services/mail.service';
+import { IHashGenerateRandomString } from '../../usuarios/services/hash.service';
 
 export class EMailSendError extends Error {
   code = 500;
@@ -18,7 +16,7 @@ export class RecuperarSenha {
   constructor(
     private readonly usuarioService: IBuscarUsuarioViaEmail,
     private readonly recuperacaoService: ISalvarHashRecuperacaoService &
-      ICriarHashRecuperacaoService,
+      IHashGenerateRandomString,
     private readonly emailService: ISendEmailService,
     private readonly emailOptions: Pick<
       EmailOptions,
@@ -31,7 +29,7 @@ export class RecuperarSenha {
     if (!usuario?.email) {
       throw new UsuarioNaoEncontradoError();
     }
-    const hash = await this.recuperacaoService.criarHash();
+    const hash = this.recuperacaoService.randomString();
     await this.recuperacaoService.salvar({
       usuario,
       hash,

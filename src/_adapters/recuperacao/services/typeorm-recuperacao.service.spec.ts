@@ -1,17 +1,9 @@
-import {
-  ICriarHashRecuperacaoService,
-  ISalvarHashRecuperacaoService,
-} from '../../../_business/recuperacao/services/recuperacao.service';
+import { ISalvarHashRecuperacaoService } from '../../../_business/recuperacao/services/recuperacao.service';
 import { Recuperacao } from '../../../_business/recuperacao/entidades/recuperacao.entity';
 import { Connection, createConnection, Repository } from 'typeorm';
 import { RecuperacaoDbEntity } from '../entidades/recuperacao.db.entity';
 import { UsuarioDbEntity } from '../../usuarios/entidades/usuario.db.entity';
-import {
-  IHashGenerateSaltService,
-  IHashHashService,
-} from '../../../_business/usuarios/services/hash.service';
-import { createMock } from '@golevelup/ts-jest';
-import { MOCKED_SALT } from '../../../../jest.setup';
+import { IHashGenerateRandomString } from '../../../_business/usuarios/services/hash.service';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { TypeormRecuperacaoService } from './typeorm-recuperacao.service';
@@ -19,8 +11,7 @@ import { TypeormRecuperacaoService } from './typeorm-recuperacao.service';
 describe('RecuperacaoService', () => {
   let connection: Connection;
   let repository: Repository<RecuperacaoDbEntity>;
-  let hashService: IHashGenerateSaltService & IHashHashService;
-  let service: ISalvarHashRecuperacaoService & ICriarHashRecuperacaoService;
+  let service: ISalvarHashRecuperacaoService & IHashGenerateRandomString;
 
   beforeAll(async () => {
     connection = await createConnection({
@@ -30,12 +21,6 @@ describe('RecuperacaoService', () => {
       logging: false,
       entities: [UsuarioDbEntity, RecuperacaoDbEntity],
     });
-  });
-
-  beforeEach(async () => {
-    hashService = createMock<IHashGenerateSaltService & IHashHashService>();
-    jest.spyOn(hashService, 'generateSalt').mockResolvedValue(MOCKED_SALT);
-    jest.spyOn(hashService, 'hash').mockResolvedValue('HASHED_VALUE');
   });
 
   beforeEach(async () => {
@@ -52,7 +37,7 @@ describe('RecuperacaoService', () => {
       id: 1,
     });
 
-    service = new TypeormRecuperacaoService(repository, hashService);
+    service = new TypeormRecuperacaoService(repository);
   });
 
   afterAll(async () => {
@@ -64,8 +49,8 @@ describe('RecuperacaoService', () => {
   });
 
   it('Deve criar uma hash', async () => {
-    const response = await service.criarHash();
-    expect(response).toBe('HASHED_VALUE');
+    const response = await service.randomString();
+    expect(response).toEqual(expect.any(String));
   });
 
   it('Deve salvar a hash no banco', async () => {

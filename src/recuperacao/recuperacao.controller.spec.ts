@@ -7,6 +7,9 @@ import { internet } from 'faker/locale/pt_BR';
 describe('Recuperação Controller', () => {
   let controller: RecuperacaoController;
   let useCase: RecuperarSenha;
+
+  const email = internet.email();
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -24,9 +27,11 @@ describe('Recuperação Controller', () => {
     expect(controller).toBeDefined();
   });
   it('Deve cadastrar um pedido de recuperação', async () => {
-    const email = internet.email();
     await controller.recuperar({ email });
     expect(useCase.execute).toBeCalledWith(email);
   });
-  // it('Deve retornar, mesmo se der algum erro', async () => {});
+  it('Deve retornar, mesmo se der algum erro', async () => {
+    jest.spyOn(useCase, 'execute').mockRejectedValue(Error);
+    await expect(controller.recuperar({ email })).resolves.not.toThrow();
+  });
 });

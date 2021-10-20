@@ -3,25 +3,23 @@ import { IBuscarUsuarioViaEmail } from '../../usuarios/casos-de-uso/buscar-usuar
 import { UsuarioNaoEncontradoError } from '../../usuarios/erros/erros';
 import { Usuario } from '../../usuarios/entidades/usuario.entity';
 import { EMailSendError, RecuperarSenha } from './recuperar-senha.feat';
-import {
-  ICriarHashRecuperacaoService,
-  ISalvarHashRecuperacaoService,
-} from '../services/recuperacao.service';
+import { ISalvarHashRecuperacaoService } from '../services/recuperacao.service';
 import {
   EmailOptions,
   ISendEmailService,
 } from '../../mail/services/mail.service';
+import { IHashGenerateRandomString } from '../../usuarios/services/hash.service';
 
 describe('Recuperar senha', () => {
   let sut: RecuperarSenha;
   let usuarioService: IBuscarUsuarioViaEmail;
   let emailService: ISendEmailService;
   let recuperacaoService: ISalvarHashRecuperacaoService &
-    ICriarHashRecuperacaoService;
+    IHashGenerateRandomString;
   beforeEach(() => {
     usuarioService = createMock<IBuscarUsuarioViaEmail>();
     recuperacaoService = createMock<
-      ISalvarHashRecuperacaoService & ICriarHashRecuperacaoService
+      ISalvarHashRecuperacaoService & IHashGenerateRandomString
     >();
     emailService = createMock<ISendEmailService>();
 
@@ -38,8 +36,8 @@ describe('Recuperar senha', () => {
       email: 'teste@teste.com',
     } as Usuario);
     jest
-      .spyOn(recuperacaoService, 'criarHash')
-      .mockResolvedValue('unique_hash');
+      .spyOn(recuperacaoService, 'randomString')
+      .mockReturnValue('unique_hash');
   });
 
   it('Deve ser definido', async () => {
@@ -49,7 +47,7 @@ describe('Recuperar senha', () => {
   it('Deve mandar e-mail de recuperação', async () => {
     await sut.execute('teste@teste.com');
     expect(usuarioService.findByEmail).toBeCalledWith('teste@teste.com');
-    expect(recuperacaoService.criarHash).toBeCalled();
+    expect(recuperacaoService.randomString).toBeCalled();
     expect(emailService.send).toBeCalledWith(
       expect.objectContaining({
         to: 'teste@teste.com',

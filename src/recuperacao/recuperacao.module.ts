@@ -5,15 +5,13 @@ import { RecuperarSenha } from '../_business/recuperacao/casos-de-uso/recuperar-
 import { TypeormUsuarioService } from '../_adapters/usuarios/services/typeorm-usuario.service';
 import { IBuscarUsuarioViaEmail } from '../_business/usuarios/casos-de-uso/buscar-usuario-email.feat';
 import { TypeormRecuperacaoService } from '../_adapters/recuperacao/services/typeorm-recuperacao.service';
-import {
-  ICriarHashRecuperacaoService,
-  ISalvarHashRecuperacaoService,
-} from '../_business/recuperacao/services/recuperacao.service';
+import { ISalvarHashRecuperacaoService } from '../_business/recuperacao/services/recuperacao.service';
 import { ISendEmailService } from '../_business/mail/services/mail.service';
 import { MailerMailService } from '../_adapters/mail/services/mailer-mail.service';
 import { UsuarioDbEntity } from '../_adapters/usuarios/entidades/usuario.db.entity';
 import { BcryptHashService } from '../_adapters/usuarios/services/bcrypt-hash.service';
 import { RecuperacaoController } from './recuperacao.controller';
+import { IHashGenerateRandomString } from '../_business/usuarios/services/hash.service';
 
 @Injectable()
 export class NestRecuperarSenha extends RecuperarSenha {
@@ -22,7 +20,7 @@ export class NestRecuperarSenha extends RecuperarSenha {
     usuarioService: IBuscarUsuarioViaEmail,
     @Inject(TypeormRecuperacaoService)
     recuperacaoService: ISalvarHashRecuperacaoService &
-      ICriarHashRecuperacaoService,
+      IHashGenerateRandomString,
     @Inject(MailerMailService)
     emailService: ISendEmailService,
   ) {
