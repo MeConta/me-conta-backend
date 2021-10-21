@@ -10,11 +10,13 @@ import { ResetSenhaInput } from '../src/_business/recuperacao/casos-de-uso/reset
 import { DEFAULT_PASSWORD, MOCKED_SALT } from '../jest.setup';
 import { MailE2EModule } from './modules/mail-e2e.module';
 import { MailerMailService } from '../src/_adapters/mail/services/mailer-mail.service';
-import { getConnection } from 'typeorm';
+import { getConnection, Repository } from 'typeorm';
 import { Usuario } from '../src/_business/usuarios/entidades/usuario.entity';
+import * as moment from 'moment';
 
 describe('Reset de senha (e2e)', () => {
   let app: INestApplication;
+  let recuperacaoRepo: Repository<RecuperacaoDbEntity>;
   let hash: string;
   beforeEach(async () => {
     const moduleFixture: TestingModule = await getTestingModule(
@@ -23,6 +25,7 @@ describe('Reset de senha (e2e)', () => {
     );
 
     app = await moduleFixture.createNestApplication();
+
     setupApp(app);
     await app.init();
   });
@@ -32,10 +35,11 @@ describe('Reset de senha (e2e)', () => {
       console.log('Vai entrar aqui não?', args);
       return Promise.resolve();
     });
-    const repo =
-      getConnection().getRepository<RecuperacaoDbEntity>(RecuperacaoDbEntity);
+
     const userRepo =
       getConnection().getRepository<UsuarioDbEntity>(UsuarioDbEntity);
+    recuperacaoRepo =
+      getConnection().getRepository<RecuperacaoDbEntity>(RecuperacaoDbEntity);
     const user = await createUser(app);
     const { id } = await userRepo.save(
       userRepo.create({
@@ -45,10 +49,11 @@ describe('Reset de senha (e2e)', () => {
       } as Usuario),
     );
     hash = (
-      await repo.save(
-        await repo.create({
+      await recuperacaoRepo.save(
+        await recuperacaoRepo.create({
           usuario: { id } as Usuario,
           hash: 'hash',
+          dataExpiracao: moment().add(7, 'days').toDate(),
         }),
       )
     ).hash;
@@ -69,7 +74,7 @@ describe('Reset de senha (e2e)', () => {
         } as ResetSenhaInput)
         .expect(204);
     });
-    it('Deve dar erro de Hash Inválida', async () => {
+    it('Deve dar erro de Hash Não encontrada', async () => {
       await request(app.getHttpServer())
         .post('/senha/reset')
         .send({
@@ -77,6 +82,24 @@ describe('Reset de senha (e2e)', () => {
           senha: DEFAULT_PASSWORD,
         } as ResetSenhaInput)
         .expect(404);
+    });
+
+    it('Deve dar erro de Hash Expirada', async () => {
+      await recuperacaoRepo.update(
+        {
+          hash: 'hash',
+        },
+        {
+          dataExpiracao: moment().subtract(1, 'day').toDate(),
+        },
+      );
+      await request(app.getHttpServer())
+        .post('/senha/reset')
+        .send({
+          hash: 'hash',
+          senha: DEFAULT_PASSWORD,
+        } as ResetSenhaInput)
+        .expect(422);
     });
   });
 });
