@@ -1,10 +1,7 @@
-import { Usuario } from '../entidades/usuario.entity';
+import { IBuscarUsuarioViaEmailService } from '../services/usuario.service';
 
-export interface IBuscarUsuarioViaEmail {
-  findByEmail(email: string): Promise<Usuario>;
-}
 export class BuscarUsuarioEmail {
-  constructor(private readonly usuarioService: IBuscarUsuarioViaEmail) {}
+  constructor(private readonly usuarioService: IBuscarUsuarioViaEmailService) {}
   async execute(input: string) {
     return this.usuarioService.findByEmail(input);
   }

@@ -8,8 +8,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import database from '../src/config/database.config';
+import { DEFAULT_PASSWORD } from '../jest.setup';
 
-export const SENHA_PADRAO = 's3nh4Val!d@';
 export async function createUser(
   app: INestApplication,
   tipoUsuario: TipoUsuario = TipoUsuario.ALUNO,
@@ -18,7 +18,7 @@ export async function createUser(
   const { nome, email, senha, tipo } = usuario || {
     nome: name.firstName(),
     email: internet.email(),
-    senha: SENHA_PADRAO,
+    senha: DEFAULT_PASSWORD,
     tipo: tipoUsuario,
   };
   await request(app.getHttpServer())
@@ -44,14 +44,17 @@ export async function getToken(
 ): Promise<string> {
   const { username, password } = login || {
     username: internet.email(),
-    password: SENHA_PADRAO,
+    password: DEFAULT_PASSWORD,
   };
-  await createUser(app, tipo, {
-    nome: name.firstName(),
-    email: username,
-    senha: password,
-    tipo: tipo,
-  });
+
+  await request(app.getHttpServer())
+    .post('/cadastro-inicial')
+    .send({
+      nome: name.firstName(),
+      email: username,
+      senha: password,
+      tipo,
+    } as CreateUsuarioDto);
 
   const { body } = await request(app.getHttpServer())
     .post('/auth/login')

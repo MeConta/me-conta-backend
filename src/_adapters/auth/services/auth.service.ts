@@ -2,7 +2,6 @@ import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 import { TypeormUsuarioService } from '../../usuarios/services/typeorm-usuario.service';
-import { IBuscarUsuarioViaEmail } from '../../../_business/usuarios/casos-de-uso/buscar-usuario-email.feat';
 import { IHashCompareService } from '../../../_business/usuarios/services/hash.service';
 import { BcryptHashService } from '../../usuarios/services/bcrypt-hash.service';
 import { IAuthService } from '../../../_business/auth/interfaces/auth.service';
@@ -10,12 +9,13 @@ import { ValidarUsuario } from '../../../_business/auth/casos-de-uso/validar-usu
 import { GerarToken } from '../../../_business/auth/casos-de-uso/gerar-token.feat';
 import { IJwtService } from '../../../_business/auth/interfaces/jwt.service';
 import { TokenDto } from '../dto/auth.dto';
+import { IBuscarUsuarioViaEmailService } from '../../../_business/usuarios/services/usuario.service';
 
 @Injectable()
 export class NestAuthService extends ValidarUsuario {
   constructor(
     @Inject(TypeormUsuarioService)
-    usuarioService: IBuscarUsuarioViaEmail,
+    usuarioService: IBuscarUsuarioViaEmailService,
 
     @Inject(BcryptHashService)
     hashService: IHashCompareService,

@@ -2,8 +2,8 @@ import { AuthService, NestAuthService, NestLoginService } from './auth.service';
 import { createMock } from '@golevelup/ts-jest';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 import { IHashCompareService } from '../../../_business/usuarios/services/hash.service';
-import { IBuscarUsuarioViaEmail } from '../../../_business/usuarios/casos-de-uso/buscar-usuario-email.feat';
 import { IJwtService } from '../../../_business/auth/interfaces/jwt.service';
+import { IBuscarUsuarioViaEmailService } from '../../../_business/usuarios/services/usuario.service';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -20,7 +20,7 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     auth = new NestAuthService(
-      createMock<IBuscarUsuarioViaEmail>(),
+      createMock<IBuscarUsuarioViaEmailService>(),
       createMock<IHashCompareService>(),
     );
     login = new NestLoginService(createMock<IJwtService>());

@@ -2,20 +2,22 @@ import { Usuario } from '../entidades/usuario.entity';
 import { createMock } from '@golevelup/ts-jest';
 import { DEFAULT_PASSWORD } from '../../../../jest.setup';
 import { IBuscarUsuarioViaId } from './buscar-usuario.id.feat';
-import { IBuscarUsuarioViaEmail } from './buscar-usuario-email.feat';
 import {
   AtualizarUsuario,
   EmailJaUtilizadoError,
-  IAtualizarUsuario,
-  IAtualizarUsuarioService,
 } from './atualizar-usuario.feat';
 import { UsuarioNaoEncontradoError } from '../erros/erros';
 import { name, internet } from 'faker/locale/pt_BR';
+import {
+  IAtualizarUsuario,
+  IAtualizarUsuarioService,
+  IBuscarUsuarioViaEmailService,
+} from '../services/usuario.service';
 
 class InMemoryAtualizarService
   implements
     IBuscarUsuarioViaId,
-    IBuscarUsuarioViaEmail,
+    IBuscarUsuarioViaEmailService,
     IAtualizarUsuarioService
 {
   public usuario: Usuario = {

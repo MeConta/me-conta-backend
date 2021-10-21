@@ -13,7 +13,7 @@ import { TypeormPerfilService } from '../_adapters/perfil/services/typeorm-perfi
 import { ICadastrarPerfilService } from '../_business/perfil/interfaces/cadastrar-perfil.service';
 import { PerfilDbEntity } from '../_adapters/perfil/entidades/perfil.db.entity';
 import { TypeormVoluntarioService } from '../_adapters/voluntarios/services/typeorm-voluntario.service';
-import { IAtualizarUsuarioService } from '../_business/usuarios/casos-de-uso/atualizar-usuario.feat';
+import { IAtualizarUsuarioService } from '../_business/usuarios/services/usuario.service';
 
 @Injectable()
 class NestCadastrarVoluntario extends CadastrarVoluntario {

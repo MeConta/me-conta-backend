@@ -1,10 +1,10 @@
 import { Usuario } from '../../usuarios/entidades/usuario.entity';
-import { IBuscarUsuarioViaEmail } from '../../usuarios/casos-de-uso/buscar-usuario-email.feat';
 import { IHashCompareService } from '../../usuarios/services/hash.service';
+import { IBuscarUsuarioViaEmailService } from '../../usuarios/services/usuario.service';
 
 export class ValidarUsuario {
   constructor(
-    private readonly usuarioService: IBuscarUsuarioViaEmail,
+    private readonly usuarioService: IBuscarUsuarioViaEmailService,
     private readonly hashService: IHashCompareService,
   ) {}
   async execute(email: string, senha: string): Promise<Usuario> {

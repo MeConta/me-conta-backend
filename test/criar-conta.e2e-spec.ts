@@ -6,8 +6,9 @@ import { CreateUsuarioDto } from '../src/_adapters/usuarios/dto/create-usuario.d
 import { TipoUsuario } from '../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { UsuarioDbEntity } from '../src/_adapters/usuarios/entidades/usuario.db.entity';
 import { setupApp } from '../src/config/app.config';
-import { createUser, getTestingModule, SENHA_PADRAO } from './utils.test';
+import { createUser, getTestingModule } from './utils.test';
 import { internet, name } from 'faker/locale/pt_BR';
+import { DEFAULT_PASSWORD } from '../jest.setup';
 
 describe('Criar Conta (e2e)', () => {
   let app: INestApplication;
@@ -27,7 +28,7 @@ describe('Criar Conta (e2e)', () => {
     const req = {
       nome: name.firstName(),
       email: internet.email(),
-      senha: SENHA_PADRAO,
+      senha: DEFAULT_PASSWORD,
       tipo: TipoUsuario.ALUNO,
     } as CreateUsuarioDto;
 

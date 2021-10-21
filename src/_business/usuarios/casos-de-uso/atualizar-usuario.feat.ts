@@ -1,18 +1,15 @@
 import { IBuscarUsuarioViaId } from './buscar-usuario.id.feat';
-import { IBuscarUsuarioViaEmail } from './buscar-usuario-email.feat';
 import { UsuarioNaoEncontradoError } from '../erros/erros';
-import { Usuario } from '../entidades/usuario.entity';
-
-export type IAtualizarUsuario = Partial<Omit<Usuario, 'salt'>>;
-
-export interface IAtualizarUsuarioService {
-  atualizar(id: number, input: IAtualizarUsuario): Promise<Usuario>;
-}
+import {
+  IAtualizarUsuario,
+  IAtualizarUsuarioService,
+  IBuscarUsuarioViaEmailService,
+} from '../services/usuario.service';
 
 export class AtualizarUsuario {
   constructor(
     private readonly service: IBuscarUsuarioViaId &
-      IBuscarUsuarioViaEmail &
+      IBuscarUsuarioViaEmailService &
       IAtualizarUsuarioService,
   ) {}
   async execute(id: number, input: IAtualizarUsuario): Promise<void> {

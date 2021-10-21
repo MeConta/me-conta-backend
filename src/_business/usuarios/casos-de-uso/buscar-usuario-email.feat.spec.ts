@@ -1,15 +1,13 @@
-import {
-  BuscarUsuarioEmail,
-  IBuscarUsuarioViaEmail,
-} from './buscar-usuario-email.feat';
+import { BuscarUsuarioEmail } from './buscar-usuario-email.feat';
 import { createMock } from '@golevelup/ts-jest';
 import { Usuario } from '../entidades/usuario.entity';
+import { IBuscarUsuarioViaEmailService } from '../services/usuario.service';
 
 describe('Buscar Usuário', () => {
-  let usuarioService: IBuscarUsuarioViaEmail;
+  let usuarioService: IBuscarUsuarioViaEmailService;
   let sut: BuscarUsuarioEmail;
   beforeEach(() => {
-    usuarioService = createMock<IBuscarUsuarioViaEmail>();
+    usuarioService = createMock<IBuscarUsuarioViaEmailService>();
     sut = new BuscarUsuarioEmail(usuarioService);
   });
 

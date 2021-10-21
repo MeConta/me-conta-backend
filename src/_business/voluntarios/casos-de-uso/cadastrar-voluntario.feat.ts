@@ -10,7 +10,7 @@ import {
   UsuarioInvalidoError,
   UsuarioNaoEncontradoError,
 } from '../../usuarios/erros/erros';
-import { IAtualizarUsuarioService } from '../../usuarios/casos-de-uso/atualizar-usuario.feat';
+import { IAtualizarUsuarioService } from '../../usuarios/services/usuario.service';
 
 export type NovoVoluntario = Perfil &
   Voluntario &
