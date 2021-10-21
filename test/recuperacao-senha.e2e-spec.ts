@@ -7,7 +7,7 @@ import * as request from 'supertest';
 import { CreateUsuarioDto } from '../src/_adapters/usuarios/dto/create-usuario.dto';
 import { RecuperacaoModule } from '../src/recuperacao/recuperacao.module';
 import { RecuperacaoDbEntity } from '../src/_adapters/recuperacao/entidades/recuperacao.db.entity';
-import { RecuperacaoDto } from '../src/_adapters/recuperacao/recuperacao.dto';
+import { RecuperacaoDto } from '../src/_adapters/recuperacao/dto/recuperacao.dto';
 import { MailerMailService } from '../src/_adapters/mail/services/mailer-mail.service';
 import { createMock } from '@golevelup/ts-jest';
 import { MailModule } from '../src/mail/mail.module';
@@ -34,7 +34,7 @@ describe('Recuperação de senha (e2e)', () => {
   afterEach(async () => {
     await app.close();
   });
-  describe('/recuperacao (POST)', () => {
+  describe('/senha/recuperacao (POST)', () => {
     let user: CreateUsuarioDto;
     beforeEach(async () => {
       user = await createUser(app);
@@ -42,7 +42,7 @@ describe('Recuperação de senha (e2e)', () => {
     it('Deve enviar um e-mail de recuperação', async () => {
       const { email } = user;
       await request(app.getHttpServer())
-        .post('/recuperacao')
+        .post('/senha/recuperacao')
         .send({
           email,
         } as RecuperacaoDto)

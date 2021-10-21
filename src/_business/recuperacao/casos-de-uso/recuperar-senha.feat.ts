@@ -1,4 +1,3 @@
-import { IBuscarUsuarioViaEmail } from '../../usuarios/casos-de-uso/buscar-usuario-email.feat';
 import { UsuarioNaoEncontradoError } from '../../usuarios/erros/erros';
 import { ISalvarHashRecuperacaoService } from '../services/recuperacao.service';
 import {
@@ -6,6 +5,7 @@ import {
   ISendEmailService,
 } from '../../mail/services/mail.service';
 import { IHashGenerateRandomString } from '../../usuarios/services/hash.service';
+import { IBuscarUsuarioViaEmailService } from '../../usuarios/services/usuario.service';
 
 export class EMailSendError extends Error {
   code = 500;
@@ -14,7 +14,7 @@ export class EMailSendError extends Error {
 
 export class RecuperarSenha {
   constructor(
-    private readonly usuarioService: IBuscarUsuarioViaEmail,
+    private readonly usuarioService: IBuscarUsuarioViaEmailService,
     private readonly recuperacaoService: ISalvarHashRecuperacaoService &
       IHashGenerateRandomString,
     private readonly emailService: ISendEmailService,

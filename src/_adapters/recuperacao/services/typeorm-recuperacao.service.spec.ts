@@ -1,4 +1,8 @@
-import { ISalvarHashRecuperacaoService } from '../../../_business/recuperacao/services/recuperacao.service';
+import {
+  IBuscarRecuperacaoService,
+  IRemoverRecuperacaoService,
+  ISalvarHashRecuperacaoService,
+} from '../../../_business/recuperacao/services/recuperacao.service';
 import { Recuperacao } from '../../../_business/recuperacao/entidades/recuperacao.entity';
 import { Connection, createConnection, Repository } from 'typeorm';
 import { RecuperacaoDbEntity } from '../entidades/recuperacao.db.entity';
@@ -11,7 +15,10 @@ import { TypeormRecuperacaoService } from './typeorm-recuperacao.service';
 describe('RecuperacaoService', () => {
   let connection: Connection;
   let repository: Repository<RecuperacaoDbEntity>;
-  let service: ISalvarHashRecuperacaoService & IHashGenerateRandomString;
+  let service: ISalvarHashRecuperacaoService &
+    IHashGenerateRandomString &
+    IBuscarRecuperacaoService &
+    IRemoverRecuperacaoService;
 
   beforeAll(async () => {
     connection = await createConnection({
@@ -58,11 +65,29 @@ describe('RecuperacaoService', () => {
       usuario: { id: 1 } as Usuario,
       hash: 'HASHED_VALUE',
     });
-    const hashes = await repository.find();
-    expect(hashes[0]).toEqual(
+    const [hash] = await repository.find();
+    expect(hash).toEqual(
       expect.objectContaining({
         hash: 'HASHED_VALUE',
       } as Recuperacao),
     );
+  });
+
+  it('Deve buscar uma recuperação via hash', async () => {
+    await repository.save({
+      usuario: { id: 1 } as Usuario,
+      hash: 'HASHED_VALUE',
+    });
+    const { hash } = await service.findByHash('HASHED_VALUE');
+    expect(hash).toBe('HASHED_VALUE');
+  });
+  it('Deve remover uma recuperação', async () => {
+    await repository.save({
+      usuario: { id: 1 } as Usuario,
+      hash: 'HASHED_VALUE',
+    });
+    await service.remover('HASHED_VALUE');
+    const hashes = await repository.find();
+    expect(hashes.length).toBeFalsy();
   });
 });

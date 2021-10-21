@@ -1,5 +1,4 @@
 import { createMock } from '@golevelup/ts-jest';
-import { IBuscarUsuarioViaEmail } from '../../usuarios/casos-de-uso/buscar-usuario-email.feat';
 import { UsuarioNaoEncontradoError } from '../../usuarios/erros/erros';
 import { Usuario } from '../../usuarios/entidades/usuario.entity';
 import { EMailSendError, RecuperarSenha } from './recuperar-senha.feat';
@@ -9,15 +8,16 @@ import {
   ISendEmailService,
 } from '../../mail/services/mail.service';
 import { IHashGenerateRandomString } from '../../usuarios/services/hash.service';
+import { IBuscarUsuarioViaEmailService } from '../../usuarios/services/usuario.service';
 
 describe('Recuperar senha', () => {
   let sut: RecuperarSenha;
-  let usuarioService: IBuscarUsuarioViaEmail;
+  let usuarioService: IBuscarUsuarioViaEmailService;
   let emailService: ISendEmailService;
   let recuperacaoService: ISalvarHashRecuperacaoService &
     IHashGenerateRandomString;
   beforeEach(() => {
-    usuarioService = createMock<IBuscarUsuarioViaEmail>();
+    usuarioService = createMock<IBuscarUsuarioViaEmailService>();
     recuperacaoService = createMock<
       ISalvarHashRecuperacaoService & IHashGenerateRandomString
     >();

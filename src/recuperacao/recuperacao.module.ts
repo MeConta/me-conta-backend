@@ -3,7 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RecuperacaoDbEntity } from '../_adapters/recuperacao/entidades/recuperacao.db.entity';
 import { RecuperarSenha } from '../_business/recuperacao/casos-de-uso/recuperar-senha.feat';
 import { TypeormUsuarioService } from '../_adapters/usuarios/services/typeorm-usuario.service';
-import { IBuscarUsuarioViaEmail } from '../_business/usuarios/casos-de-uso/buscar-usuario-email.feat';
 import { TypeormRecuperacaoService } from '../_adapters/recuperacao/services/typeorm-recuperacao.service';
 import { ISalvarHashRecuperacaoService } from '../_business/recuperacao/services/recuperacao.service';
 import { ISendEmailService } from '../_business/mail/services/mail.service';
@@ -17,7 +16,7 @@ import { IHashGenerateRandomString } from '../_business/usuarios/services/hash.s
 export class NestRecuperarSenha extends RecuperarSenha {
   constructor(
     @Inject(TypeormUsuarioService)
-    usuarioService: IBuscarUsuarioViaEmail,
+    usuarioService: IBuscarUsuarioViaEmailService,
     @Inject(TypeormRecuperacaoService)
     recuperacaoService: ISalvarHashRecuperacaoService &
       IHashGenerateRandomString,

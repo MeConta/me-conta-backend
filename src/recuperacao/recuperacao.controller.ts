@@ -7,9 +7,9 @@ import {
   Post,
 } from '@nestjs/common';
 import { RecuperarSenha } from '../_business/recuperacao/casos-de-uso/recuperar-senha.feat';
-import { RecuperacaoDto } from '../_adapters/recuperacao/recuperacao.dto';
+import { RecuperacaoDto } from '../_adapters/recuperacao/dto/recuperacao.dto';
 
-@Controller('recuperacao')
+@Controller('senha/recuperacao')
 export class RecuperacaoController {
   constructor(
     @Inject(RecuperarSenha)

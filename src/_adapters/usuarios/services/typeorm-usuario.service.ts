@@ -6,19 +6,19 @@ import {
 import { Repository } from 'typeorm';
 import { UsuarioDbEntity } from '../entidades/usuario.db.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IBuscarUsuarioViaEmail } from '../../../_business/usuarios/casos-de-uso/buscar-usuario-email.feat';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 import { IBuscarUsuarioViaId } from '../../../_business/usuarios/casos-de-uso/buscar-usuario.id.feat';
 import {
   IAtualizarUsuario,
   IAtualizarUsuarioService,
-} from '../../../_business/usuarios/casos-de-uso/atualizar-usuario.feat';
+  IBuscarUsuarioViaEmailService,
+} from '../../../_business/usuarios/services/usuario.service';
 
 @Injectable()
 export class TypeormUsuarioService
   implements
     ICadastrarNovoUsuario,
-    IBuscarUsuarioViaEmail,
+    IBuscarUsuarioViaEmailService,
     IBuscarUsuarioViaId,
     IAtualizarUsuarioService
 {
