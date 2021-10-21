@@ -9,6 +9,7 @@ import {
 } from '../../mail/services/mail.service';
 import { IHashGenerateRandomString } from '../../usuarios/services/hash.service';
 import { IBuscarUsuarioViaEmailService } from '../../usuarios/services/usuario.service';
+import { IDateAdd } from '../../agenda/interfaces/date-time.service';
 
 describe('Recuperar senha', () => {
   let sut: RecuperarSenha;
@@ -16,18 +17,26 @@ describe('Recuperar senha', () => {
   let emailService: ISendEmailService;
   let recuperacaoService: ISalvarHashRecuperacaoService &
     IHashGenerateRandomString;
+  let dateService: IDateAdd;
   beforeEach(() => {
     usuarioService = createMock<IBuscarUsuarioViaEmailService>();
     recuperacaoService = createMock<
       ISalvarHashRecuperacaoService & IHashGenerateRandomString
     >();
+    dateService = createMock<IDateAdd>();
     emailService = createMock<ISendEmailService>();
 
-    sut = new RecuperarSenha(usuarioService, recuperacaoService, emailService, {
-      from: 'test-from@teste.com',
-      subject: 'E-mail de recuperação de senha',
-      template: '<p>#{hash}</p>',
-    });
+    sut = new RecuperarSenha(
+      usuarioService,
+      recuperacaoService,
+      dateService,
+      emailService,
+      {
+        from: 'test-from@teste.com',
+        subject: 'E-mail de recuperação de senha',
+        template: '<p>#{hash}</p>',
+      },
+    );
   });
 
   beforeEach(async () => {
@@ -65,6 +74,7 @@ describe('Recuperar senha', () => {
       UsuarioNaoEncontradoError,
     );
   });
+
   it('Deve dar erro ao enviar e-mail', async () => {
     jest.spyOn(emailService, 'send').mockRejectedValue(new Error());
     await expect(() => sut.execute('teste@teste.com')).rejects.toThrow(

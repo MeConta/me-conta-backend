@@ -6,6 +6,7 @@ import {
 } from '../../mail/services/mail.service';
 import { IHashGenerateRandomString } from '../../usuarios/services/hash.service';
 import { IBuscarUsuarioViaEmailService } from '../../usuarios/services/usuario.service';
+import { DateUnits, IDateAdd } from '../../agenda/interfaces/date-time.service';
 
 export class EMailSendError extends Error {
   code = 500;
@@ -17,6 +18,7 @@ export class RecuperarSenha {
     private readonly usuarioService: IBuscarUsuarioViaEmailService,
     private readonly recuperacaoService: ISalvarHashRecuperacaoService &
       IHashGenerateRandomString,
+    private readonly dateService: IDateAdd,
     private readonly emailService: ISendEmailService,
     private readonly emailOptions: Pick<
       EmailOptions,
@@ -33,6 +35,11 @@ export class RecuperarSenha {
     await this.recuperacaoService.salvar({
       usuario,
       hash,
+      dataExpiracao: this.dateService.add(
+        new Date(),
+        +process.env.PASSWORD_RECOVERY_EXPIRATION_DAYS,
+        DateUnits.DAYS,
+      ),
     });
     try {
       await this.emailService.send({

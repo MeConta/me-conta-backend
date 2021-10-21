@@ -24,6 +24,11 @@ import {
 } from '../_business/usuarios/services/usuario.service';
 import { ResetController } from './reset.controller';
 import { ResetSenha } from '../_business/recuperacao/casos-de-uso/reset-senha.feat';
+import { MomentDateTimeService } from '../_adapters/agenda/services/moment-date-time.service';
+import {
+  IDateAdd,
+  IDateGreaterThanService,
+} from '../_business/agenda/interfaces/date-time.service';
 
 @Injectable()
 export class NestRecuperarSenha extends RecuperarSenha {
@@ -33,10 +38,12 @@ export class NestRecuperarSenha extends RecuperarSenha {
     @Inject(TypeormRecuperacaoService)
     recuperacaoService: ISalvarHashRecuperacaoService &
       IHashGenerateRandomString,
+    @Inject(MomentDateTimeService)
+    dateService: IDateAdd,
     @Inject(MailerMailService)
     emailService: ISendEmailService,
   ) {
-    super(usuarioService, recuperacaoService, emailService, {
+    super(usuarioService, recuperacaoService, dateService, emailService, {
       subject: '[Me conta?] Recuperação de senha',
       template: './recuperacao',
     });
@@ -52,8 +59,10 @@ export class NestResetSenha extends ResetSenha {
     usuarioService: IAtualizarUsuarioService,
     @Inject(BcryptHashService)
     hashService: IHashHashService,
+    @Inject(MomentDateTimeService)
+    dateService: IDateGreaterThanService,
   ) {
-    super(recuperacaoService, usuarioService, hashService);
+    super(recuperacaoService, usuarioService, hashService, dateService);
   }
 }
 
@@ -63,6 +72,7 @@ export class NestResetSenha extends ResetSenha {
     TypeormUsuarioService,
     TypeormRecuperacaoService,
     BcryptHashService,
+    MomentDateTimeService,
     {
       provide: RecuperarSenha,
       useClass: NestRecuperarSenha,

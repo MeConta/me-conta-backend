@@ -3,12 +3,17 @@ import { createMock } from '@golevelup/ts-jest';
 import { DEFAULT_PASSWORD } from '../../../../jest.setup';
 import { IAtualizarUsuarioService } from '../../usuarios/services/usuario.service';
 import { Usuario } from '../../usuarios/entidades/usuario.entity';
-import { RecuperacaoNotFoundError, ResetSenha } from './reset-senha.feat';
+import {
+  RecuperacaoExpiradaError,
+  RecuperacaoNotFoundError,
+  ResetSenha,
+} from './reset-senha.feat';
 import {
   IBuscarRecuperacaoService,
   IRemoverRecuperacaoService,
 } from '../services/recuperacao.service';
 import { IHashHashService } from '../../usuarios/services/hash.service';
+import { IDateGreaterThanService } from '../../agenda/interfaces/date-time.service';
 
 describe('Reset de Senha', () => {
   let sut: ResetSenha;
@@ -16,6 +21,7 @@ describe('Reset de Senha', () => {
     IRemoverRecuperacaoService;
   let usuarioService: IAtualizarUsuarioService;
   let hashService: IHashHashService;
+  let dateService: IDateGreaterThanService;
   const request = {
     hash: 'MOCKED_HASH',
     senha: DEFAULT_PASSWORD,
@@ -26,7 +32,13 @@ describe('Reset de Senha', () => {
     >();
     usuarioService = createMock<IAtualizarUsuarioService>();
     hashService = createMock<IHashHashService>();
-    sut = new ResetSenha(recuperacaoService, usuarioService, hashService);
+    dateService = createMock<IDateGreaterThanService>();
+    sut = new ResetSenha(
+      recuperacaoService,
+      usuarioService,
+      hashService,
+      dateService,
+    );
   });
   it('Deve ser definido', () => {
     expect(sut).toBeDefined();
@@ -39,6 +51,7 @@ describe('Reset de Senha', () => {
         id: 1,
       },
     });
+    jest.spyOn(dateService, 'dateGreaterThan').mockReturnValue(false);
   });
   it('Deve trocar a senha de um usuário', async () => {
     await sut.execute(request);
@@ -51,6 +64,12 @@ describe('Reset de Senha', () => {
     jest.spyOn(recuperacaoService, 'findByHash').mockResolvedValue(null);
     await expect(() => sut.execute(request)).rejects.toThrow(
       RecuperacaoNotFoundError,
+    );
+  });
+  it('Deve dar erro ao tentar trocar uma senha com hash expirada', async () => {
+    jest.spyOn(dateService, 'dateGreaterThan').mockReturnValue(true);
+    await expect(() => sut.execute(request)).rejects.toThrow(
+      RecuperacaoExpiradaError,
     );
   });
 });

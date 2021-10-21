@@ -64,6 +64,7 @@ describe('RecuperacaoService', () => {
     await service.salvar({
       usuario: { id: 1 } as Usuario,
       hash: 'HASHED_VALUE',
+      dataExpiracao: new Date(),
     });
     const [hash] = await repository.find();
     expect(hash).toEqual(

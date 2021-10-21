@@ -33,4 +33,7 @@ export class RecuperacaoDbEntity
 
   @Column()
   hash: string;
+
+  @Column()
+  dataExpiracao: Date;
 }

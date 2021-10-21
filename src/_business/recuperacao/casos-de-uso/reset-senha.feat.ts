@@ -4,12 +4,17 @@ import {
   IRemoverRecuperacaoService,
 } from '../services/recuperacao.service';
 import { IHashHashService } from '../../usuarios/services/hash.service';
+import { IDateGreaterThanService } from '../../agenda/interfaces/date-time.service';
 
 export type ResetSenhaInput = { hash: string; senha: string };
 
 export class RecuperacaoNotFoundError extends Error {
   code = 404;
   message = 'Pedido de recuperação de senha não encontrado';
+}
+export class RecuperacaoExpiradaError extends Error {
+  code = 422;
+  message = 'Pedido de recuperação de senha expirado';
 }
 
 export class ResetSenha {
@@ -18,13 +23,19 @@ export class ResetSenha {
       IRemoverRecuperacaoService,
     private readonly usuarioService: IAtualizarUsuarioService,
     private readonly hashService: IHashHashService,
+    private readonly dateService: IDateGreaterThanService,
   ) {}
 
   async execute(input: ResetSenhaInput): Promise<void> {
     const { hash } = input;
-    const { usuario } = (await this.recuperacaoService.findByHash(hash)) || {};
+    const { usuario, dataExpiracao } =
+      (await this.recuperacaoService.findByHash(hash)) || {};
     if (!usuario) {
       throw new RecuperacaoNotFoundError();
+    }
+    if (this.dateService.dateGreaterThan(new Date(), dataExpiracao)) {
+      await this.recuperacaoService.remover(hash);
+      throw new RecuperacaoExpiradaError();
     }
     await this.usuarioService.atualizar(usuario.id, {
       senha: await this.hashService.hash(input.senha, usuario.salt),

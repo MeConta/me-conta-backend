@@ -50,4 +50,18 @@ describe('IsPasswordStrong', () => {
         expect(err.getResponse().message).toEqual(['test is too weak']),
       );
   });
+  it('Deve dar erro ao utilizar uma senha vazia', async () => {
+    await expect(() =>
+      target.transform(
+        <Testing>{
+          test: '',
+        },
+        metadata,
+      ),
+    )
+      .rejects.toThrow(BadRequestException)
+      .catch((err) =>
+        expect(err.getResponse().message).toEqual(['test is too weak']),
+      );
+  });
 });

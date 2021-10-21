@@ -6,8 +6,10 @@ import {
   Inject,
   NotFoundException,
   Post,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import {
+  RecuperacaoExpiradaError,
   RecuperacaoNotFoundError,
   ResetSenha,
 } from '../_business/recuperacao/casos-de-uso/reset-senha.feat';
@@ -33,6 +35,8 @@ export class ResetController {
       switch (true) {
         case e instanceof RecuperacaoNotFoundError:
           throw new NotFoundException(e);
+        case e instanceof RecuperacaoExpiradaError:
+          throw new UnprocessableEntityException(e);
       }
     }
   }
