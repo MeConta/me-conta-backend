@@ -5,7 +5,7 @@ import 'reflect-metadata';
 import { ROUTE_ARGS_METADATA } from '@nestjs/common/constants';
 
 dotenv.config({
-  path: './.test.env',
+  path: './.env.test',
 });
 
 export const DEFAULT_PASSWORD = `s3Nh@F04r3$`;

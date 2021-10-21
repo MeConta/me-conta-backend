@@ -1,0 +1,39 @@
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Inject,
+  NotFoundException,
+  Post,
+} from '@nestjs/common';
+import {
+  RecuperacaoNotFoundError,
+  ResetSenha,
+} from '../_business/recuperacao/casos-de-uso/reset-senha.feat';
+import { ResetSenhaInputDto } from './dto/reset-senha.dto';
+import { ApiNotFoundResponse } from '@nestjs/swagger';
+
+@Controller('senha/reset')
+export class ResetController {
+  constructor(
+    @Inject(ResetSenha)
+    private readonly resetSenha: ResetSenha,
+  ) {}
+  @Post()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiNotFoundResponse({
+    description: 'Pedido de recuperação de senha não encontrado',
+    type: RecuperacaoNotFoundError,
+  })
+  async reset(@Body() dto: ResetSenhaInputDto): Promise<void> {
+    try {
+      await this.resetSenha.execute(dto);
+    } catch (e) {
+      switch (true) {
+        case e instanceof RecuperacaoNotFoundError:
+          throw new NotFoundException(e);
+      }
+    }
+  }
+}
