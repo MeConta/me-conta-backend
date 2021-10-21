@@ -1,5 +1,9 @@
 import { CriarSlotAgendaService } from '../interfaces/criar-slot-agenda.service';
-import { DateTimeService } from '../interfaces/date-time.service';
+import {
+  IDateAdd,
+  IDateEndOfDay,
+  IDateStartOfDay,
+} from '../interfaces/date-time.service';
 import { IAuthorizationService } from '../../autorizacao/interfaces/authorization.service';
 import { RecuperaSlotsAgendaService } from '../interfaces/recupera-slots-agenda.service';
 import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
@@ -10,7 +14,7 @@ export class CriarNovoSlotDeAgenda {
   constructor(
     private readonly agendaService: CriarSlotAgendaService &
       RecuperaSlotsAgendaService,
-    private readonly dateTimeHelper: DateTimeService,
+    private readonly dateTimeHelper: IDateAdd & IDateStartOfDay & IDateEndOfDay,
     private readonly authorizationService: IAuthorizationService,
   ) {}
 
@@ -18,7 +22,7 @@ export class CriarNovoSlotDeAgenda {
     await this.verificaPermissao(input.idUsuario);
 
     const horarioInicio = input.inicio;
-    const horarioFim = this.dateTimeHelper.addHours(horarioInicio, 1);
+    const horarioFim = this.dateTimeHelper.add(horarioInicio, 1);
 
     await this.verificaDisponibilidadeDoHorario(
       horarioInicio,

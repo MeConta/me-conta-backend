@@ -4,10 +4,14 @@ import {
   UsuarioNaoAtendente,
 } from './criar-novo-slot-de-agenda.feat';
 import { InMemoryAgendaService } from '../../../_adapters/agenda/services/in-memory-agenda.service';
-import { DateTimeService } from '../interfaces/date-time.service';
 import { MomentDateTimeService } from '../../../_adapters/agenda/services/moment-date-time.service';
 import { IAuthorizationService } from '../../autorizacao/interfaces/authorization.service';
 import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import {
+  IDateAdd,
+  IDateEndOfDay,
+  IDateStartOfDay,
+} from '../interfaces/date-time.service';
 
 export class FakeAuthorizationService implements IAuthorizationService {
   verificaTipoDoUsuario(
@@ -25,7 +29,7 @@ export class FakeAuthorizationService implements IAuthorizationService {
 describe('criar novo slot na agenda', () => {
   let agendaService: InMemoryAgendaService;
   let sut: CriarNovoSlotDeAgenda;
-  let dateTimeUtils: DateTimeService;
+  let dateTimeUtils: IDateAdd & IDateStartOfDay & IDateEndOfDay;
   let authorizationService: IAuthorizationService;
   beforeEach(() => {
     agendaService = new InMemoryAgendaService();
