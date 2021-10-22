@@ -1,5 +1,5 @@
 import { IBuscarUsuarioViaId } from './buscar-usuario.id.feat';
-import { UsuarioNaoEncontradoError } from '../erros/erros';
+import { UsuarioNaoEncontradoError } from '../erros/usuarios.errors';
 import {
   IAtualizarUsuario,
   IAtualizarUsuarioService,

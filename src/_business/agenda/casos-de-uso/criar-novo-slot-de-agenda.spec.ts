@@ -5,7 +5,7 @@ import {
 } from './criar-novo-slot-de-agenda.feat';
 import { InMemoryAgendaService } from '../../../_adapters/agenda/services/in-memory-agenda.service';
 import { MomentDateTimeService } from '../../../_adapters/agenda/services/moment-date-time.service';
-import { IAuthorizationService } from '../../autorizacao/interfaces/authorization.service';
+import { IAuthorizationService } from '../../autorizacao/services/authorization.service';
 import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import {
   IDateAdd,

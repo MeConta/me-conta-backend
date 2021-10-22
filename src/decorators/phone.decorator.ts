@@ -1,5 +1,4 @@
 import { registerDecorator, ValidationOptions } from 'class-validator';
-import { Regex } from '../config/constants';
 
 export function IsPhone(validationOptions?: ValidationOptions) {
   return (object: any, propertyName: string) => {
@@ -10,7 +9,7 @@ export function IsPhone(validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         validate(value: any) {
-          return new RegExp(Regex.TELEFONE).test(value);
+          return /(^[0-9]{10}$)|(^[0-9]{11}$)/.test(value);
         },
         defaultMessage(): string {
           return `$property is not valid phone`;

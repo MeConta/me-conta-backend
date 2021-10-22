@@ -9,7 +9,7 @@ import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.
 import {
   UsuarioInvalidoError,
   UsuarioNaoEncontradoError,
-} from '../../usuarios/erros/erros';
+} from '../../usuarios/erros/usuarios.errors';
 
 class InMemoryAlunoService implements ICadastrarNovoAlunoService {
   public alunos: Aluno[] = [];

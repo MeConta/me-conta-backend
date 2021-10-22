@@ -1,5 +1,5 @@
 import { createMock } from '@golevelup/ts-jest';
-import { UsuarioNaoEncontradoError } from '../../usuarios/erros/erros';
+import { UsuarioNaoEncontradoError } from '../../usuarios/erros/usuarios.errors';
 import { Usuario } from '../../usuarios/entidades/usuario.entity';
 import { EMailSendError, RecuperarSenha } from './recuperar-senha.feat';
 import { ISalvarHashRecuperacaoService } from '../services/recuperacao.service';

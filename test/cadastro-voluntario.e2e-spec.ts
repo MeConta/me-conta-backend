@@ -1,7 +1,7 @@
 import { TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { CadastroInicialModule } from '../src/cadastro-inicial/cadastro-inicial.module';
+import { UsuarioModule } from '../src/modules/usuario/usuario.module';
 import { TipoUsuario } from '../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { UsuarioDbEntity } from '../src/_adapters/usuarios/entidades/usuario.db.entity';
 import { setupApp } from '../src/config/app.config';
@@ -9,7 +9,7 @@ import { getTestingModule, getToken } from './utils.test';
 import { AlunoDbEntity } from '../src/_adapters/alunos/entidades/aluno.db.entity';
 import { PerfilDbEntity } from '../src/_adapters/perfil/entidades/perfil.db.entity';
 
-import { AuthModule } from '../src/auth/auth.module';
+import { AuthModule } from '../src/modules/auth/auth.module';
 import { CreateVoluntarioDto } from '../src/_adapters/voluntarios/dto/create-voluntario.dto';
 import * as moment from 'moment';
 import {
@@ -20,7 +20,7 @@ import {
   AreaAtuacao,
   FrenteAtuacao,
 } from '../src/_business/voluntarios/entidades/voluntario.entity';
-import { CadastroVoluntarioModule } from '../src/cadastro-voluntario/cadastro-voluntario.module';
+import { VoluntarioModule } from '../src/modules/voluntario/voluntario.module';
 
 describe('Criar Conta de Voluntário (e2e)', () => {
   let app: INestApplication;
@@ -29,7 +29,7 @@ describe('Criar Conta de Voluntário (e2e)', () => {
   beforeEach(async () => {
     const moduleFixture: TestingModule = await getTestingModule(
       [UsuarioDbEntity, PerfilDbEntity, AlunoDbEntity],
-      [AuthModule.forRoot(), CadastroInicialModule, CadastroVoluntarioModule],
+      [AuthModule.forRoot(), UsuarioModule, VoluntarioModule],
     );
 
     app = await moduleFixture.createNestApplication();

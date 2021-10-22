@@ -22,7 +22,7 @@ import { ICadastrarPerfilService } from '../../perfil/services/cadastrar-perfil.
 import {
   UsuarioInvalidoError,
   UsuarioNaoEncontradoError,
-} from '../../usuarios/erros/erros';
+} from '../../usuarios/erros/usuarios.errors';
 import { IAtualizarUsuarioService } from '../../usuarios/services/usuario.service';
 
 // ---

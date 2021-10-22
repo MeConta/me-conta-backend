@@ -5,7 +5,7 @@ import { setupApp } from '../src/config/app.config';
 import { createUser, getTestingModule } from './utils.test';
 import * as request from 'supertest';
 import { CreateUsuarioDto } from '../src/_adapters/usuarios/dto/create-usuario.dto';
-import { RecuperacaoModule } from '../src/recuperacao/recuperacao.module';
+import { RecuperacaoModule } from '../src/modules/recuperacao/recuperacao.module';
 import { RecuperacaoDbEntity } from '../src/_adapters/recuperacao/entidades/recuperacao.db.entity';
 import { RecuperacaoDto } from '../src/_adapters/recuperacao/dto/recuperacao.dto';
 import { MailerMailService } from '../src/_adapters/mail/services/mailer-mail.service';

@@ -4,7 +4,7 @@ import { UsuarioDbEntity } from '../src/_adapters/usuarios/entidades/usuario.db.
 import { setupApp } from '../src/config/app.config';
 import { createUser, getTestingModule } from './utils.test';
 import * as request from 'supertest';
-import { RecuperacaoModule } from '../src/recuperacao/recuperacao.module';
+import { RecuperacaoModule } from '../src/modules/recuperacao/recuperacao.module';
 import { RecuperacaoDbEntity } from '../src/_adapters/recuperacao/entidades/recuperacao.db.entity';
 import { ResetSenhaInput } from '../src/_business/recuperacao/casos-de-uso/reset-senha.feat';
 import { DEFAULT_PASSWORD, MOCKED_SALT } from '../jest.setup';

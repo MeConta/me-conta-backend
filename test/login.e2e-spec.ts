@@ -1,11 +1,11 @@
 import { INestApplication } from '@nestjs/common';
 import { TestingModule } from '@nestjs/testing';
 import { UsuarioDbEntity } from '../src/_adapters/usuarios/entidades/usuario.db.entity';
-import { CadastroInicialModule } from '../src/cadastro-inicial/cadastro-inicial.module';
+import { UsuarioModule } from '../src/modules/usuario/usuario.module';
 import { setupApp } from '../src/config/app.config';
 import { createUser, getTestingModule } from './utils.test';
 import * as request from 'supertest';
-import { AuthModule } from '../src/auth/auth.module';
+import { AuthModule } from '../src/modules/auth/auth.module';
 import { CreateUsuarioDto } from '../src/_adapters/usuarios/dto/create-usuario.dto';
 import { AuthDto, TokenDto } from '../src/_adapters/auth/dto/auth.dto';
 
@@ -14,7 +14,7 @@ describe('Autenticação (e2)', () => {
   beforeEach(async () => {
     const moduleFixture: TestingModule = await getTestingModule(
       [UsuarioDbEntity],
-      [AuthModule.forRoot(), CadastroInicialModule],
+      [AuthModule.forRoot(), UsuarioModule],
     );
 
     app = await moduleFixture.createNestApplication();

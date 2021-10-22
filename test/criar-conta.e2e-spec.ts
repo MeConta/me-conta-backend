@@ -1,7 +1,7 @@
 import { TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { CadastroInicialModule } from '../src/cadastro-inicial/cadastro-inicial.module';
+import { UsuarioModule } from '../src/modules/usuario/usuario.module';
 import { CreateUsuarioDto } from '../src/_adapters/usuarios/dto/create-usuario.dto';
 import { TipoUsuario } from '../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { UsuarioDbEntity } from '../src/_adapters/usuarios/entidades/usuario.db.entity';
@@ -16,7 +16,7 @@ describe('Criar Conta (e2e)', () => {
   beforeEach(async () => {
     const moduleFixture: TestingModule = await getTestingModule(
       [UsuarioDbEntity],
-      [CadastroInicialModule],
+      [UsuarioModule],
     );
 
     app = await moduleFixture.createNestApplication();

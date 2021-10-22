@@ -6,7 +6,7 @@ import {
   AtualizarUsuario,
   EmailJaUtilizadoError,
 } from './atualizar-usuario.feat';
-import { UsuarioNaoEncontradoError } from '../erros/erros';
+import { UsuarioNaoEncontradoError } from '../erros/usuarios.errors';
 import { name, internet } from 'faker/locale/pt_BR';
 import {
   IAtualizarUsuario,

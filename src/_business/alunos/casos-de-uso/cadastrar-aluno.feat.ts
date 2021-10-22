@@ -6,7 +6,7 @@ import { IBuscarUsuarioViaId } from '../../usuarios/casos-de-uso/buscar-usuario.
 import {
   UsuarioInvalidoError,
   UsuarioNaoEncontradoError,
-} from '../../usuarios/erros/erros';
+} from '../../usuarios/erros/usuarios.errors';
 import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 export class CadastrarAluno {

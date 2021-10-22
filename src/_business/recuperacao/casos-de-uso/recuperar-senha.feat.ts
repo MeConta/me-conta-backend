@@ -1,4 +1,4 @@
-import { UsuarioNaoEncontradoError } from '../../usuarios/erros/erros';
+import { UsuarioNaoEncontradoError } from '../../usuarios/erros/usuarios.errors';
 import { ISalvarHashRecuperacaoService } from '../services/recuperacao.service';
 import {
   EmailOptions,
