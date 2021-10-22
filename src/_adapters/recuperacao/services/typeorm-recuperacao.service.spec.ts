@@ -11,6 +11,7 @@ import { IHashGenerateRandomString } from '../../../_business/usuarios/services/
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { TypeormRecuperacaoService } from './typeorm-recuperacao.service';
+import * as moment from 'moment/moment';
 
 describe('RecuperacaoService', () => {
   let connection: Connection;
@@ -19,6 +20,14 @@ describe('RecuperacaoService', () => {
     IHashGenerateRandomString &
     IBuscarRecuperacaoService &
     IRemoverRecuperacaoService;
+
+  const recuperacao: Recuperacao = {
+    usuario: { id: 1 } as Usuario,
+    hash: 'HASHED_VALUE',
+    dataExpiracao: moment()
+      .add(+process.env.PASSWORD_RECOVERY_EXPIRATION_DAYS, 'days')
+      .toDate(),
+  };
 
   beforeAll(async () => {
     connection = await createConnection({
@@ -61,11 +70,7 @@ describe('RecuperacaoService', () => {
   });
 
   it('Deve salvar a hash no banco', async () => {
-    await service.salvar({
-      usuario: { id: 1 } as Usuario,
-      hash: 'HASHED_VALUE',
-      dataExpiracao: new Date(),
-    });
+    await service.salvar(recuperacao);
     const [hash] = await repository.find();
     expect(hash).toEqual(
       expect.objectContaining({
@@ -75,18 +80,12 @@ describe('RecuperacaoService', () => {
   });
 
   it('Deve buscar uma recuperação via hash', async () => {
-    await repository.save({
-      usuario: { id: 1 } as Usuario,
-      hash: 'HASHED_VALUE',
-    });
+    await repository.save(recuperacao);
     const { hash } = await service.findByHash('HASHED_VALUE');
     expect(hash).toBe('HASHED_VALUE');
   });
   it('Deve remover uma recuperação', async () => {
-    await repository.save({
-      usuario: { id: 1 } as Usuario,
-      hash: 'HASHED_VALUE',
-    });
+    await repository.save(recuperacao);
     await service.remover('HASHED_VALUE');
     const hashes = await repository.find();
     expect(hashes.length).toBeFalsy();
