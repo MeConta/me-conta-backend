@@ -49,18 +49,18 @@ export class AlunoDbEntity
   tratamentos: string;
 
   @PrimaryColumn()
-  usuarioId: number;
+  id: number;
 
   @BeforeInsert()
-  getUsuarioId() {
-    this.usuarioId = this.usuario.id;
+  getId() {
+    this.id = this.usuario.id;
   }
 
   @OneToOne(() => UsuarioDbEntity, {
     eager: true,
   })
   @JoinColumn({
-    name: 'usuarioId',
+    name: 'id',
   })
   usuario: Usuario;
 }

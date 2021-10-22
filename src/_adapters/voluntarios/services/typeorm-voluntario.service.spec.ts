@@ -70,7 +70,7 @@ describe('VoluntarioService', () => {
     const voluntarios = await repository.find();
     expect(voluntarios[0]).toEqual(
       expect.objectContaining({
-        usuarioId: expect.any(Number),
+        id: expect.any(Number),
       } as VoluntarioDbEntity),
     );
   });
