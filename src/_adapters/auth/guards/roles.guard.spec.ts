@@ -9,30 +9,73 @@ describe('RolesGuard', () => {
   const mockContext = createMock<ExecutionContext>();
   let guard: RolesGuard;
 
-  it('deve ser definido', () => {
-    reflector.get.mockReturnValue([TipoUsuario.ADMINISTRADOR]);
+  beforeEach(() => {
     guard = new RolesGuard(reflector);
+  });
+
+  it('deve ser definido', () => {
     expect(guard).toBeDefined();
   });
 
   it('Deve poder ativar uma rota quando há a role aceita', () => {
-    const mockContext = createMock<ExecutionContext>();
     mockContext.switchToHttp().getRequest.mockReturnValue({
       user: {
         roles: [TipoUsuario.ADMINISTRADOR],
+        id: 1,
       },
     });
 
-    reflector.get.mockReturnValue([TipoUsuario.ADMINISTRADOR]);
-    guard = new RolesGuard(reflector);
+    reflector.get
+      .mockReturnValueOnce([TipoUsuario.ADMINISTRADOR])
+      .mockReturnValue(null);
 
     expect(guard.canActivate(mockContext)).toBeTruthy();
   });
 
   it('Deve poder ativar uma rota que não pede role', () => {
-    reflector.get.mockReturnValue([]);
-    guard = new RolesGuard(reflector);
+    reflector.get.mockReturnValueOnce([]).mockReturnValue(null);
 
     expect(guard.canActivate(mockContext)).toBeTruthy();
+  });
+
+  it('Deve poder ativar uma rota que pede role e AuthParam', () => {
+    reflector.get
+      .mockReturnValueOnce([TipoUsuario.ALUNO])
+      .mockReturnValue('id');
+
+    mockContext.switchToHttp().getRequest.mockReturnValue({
+      user: {
+        roles: [TipoUsuario.ALUNO],
+        id: 1,
+      },
+      params: {
+        id: 1,
+      },
+    });
+
+    expect(guard.canActivate(mockContext)).toBeTruthy();
+  });
+
+  it('Não Deve poder ativar uma rota que pede role e AuthParam', () => {
+    reflector.get
+      .mockReturnValueOnce([TipoUsuario.ALUNO])
+      .mockReturnValue('id');
+
+    mockContext.switchToHttp().getRequest.mockReturnValue({
+      user: {
+        roles: [TipoUsuario.ALUNO],
+        id: 1,
+      },
+      params: {
+        id: 2,
+      },
+    });
+
+    expect(guard.canActivate(mockContext)).toBeFalsy();
+  });
+
+  afterEach(async () => {
+    reflector.get.mockClear();
+    mockContext.switchToHttp().getRequest.mockClear();
   });
 });

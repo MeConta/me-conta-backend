@@ -9,6 +9,7 @@ import { TOKEN_NAME } from '../../../config/swagger.config';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 export const Roles = (...roles: TipoUsuario[]) => SetMetadata('roles', roles);
+export const AuthParam = (name = 'id') => SetMetadata('authParam', name);
 
 export function Auth(...roles: TipoUsuario[]) {
   return applyDecorators(
