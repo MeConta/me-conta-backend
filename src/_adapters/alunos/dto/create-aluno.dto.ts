@@ -7,9 +7,16 @@ import {
   Estado,
   Genero,
 } from '../../../_business/usuarios/entidades/usuario.entity';
-import { IsDate, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsDate,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { IsPhone } from '../../../decorators/phone.decorator';
 import { Type } from 'class-transformer';
+import { IsNotEmptyString } from '../../../decorators';
 
 export class CreateAlunoDto implements Omit<NovoAluno, 'usuario'> {
   /***
@@ -103,4 +110,31 @@ export class CreateAlunoDto implements Omit<NovoAluno, 'usuario'> {
     message: '$property deve ser um valor de enum válido',
   })
   escolaridade: Escolaridade;
+
+  @IsOptional()
+  @IsString({
+    message: '$property deve ser texto',
+  })
+  @IsNotEmptyString({
+    message: '$property não deve ser vazio',
+  })
+  necessidades: string;
+
+  @IsOptional()
+  @IsString({
+    message: '$property deve ser texto',
+  })
+  @IsNotEmptyString({
+    message: '$property não deve ser vazio',
+  })
+  expectativas: string;
+
+  @IsOptional()
+  @IsString({
+    message: '$property deve ser texto',
+  })
+  @IsNotEmptyString({
+    message: '$property não deve ser vazio',
+  })
+  tratamentos: string;
 }

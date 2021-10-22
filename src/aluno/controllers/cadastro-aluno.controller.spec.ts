@@ -4,14 +4,14 @@ import {
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { CadastrarAluno } from '../_business/alunos/casos-de-uso/cadastrar-aluno.feat';
+import { CadastrarAluno } from '../../_business/alunos/casos-de-uso/cadastrar-aluno.feat';
 import { createMock } from '@golevelup/ts-jest';
 import {
   UsuarioInvalidoError,
   UsuarioNaoEncontradoError,
-} from '../_business/usuarios/erros/erros';
-import { Usuario } from '../_business/usuarios/entidades/usuario.entity';
-import { CreateAlunoDto } from '../_adapters/alunos/dto/create-aluno.dto';
+} from '../../_business/usuarios/erros/erros';
+import { Usuario } from '../../_business/usuarios/entidades/usuario.entity';
+import { CreateAlunoDto } from '../../_adapters/alunos/dto/create-aluno.dto';
 import { CadastroAlunoController } from './cadastro-aluno.controller';
 
 describe('Cadastro-aluno', function () {

@@ -1,12 +1,12 @@
 import { Inject, Injectable, Module } from '@nestjs/common';
 import { CadastrarAluno } from '../_business/alunos/casos-de-uso/cadastrar-aluno.feat';
-import { CadastroAlunoController } from './cadastro-aluno.controller';
+import { CadastroAlunoController } from './controllers/cadastro-aluno.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsuarioDbEntity } from '../_adapters/usuarios/entidades/usuario.db.entity';
 import { PerfilDbEntity } from '../_adapters/perfil/entidades/perfil.db.entity';
 import { ICadastrarNovoAlunoService } from '../_business/alunos/services/alunos.service';
 import { IBuscarUsuarioViaId } from '../_business/usuarios/casos-de-uso/buscar-usuario.id.feat';
-import { ICadastrarPerfilService } from '../_business/perfil/interfaces/cadastrar-perfil.service';
+import { ICadastrarPerfilService } from '../_business/perfil/services/cadastrar-perfil.service';
 import { TypeormUsuarioService } from '../_adapters/usuarios/services/typeorm-usuario.service';
 import { TypeormPerfilService } from '../_adapters/perfil/services/typeorm-perfil.service';
 import { AlunoDbEntity } from '../_adapters/alunos/entidades/aluno.db.entity';
@@ -41,4 +41,4 @@ class NestCadastrarAluno extends CadastrarAluno {
   ],
   controllers: [CadastroAlunoController],
 })
-export class CadastroAlunoModule {}
+export class AlunoModule {}

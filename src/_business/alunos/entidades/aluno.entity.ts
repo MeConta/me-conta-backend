@@ -19,4 +19,10 @@ export interface Aluno {
   tipoEscola: TipoEscola;
 }
 
-export type NovoAluno = Aluno & Perfil;
+export interface Motivos {
+  necessidades?: string;
+  expectativas?: string;
+  tratamentos?: string;
+}
+
+export type NovoAluno = Aluno & Perfil & Motivos;

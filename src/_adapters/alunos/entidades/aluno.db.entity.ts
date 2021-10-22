@@ -1,6 +1,7 @@
 import {
   Aluno,
   Escolaridade,
+  Motivos,
   TipoEscola,
 } from '../../../_business/alunos/entidades/aluno.entity';
 import {
@@ -16,7 +17,10 @@ import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 import { TypeormDefaultEntity } from '../../entidades/typeorm.default.entity';
 
 @Entity('aluno')
-export class AlunoDbEntity extends TypeormDefaultEntity implements Aluno {
+export class AlunoDbEntity
+  extends TypeormDefaultEntity
+  implements Aluno, Motivos
+{
   @Column({
     type: 'simple-enum',
     enum: Escolaridade,
@@ -28,6 +32,21 @@ export class AlunoDbEntity extends TypeormDefaultEntity implements Aluno {
     enum: TipoEscola,
   })
   tipoEscola: TipoEscola;
+
+  @Column({
+    nullable: true,
+  })
+  necessidades?: string;
+
+  @Column({
+    nullable: true,
+  })
+  expectativas: string;
+
+  @Column({
+    nullable: true,
+  })
+  tratamentos: string;
 
   @PrimaryColumn()
   usuarioId: number;

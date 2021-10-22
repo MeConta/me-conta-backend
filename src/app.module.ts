@@ -7,7 +7,7 @@ import { CadastroInicialModule } from './cadastro-inicial/cadastro-inicial.modul
 import { AuthModule } from './auth/auth.module';
 import { CadastroVoluntarioModule } from './cadastro-voluntario/cadastro-voluntario.module';
 import { PerfilModule } from './perfil/perfil.module';
-import { CadastroAlunoModule } from './cadastro-aluno/cadastro-aluno.module';
+import { AlunoModule } from './aluno/aluno.module';
 import { RecuperacaoModule } from './recuperacao/recuperacao.module';
 import { MailModule } from './mail/mail.module';
 
@@ -31,7 +31,7 @@ import { MailModule } from './mail/mail.module';
     PerfilModule,
     CadastroInicialModule,
     CadastroVoluntarioModule,
-    CadastroAlunoModule,
+    AlunoModule,
     RecuperacaoModule,
     // AgendaModule,
   ],

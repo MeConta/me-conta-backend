@@ -7,16 +7,16 @@ import {
   Post,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { CadastrarAluno } from '../_business/alunos/casos-de-uso/cadastrar-aluno.feat';
-import { CreateAlunoDto } from '../_adapters/alunos/dto/create-aluno.dto';
-import { User } from '../_adapters/auth/decorators/user.decorator';
-import { Usuario } from '../_business/usuarios/entidades/usuario.entity';
+import { CadastrarAluno } from '../../_business/alunos/casos-de-uso/cadastrar-aluno.feat';
+import { CreateAlunoDto } from '../../_adapters/alunos/dto/create-aluno.dto';
+import { User } from '../../_adapters/auth/decorators/user.decorator';
+import { Usuario } from '../../_business/usuarios/entidades/usuario.entity';
 import {
   UsuarioInvalidoError,
   UsuarioNaoEncontradoError,
-} from '../_business/usuarios/erros/erros';
-import { Auth } from '../_adapters/auth/decorators/auth.decorator';
-import { TipoUsuario } from '../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+} from '../../_business/usuarios/erros/erros';
+import { Auth } from '../../_adapters/auth/decorators/auth.decorator';
+import { TipoUsuario } from '../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { ApiInternalServerErrorResponse } from '@nestjs/swagger';
 
 @Controller('cadastro-aluno')

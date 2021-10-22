@@ -18,7 +18,7 @@ import { PerfilDbEntity } from '../src/_adapters/perfil/entidades/perfil.db.enti
 import { AlunoDbEntity } from '../src/_adapters/alunos/entidades/aluno.db.entity';
 import { CadastroInicialModule } from '../src/cadastro-inicial/cadastro-inicial.module';
 import { AuthModule } from '../src/auth/auth.module';
-import { CadastroAlunoModule } from '../src/cadastro-aluno/cadastro-aluno.module';
+import { AlunoModule } from '../src/aluno/aluno.module';
 
 describe('Criar Conta (e2e)', () => {
   let app: INestApplication;
@@ -27,7 +27,7 @@ describe('Criar Conta (e2e)', () => {
   beforeEach(async () => {
     const moduleFixture: TestingModule = await getTestingModule(
       [UsuarioDbEntity, PerfilDbEntity, AlunoDbEntity],
-      [AuthModule.forRoot(), CadastroInicialModule, CadastroAlunoModule],
+      [AuthModule.forRoot(), CadastroInicialModule, AlunoModule],
     );
 
     app = await moduleFixture.createNestApplication();

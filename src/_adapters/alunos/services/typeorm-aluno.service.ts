@@ -5,6 +5,7 @@ import { AlunoDbEntity } from '../entidades/aluno.db.entity';
 import { Repository } from 'typeorm';
 import {
   Aluno,
+  Motivos,
   NovoAluno,
 } from '../../../_business/alunos/entidades/aluno.entity';
 
@@ -12,7 +13,7 @@ import {
 export class TypeormAlunoService implements ICadastrarNovoAlunoService {
   constructor(
     @InjectRepository(AlunoDbEntity)
-    private readonly repository: Repository<Aluno>,
+    private readonly repository: Repository<Aluno & Motivos>,
   ) {}
 
   async cadastrar(aluno: NovoAluno): Promise<void> {

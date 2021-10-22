@@ -1,5 +1,5 @@
 import { Perfil } from '../../usuarios/entidades/usuario.entity';
-import { ICadastrarPerfilService } from '../../perfil/interfaces/cadastrar-perfil.service';
+import { ICadastrarPerfilService } from '../../perfil/services/cadastrar-perfil.service';
 import { NovoAluno } from '../entidades/aluno.entity';
 import { ICadastrarNovoAlunoService } from '../services/alunos.service';
 import { IBuscarUsuarioViaId } from '../../usuarios/casos-de-uso/buscar-usuario.id.feat';

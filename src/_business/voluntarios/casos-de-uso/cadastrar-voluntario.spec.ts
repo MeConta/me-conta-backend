@@ -18,7 +18,7 @@ import {
   FrenteAtuacao,
   Voluntario,
 } from '../entidades/voluntario.entity';
-import { ICadastrarPerfilService } from '../../perfil/interfaces/cadastrar-perfil.service';
+import { ICadastrarPerfilService } from '../../perfil/services/cadastrar-perfil.service';
 import {
   UsuarioInvalidoError,
   UsuarioNaoEncontradoError,

@@ -5,7 +5,7 @@ import {
   TipoUsuario,
 } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { Bio, Voluntario } from '../entidades/voluntario.entity';
-import { ICadastrarPerfilService } from '../../perfil/interfaces/cadastrar-perfil.service';
+import { ICadastrarPerfilService } from '../../perfil/services/cadastrar-perfil.service';
 import {
   UsuarioInvalidoError,
   UsuarioNaoEncontradoError,
