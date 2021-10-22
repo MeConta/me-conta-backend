@@ -11,6 +11,13 @@ import { TypeormUsuarioService } from '../_adapters/usuarios/services/typeorm-us
 import { TypeormPerfilService } from '../_adapters/perfil/services/typeorm-perfil.service';
 import { AlunoDbEntity } from '../_adapters/alunos/entidades/aluno.db.entity';
 import { TypeormAlunoService } from '../_adapters/alunos/services/typeorm-aluno.service';
+import { AtualizacaoAlunoController } from './controllers/atualizacao-aluno.controller';
+import {
+  AtualizarAluno,
+  IAtualizarAlunoService,
+  IBuscarAlunoViaId,
+} from '../_business/alunos/casos-de-uso/atualizar-aluno.feat';
+import { IAtualizarPerfilService } from '../_business/perfil/services/atualizar-perfil.service';
 
 @Injectable()
 class NestCadastrarAluno extends CadastrarAluno {
@@ -26,6 +33,18 @@ class NestCadastrarAluno extends CadastrarAluno {
   }
 }
 
+@Injectable()
+class NestAtualizarAluno extends AtualizarAluno {
+  constructor(
+    @Inject(TypeormAlunoService)
+    alunoService: IBuscarAlunoViaId & IAtualizarAlunoService,
+    @Inject(TypeormPerfilService)
+    perfilService: IAtualizarPerfilService,
+  ) {
+    super(alunoService, perfilService);
+  }
+}
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([UsuarioDbEntity, PerfilDbEntity, AlunoDbEntity]),
@@ -38,7 +57,11 @@ class NestCadastrarAluno extends CadastrarAluno {
       provide: CadastrarAluno,
       useClass: NestCadastrarAluno,
     },
+    {
+      provide: AtualizarAluno,
+      useClass: NestAtualizarAluno,
+    },
   ],
-  controllers: [CadastroAlunoController],
+  controllers: [CadastroAlunoController, AtualizacaoAlunoController],
 })
 export class AlunoModule {}

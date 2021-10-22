@@ -69,10 +69,35 @@ describe('AlunoService', () => {
 
   it('Deve cadastrar novo aluno', async () => {
     await service.cadastrar(request);
-    const alunos = await repository.find();
-    expect(alunos[0]).toEqual(
+    const [aluno] = await repository.find();
+    expect(aluno).toEqual(
       expect.objectContaining({
-        usuarioId: expect.any(Number),
+        id: expect.any(Number),
+      } as AlunoDbEntity),
+    );
+  });
+
+  it('Deve buscar um aluno via id', async () => {
+    await repository.save(request);
+    await service.findById(1);
+    const aluno = await repository.findOne(1);
+    expect(aluno).toEqual(
+      expect.objectContaining({
+        id: expect.any(Number),
+      } as AlunoDbEntity),
+    );
+  });
+
+  it('Deve Atualizar um aluno', async () => {
+    await repository.save(request);
+    await service.atualizar(1, {
+      ...request,
+      tipoEscola: TipoEscola.PARTICULAR,
+    });
+    const aluno = await repository.findOne(1);
+    expect(aluno).toEqual(
+      expect.objectContaining({
+        tipoEscola: TipoEscola.PARTICULAR,
       } as AlunoDbEntity),
     );
   });
