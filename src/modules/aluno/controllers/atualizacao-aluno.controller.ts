@@ -19,6 +19,7 @@ import {
   Auth,
   AuthParam,
 } from '../../../_adapters/auth/decorators/auth.decorator';
+import { AtualizarAlunoDto } from '../../../_adapters/alunos/dto/atualizar-aluno.dto';
 
 @Controller('/aluno/atualizar/')
 export class AtualizacaoAlunoController {
@@ -37,7 +38,10 @@ export class AtualizacaoAlunoController {
   @ApiNotFoundResponse({
     description: 'Aluno não encontrado',
   })
-  async atualizar(@Param('id') id: number, @Body() dto): Promise<void> {
+  async atualizar(
+    @Param('id') id: number,
+    @Body() dto: AtualizarAlunoDto,
+  ): Promise<void> {
     try {
       await this.useCase.execute(id, dto);
     } catch (e) {

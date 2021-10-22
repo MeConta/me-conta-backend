@@ -1,0 +1,1335 @@
+{
+	"info": {
+		"_postman_id": "f76e0196-39f9-450a-93a7-efceca4f9c06",
+		"name": "Me Conta? 2.0",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    const res = pm.response.json();",
+									"    pm.environment.set('BEARER_TOKEN', res.token);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{EMAIL}}\",\n    \"password\": \"{{SENHA}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/auth/login",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"{{EMAIL}}\",\n    \"password\": \"{{SENHA}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/auth/login",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "212"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"d4-dg61zDTkGYf8k/0rhumA+DZc41A\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 19 Oct 2021 17:01:13 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikdlb3JnaWFuYTg4QGV4YW1wbGUuY29tIiwic3ViIjozLCJyb2xlcyI6WzJdLCJpYXQiOjE2MzQ2NjI4NzMsImV4cCI6MTYzNDc0OTI3M30.WRAOj4aIl_USRQ6-6Y4ep77Oyye8gP_4BeOQEcmPWp0\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Protected",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    const res = pm.response.json();",
+									"    pm.environment.set('BEARER_TOKEN', res.token);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BEARER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{EMAIL}}\",\n    \"password\": \"{{SENHA}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/protected",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"protected"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Voluntário",
+			"item": [
+				{
+					"name": "Cadastro voluntário",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(204);",
+									"    const request = JSON.parse(pm.request.body.raw);",
+									"    pm.environment.set('EMAIL', request.email)",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": true,\n    \"anoFormacao\": 2020,\n    \"areaAtuacao\": \"psicologo\",\n    \"crp\": \"{{$randomLoremSentence}}\",\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"frentes\": [\n        1\n    ],\n    \"tipo\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-voluntario",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"cadastro-voluntario"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Cadastro de Atendente em Formação",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": false,\n    \"crp\": \"{{$randomLoremSentence}}\",\n    \"semestre\": 10,\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"frentes\": [\n        1\n    ],\n    \"tipo\": 2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-voluntario",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"cadastro-voluntario"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 19 Oct 2021 16:57:22 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Cadastro de Atendente Formado",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": true,\n    \"anoFormacao\": 2020,\n    \"areaAtuacao\": \"psicologo\",\n    \"crp\": \"{{$randomLoremSentence}}\",\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"frentes\": [\n        1\n    ],\n    \"tipo\": 2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-voluntario",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"cadastro-voluntario"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 19 Oct 2021 16:59:31 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Cadastro de Supervisor",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": true,\n    \"anoFormacao\": 2020,\n    \"areaAtuacao\": \"psicologo\",\n    \"crp\": \"{{$randomLoremSentence}}\",\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"frentes\": [\n        1\n    ],\n    \"tipo\": 3\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-voluntario",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"cadastro-voluntario"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 19 Oct 2021 17:00:27 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{BEARER_TOKEN}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Aluno",
+			"item": [
+				{
+					"name": "Cadastro Aluno",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(204);",
+									"    const request = JSON.parse(pm.request.body.raw);",
+									"    pm.environment.set('EMAIL', request.email)",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"telefone\": \"11912345678\",\n  \"dataNascimento\": \"1996-07-12\",\n  \"cidade\": \"Acrelândia\",\n  \"UF\": \"AC\",\n  \"genero\": \"ND\",\n  \"tipoEscola\": 0,\n  \"escolaridade\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-aluno",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"cadastro-aluno"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Cadastro Aluno",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"telefone\": \"11912345678\",\n  \"dataNascimento\": \"1996-07-12\",\n  \"cidade\": \"Acrelândia\",\n  \"UF\": \"AC\",\n  \"genero\": \"ND\",\n  \"tipoEscola\": 0,\n  \"escolaridade\": 0\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-aluno",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"cadastro-aluno"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 19 Oct 2021 17:09:21 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Atualização Aluno",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(204);",
+									"    const request = JSON.parse(pm.request.body.raw);",
+									"    pm.environment.set('EMAIL', request.email)",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"telefone\": \"11912345678\",\n  \"dataNascimento\": \"1996-07-12\",\n  \"cidade\": \"Taboão da Serra\",\n  \"UF\": \"SP\",\n  \"genero\": \"ND\",\n  \"tipoEscola\": 1,\n  \"escolaridade\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/aluno/atualizar/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"aluno",
+								"atualizar",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Sucess",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"telefone\": \"11912345678\",\n  \"dataNascimento\": \"1996-07-12\",\n  \"cidade\": \"Taboão da Serra\",\n  \"UF\": \"SP\",\n  \"genero\": \"ND\",\n  \"tipoEscola\": 1,\n  \"escolaridade\": 0\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/aluno/atualizar/:id",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"aluno",
+										"atualizar",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 22 Oct 2021 19:16:07 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"telefone\": \"11912345678\",\n  \"dataNascimento\": \"1996-07-12\",\n  \"cidade\": \"Taboão da Serra\",\n  \"UF\": \"SP\",\n  \"genero\": \"ND\",\n  \"tipoEscola\": 1,\n  \"escolaridade\": 0\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/aluno/atualizar/:id",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"aluno",
+										"atualizar",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "69"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"45-T7Txzr/IRLfQ4TEPfbVWLpgje4Q\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 22 Oct 2021 19:16:31 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 403,\n    \"message\": \"Forbidden resource\",\n    \"error\": \"Forbidden\"\n}"
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{BEARER_TOKEN}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Cadastro",
+			"item": [
+				{
+					"name": "Cadastro Inicial",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.environment.set('EMAIL', pm.response.json().email)",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"{{$randomFirstName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"senha\": \"{{SENHA}}\",\n    \"tipo\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-inicial",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"cadastro-inicial"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Cadastro de Aluno",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nome\": \"{{$randomFirstName}}\",\n    \"email\": \"{{$randomExampleEmail}}\",\n    \"senha\": \"{{SENHA}}\",\n    \"tipo\": 0\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-inicial",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"cadastro-inicial"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "67"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"43-7Mb4iYnnI4aPzMaaf+UU4tbkhlo\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 19 Oct 2021 17:01:53 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 4,\n    \"nome\": \"Arvid\",\n    \"tipo\": 0,\n    \"email\": \"Sigrid.Hyatt@example.com\"\n}"
+						},
+						{
+							"name": "Cadastro de Atendente",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nome\": \"{{$randomFirstName}}\",\n    \"email\": \"{{$randomExampleEmail}}\",\n    \"senha\": \"{{SENHA}}\",\n    \"tipo\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-inicial",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"cadastro-inicial"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "71"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"47-HYiNbh/V3Ahq2R7cNPbMPXNKK/8\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 19 Oct 2021 17:02:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 5,\n    \"nome\": \"Yasmin\",\n    \"tipo\": 1,\n    \"email\": \"Torey_Ritchie33@example.net\"\n}"
+						},
+						{
+							"name": "Cadastro de Supervisor",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nome\": \"{{$randomFirstName}}\",\n    \"email\": \"{{$randomExampleEmail}}\",\n    \"senha\": \"{{SENHA}}\",\n    \"tipo\": 2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-inicial",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"cadastro-inicial"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "64"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"40-X3XZMRhmsp00EgabWiAzZYsz3vM\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 19 Oct 2021 17:03:29 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 7,\n    \"nome\": \"Brycen\",\n    \"tipo\": 2,\n    \"email\": \"Luther51@example.net\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Recuperação senha",
+			"item": [
+				{
+					"name": "Recuperar Senha",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.environment.set('EMAIL', pm.response.json().email)",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{EMAIL}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/senha/recuperacao",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"senha",
+								"recuperacao"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Recuperar Senha",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"{{EMAIL}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/senha/recuperacao",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"senha",
+										"recuperacao"
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 21 Oct 2021 18:32:51 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Reset Senha",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.environment.set('EMAIL', pm.response.json().email)",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"hash\": \"c536499a3cc501c1592a470509948ebd5a63f0a97e12d248\",\n    \"senha\": \"testedesenhaforte\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/senha/reset",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"senha",
+								"reset"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Reset Senha Sucesso",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"hash\": \"d78108339808c12890ecec6d80e2896ede67f8f60f7bfb19\",\n    \"senha\": \"testedesenhaforte\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/senha/reset",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"senha",
+										"reset"
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 21 Oct 2021 18:33:30 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Pedido de recuperação não encontrado",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"hash\": \"d78108339808c12890ecec6d80e2896ede67f8f60f7bfb19\",\n    \"senha\": \"testedesenhaforte\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/senha/reset",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"senha",
+										"reset"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "73"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"49-JVJBfx08dzmM4xfK+NKCWTI7zNQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 21 Oct 2021 18:33:43 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 404,\n    \"message\": \"Pedido de recuperação de senha não encontrado\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Home",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/",
+					"protocol": "{{PROTOCOL}}",
+					"host": [
+						"{{HOST}}{{PORT}}"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
