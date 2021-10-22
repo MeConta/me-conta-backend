@@ -65,7 +65,7 @@ describe('VoluntarioService', () => {
     expect(connection.isConnected).toBeTruthy();
   });
 
-  it('Deve cadastrar novo aluno', async () => {
+  it('Deve cadastrar novo voluntário', async () => {
     await service.cadastrar(request);
     const voluntarios = await repository.find();
     expect(voluntarios[0]).toEqual(

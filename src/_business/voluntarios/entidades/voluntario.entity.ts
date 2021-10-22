@@ -23,3 +23,7 @@ export interface Voluntario {
   especializacoes?: string;
   usuario: Usuario;
 }
+
+export interface Bio {
+  bio?: string;
+}

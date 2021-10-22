@@ -11,6 +11,7 @@ import { UsuarioDbEntity } from '../../usuarios/entidades/usuario.db.entity';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 import {
   AreaAtuacao,
+  Bio,
   FrenteAtuacao,
   Voluntario,
 } from '../../../_business/voluntarios/entidades/voluntario.entity';
@@ -18,7 +19,7 @@ import {
 @Entity('voluntario')
 export class VoluntarioDbEntity
   extends TypeormDefaultEntity
-  implements Voluntario
+  implements Voluntario, Bio
 {
   @Column({
     nullable: true,
@@ -65,6 +66,11 @@ export class VoluntarioDbEntity
   })
   especializacoes: string;
 
+  @Column({
+    nullable: true,
+  })
+  bio?: string;
+
   @PrimaryColumn()
   usuarioId: number;
 
@@ -72,7 +78,6 @@ export class VoluntarioDbEntity
   getUsuarioId() {
     this.usuarioId = this.usuario.id;
   }
-
   @OneToOne(() => UsuarioDbEntity, {
     eager: true,
   })

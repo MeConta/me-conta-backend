@@ -4,7 +4,7 @@ import {
   NovoUsuario,
   TipoUsuario,
 } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { Voluntario } from '../entidades/voluntario.entity';
+import { Bio, Voluntario } from '../entidades/voluntario.entity';
 import { ICadastrarPerfilService } from '../../perfil/interfaces/cadastrar-perfil.service';
 import {
   UsuarioInvalidoError,
@@ -14,6 +14,7 @@ import { IAtualizarUsuarioService } from '../../usuarios/services/usuario.servic
 
 export type NovoVoluntario = Perfil &
   Voluntario &
+  Bio &
   Partial<Pick<NovoUsuario, 'tipo'>>;
 
 export interface ICadastrarNovoVoluntarioService {

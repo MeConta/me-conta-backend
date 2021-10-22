@@ -11,6 +11,7 @@ import {
   IsString,
   Max,
   Min,
+  ValidateIf,
 } from 'class-validator';
 import { IsPhone } from '../../../decorators/phone.decorator';
 import { Type } from 'class-transformer';
@@ -22,7 +23,7 @@ import {
   AreaAtuacao,
   FrenteAtuacao,
 } from '../../../_business/voluntarios/entidades/voluntario.entity';
-import { MinAge } from '../../../decorators';
+import { IsNotEmptyString, MinAge } from '../../../decorators';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 export class CreateVoluntarioDto implements Omit<NovoVoluntario, 'usuario'> {
@@ -211,4 +212,21 @@ export class CreateVoluntarioDto implements Omit<NovoVoluntario, 'usuario'> {
     message: '$property deve ser um valor de enum válido',
   })
   tipo: TipoUsuario;
+
+  /***
+   * Biografia do atendente
+   */
+  @IsNotEmpty({
+    message: '$property não deve ser vazia',
+  })
+  @IsNotEmptyString({
+    message: '$property não deve ser vazia',
+  })
+  @ValidateIf(
+    (voluntario: NovoVoluntario) => voluntario.tipo === TipoUsuario.ATENDENTE,
+    {
+      message: '$property não pode ser vazia',
+    },
+  )
+  bio: string;
 }
