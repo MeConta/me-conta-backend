@@ -118,62 +118,6 @@
 							"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Ikdlb3JnaWFuYTg4QGV4YW1wbGUuY29tIiwic3ViIjozLCJyb2xlcyI6WzJdLCJpYXQiOjE2MzQ2NjI4NzMsImV4cCI6MTYzNDc0OTI3M30.WRAOj4aIl_USRQ6-6Y4ep77Oyye8gP_4BeOQEcmPWp0\"\n}"
 						}
 					]
-				},
-				{
-					"name": "Protected",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"    const res = pm.response.json();",
-									"    pm.environment.set('BEARER_TOKEN', res.token);",
-									"});",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{BEARER_TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"username\": \"{{EMAIL}}\",\n    \"password\": \"{{SENHA}}\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/protected",
-							"protocol": "{{PROTOCOL}}",
-							"host": [
-								"{{HOST}}{{PORT}}"
-							],
-							"path": [
-								"protected"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -196,10 +140,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(204);",
-									"    const request = JSON.parse(pm.request.body.raw);",
-									"    pm.environment.set('EMAIL', request.email)",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
 									"});",
 									""
 								],
@@ -212,7 +154,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": true,\n    \"anoFormacao\": 2020,\n    \"areaAtuacao\": \"psicologo\",\n    \"crp\": \"{{$randomLoremSentence}}\",\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"frentes\": [\n        1\n    ],\n    \"tipo\": 1\n}",
+							"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": true,\n    \"anoFormacao\": 2020,\n    \"areaAtuacao\": \"psicologo\",\n    \"crp\": \"{{$randomLoremSentence}}\",\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"frentes\": [\n        1\n    ],\n    \"tipo\": 1,\n    \"bio\": \"{{$randomLoremParagraph}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -232,13 +174,13 @@
 					},
 					"response": [
 						{
-							"name": "Cadastro de Atendente em Formação",
+							"name": "Em Formação",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": false,\n    \"crp\": \"{{$randomLoremSentence}}\",\n    \"semestre\": 10,\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"frentes\": [\n        1\n    ],\n    \"tipo\": 2\n}",
+									"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": false,\n    \"crp\": \"{{$randomLoremSentence}}\",\n    \"semestre\": 10,\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"frentes\": [\n        1\n    ],\n    \"tipo\": 2,\n    \"bio\": \"{{$randomLoremParagraph}}\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -289,13 +231,13 @@
 							"body": null
 						},
 						{
-							"name": "Cadastro de Atendente Formado",
+							"name": "Formado",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": true,\n    \"anoFormacao\": 2020,\n    \"areaAtuacao\": \"psicologo\",\n    \"crp\": \"{{$randomLoremSentence}}\",\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"frentes\": [\n        1\n    ],\n    \"tipo\": 2\n}",
+									"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": true,\n    \"anoFormacao\": 2020,\n    \"areaAtuacao\": \"psicologo\",\n    \"crp\": \"{{$randomLoremSentence}}\",\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"frentes\": [\n        1\n    ],\n    \"tipo\": 2,\n    \"bio\": \"{{$randomLoremParagraph}}\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1310,6 +1252,780 @@
 							"body": "{\n    \"code\": 404,\n    \"message\": \"Pedido de recuperação de senha não encontrado\"\n}"
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "Testes",
+			"item": [
+				{
+					"name": "Criar um Aluno",
+					"item": [
+						{
+							"name": "Cadastro Inicial",
+							"item": [
+								{
+									"name": "Cadastro Inicial",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(201);",
+													"    pm.environment.set('EMAIL', pm.response.json().email)",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"nome\": \"{{$randomFirstName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"senha\": \"{{SENHA}}\",\n    \"tipo\": 0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-inicial",
+											"protocol": "{{PROTOCOL}}",
+											"host": [
+												"{{HOST}}{{PORT}}"
+											],
+											"path": [
+												"cadastro-inicial"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Login",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"    const res = pm.response.json();",
+													"    pm.environment.set('BEARER_TOKEN', res.token);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"username\": \"{{EMAIL}}\",\n    \"password\": \"{{SENHA}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/auth/login",
+											"protocol": "{{PROTOCOL}}",
+											"host": [
+												"{{HOST}}{{PORT}}"
+											],
+											"path": [
+												"auth",
+												"login"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"auth": {
+								"type": "noauth"
+							},
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Cadastro Aluno",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"telefone\": \"11912345678\",\n  \"dataNascimento\": \"1996-07-12\",\n  \"cidade\": \"{{$randomCity}}\",\n  \"UF\": \"AC\",\n  \"genero\": \"ND\",\n  \"tipoEscola\": 0,\n  \"escolaridade\": 0,\n  \"necessidades\": \"{{$randomLoremParagraph}}\",\n  \"expectativas\": \"{{$randomLoremParagraph}}\",\n  \"tratamentos\": \"{{$randomLoremParagraph}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-aluno",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"cadastro-aluno"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Criar um Atendente",
+					"item": [
+						{
+							"name": "Cadastro Inicial",
+							"item": [
+								{
+									"name": "Cadastro Inicial",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(201);",
+													"    pm.environment.set('EMAIL', pm.response.json().email)",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"nome\": \"{{$randomFirstName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"senha\": \"{{SENHA}}\",\n    \"tipo\": 2\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-inicial",
+											"protocol": "{{PROTOCOL}}",
+											"host": [
+												"{{HOST}}{{PORT}}"
+											],
+											"path": [
+												"cadastro-inicial"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Login",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"    const res = pm.response.json();",
+													"    pm.environment.set('BEARER_TOKEN', res.token);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"username\": \"{{EMAIL}}\",\n    \"password\": \"{{SENHA}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/auth/login",
+											"protocol": "{{PROTOCOL}}",
+											"host": [
+												"{{HOST}}{{PORT}}"
+											],
+											"path": [
+												"auth",
+												"login"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"auth": {
+								"type": "noauth"
+							},
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Cadastro voluntário",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": false,\n    \"semestre\": 5,\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"frentes\": [\n        1\n    ],\n    \"tipo\": 2,\n    \"bio\": \"{{$randomLoremParagraph}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-voluntario",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"cadastro-voluntario"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Em Formação",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": false,\n    \"crp\": \"{{$randomLoremSentence}}\",\n    \"semestre\": 10,\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"frentes\": [\n        1\n    ],\n    \"tipo\": 2,\n    \"bio\": \"{{$randomLoremParagraph}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-voluntario",
+											"protocol": "{{PROTOCOL}}",
+											"host": [
+												"{{HOST}}{{PORT}}"
+											],
+											"path": [
+												"cadastro-voluntario"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 19 Oct 2021 16:57:22 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										},
+										{
+											"key": "Content-Length",
+											"value": "0"
+										}
+									],
+									"cookie": [],
+									"body": null
+								},
+								{
+									"name": "Formado",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": true,\n    \"anoFormacao\": 2020,\n    \"areaAtuacao\": \"psicologo\",\n    \"crp\": \"{{$randomLoremSentence}}\",\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"frentes\": [\n        1\n    ],\n    \"tipo\": 2,\n    \"bio\": \"{{$randomLoremParagraph}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-voluntario",
+											"protocol": "{{PROTOCOL}}",
+											"host": [
+												"{{HOST}}{{PORT}}"
+											],
+											"path": [
+												"cadastro-voluntario"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 19 Oct 2021 16:59:31 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										},
+										{
+											"key": "Content-Length",
+											"value": "0"
+										}
+									],
+									"cookie": [],
+									"body": null
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Criar um Supervisor",
+					"item": [
+						{
+							"name": "Cadastro Inicial",
+							"item": [
+								{
+									"name": "Cadastro Inicial",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(201);",
+													"    pm.environment.set('EMAIL', pm.response.json().email)",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"nome\": \"{{$randomFirstName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"senha\": \"{{SENHA}}\",\n    \"tipo\": 1\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-inicial",
+											"protocol": "{{PROTOCOL}}",
+											"host": [
+												"{{HOST}}{{PORT}}"
+											],
+											"path": [
+												"cadastro-inicial"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Login",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"    const res = pm.response.json();",
+													"    pm.environment.set('BEARER_TOKEN', res.token);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"username\": \"{{EMAIL}}\",\n    \"password\": \"{{SENHA}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/auth/login",
+											"protocol": "{{PROTOCOL}}",
+											"host": [
+												"{{HOST}}{{PORT}}"
+											],
+											"path": [
+												"auth",
+												"login"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"auth": {
+								"type": "noauth"
+							},
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Cadastro voluntário",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": true,\n    \"anoFormacao\": 2020,\n    \"areaAtuacao\": \"psicologo\",\n    \"crp\": \"{{$randomLoremSentence}}\",\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"frentes\": [\n        1\n    ],\n    \"tipo\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-voluntario",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"cadastro-voluntario"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Supervisor",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": true,\n    \"anoFormacao\": 2020,\n    \"areaAtuacao\": \"psicologo\",\n    \"crp\": \"{{$randomLoremSentence}}\",\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"frentes\": [\n        1\n    ],\n    \"tipo\": 1\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-voluntario",
+											"protocol": "{{PROTOCOL}}",
+											"host": [
+												"{{HOST}}{{PORT}}"
+											],
+											"path": [
+												"cadastro-voluntario"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 19 Oct 2021 16:57:22 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										},
+										{
+											"key": "Content-Length",
+											"value": "0"
+										}
+									],
+									"cookie": [],
+									"body": null
+								}
+							]
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
