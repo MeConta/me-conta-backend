@@ -8,16 +8,21 @@ import { VoluntarioDbEntity } from '../entidades/voluntario-db.entity';
 import { Repository } from 'typeorm';
 import {
   IAtualizarAprovacaoVoluntario,
+  IBuscarVoluntarios,
   IBuscarVoluntarioViaId,
 } from '../../../_business/voluntarios/services/voluntario.service';
-import { Voluntario } from '../../../_business/voluntarios/entidades/voluntario.entity';
+import {
+  Bio,
+  Voluntario,
+} from '../../../_business/voluntarios/entidades/voluntario.entity';
 
 @Injectable()
 export class TypeormVoluntarioService
   implements
     ICadastrarNovoVoluntarioService,
     IBuscarVoluntarioViaId,
-    IAtualizarAprovacaoVoluntario
+    IAtualizarAprovacaoVoluntario,
+    IBuscarVoluntarios
 {
   constructor(
     @InjectRepository(VoluntarioDbEntity)
@@ -36,7 +41,15 @@ export class TypeormVoluntarioService
     });
   }
 
-  async findById(id: number): Promise<Voluntario> {
+  async findById(id: number): Promise<Voluntario & Bio> {
     return this.repository.findOne(id);
+  }
+
+  async buscar(search?: Partial<Voluntario>): Promise<(Voluntario & Bio)[]> {
+    return this.repository.find({
+      relations: ['usuario'],
+      where: search,
+    });
+    // return this.repository.find();
   }
 }

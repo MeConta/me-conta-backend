@@ -1,4 +1,4 @@
-import { Voluntario } from '../../voluntarios/entidades/voluntario.entity';
+import { Bio, Voluntario } from '../../voluntarios/entidades/voluntario.entity';
 import { createMock } from '@golevelup/ts-jest';
 import { Usuario } from '../../usuarios/entidades/usuario.entity';
 import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
@@ -14,13 +14,13 @@ import {
 class InMemoryVoluntarioService
   implements IBuscarVoluntarioViaId, IAtualizarAprovacaoVoluntario
 {
-  public voluntarios: Voluntario[] = [
+  public voluntarios: (Voluntario & Bio)[] = [
     {
-      ...createMock<Voluntario>(),
+      ...createMock<Voluntario & Bio>(),
       usuario: { ...createMock<Usuario>(), id: 0, tipo: TipoUsuario.ATENDENTE },
     },
   ];
-  async findById(id: number): Promise<Voluntario> {
+  async findById(id: number): Promise<Voluntario & Bio> {
     return Promise.resolve(
       this.voluntarios.find((voluntario) => voluntario.usuario.id === id),
     );

@@ -26,7 +26,7 @@ describe('VoluntarioService', () => {
     semestre: 10,
     frentes: [FrenteAtuacao.COACHING_DE_ROTINA_DE_ESTUDOS],
     instituicao: 'Teste',
-  } as NovoVoluntario;
+  } as NovoVoluntario & { aprovado?: boolean };
 
   beforeAll(async () => {
     connection = await createConnection({
@@ -91,5 +91,21 @@ describe('VoluntarioService', () => {
     const { aprovado } = await repository.findOne(id);
 
     expect(aprovado).toBeTruthy();
+  });
+
+  it('Deve buscar voluntários via propriedades', async () => {
+    await repository.save({ ...request, aprovado: true });
+
+    const response = await service.buscar({ aprovado: true });
+
+    expect(response).toHaveLength(1);
+  });
+
+  it('Deve buscar todos os voluntários', async () => {
+    await repository.save(request);
+
+    const response = await service.buscar();
+
+    expect(response).toHaveLength(1);
   });
 });

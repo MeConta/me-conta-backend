@@ -1,5 +1,5 @@
 import { applyDecorators, SetMetadata, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard, RolesGuard } from '../guards';
+import { JwtAuthGuard, OptionalJwtAuthGuard, RolesGuard } from '../guards';
 import {
   ApiBearerAuth,
   ApiForbiddenResponse,
@@ -18,5 +18,12 @@ export function Auth(...roles: TipoUsuario[]) {
     ApiBearerAuth(TOKEN_NAME),
     ApiUnauthorizedResponse({ description: 'Usuário precisa estar logado' }),
     ApiForbiddenResponse({ description: 'Usuário não tem permissão' }),
+  );
+}
+
+export function OptionalAuth() {
+  return applyDecorators(
+    UseGuards(OptionalJwtAuthGuard),
+    ApiBearerAuth(TOKEN_NAME),
   );
 }

@@ -14,6 +14,9 @@ import { ICadastrarPerfilService } from '../../_business/perfil/services/cadastr
 import { PerfilDbEntity } from '../../_adapters/perfil/entidades/perfil.db.entity';
 import { TypeormVoluntarioService } from '../../_adapters/voluntarios/services/typeorm-voluntario.service';
 import { IAtualizarUsuarioService } from '../../_business/usuarios/services/usuario.service';
+import { ListarVoluntarios } from '../../_business/voluntarios/casos-de-uso/listar-voluntarios.feat';
+import { ListarVoluntariosController } from './controllers/listar-voluntarios.controller';
+import { IBuscarVoluntarios } from '../../_business/voluntarios/services/voluntario.service';
 
 @Injectable()
 class NestCadastrarVoluntario extends CadastrarVoluntario {
@@ -28,6 +31,17 @@ class NestCadastrarVoluntario extends CadastrarVoluntario {
     super(voluntarioService, usuarioService, perfilService);
   }
 }
+
+@Injectable()
+class NestListarVoluntario extends ListarVoluntarios {
+  constructor(
+    @Inject(TypeormVoluntarioService)
+    voluntarioService: IBuscarVoluntarios,
+  ) {
+    super(voluntarioService);
+  }
+}
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -44,7 +58,11 @@ class NestCadastrarVoluntario extends CadastrarVoluntario {
       provide: CadastrarVoluntario,
       useClass: NestCadastrarVoluntario,
     },
+    {
+      provide: ListarVoluntarios,
+      useClass: NestListarVoluntario,
+    },
   ],
-  controllers: [CadastroVoluntarioController],
+  controllers: [CadastroVoluntarioController, ListarVoluntariosController],
 })
 export class VoluntarioModule {}
