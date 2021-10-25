@@ -74,4 +74,22 @@ describe('VoluntarioService', () => {
       } as VoluntarioDbEntity),
     );
   });
+
+  it('Deve buscar um voluntário', async () => {
+    const { id } = await repository.save(request);
+
+    const voluntario = await service.findById(id);
+
+    expect(voluntario).toBeDefined();
+  });
+
+  it('Deve atualizar a aprovação de um voluntário', async () => {
+    const { id } = await repository.save(request);
+
+    await service.atualizarAprovacao(id, true);
+
+    const { aprovado } = await repository.findOne(id);
+
+    expect(aprovado).toBeTruthy();
+  });
 });

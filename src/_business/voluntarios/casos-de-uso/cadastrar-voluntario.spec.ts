@@ -28,13 +28,13 @@ import { IAtualizarUsuarioService } from '../../usuarios/services/usuario.servic
 // ---
 class InMemoryVoluntarioService implements ICadastrarNovoVoluntarioService {
   voluntarios: NovoVoluntario[] = [];
-  async cadastrar(aluno: NovoVoluntario): Promise<void> {
+  async cadastrar(voluntario: NovoVoluntario): Promise<void> {
     this.voluntarios.push({
-      ...aluno,
+      ...voluntario,
       usuario: {
         ...createMock<Usuario>(),
-        ...aluno.usuario,
-        tipo: aluno.tipo,
+        ...voluntario.usuario,
+        tipo: voluntario.tipo,
         id: this.voluntarios.length,
       } as Usuario,
     });

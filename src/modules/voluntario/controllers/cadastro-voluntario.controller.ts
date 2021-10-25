@@ -14,7 +14,6 @@ import {
 } from '../../../_business/voluntarios/casos-de-uso/cadastrar-voluntario.feat';
 import { CreateVoluntarioDto } from '../../../_adapters/voluntarios/dto/create-voluntario.dto';
 import {
-  ApiForbiddenResponse,
   ApiInternalServerErrorResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
@@ -35,9 +34,6 @@ export class CadastroVoluntarioController {
   ) {}
   @ApiUnprocessableEntityResponse({
     description: 'Campos de formação incorretos',
-  })
-  @ApiForbiddenResponse({
-    description: 'Este usuário não tem permissão',
   })
   @ApiInternalServerErrorResponse({
     description: 'Erro genérico',

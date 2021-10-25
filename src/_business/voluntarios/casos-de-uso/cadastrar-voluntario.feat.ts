@@ -13,7 +13,7 @@ import {
 import { IAtualizarUsuarioService } from '../../usuarios/services/usuario.service';
 
 export type NovoVoluntario = Perfil &
-  Voluntario &
+  Omit<Voluntario, 'aprovado'> &
   Bio &
   Partial<Pick<NovoUsuario, 'tipo'>>;
 
@@ -35,7 +35,7 @@ export class CadastrarVoluntario {
     private readonly perfilService: ICadastrarPerfilService,
   ) {}
 
-  private checkCampos(keys, input) {
+  private checkCampos(keys: string[], input: NovoVoluntario) {
     return keys.every((key) => Object.keys(input).includes(key) && input[key]);
   }
 

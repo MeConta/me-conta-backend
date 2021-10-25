@@ -10,6 +10,7 @@ import { PerfilModule } from './modules/perfil/perfil.module';
 import { AlunoModule } from './modules/aluno/aluno.module';
 import { RecuperacaoModule } from './modules/recuperacao/recuperacao.module';
 import { MailModule } from './mail/mail.module';
+import { AdminModule } from './modules/admin/admin.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { MailModule } from './mail/mail.module';
     VoluntarioModule,
     AlunoModule,
     RecuperacaoModule,
+    AdminModule,
     // AgendaModule,
   ],
   controllers: [AppController],
