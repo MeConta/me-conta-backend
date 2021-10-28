@@ -2,25 +2,28 @@ import * as request from 'supertest';
 import { CreateUsuarioDto } from '../src/_adapters/usuarios/dto/create-usuario.dto';
 import { INestApplication, Provider } from '@nestjs/common';
 import { TipoUsuario } from '../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { internet, name } from 'faker/locale/pt_BR';
+import { name, internet } from 'faker/locale/pt_BR';
 import { AuthDto, TokenDto } from '../src/_adapters/auth/dto/auth.dto';
 import { Test, TestingModule } from '@nestjs/testing';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
-import database from '../src/config/database.config';
 import { DEFAULT_PASSWORD } from '../jest.setup';
+import { DbE2eModule } from './modules/db-e2e.module';
+import { ConfigE2eModule } from './modules/config-e2e.module';
+import { MailE2EModule } from './modules/mail-e2e.module';
+import { Connection } from 'typeorm';
+import { UsuarioDbEntity } from '../src/_adapters/usuarios/entidades/usuario.db.entity';
+import { Usuario } from '../src/_business/usuarios/entidades/usuario.entity';
 
 export async function createUser(
   app: INestApplication,
-  tipoUsuario: TipoUsuario = TipoUsuario.ALUNO,
-  usuario?: Partial<CreateUsuarioDto>,
-): Promise<CreateUsuarioDto> {
-  const { nome, email, senha, tipo } = usuario || {
-    nome: name.firstName(),
-    email: internet.email(),
-    senha: DEFAULT_PASSWORD,
-    tipo: tipoUsuario,
+  tipo: TipoUsuario = TipoUsuario.ALUNO,
+  dto?: Partial<Omit<CreateUsuarioDto, 'tipo'>>,
+): Promise<Usuario> {
+  const { nome, email, senha } = {
+    nome: dto?.nome || name.findName(),
+    email: dto?.email || internet.email(),
+    senha: dto?.senha || DEFAULT_PASSWORD,
   };
+
   await request(app.getHttpServer())
     .post('/cadastro-inicial')
     .send({
@@ -29,64 +32,56 @@ export async function createUser(
       senha,
       tipo,
     } as CreateUsuarioDto);
-  return Promise.resolve({
-    nome,
-    email,
-    senha,
-    tipo,
+
+  const repo = await app.get(Connection).getRepository(UsuarioDbEntity);
+  return repo.findOne({
+    where: {
+      email,
+    },
   });
 }
 
 export async function getToken(
   app: INestApplication,
-  login?: AuthDto,
   tipo: TipoUsuario = TipoUsuario.ADMINISTRADOR,
+  login?: AuthDto,
 ): Promise<string> {
-  const { username, password } = login || {
-    username: internet.email(),
-    password: DEFAULT_PASSWORD,
+  const { email, senha } = {
+    email: login?.username || internet.email(),
+    senha: login?.password || DEFAULT_PASSWORD,
   };
 
-  await request(app.getHttpServer())
-    .post('/cadastro-inicial')
-    .send({
-      nome: name.firstName(),
-      email: username,
-      senha: password,
-      tipo,
-    } as CreateUsuarioDto);
+  const repo = await app.get(Connection).getRepository(UsuarioDbEntity);
+
+  const usuario =
+    (await repo.findOne({
+      where: {
+        email,
+      },
+    })) ||
+    (await createUser(app, tipo, {
+      email,
+      senha,
+    }));
+
+  await repo.save({
+    id: usuario.id,
+    tipo,
+  });
 
   const { body } = await request(app.getHttpServer())
     .post('/auth/login')
-    .send({ username, password });
+    .send({ username: email, password: senha } as AuthDto);
 
   return (body as TokenDto).token;
 }
 
 export async function getTestingModule(
-  entities: any[],
   modules: any[],
   providers: Provider[] = [],
 ): Promise<TestingModule> {
   return Test.createTestingModule({
-    imports: [
-      TypeOrmModule.forRoot({
-        type: 'better-sqlite3',
-        database: ':memory:',
-        dropSchema: true,
-        logging: false,
-        autoLoadEntities: true,
-        entities: entities,
-        synchronize: true,
-      }),
-      ConfigModule.forRoot({
-        isGlobal: true,
-        load: [database],
-        envFilePath: ['.env.test'],
-        expandVariables: true,
-      }),
-      ...modules,
-    ],
+    imports: [DbE2eModule, ConfigE2eModule, MailE2EModule, ...modules],
     providers,
   }).compile();
 }

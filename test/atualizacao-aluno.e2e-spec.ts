@@ -12,9 +12,6 @@ import {
   Escolaridade,
   TipoEscola,
 } from '../src/_business/alunos/entidades/aluno.entity';
-import { UsuarioDbEntity } from '../src/_adapters/usuarios/entidades/usuario.db.entity';
-import { PerfilDbEntity } from '../src/_adapters/perfil/entidades/perfil.db.entity';
-import { AlunoDbEntity } from '../src/_adapters/alunos/entidades/aluno.db.entity';
 import { UsuarioModule } from '../src/modules/usuario/usuario.module';
 import { AuthModule } from '../src/modules/auth/auth.module';
 import { AlunoModule } from '../src/modules/aluno/aluno.module';
@@ -38,10 +35,12 @@ describe('Criar Conta (e2e)', () => {
   } as CreateAlunoDto;
 
   beforeEach(async () => {
-    const moduleFixture: TestingModule = await getTestingModule(
-      [UsuarioDbEntity, PerfilDbEntity, AlunoDbEntity],
-      [AuthModule.forRoot(), UsuarioModule, PerfilModule, AlunoModule],
-    );
+    const moduleFixture: TestingModule = await getTestingModule([
+      AuthModule.forRoot(),
+      UsuarioModule,
+      PerfilModule,
+      AlunoModule,
+    ]);
 
     app = await moduleFixture.createNestApplication();
     setupApp(app);
@@ -49,7 +48,7 @@ describe('Criar Conta (e2e)', () => {
   });
 
   beforeEach(async () => {
-    token = await getToken(app, null, TipoUsuario.ALUNO);
+    token = await getToken(app, TipoUsuario.ALUNO);
     await request(app.getHttpServer())
       .post('/cadastro-aluno')
       .set('Authorization', `Bearer ${token}`)
@@ -83,7 +82,7 @@ describe('Criar Conta (e2e)', () => {
     });
 
     it('Deve dar erro 403 ao tentar atualizar perfil que não seja o seu', async () => {
-      const wrongToken = await getToken(app, null, TipoUsuario.ALUNO);
+      const wrongToken = await getToken(app, TipoUsuario.ALUNO);
       await request(app.getHttpServer())
         .patch('/aluno/atualizar/1')
         .set('Authorization', `Bearer ${wrongToken}`)

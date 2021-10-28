@@ -1,21 +1,21 @@
 import { INestApplication } from '@nestjs/common';
 import { TestingModule } from '@nestjs/testing';
-import { UsuarioDbEntity } from '../src/_adapters/usuarios/entidades/usuario.db.entity';
 import { UsuarioModule } from '../src/modules/usuario/usuario.module';
 import { setupApp } from '../src/config/app.config';
 import { createUser, getTestingModule } from './utils.test';
 import * as request from 'supertest';
 import { AuthModule } from '../src/modules/auth/auth.module';
-import { CreateUsuarioDto } from '../src/_adapters/usuarios/dto/create-usuario.dto';
-import { AuthDto, TokenDto } from '../src/_adapters/auth/dto/auth.dto';
+import { TokenDto } from '../src/_adapters/auth/dto/auth.dto';
+import { Usuario } from '../src/_business/usuarios/entidades/usuario.entity';
+import { DEFAULT_PASSWORD } from '../jest.setup';
 
 describe('Autenticação (e2)', () => {
   let app: INestApplication;
   beforeEach(async () => {
-    const moduleFixture: TestingModule = await getTestingModule(
-      [UsuarioDbEntity],
-      [AuthModule.forRoot(), UsuarioModule],
-    );
+    const moduleFixture: TestingModule = await getTestingModule([
+      AuthModule.forRoot(),
+      UsuarioModule,
+    ]);
 
     app = await moduleFixture.createNestApplication();
     setupApp(app);
@@ -25,7 +25,7 @@ describe('Autenticação (e2)', () => {
     await app.close();
   });
   describe('/auth/login (POST)', () => {
-    let user: CreateUsuarioDto;
+    let user: Usuario;
     beforeEach(async () => {
       user = await createUser(app);
     });
@@ -34,8 +34,8 @@ describe('Autenticação (e2)', () => {
         .post('/auth/login')
         .send({
           username: user.email,
-          password: user.senha,
-        } as AuthDto)
+          password: DEFAULT_PASSWORD,
+        })
         .expect(200);
       expect((body as TokenDto).token).toBeDefined();
       expect((body as TokenDto).token).toEqual(expect.any(String));
@@ -43,7 +43,10 @@ describe('Autenticação (e2)', () => {
     it('Não Deve logar com senha incorreta', async () => {
       await request(app.getHttpServer())
         .post('/auth/login')
-        .send({ ...user, password: 'senha-incorreta' })
+        .send({
+          username: user.email,
+          password: 'senha-incorreta',
+        })
         .expect(401);
     });
   });

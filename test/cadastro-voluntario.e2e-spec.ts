@@ -3,11 +3,8 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { UsuarioModule } from '../src/modules/usuario/usuario.module';
 import { TipoUsuario } from '../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { UsuarioDbEntity } from '../src/_adapters/usuarios/entidades/usuario.db.entity';
 import { setupApp } from '../src/config/app.config';
 import { getTestingModule, getToken } from './utils.test';
-import { AlunoDbEntity } from '../src/_adapters/alunos/entidades/aluno.db.entity';
-import { PerfilDbEntity } from '../src/_adapters/perfil/entidades/perfil.db.entity';
 
 import { AuthModule } from '../src/modules/auth/auth.module';
 import { CreateVoluntarioDto } from '../src/_adapters/voluntarios/dto/create-voluntario.dto';
@@ -27,10 +24,11 @@ describe('Criar Conta de Voluntário (e2e)', () => {
   let token: string;
 
   beforeEach(async () => {
-    const moduleFixture: TestingModule = await getTestingModule(
-      [UsuarioDbEntity, PerfilDbEntity, AlunoDbEntity],
-      [AuthModule.forRoot(), UsuarioModule, VoluntarioModule],
-    );
+    const moduleFixture: TestingModule = await getTestingModule([
+      AuthModule.forRoot(),
+      UsuarioModule,
+      VoluntarioModule,
+    ]);
 
     app = await moduleFixture.createNestApplication();
     setupApp(app);
@@ -38,7 +36,7 @@ describe('Criar Conta de Voluntário (e2e)', () => {
   });
 
   beforeEach(async () => {
-    token = await getToken(app, null, TipoUsuario.ATENDENTE);
+    token = await getToken(app, TipoUsuario.ATENDENTE);
   });
 
   describe('/cadastro-voluntario (POST)', () => {
@@ -109,7 +107,7 @@ describe('Criar Conta de Voluntário (e2e)', () => {
     });
 
     it('Deve dar erro 403 ao tentar cadastrar com um perfil que não seja voluntário', async () => {
-      const wrongToken = await getToken(app, null, TipoUsuario.ALUNO);
+      const wrongToken = await getToken(app, TipoUsuario.ALUNO);
       await request(app.getHttpServer())
         .post('/cadastro-voluntario')
         .set('Authorization', `Bearer ${wrongToken}`)

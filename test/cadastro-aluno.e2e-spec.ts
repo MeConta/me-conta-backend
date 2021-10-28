@@ -13,9 +13,6 @@ import {
   Escolaridade,
   TipoEscola,
 } from '../src/_business/alunos/entidades/aluno.entity';
-import { UsuarioDbEntity } from '../src/_adapters/usuarios/entidades/usuario.db.entity';
-import { PerfilDbEntity } from '../src/_adapters/perfil/entidades/perfil.db.entity';
-import { AlunoDbEntity } from '../src/_adapters/alunos/entidades/aluno.db.entity';
 import { UsuarioModule } from '../src/modules/usuario/usuario.module';
 import { AuthModule } from '../src/modules/auth/auth.module';
 import { AlunoModule } from '../src/modules/aluno/aluno.module';
@@ -25,10 +22,11 @@ describe('Criar Conta (e2e)', () => {
   let token: string;
 
   beforeEach(async () => {
-    const moduleFixture: TestingModule = await getTestingModule(
-      [UsuarioDbEntity, PerfilDbEntity, AlunoDbEntity],
-      [AuthModule.forRoot(), UsuarioModule, AlunoModule],
-    );
+    const moduleFixture: TestingModule = await getTestingModule([
+      AuthModule.forRoot(),
+      UsuarioModule,
+      AlunoModule,
+    ]);
 
     app = await moduleFixture.createNestApplication();
     setupApp(app);
@@ -36,7 +34,7 @@ describe('Criar Conta (e2e)', () => {
   });
 
   beforeEach(async () => {
-    token = await getToken(app, null, TipoUsuario.ALUNO);
+    token = await getToken(app, TipoUsuario.ALUNO);
   });
 
   describe('/cadastro-aluno (POST)', () => {
@@ -74,7 +72,7 @@ describe('Criar Conta (e2e)', () => {
     });
 
     it('Deve dar erro 403 ao tentar cadastrar com um perfil que não seja aluno', async () => {
-      const wrongToken = await getToken(app, null, TipoUsuario.SUPERVISOR);
+      const wrongToken = await getToken(app, TipoUsuario.SUPERVISOR);
       await request(app.getHttpServer())
         .post('/cadastro-aluno')
         .set('Authorization', `Bearer ${wrongToken}`)
