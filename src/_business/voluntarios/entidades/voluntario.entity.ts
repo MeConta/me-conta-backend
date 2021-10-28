@@ -14,7 +14,7 @@ export enum AreaAtuacao {
 export interface Voluntario {
   instituicao: string;
   formado: boolean;
-  frentes: FrenteAtuacao[];
+  frentes?: FrenteAtuacao[];
   aprovado?: boolean;
   semestre?: number;
   anoFormacao?: number;

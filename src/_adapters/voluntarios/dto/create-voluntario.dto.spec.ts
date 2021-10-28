@@ -42,20 +42,31 @@ describe('CreateVoluntarioDto', () => {
       }),
     );
   });
-  it('Deve validar a bio em um Dto de Voluntário Atendente', () => {
+  it('Deve validar a bio em um Dto de Voluntário Atendente', async () => {
     transformed = plainToClass(CreateVoluntarioDto, { ...input, bio: '' });
-    expect(() =>
-      validate(transformed).then((errors) => {
-        expect(errors.length).toHaveLength(1);
-        const [error] = errors;
-        expect(error).toMatchObject({
-          property: 'bio',
-          constraints: {
-            isNotEmptyString: expect.any(String),
-            isNotEmpty: expect.any(String),
-          },
-        });
+    const [error] = await validate(transformed);
+    const { property, constraints } = error;
+    expect(property).toBe('bio');
+    expect(constraints).toMatchObject({
+      isNotEmptyString: expect.any(String),
+      isNotEmpty: expect.any(String),
+    });
+  });
+  it('Deve validar as frentes em um Dto de Voluntário Atendente', async () => {
+    transformed = plainToClass(CreateVoluntarioDto, {
+      ...input,
+      frentes: null,
+    });
+    const [error] = await validate(transformed);
+    const { property, constraints } = error;
+    expect(property).toBe('frentes');
+    expect(constraints).toMatchObject(
+      expect.objectContaining({
+        isEnum: expect.any(String),
+        arrayMinSize: expect.any(String),
+        isArray: expect.any(String),
+        isNotEmpty: expect.any(String),
       }),
-    ).rejects.toThrow();
+    );
   });
 });

@@ -120,6 +120,12 @@ export class CreateVoluntarioDto implements Omit<NovoVoluntario, 'usuario'> {
    * @example '[0]'
    * @type Number
    */
+  @ValidateIf(
+    (voluntario: NovoVoluntario) => voluntario.tipo === TipoUsuario.ATENDENTE,
+    {
+      message: '$property não pode ser vazia',
+    },
+  )
   @IsNotEmpty({
     message: '$property não deve ser vazio',
   })
@@ -207,8 +213,10 @@ export class CreateVoluntarioDto implements Omit<NovoVoluntario, 'usuario'> {
    * @example 1
    * @enum TipoUsuario
    */
-  @IsOptional()
-  @IsEnum(TipoUsuario, {
+  @IsNotEmpty({
+    message: '$property não deve ser vazia',
+  })
+  @IsEnum([TipoUsuario.SUPERVISOR, TipoUsuario.ATENDENTE], {
     message: '$property deve ser um valor de enum válido',
   })
   tipo: TipoUsuario;

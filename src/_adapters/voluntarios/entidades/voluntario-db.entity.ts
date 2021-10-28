@@ -40,11 +40,12 @@ export class VoluntarioDbEntity
   formado: boolean;
 
   @Column({
+    nullable: true,
     type: 'simple-enum',
     array: true,
     enum: FrenteAtuacao,
   })
-  frentes: FrenteAtuacao[];
+  frentes?: FrenteAtuacao[];
 
   @Column()
   instituicao: string;

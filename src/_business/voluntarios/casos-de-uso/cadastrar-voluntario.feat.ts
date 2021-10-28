@@ -61,13 +61,18 @@ export class CadastrarVoluntario {
     /***
      * Tipo de Usuário e formação
      */
-    const { tipo } = input;
+    const { tipo } = {
+      tipo: input.tipo || usuario.tipo,
+    };
 
     /***
-     * Supervisores devem NECESSARIAMENTE serem formados
+     * Supervisores:
+     * - Devem NECESSARIAMENTE serem formados
+     * - NÃO DEVEM possuir frentes de atuação
      */
     if (tipo === TipoUsuario.SUPERVISOR) {
       input.formado = true;
+      input.frentes = null;
     }
 
     /***
@@ -102,6 +107,7 @@ export class CadastrarVoluntario {
      * Tipo de Usuário:
      * Se necessário, trocar o tipo de usuário antes do cadastro
      * Só vale para os tipos de usuário de voluntários
+     * Outros tipos são ignorados
      */
     if (
       [TipoUsuario.SUPERVISOR, TipoUsuario.ATENDENTE].includes(tipo) &&
