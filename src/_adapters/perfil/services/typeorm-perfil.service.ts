@@ -2,13 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PerfilDbEntity } from '../entidades/perfil.db.entity';
 import { Perfil } from '../../../_business/usuarios/entidades/usuario.entity';
-import { ICadastrarPerfilService } from '../../../_business/perfil/services/cadastrar-perfil.service';
 import { Repository } from 'typeorm';
-import { IAtualizarPerfilService } from '../../../_business/perfil/services/atualizar-perfil.service';
+import {
+  IAtualizarPerfilService,
+  IBuscarPerfilByIdService,
+  ICadastrarPerfilService,
+} from '../../../_business/perfil/services/perfil.service';
 
 @Injectable()
 export class TypeormPerfilService
-  implements ICadastrarPerfilService, IAtualizarPerfilService
+  implements
+    ICadastrarPerfilService,
+    IAtualizarPerfilService,
+    IBuscarPerfilByIdService
 {
   constructor(
     @InjectRepository(PerfilDbEntity)
@@ -25,5 +31,9 @@ export class TypeormPerfilService
       id,
       ...input,
     });
+  }
+
+  async findById(id: number): Promise<Perfil> {
+    return this.repository.findOne(id);
   }
 }

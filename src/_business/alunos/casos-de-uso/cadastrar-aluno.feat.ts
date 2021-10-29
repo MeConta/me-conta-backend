@@ -1,5 +1,4 @@
 import { Perfil } from '../../usuarios/entidades/usuario.entity';
-import { ICadastrarPerfilService } from '../../perfil/services/cadastrar-perfil.service';
 import { NovoAluno } from '../entidades/aluno.entity';
 import { ICadastrarNovoAlunoService } from '../services/alunos.service';
 import { IBuscarUsuarioViaId } from '../../usuarios/casos-de-uso/buscar-usuario.id.feat';
@@ -8,6 +7,7 @@ import {
   UsuarioNaoEncontradoError,
 } from '../../usuarios/erros/usuarios.errors';
 import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { ICadastrarPerfilService } from '../../perfil/services/perfil.service';
 
 export class CadastrarAluno {
   constructor(

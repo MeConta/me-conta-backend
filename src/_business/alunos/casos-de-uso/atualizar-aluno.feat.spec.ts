@@ -1,44 +1,50 @@
-import { Aluno, TipoEscola } from '../entidades/aluno.entity';
+import { Aluno, Motivos, TipoEscola } from '../entidades/aluno.entity';
 import { createMock } from '@golevelup/ts-jest';
 import {
   AlunoNaoEncontradoError,
   AtualizarAluno,
-  AtualizarAlunoInput,
-  IAtualizarAlunoService,
   IBuscarAlunoViaId,
 } from './atualizar-aluno.feat';
-import { IAtualizarPerfilService } from '../../perfil/services/atualizar-perfil.service';
+import { CadastrarAluno } from './cadastrar-aluno.feat';
+import { Perfil } from '../../usuarios/entidades/usuario.entity';
+import { IBuscarPerfilByIdService } from '../../perfil/services/perfil.service';
 
-class InMemoryAlunoService
-  implements IAtualizarAlunoService, IBuscarAlunoViaId
-{
-  alunos: Aluno[] = [];
-
-  async atualizar(id: number, input: AtualizarAlunoInput): Promise<Aluno> {
-    this.alunos[id] = { ...this.alunos[id], ...input } as Aluno;
+/*class InMemoryAlunoService implements IBuscarAlunoViaId {
+  alunos: (Aluno & Perfil & Motivos)[] = [];
+  findById(id: number): Promise<Aluno & Perfil & Motivos> {
     return Promise.resolve(this.alunos[id]);
   }
-
-  findById(id: number): Promise<Aluno> {
-    return Promise.resolve(this.alunos[id]);
-  }
-}
+}*/
 
 describe('Atualizar Aluno', function () {
+  const alunos: (Aluno & Perfil & Motivos)[] = [];
   let sut: AtualizarAluno;
-  let service: InMemoryAlunoService;
-  const perfilService = createMock<IAtualizarPerfilService>();
+  let alunoService: IBuscarAlunoViaId;
+  let perfilService: IBuscarPerfilByIdService;
+  const cadastroAluno = createMock<CadastrarAluno>();
 
   beforeEach(async () => {
-    service = new InMemoryAlunoService();
-    service.alunos[0] = {
-      ...createMock<Aluno>(),
+    alunoService = createMock<IBuscarAlunoViaId>();
+    perfilService = createMock<IBuscarPerfilByIdService>();
+    alunos[0] = {
+      ...createMock<Aluno & Perfil & Motivos>(),
       tipoEscola: TipoEscola.PUBLICA,
     };
-    sut = new AtualizarAluno(service, perfilService);
+    sut = new AtualizarAluno(alunoService, perfilService, cadastroAluno);
   });
 
-  // beforeEach(async () => {});
+  beforeEach(async () => {
+    jest
+      .spyOn(alunoService, 'findById')
+      .mockResolvedValue(createMock<Aluno & Perfil & Motivos>());
+    jest
+      .spyOn(perfilService, 'findById')
+      .mockResolvedValue(createMock<Perfil>());
+
+    jest.spyOn(cadastroAluno, 'execute').mockImplementation(async (args) => {
+      alunos[0] = { ...args };
+    });
+  });
 
   it('Deve ser definido', async () => {
     expect(sut).toBeDefined();
@@ -48,13 +54,21 @@ describe('Atualizar Aluno', function () {
     await sut.execute(0, {
       tipoEscola: TipoEscola.PARTICULAR,
     });
-    const [aluno] = service.alunos;
+    const [aluno] = alunos;
     expect(aluno.tipoEscola).toBe(TipoEscola.PARTICULAR);
   });
 
-  it('Deve dar Erro de Aluno não encontrado', async () => {
-    await expect(() => sut.execute(1, {})).rejects.toThrow(
-      AlunoNaoEncontradoError,
-    );
+  describe('Deve dar Erro de Aluno não encontrado', () => {
+    it('Não há Aluno cadastrado', async () => {
+      jest.spyOn(alunoService, 'findById').mockResolvedValue(null);
+    });
+    it('Não há Perfil cadastrado', async () => {
+      jest.spyOn(perfilService, 'findById').mockResolvedValue(null);
+    });
+    afterEach(async () => {
+      await expect(() => sut.execute(1, {})).rejects.toThrow(
+        AlunoNaoEncontradoError,
+      );
+    });
   });
 });

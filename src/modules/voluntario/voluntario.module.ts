@@ -10,13 +10,13 @@ import { VoluntarioDbEntity } from '../../_adapters/voluntarios/entidades/volunt
 import { UsuarioDbEntity } from '../../_adapters/usuarios/entidades/usuario.db.entity';
 import { CadastroVoluntarioController } from './controllers/cadastro-voluntario.controller';
 import { TypeormPerfilService } from '../../_adapters/perfil/services/typeorm-perfil.service';
-import { ICadastrarPerfilService } from '../../_business/perfil/services/cadastrar-perfil.service';
 import { PerfilDbEntity } from '../../_adapters/perfil/entidades/perfil.db.entity';
 import { TypeormVoluntarioService } from '../../_adapters/voluntarios/services/typeorm-voluntario.service';
 import { IAtualizarUsuarioService } from '../../_business/usuarios/services/usuario.service';
 import { ListarVoluntarios } from '../../_business/voluntarios/casos-de-uso/listar-voluntarios.feat';
 import { ListarVoluntariosController } from './controllers/listar-voluntarios.controller';
 import { IBuscarVoluntarios } from '../../_business/voluntarios/services/voluntario.service';
+import { ICadastrarPerfilService } from '../../_business/perfil/services/perfil.service';
 
 @Injectable()
 class NestCadastrarVoluntario extends CadastrarVoluntario {

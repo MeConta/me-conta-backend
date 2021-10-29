@@ -5,12 +5,12 @@ import {
   TipoUsuario,
 } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { Bio, Voluntario } from '../entidades/voluntario.entity';
-import { ICadastrarPerfilService } from '../../perfil/services/cadastrar-perfil.service';
 import {
   UsuarioInvalidoError,
   UsuarioNaoEncontradoError,
 } from '../../usuarios/erros/usuarios.errors';
 import { IAtualizarUsuarioService } from '../../usuarios/services/usuario.service';
+import { ICadastrarPerfilService } from '../../perfil/services/perfil.service';
 
 export type NovoVoluntario = Perfil &
   Omit<Voluntario, 'aprovado'> &

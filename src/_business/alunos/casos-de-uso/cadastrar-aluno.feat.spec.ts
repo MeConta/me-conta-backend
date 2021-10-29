@@ -1,5 +1,4 @@
 import { createMock } from '@golevelup/ts-jest';
-import { ICadastrarPerfilService } from '../../perfil/services/cadastrar-perfil.service';
 import { CadastrarAluno } from './cadastrar-aluno.feat';
 import { Aluno, NovoAluno } from '../entidades/aluno.entity';
 import { ICadastrarNovoAlunoService } from '../services/alunos.service';
@@ -10,6 +9,7 @@ import {
   UsuarioInvalidoError,
   UsuarioNaoEncontradoError,
 } from '../../usuarios/erros/usuarios.errors';
+import { ICadastrarPerfilService } from '../../perfil/services/perfil.service';
 
 class InMemoryAlunoService implements ICadastrarNovoAlunoService {
   public alunos: Aluno[] = [];

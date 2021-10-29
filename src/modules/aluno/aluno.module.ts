@@ -6,7 +6,6 @@ import { UsuarioDbEntity } from '../../_adapters/usuarios/entidades/usuario.db.e
 import { PerfilDbEntity } from '../../_adapters/perfil/entidades/perfil.db.entity';
 import { ICadastrarNovoAlunoService } from '../../_business/alunos/services/alunos.service';
 import { IBuscarUsuarioViaId } from '../../_business/usuarios/casos-de-uso/buscar-usuario.id.feat';
-import { ICadastrarPerfilService } from '../../_business/perfil/services/cadastrar-perfil.service';
 import { TypeormUsuarioService } from '../../_adapters/usuarios/services/typeorm-usuario.service';
 import { TypeormPerfilService } from '../../_adapters/perfil/services/typeorm-perfil.service';
 import { AlunoDbEntity } from '../../_adapters/alunos/entidades/aluno.db.entity';
@@ -17,7 +16,10 @@ import {
   IAtualizarAlunoService,
   IBuscarAlunoViaId,
 } from '../../_business/alunos/casos-de-uso/atualizar-aluno.feat';
-import { IAtualizarPerfilService } from '../../_business/perfil/services/atualizar-perfil.service';
+import {
+  IBuscarPerfilByIdService,
+  ICadastrarPerfilService,
+} from '../../_business/perfil/services/perfil.service';
 
 @Injectable()
 class NestCadastrarAluno extends CadastrarAluno {
@@ -39,9 +41,11 @@ class NestAtualizarAluno extends AtualizarAluno {
     @Inject(TypeormAlunoService)
     alunoService: IBuscarAlunoViaId & IAtualizarAlunoService,
     @Inject(TypeormPerfilService)
-    perfilService: IAtualizarPerfilService,
+    perfilService: IBuscarPerfilByIdService,
+    @Inject(NestCadastrarAluno)
+    cadastrarAluno: CadastrarAluno,
   ) {
-    super(alunoService, perfilService);
+    super(alunoService, perfilService, cadastrarAluno);
   }
 }
 
@@ -53,6 +57,7 @@ class NestAtualizarAluno extends AtualizarAluno {
     TypeormUsuarioService,
     TypeormPerfilService,
     TypeormAlunoService,
+    NestCadastrarAluno,
     {
       provide: CadastrarAluno,
       useClass: NestCadastrarAluno,

@@ -1,8 +1,9 @@
 import { Aluno, Motivos } from '../entidades/aluno.entity';
-import { IAtualizarPerfilService } from '../../perfil/services/atualizar-perfil.service';
 import { Perfil } from '../../usuarios/entidades/usuario.entity';
+import { CadastrarAluno } from './cadastrar-aluno.feat';
+import { IBuscarPerfilByIdService } from '../../perfil/services/perfil.service';
 
-export type AtualizarAlunoInput = Partial<Aluno & Motivos>;
+export type AtualizarAlunoInput = Partial<Aluno & Perfil & Motivos>;
 
 export interface IAtualizarAlunoService {
   atualizar(id: number, input: AtualizarAlunoInput): Promise<Aluno & Motivos>;
@@ -19,18 +20,22 @@ export class AlunoNaoEncontradoError extends Error {
 
 export class AtualizarAluno {
   constructor(
-    private readonly alunoService: IAtualizarAlunoService & IBuscarAlunoViaId,
-    private readonly perfilService: IAtualizarPerfilService,
+    private readonly alunoService: IBuscarAlunoViaId,
+    private readonly perfilService: IBuscarPerfilByIdService,
+    private readonly cadastroAluno: CadastrarAluno,
   ) {}
 
-  async execute(
-    id: number,
-    input: AtualizarAlunoInput & Partial<Perfil>,
-  ): Promise<void> {
-    if (!(await this.alunoService.findById(id))) {
+  async execute(id: number, input: AtualizarAlunoInput): Promise<void> {
+    const aluno = await this.alunoService.findById(id);
+    const perfil = await this.perfilService.findById(id);
+    if (!aluno || !perfil) {
       throw new AlunoNaoEncontradoError();
     }
-    await this.perfilService.atualizar(id, input);
-    await this.alunoService.atualizar(id, input);
+
+    await this.cadastroAluno.execute({
+      ...aluno,
+      ...perfil,
+      ...input,
+    });
   }
 }

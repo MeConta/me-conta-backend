@@ -1,4 +1,3 @@
-import { ICadastrarPerfilService } from '../../../_business/perfil/services/cadastrar-perfil.service';
 import { TypeormPerfilService } from './typeorm-perfil.service';
 import { Connection, createConnection, Repository } from 'typeorm';
 import { PerfilDbEntity } from '../entidades/perfil.db.entity';
@@ -10,14 +9,20 @@ import {
 } from '../../../_business/usuarios/entidades/usuario.entity';
 import { UsuarioDbEntity } from '../../usuarios/entidades/usuario.db.entity';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { IAtualizarPerfilService } from '../../../_business/perfil/services/atualizar-perfil.service';
 import { DEFAULT_PASSWORD, MOCKED_SALT } from '../../../../jest.setup';
 import { name, internet, date } from 'faker/locale/pt_BR';
+import {
+  IAtualizarPerfilService,
+  IBuscarPerfilByIdService,
+  ICadastrarPerfilService,
+} from '../../../_business/perfil/services/perfil.service';
 
 describe('PerfilService', function () {
   let connection: Connection;
   let repository: Repository<PerfilDbEntity>;
-  let service: ICadastrarPerfilService & IAtualizarPerfilService;
+  let service: ICadastrarPerfilService &
+    IAtualizarPerfilService &
+    IBuscarPerfilByIdService;
 
   const request: Perfil = {
     cidade: 'Acrelândia',
@@ -82,5 +87,11 @@ describe('PerfilService', function () {
     await service.atualizar(1, { ...request, UF: Estado.SP });
     const { UF } = await repository.findOne(id);
     expect(UF).toBe(Estado.SP);
+  });
+
+  it('Deve buscar um perfil', async () => {
+    const { id } = await repository.save(repository.create(request));
+    const response = await service.findById(id);
+    expect(response).toBeDefined();
   });
 });
