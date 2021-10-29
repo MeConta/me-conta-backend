@@ -52,9 +52,7 @@ describe('Listagem de voluntários', () => {
   });
 
   it('Deve retornar os voluntários ativos e com dados ofuscados quando o requisitante não for administrador', async () => {
-    const [response] = await sut.execute({
-      roles: [TipoUsuario.ALUNO],
-    } as ITokenUser);
+    const [response] = await sut.execute(null);
     console.log('RESPONSE', response);
     expect(response).toBeDefined();
     expect(response).not.toHaveProperty('aprovado');

@@ -25,14 +25,6 @@ export class ListarVoluntarios {
       search.aprovado = true;
     }
 
-    /*switch (tipo) {
-      case TipoUsuario.ADMINISTRADOR:
-        search.usuario = { tipo } as Usuario;
-        break;
-      default:
-        search.usuario = { tipo: TipoUsuario.ATENDENTE } as Usuario;
-    }*/
-
     if (tipo) {
       search.usuario = { tipo } as Usuario;
     }
