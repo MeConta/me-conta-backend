@@ -15,8 +15,16 @@ import { TypeormVoluntarioService } from '../../_adapters/voluntarios/services/t
 import { IAtualizarUsuarioService } from '../../_business/usuarios/services/usuario.service';
 import { ListarVoluntarios } from '../../_business/voluntarios/casos-de-uso/listar-voluntarios.feat';
 import { ListarVoluntariosController } from './controllers/listar-voluntarios.controller';
-import { IBuscarVoluntarios } from '../../_business/voluntarios/services/voluntario.service';
-import { ICadastrarPerfilService } from '../../_business/perfil/services/perfil.service';
+import {
+  IBuscarVoluntarios,
+  IBuscarVoluntarioViaId,
+} from '../../_business/voluntarios/services/voluntario.service';
+import {
+  IBuscarPerfilByIdService,
+  ICadastrarPerfilService,
+} from '../../_business/perfil/services/perfil.service';
+import { AtualizarVoluntario } from '../../_business/voluntarios/casos-de-uso/atualizar-voluntario.feat';
+import { AtualizarVoluntarioController } from './controllers/atualizar-voluntario.controller';
 
 @Injectable()
 class NestCadastrarVoluntario extends CadastrarVoluntario {
@@ -29,6 +37,20 @@ class NestCadastrarVoluntario extends CadastrarVoluntario {
     perfilService: ICadastrarPerfilService,
   ) {
     super(voluntarioService, usuarioService, perfilService);
+  }
+}
+
+@Injectable()
+class NestAtualizarVoluntario extends AtualizarVoluntario {
+  constructor(
+    @Inject(TypeormVoluntarioService)
+    voluntarioService: IBuscarVoluntarioViaId,
+    @Inject(TypeormPerfilService)
+    perfilService: IBuscarPerfilByIdService,
+    @Inject(NestCadastrarVoluntario)
+    cadastrarVoluntario: CadastrarVoluntario,
+  ) {
+    super(voluntarioService, perfilService, cadastrarVoluntario);
   }
 }
 
@@ -54,15 +76,24 @@ class NestListarVoluntario extends ListarVoluntarios {
     TypeormUsuarioService,
     TypeormPerfilService,
     TypeormVoluntarioService,
+    NestCadastrarVoluntario,
     {
       provide: CadastrarVoluntario,
       useClass: NestCadastrarVoluntario,
+    },
+    {
+      provide: AtualizarVoluntario,
+      useClass: NestAtualizarVoluntario,
     },
     {
       provide: ListarVoluntarios,
       useClass: NestListarVoluntario,
     },
   ],
-  controllers: [CadastroVoluntarioController, ListarVoluntariosController],
+  controllers: [
+    CadastroVoluntarioController,
+    ListarVoluntariosController,
+    AtualizarVoluntarioController,
+  ],
 })
 export class VoluntarioModule {}
