@@ -1,10 +1,11 @@
 import { TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { HttpStatus, INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { UsuarioModule } from '../src/modules/usuario/usuario.module';
 import { TipoUsuario } from '../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { setupApp } from '../src/config/app.config';
 import { getTestingModule, getToken } from './utils.test';
+import { lorem, address } from 'faker/locale/pt_BR';
 
 import { AuthModule } from '../src/modules/auth/auth.module';
 import { CreateVoluntarioDto } from '../src/_adapters/voluntarios/dto/create-voluntario.dto';
@@ -43,13 +44,15 @@ describe('Criar Conta de Voluntário (e2e)', () => {
     const req = {
       telefone: '11912345678',
       dataNascimento: moment().subtract(18, 'year').toDate(),
-      cidade: 'Acrelândia',
+      cidade: address.city(),
       UF: Estado.AC,
       genero: Genero.PREFIRO_NAO_DECLARAR,
       formado: false,
       semestre: 10,
       frentes: [FrenteAtuacao.SESSAO_ACOLHIMENTO],
-      instituicao: 'Teste',
+      instituicao: lorem.word(3),
+      tipo: TipoUsuario.ATENDENTE,
+      bio: lorem.paragraphs(3),
     } as CreateVoluntarioDto;
 
     it('Deve Cadastrar um voluntário com sucesso', async () => {
@@ -57,7 +60,7 @@ describe('Criar Conta de Voluntário (e2e)', () => {
         .post('/cadastro-voluntario')
         .set('Authorization', `Bearer ${token}`)
         .send(req)
-        .expect(201);
+        .expect(HttpStatus.CREATED);
     });
 
     it('Deve Cadastrar um voluntário alterando o tipo de usuário', async () => {
