@@ -18,8 +18,10 @@ import {
 import {
   ApiConflictResponse,
   ApiInternalServerErrorResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 
+@ApiTags('Usuário')
 @Controller('cadastro-inicial')
 export class CadastroInicialController {
   constructor(private cadastrarNovoUsuario: CadastrarNovoUsuario) {}

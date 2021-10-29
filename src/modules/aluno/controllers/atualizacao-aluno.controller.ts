@@ -9,7 +9,11 @@ import {
   Param,
   Patch,
 } from '@nestjs/common';
-import { ApiNoContentResponse, ApiNotFoundResponse } from '@nestjs/swagger';
+import {
+  ApiNoContentResponse,
+  ApiNotFoundResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import {
   AlunoNaoEncontradoError,
   AtualizarAluno,
@@ -21,6 +25,7 @@ import {
 } from '../../../_adapters/auth/decorators/auth.decorator';
 import { AtualizarAlunoDto } from '../../../_adapters/alunos/dto/atualizar-aluno.dto';
 
+@ApiTags('Aluno')
 @Controller('/aluno/atualizar/')
 export class AtualizacaoAlunoController {
   constructor(

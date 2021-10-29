@@ -15,6 +15,7 @@ import {
 import { CreateVoluntarioDto } from '../../../_adapters/voluntarios/dto/create-voluntario.dto';
 import {
   ApiInternalServerErrorResponse,
+  ApiTags,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { Auth } from '../../../_adapters/auth/decorators/auth.decorator';
@@ -26,6 +27,7 @@ import {
   UsuarioNaoEncontradoError,
 } from '../../../_business/usuarios/erros/usuarios.errors';
 
+@ApiTags('Voluntário')
 @Controller('cadastro-voluntario')
 export class CadastroVoluntarioController {
   constructor(

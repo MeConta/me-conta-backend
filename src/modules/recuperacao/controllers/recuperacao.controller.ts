@@ -8,7 +8,9 @@ import {
 } from '@nestjs/common';
 import { RecuperarSenha } from '../../../_business/recuperacao/casos-de-uso/recuperar-senha.feat';
 import { RecuperacaoDto } from '../../../_adapters/recuperacao/dto/recuperacao.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Senha')
 @Controller('senha/recuperacao')
 export class RecuperacaoController {
   constructor(

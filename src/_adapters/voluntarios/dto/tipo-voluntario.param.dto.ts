@@ -4,10 +4,14 @@ import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class TipoUsuarioParam {
+  /***
+   * Tipo de Voluntário a ser recuperado:
+   * 1. SUPERVISOR
+   * 1. ATENDENTE
+   */
   @ApiProperty({
-    enum: [TipoUsuario.ATENDENTE, TipoUsuario.SUPERVISOR],
-    type: Number,
-    example: 1,
+    enum: [TipoUsuario.SUPERVISOR, TipoUsuario.ATENDENTE],
+    required: false,
   })
   @IsOptional()
   @IsEnum([TipoUsuario.ATENDENTE, TipoUsuario.SUPERVISOR], {

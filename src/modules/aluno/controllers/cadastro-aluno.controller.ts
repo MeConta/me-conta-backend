@@ -7,7 +7,7 @@ import {
   Post,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { ApiInternalServerErrorResponse } from '@nestjs/swagger';
+import { ApiInternalServerErrorResponse, ApiTags } from '@nestjs/swagger';
 import { CadastrarAluno } from '../../../_business/alunos/casos-de-uso/cadastrar-aluno.feat';
 import { Auth } from '../../../_adapters/auth/decorators/auth.decorator';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
@@ -19,6 +19,7 @@ import {
   UsuarioNaoEncontradoError,
 } from '../../../_business/usuarios/erros/usuarios.errors';
 
+@ApiTags('Aluno')
 @Controller('cadastro-aluno')
 export class CadastroAlunoController {
   constructor(

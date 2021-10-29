@@ -20,7 +20,7 @@ import { Auth } from '../../../../../_adapters/auth/decorators/auth.decorator';
 import { TipoUsuario } from '../../../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { AutorizarVoluntarioInputDto } from '../../dto/autorizar-voluntario.dto';
 
-@ApiTags('admin')
+@ApiTags('Admin')
 @Controller('admin/voluntarios/aprovar')
 export class AutorizarVoluntarioController {
   constructor(

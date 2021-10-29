@@ -14,8 +14,9 @@ import {
   ResetSenha,
 } from '../../../_business/recuperacao/casos-de-uso/reset-senha.feat';
 import { ResetSenhaInputDto } from '../../../_adapters/recuperacao/dto/reset-senha.dto';
-import { ApiNotFoundResponse } from '@nestjs/swagger';
+import { ApiNotFoundResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Senha')
 @Controller('senha/reset')
 export class ResetController {
   constructor(
