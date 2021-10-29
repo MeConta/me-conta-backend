@@ -16,7 +16,7 @@ export class ListarVoluntarios {
   async execute(
     user?: ITokenUser,
     tipo?: TipoUsuario,
-  ): Promise<VoluntarioOutput[] | ObfuscatedVoluntarioOutput[]> {
+  ): Promise<(VoluntarioOutput | ObfuscatedVoluntarioOutput)[]> {
     const isAdmin: boolean = user?.roles.includes(TipoUsuario.ADMINISTRADOR);
 
     const search: Partial<Voluntario & { usuario: Usuario }> = {};
