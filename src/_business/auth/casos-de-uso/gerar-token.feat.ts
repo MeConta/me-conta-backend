@@ -5,13 +5,15 @@ import { IJwtService } from '../interfaces/jwt.service';
 export class GerarToken {
   constructor(private readonly jwtService: IJwtService) {}
   execute(usuario: Usuario): IToken {
+    const { email, id, tipo } = usuario;
     const payload: ITokenPayload = {
-      email: usuario.email,
-      sub: usuario.id,
-      roles: [usuario.tipo],
+      email,
+      sub: id,
+      roles: [tipo],
     };
     return {
       token: this.jwtService.sign(payload),
+      tipo,
     };
   }
 }

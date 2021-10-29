@@ -4,6 +4,7 @@ import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 import { IHashCompareService } from '../../../_business/usuarios/services/hash.service';
 import { IJwtService } from '../../../_business/auth/interfaces/jwt.service';
 import { IBuscarUsuarioViaEmailService } from '../../../_business/usuarios/services/usuario.service';
+import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -29,7 +30,9 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     jest.spyOn(auth, 'execute').mockResolvedValue(entity);
-    jest.spyOn(login, 'execute').mockReturnValue({ token: 'TOKEN' });
+    jest
+      .spyOn(login, 'execute')
+      .mockReturnValue({ token: 'TOKEN', tipo: TipoUsuario.ADMINISTRADOR });
   });
 
   it('deve ser definido', async () => {

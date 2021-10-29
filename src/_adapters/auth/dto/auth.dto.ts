@@ -31,6 +31,7 @@ export class TokenDto implements IToken {
    * Token JWT
    */
   token: string;
+  tipo: TipoUsuario;
 }
 
 export class TokenPayload implements ITokenPayload {

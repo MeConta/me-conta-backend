@@ -7,6 +7,7 @@ export interface ILogin {
 
 export interface IToken {
   token: string;
+  tipo: TipoUsuario;
 }
 
 export interface ITokenPayload {
