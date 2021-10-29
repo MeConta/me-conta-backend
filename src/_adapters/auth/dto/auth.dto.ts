@@ -7,6 +7,7 @@ import {
 } from '../../../_business/auth/interfaces/auth';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class Login implements ILogin {
   user: Usuario;
@@ -31,6 +32,14 @@ export class TokenDto implements IToken {
    * Token JWT
    */
   token: string;
+  /***
+   * Tipo do usuário logado
+   * @enum TipoUsuario
+   * @example 0
+   */
+  @ApiProperty({
+    type: Number,
+  })
   tipo: TipoUsuario;
 }
 

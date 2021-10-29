@@ -27,7 +27,6 @@ export class ResetController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNotFoundResponse({
     description: 'Pedido de recuperação de senha não encontrado',
-    type: RecuperacaoNotFoundError,
   })
   async reset(@Body() dto: ResetSenhaInputDto): Promise<void> {
     try {
