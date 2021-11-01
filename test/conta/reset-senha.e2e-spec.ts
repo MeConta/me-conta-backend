@@ -1,17 +1,17 @@
 import { INestApplication } from '@nestjs/common';
 import { TestingModule } from '@nestjs/testing';
-import { setupApp } from '../src/config/app.config';
-import { createUser, getTestingModule } from './utils.test';
+import { setupApp } from '../../src/config/app.config';
+import { createUser, getTestingModule } from '../utils.test';
 import * as request from 'supertest';
-import { RecuperacaoModule } from '../src/modules/recuperacao/recuperacao.module';
-import { RecuperacaoDbEntity } from '../src/_adapters/recuperacao/entidades/recuperacao.db.entity';
-import { ResetSenhaInput } from '../src/_business/recuperacao/casos-de-uso/reset-senha.feat';
-import { DEFAULT_PASSWORD } from '../jest.setup';
-import { MailerMailService } from '../src/_adapters/mail/services/mailer-mail.service';
+import { RecuperacaoModule } from '../../src/modules/recuperacao/recuperacao.module';
+import { RecuperacaoDbEntity } from '../../src/_adapters/recuperacao/entidades/recuperacao.db.entity';
+import { ResetSenhaInput } from '../../src/_business/recuperacao/casos-de-uso/reset-senha.feat';
+import { DEFAULT_PASSWORD } from '../../jest.setup';
+import { MailerMailService } from '../../src/_adapters/mail/services/mailer-mail.service';
 import { Connection, Repository } from 'typeorm';
 import * as moment from 'moment';
-import { Usuario } from '../src/_business/usuarios/entidades/usuario.entity';
-import { UsuarioModule } from '../src/modules/usuario/usuario.module';
+import { Usuario } from '../../src/_business/usuarios/entidades/usuario.entity';
+import { UsuarioModule } from '../../src/modules/usuario/usuario.module';
 
 describe('Reset de senha (e2e)', () => {
   let app: INestApplication;

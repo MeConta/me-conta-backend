@@ -1,21 +1,21 @@
 import { TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { TipoUsuario } from '../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { setupApp } from '../src/config/app.config';
-import { getTestingModule, getToken } from './utils.test';
-import { CreateAlunoDto } from '../src/_adapters/alunos/dto/create-aluno.dto';
+import { TipoUsuario } from '../../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { setupApp } from '../../src/config/app.config';
+import { getTestingModule, getToken } from '../utils.test';
+import { CreateAlunoDto } from '../../src/_adapters/alunos/dto/create-aluno.dto';
 import {
   Estado,
   Genero,
-} from '../src/_business/usuarios/entidades/usuario.entity';
+} from '../../src/_business/usuarios/entidades/usuario.entity';
 import {
   Escolaridade,
   TipoEscola,
-} from '../src/_business/alunos/entidades/aluno.entity';
-import { UsuarioModule } from '../src/modules/usuario/usuario.module';
-import { AuthModule } from '../src/modules/auth/auth.module';
-import { AlunoModule } from '../src/modules/aluno/aluno.module';
+} from '../../src/_business/alunos/entidades/aluno.entity';
+import { UsuarioModule } from '../../src/modules/usuario/usuario.module';
+import { AuthModule } from '../../src/modules/auth/auth.module';
+import { AlunoModule } from '../../src/modules/aluno/aluno.module';
 
 describe('Criar Conta (e2e)', () => {
   let app: INestApplication;

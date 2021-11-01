@@ -2,7 +2,7 @@ import * as request from 'supertest';
 import { CreateUsuarioDto } from '../src/_adapters/usuarios/dto/create-usuario.dto';
 import { INestApplication, Provider } from '@nestjs/common';
 import { TipoUsuario } from '../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { name, internet } from 'faker/locale/pt_BR';
+import { internet, name } from 'faker/locale/pt_BR';
 import { AuthDto, TokenDto } from '../src/_adapters/auth/dto/auth.dto';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DEFAULT_PASSWORD } from '../jest.setup';
@@ -53,19 +53,19 @@ export async function getToken(
 
   const repo = await app.get(Connection).getRepository(UsuarioDbEntity);
 
-  const usuario =
+  const { id } =
     (await repo.findOne({
       where: {
         email,
       },
     })) ||
-    (await createUser(app, tipo, {
+    (await createUser(app, TipoUsuario.ALUNO, {
       email,
       senha,
     }));
 
   await repo.save({
-    id: usuario.id,
+    id,
     tipo,
   });
 

@@ -1,23 +1,23 @@
 import { TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import { TipoUsuario } from '../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { setupApp } from '../src/config/app.config';
-import { getTestingModule, getToken } from './utils.test';
-import { CreateAlunoDto } from '../src/_adapters/alunos/dto/create-aluno.dto';
+import { TipoUsuario } from '../../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { setupApp } from '../../src/config/app.config';
+import { getTestingModule, getToken } from '../utils.test';
+import { CreateAlunoDto } from '../../src/_adapters/alunos/dto/create-aluno.dto';
 import {
   Estado,
   Genero,
-} from '../src/_business/usuarios/entidades/usuario.entity';
+} from '../../src/_business/usuarios/entidades/usuario.entity';
 import {
   Escolaridade,
   TipoEscola,
-} from '../src/_business/alunos/entidades/aluno.entity';
-import { UsuarioModule } from '../src/modules/usuario/usuario.module';
-import { AuthModule } from '../src/modules/auth/auth.module';
-import { AlunoModule } from '../src/modules/aluno/aluno.module';
-import { PerfilModule } from '../src/modules/perfil/perfil.module';
+} from '../../src/_business/alunos/entidades/aluno.entity';
+import { UsuarioModule } from '../../src/modules/usuario/usuario.module';
+import { AuthModule } from '../../src/modules/auth/auth.module';
+import { AlunoModule } from '../../src/modules/aluno/aluno.module';
+import { PerfilModule } from '../../src/modules/perfil/perfil.module';
 import * as request from 'supertest';
-import { AtualizarAlunoDto } from '../src/_adapters/alunos/dto/atualizar-aluno.dto';
+import { AtualizarAlunoDto } from '../../src/_adapters/alunos/dto/atualizar-aluno.dto';
 import { name } from 'faker/locale/pt_BR';
 
 describe('Criar Conta (e2e)', () => {
@@ -55,6 +55,10 @@ describe('Criar Conta (e2e)', () => {
       .send(req);
   });
 
+  afterEach(async () => {
+    await app.close();
+  });
+
   describe('/aluno/atualizar/ (PATCH)', () => {
     it('Deve Atualizar um aluno com sucesso', async () => {
       await request(app.getHttpServer())
@@ -90,20 +94,16 @@ describe('Criar Conta (e2e)', () => {
         .expect(403);
     });
 
-    // TODO: Criar uma forma de obter um token ADMIN
-    /*it('Um Administrador deve ser capaz de atualizar um perfil de Aluno', async () => {
-      const adminToken = await getToken(app, null, TipoUsuario.ADMINISTRADOR);
+    it('Um Administrador deve ser capaz de atualizar um perfil de Aluno', async () => {
+      const adminToken = await getToken(app, TipoUsuario.ADMINISTRADOR);
+      const nome = name.firstName();
       await request(app.getHttpServer())
         .patch('/aluno/atualizar/1')
         .set('Authorization', `Bearer ${adminToken}`)
         .send({
-          nome: name.firstName(),
+          nome,
         } as AtualizarAlunoDto)
         .expect(204);
-    });*/
-  });
-
-  afterEach(async () => {
-    await app.close();
+    });
   });
 });

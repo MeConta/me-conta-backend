@@ -1,15 +1,15 @@
 import { INestApplication } from '@nestjs/common';
 import { TestingModule } from '@nestjs/testing';
-import { setupApp } from '../src/config/app.config';
-import { createUser, getTestingModule } from './utils.test';
+import { setupApp } from '../../src/config/app.config';
+import { createUser, getTestingModule } from '../utils.test';
 import * as request from 'supertest';
-import { RecuperacaoModule } from '../src/modules/recuperacao/recuperacao.module';
-import { RecuperacaoDto } from '../src/_adapters/recuperacao/dto/recuperacao.dto';
-import { MailerMailService } from '../src/_adapters/mail/services/mailer-mail.service';
+import { RecuperacaoModule } from '../../src/modules/recuperacao/recuperacao.module';
+import { RecuperacaoDto } from '../../src/_adapters/recuperacao/dto/recuperacao.dto';
+import { MailerMailService } from '../../src/_adapters/mail/services/mailer-mail.service';
 import { createMock } from '@golevelup/ts-jest';
-import { MailModule } from '../src/mail/mail.module';
-import { Usuario } from '../src/_business/usuarios/entidades/usuario.entity';
-import { UsuarioModule } from '../src/modules/usuario/usuario.module';
+import { MailModule } from '../../src/mail/mail.module';
+import { Usuario } from '../../src/_business/usuarios/entidades/usuario.entity';
+import { UsuarioModule } from '../../src/modules/usuario/usuario.module';
 
 describe('Recuperação de senha (e2e)', () => {
   let app: INestApplication;

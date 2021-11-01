@@ -1,13 +1,13 @@
 import { INestApplication } from '@nestjs/common';
 import { TestingModule } from '@nestjs/testing';
-import { UsuarioModule } from '../src/modules/usuario/usuario.module';
-import { setupApp } from '../src/config/app.config';
-import { createUser, getTestingModule } from './utils.test';
+import { UsuarioModule } from '../../src/modules/usuario/usuario.module';
+import { setupApp } from '../../src/config/app.config';
+import { createUser, getTestingModule } from '../utils.test';
 import * as request from 'supertest';
-import { AuthModule } from '../src/modules/auth/auth.module';
-import { TokenDto } from '../src/_adapters/auth/dto/auth.dto';
-import { Usuario } from '../src/_business/usuarios/entidades/usuario.entity';
-import { DEFAULT_PASSWORD } from '../jest.setup';
+import { AuthModule } from '../../src/modules/auth/auth.module';
+import { TokenDto } from '../../src/_adapters/auth/dto/auth.dto';
+import { Usuario } from '../../src/_business/usuarios/entidades/usuario.entity';
+import { DEFAULT_PASSWORD } from '../../jest.setup';
 
 describe('Autenticação (e2)', () => {
   let app: INestApplication;

@@ -1,24 +1,24 @@
 import { TestingModule } from '@nestjs/testing';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { UsuarioModule } from '../src/modules/usuario/usuario.module';
-import { TipoUsuario } from '../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { setupApp } from '../src/config/app.config';
-import { getTestingModule, getToken } from './utils.test';
+import { UsuarioModule } from '../../src/modules/usuario/usuario.module';
+import { TipoUsuario } from '../../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { setupApp } from '../../src/config/app.config';
+import { getTestingModule, getToken } from '../utils.test';
 import { lorem, address } from 'faker/locale/pt_BR';
 
-import { AuthModule } from '../src/modules/auth/auth.module';
-import { CreateVoluntarioDto } from '../src/_adapters/voluntarios/dto/create-voluntario.dto';
+import { AuthModule } from '../../src/modules/auth/auth.module';
+import { CreateVoluntarioDto } from '../../src/_adapters/voluntarios/dto/create-voluntario.dto';
 import * as moment from 'moment';
 import {
   Estado,
   Genero,
-} from '../src/_business/usuarios/entidades/usuario.entity';
+} from '../../src/_business/usuarios/entidades/usuario.entity';
 import {
   AreaAtuacao,
   FrenteAtuacao,
-} from '../src/_business/voluntarios/entidades/voluntario.entity';
-import { VoluntarioModule } from '../src/modules/voluntario/voluntario.module';
+} from '../../src/_business/voluntarios/entidades/voluntario.entity';
+import { VoluntarioModule } from '../../src/modules/voluntario/voluntario.module';
 
 describe('Criar Conta de Voluntário (e2e)', () => {
   let app: INestApplication;
