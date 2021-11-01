@@ -66,7 +66,7 @@ describe('Cadastro-voluntario', () => {
   it('Deve dar de usuário formado sem os campos', async () => {
     jest
       .spyOn(useCase, 'execute')
-      .mockRejectedValue(new CamposDeFormacaoError());
+      .mockRejectedValue(new CamposDeFormacaoError([]));
     await expect(() => controller.cadastrar(request, user)).rejects.toThrow(
       UnprocessableEntityException,
     );

@@ -22,8 +22,12 @@ export interface ICadastrarNovoVoluntarioService {
 }
 
 export class CamposDeFormacaoError extends Error {
+  constructor(private readonly fields: string[]) {
+    super();
+  }
   public code = 422;
   public message = 'Usuário deve informar os campos relativos à formação';
+  public context = this.fields.map((campo) => `${campo} deve ser informado`);
 }
 
 // ---
@@ -84,7 +88,12 @@ export class CadastrarVoluntario {
       ? ['anoFormacao', 'crp', 'areaAtuacao']
       : ['semestre'];
     if (!this.checkCampos(campos, input)) {
-      throw new CamposDeFormacaoError();
+      /***
+       * Deve constar quais campos estão faltando no context do erro
+       */
+      throw new CamposDeFormacaoError(
+        campos.filter((campo) => !!!input[campo]),
+      );
     }
     /***
      * Garantir que os outros campos não sejam preenchidos, a depender da formação

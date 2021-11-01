@@ -47,7 +47,7 @@ describe('Atualizar Voluntário Controller', () => {
   it('Deve dar erro de campos de formação', async () => {
     jest
       .spyOn(useCase, 'execute')
-      .mockRejectedValue(new CamposDeFormacaoError());
+      .mockRejectedValue(new CamposDeFormacaoError([]));
     await expect(() =>
       controller.atualizar(expect.any(Number), expect.any(AtualizarAlunoDto)),
     ).rejects.toThrow(UnprocessableEntityException);
