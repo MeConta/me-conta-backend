@@ -31,7 +31,7 @@ describe('RecuperacaoService', () => {
 
   beforeAll(async () => {
     connection = await createConnection({
-      type: 'better-sqlite3',
+      type: 'sqlite',
       database: ':memory:',
       dropSchema: true,
       logging: false,

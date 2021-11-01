@@ -4,12 +4,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'better-sqlite3',
+      type: 'sqlite',
       database: ':memory:',
       dropSchema: true,
       logging: false,
       autoLoadEntities: true,
-      entities: ['dist/**/*.entity.js'],
+      entities: ['src/**/*.entity.ts'],
       synchronize: true,
     }),
   ],

@@ -5,7 +5,7 @@ import {
 } from '../../../_business/voluntarios/casos-de-uso/cadastrar-voluntario.feat';
 import { InjectRepository } from '@nestjs/typeorm';
 import { VoluntarioDbEntity } from '../entidades/voluntario-db.entity';
-import { Repository } from 'typeorm';
+import { getManager, Repository } from 'typeorm';
 import {
   IAtualizarAprovacaoVoluntario,
   IBuscarVoluntarios,
@@ -15,6 +15,7 @@ import {
   Bio,
   Voluntario,
 } from '../../../_business/voluntarios/entidades/voluntario.entity';
+import { UsuarioDbEntity } from '../../usuarios/entidades/usuario.db.entity';
 
 @Injectable()
 export class TypeormVoluntarioService
@@ -47,9 +48,10 @@ export class TypeormVoluntarioService
 
   async buscar(search?: Partial<Voluntario>): Promise<(Voluntario & Bio)[]> {
     return this.repository.find({
-      relations: ['usuario'],
+      relations: [
+        getManager().getRepository(UsuarioDbEntity).metadata.tableName,
+      ],
       where: search,
     });
-    // return this.repository.find();
   }
 }

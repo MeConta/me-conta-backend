@@ -9,6 +9,7 @@ dotenv.config({
 });
 
 export const DEFAULT_PASSWORD = `s3Nh@F04r3$`;
+export const DEFAULT_PHONE = '11912345678';
 export const MOCKED_SALT = bcrypt.genSaltSync();
 
 export function getParamDecoratorFactory(decorator) {
