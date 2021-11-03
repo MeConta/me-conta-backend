@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "f76e0196-39f9-450a-93a7-efceca4f9c06",
-		"name": "Me Conta? 2.0",
+		"name": "Me Conta?",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -511,7 +511,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"telefone\": \"11953844213\",\n    \"genero\": \"M\",\n    \"frentes\": [2],\n    \"formado\": true,\n    \"crp\": \"xpto\",\n    \"anoFormacao\": \"2020\",\n    \"areaAtuacao\": \"professor\"\n}",
+							"raw": "{\n    \"telefone\": \"11953844213\",\n    \"genero\": \"M\",\n    \"frentes\": [2],\n    \"formado\": true,\n    \"crp\": \"xpto\",\n    \"anoFormacao\": 2020,\n    \"areaAtuacao\": \"professor\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -531,12 +531,73 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "6"
+									"value": "{{ID}}"
 								}
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Atualizar Voluntário",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"telefone\": \"11953844213\",\n    \"genero\": \"M\",\n    \"frentes\": [2],\n    \"formado\": true,\n    \"crp\": \"xpto\",\n    \"anoFormacao\": 2020,\n    \"areaAtuacao\": \"professor\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/atualizar-voluntario/:id",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"atualizar-voluntario",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "8"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 03 Nov 2021 13:09:03 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
 				}
 			],
 			"auth": {
@@ -736,7 +797,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "4"
+									"value": "{{ID}}"
 								}
 							]
 						}
@@ -931,7 +992,9 @@
 								"exec": [
 									"pm.test(\"Status code is 201\", function () {",
 									"    pm.response.to.have.status(201);",
-									"    pm.environment.set('EMAIL', pm.response.json().email)",
+									"    const {id, email} = pm.response.json();",
+									"    pm.environment.set('EMAIL', email);",
+									"    pm.environment.set('ID', id);",
 									"});",
 									""
 								],
@@ -2134,15 +2197,48 @@
 									]
 								}
 							},
-							"response": [
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Atualizar um Voluntário",
+					"item": [
+						{
+							"name": "Cadastro Inicial",
+							"item": [
 								{
-									"name": "Supervisor",
-									"originalRequest": {
+									"name": "Cadastro Inicial",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 201\", function () {",
+													"    pm.response.to.have.status(201);",
+													"    pm.environment.set('EMAIL', pm.response.json().email)",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
 										"method": "POST",
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": true,\n    \"anoFormacao\": 2020,\n    \"areaAtuacao\": \"psicologo\",\n    \"crp\": \"{{$randomLoremSentence}}\",\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"frentes\": [\n        1\n    ],\n    \"tipo\": 1\n}",
+											"raw": "{\n    \"nome\": \"{{$randomFirstName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"senha\": \"{{SENHA}}\",\n    \"tipo\": 1\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -2150,54 +2246,317 @@
 											}
 										},
 										"url": {
-											"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-voluntario",
+											"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-inicial",
 											"protocol": "{{PROTOCOL}}",
 											"host": [
 												"{{HOST}}{{PORT}}"
 											],
 											"path": [
-												"cadastro-voluntario"
+												"cadastro-inicial"
 											]
 										}
 									},
-									"status": "Created",
-									"code": 201,
-									"_postman_previewlanguage": "plain",
-									"header": [
+									"response": []
+								},
+								{
+									"name": "Login",
+									"event": [
 										{
-											"key": "X-Powered-By",
-											"value": "Express"
-										},
-										{
-											"key": "Access-Control-Allow-Origin",
-											"value": "*"
-										},
-										{
-											"key": "Date",
-											"value": "Tue, 19 Oct 2021 16:57:22 GMT"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										},
-										{
-											"key": "Keep-Alive",
-											"value": "timeout=5"
-										},
-										{
-											"key": "Content-Length",
-											"value": "0"
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"    const res = pm.response.json();",
+													"    pm.environment.set('BEARER_TOKEN', res.token);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
 										}
 									],
-									"cookie": [],
-									"body": null
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"username\": \"{{EMAIL}}\",\n    \"password\": \"{{SENHA}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/auth/login",
+											"protocol": "{{PROTOCOL}}",
+											"host": [
+												"{{HOST}}{{PORT}}"
+											],
+											"path": [
+												"auth",
+												"login"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"auth": {
+								"type": "noauth"
+							},
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
 								}
 							]
+						},
+						{
+							"name": "Cadastro voluntário",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": true,\n    \"anoFormacao\": 2020,\n    \"areaAtuacao\": \"psicologo\",\n    \"crp\": \"{{$randomLoremSentence}}\",\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"frentes\": [\n        1\n    ],\n    \"tipo\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-voluntario",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"cadastro-voluntario"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login Admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    const res = pm.response.json();",
+											"    pm.environment.set('BEARER_TOKEN', res.token);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"admin@meconta.org\",\n    \"password\": \"C4FaNYpaVUIRvs5S\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/auth/login",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Autorizar Voluntário",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"aprovado\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/admin/voluntarios/aprovar/:id",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"admin",
+										"voluntarios",
+										"aprovar",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Atualizar Voluntário",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 204\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"telefone\": \"11953844213\",\n    \"genero\": \"M\",\n    \"frentes\": [2],\n    \"formado\": true,\n    \"crp\": \"xpto\",\n    \"anoFormacao\": 2020,\n    \"areaAtuacao\": \"professor\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/atualizar-voluntario/:id",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"atualizar-voluntario",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{ID}}"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
 				{
-					"name": "Autorizar um atendente",
+					"name": "Autorizar um Voluntário",
 					"item": [
 						{
 							"name": "Cadastro Inicial",
@@ -2496,7 +2855,7 @@
 					]
 				},
 				{
-					"name": "Listar voluntários",
+					"name": "Listar Voluntários",
 					"item": [
 						{
 							"name": "Listar voluntários",
