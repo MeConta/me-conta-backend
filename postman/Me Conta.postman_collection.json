@@ -154,7 +154,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": true,\n    \"anoFormacao\": 2020,\n    \"areaAtuacao\": \"psicologo\",\n    \"crp\": \"{{$randomLoremSentence}}\",\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"frentes\": [\n        1\n    ],\n    \"tipo\": 1,\n    \"bio\": \"{{$randomLoremParagraph}}\"\n}",
+							"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": false,\n    \"areaAtuacao\": \"psicologo\",\n    \"crp\": \"{{$randomLoremSentence}}\",\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"tipo\": 1,\n    \"frentes\": [0,1,2],\n    \"bio\": \"{{$randomLoremParagraph}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -345,6 +345,198 @@
 							"body": null
 						}
 					]
+				},
+				{
+					"name": "Listar voluntários",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/voluntarios/listar/:tipo",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"voluntarios",
+								"listar",
+								":tipo"
+							],
+							"variable": [
+								{
+									"key": "tipo",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Não logado como admin",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/voluntarios/listar/:tipo",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"voluntarios",
+										"listar",
+										":tipo"
+									],
+									"variable": [
+										{
+											"key": "tipo",
+											"value": ""
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "575"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"23f-JkniY/JXua7oIxxMTBTWjB7gUKQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Oct 2021 18:28:10 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"crp\": \"Praesentium quia quae consequatur.\",\n        \"especializacoes\": \"Ut temporibus omnis repudiandae incidunt impedit consequatur dolores.\",\n        \"areaAtuacao\": \"psicologo\",\n        \"formado\": true,\n        \"instituicao\": \"Officia autem expedita sint qui.\",\n        \"frentes\": [\n            1\n        ],\n        \"bio\": \"Asperiores et illo blanditiis qui nam ad et. Ipsa doloremque consequatur et quae perferendis iste. Est non est voluptatem sint quos dolor magnam aliquid. Quam repudiandae possimus id delectus et quod pariatur voluptate maiores. Odit hic cum.\",\n        \"usuario\": {\n            \"nome\": \"Fritz\",\n            \"tipo\": 1,\n            \"email\": \"Frederique_Quigley70@gmail.com\",\n            \"id\": 12\n        }\n    }\n]"
+						},
+						{
+							"name": "Logado como Admin",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/voluntarios/listar/:tipo",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"voluntarios",
+										"listar",
+										":tipo"
+									],
+									"variable": [
+										{
+											"key": "tipo",
+											"value": ""
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "6897"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1af1-qsBOYqqBBf3sPgpFf+QkMPo57mE\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 29 Oct 2021 18:28:31 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"anoFormacao\": null,\n        \"aprovado\": null,\n        \"crp\": null,\n        \"formado\": false,\n        \"frentes\": [\n            1\n        ],\n        \"instituicao\": \"Eos quis voluptates ipsa eius facilis.\",\n        \"semestre\": 5,\n        \"areaAtuacao\": null,\n        \"especializacoes\": \"Molestiae ipsam at rerum qui consectetur natus incidunt est.\",\n        \"bio\": \"Quasi ipsa autem suscipit aut voluptas et quod. Eum ullam amet vitae eum culpa excepturi recusandae harum ipsa. Doloribus consequatur consectetur iure et magni ratione nisi. Ad praesentium facere facere ipsa dignissimos ratione dolor aut quaerat.\",\n        \"id\": 10,\n        \"usuario\": {\n            \"id\": 10,\n            \"nome\": \"Ariel\",\n            \"email\": \"Estrella_Beatty32@yahoo.com\",\n            \"tipo\": 2,\n            \"dataTermos\": \"2021-10-25T13:46:17.464Z\"\n        }\n    },\n    {\n        \"anoFormacao\": null,\n        \"aprovado\": null,\n        \"crp\": null,\n        \"formado\": false,\n        \"frentes\": [\n            1\n        ],\n        \"instituicao\": \"Debitis voluptatem ex mollitia corporis qui quasi nisi deserunt.\",\n        \"semestre\": 5,\n        \"areaAtuacao\": null,\n        \"especializacoes\": \"Culpa aspernatur fugit velit.\",\n        \"bio\": \"Excepturi architecto molestiae vitae. Et libero ut. Fugiat et rem voluptates perspiciatis nam. Et veritatis doloribus neque a. Vitae repellat qui optio qui perspiciatis.\",\n        \"id\": 11,\n        \"usuario\": {\n            \"id\": 11,\n            \"nome\": \"Thad\",\n            \"email\": \"Megane.Kunde6@hotmail.com\",\n            \"tipo\": 2,\n            \"dataTermos\": \"2021-10-25T13:47:15.051Z\"\n        }\n    },\n    {\n        \"anoFormacao\": 2020,\n        \"aprovado\": true,\n        \"crp\": \"Praesentium quia quae consequatur.\",\n        \"formado\": true,\n        \"frentes\": [\n            1\n        ],\n        \"instituicao\": \"Officia autem expedita sint qui.\",\n        \"semestre\": null,\n        \"areaAtuacao\": \"psicologo\",\n        \"especializacoes\": \"Ut temporibus omnis repudiandae incidunt impedit consequatur dolores.\",\n        \"bio\": \"Asperiores et illo blanditiis qui nam ad et. Ipsa doloremque consequatur et quae perferendis iste. Est non est voluptatem sint quos dolor magnam aliquid. Quam repudiandae possimus id delectus et quod pariatur voluptate maiores. Odit hic cum.\",\n        \"id\": 12,\n        \"usuario\": {\n            \"id\": 12,\n            \"nome\": \"Fritz\",\n            \"email\": \"Frederique_Quigley70@gmail.com\",\n            \"tipo\": 1,\n            \"dataTermos\": \"2021-10-25T13:47:50.821Z\"\n        }\n    },\n    {\n        \"anoFormacao\": 2020,\n        \"aprovado\": null,\n        \"crp\": \"Vero qui dolore quaerat et voluptas quibusdam assumenda.\",\n        \"formado\": true,\n        \"frentes\": [\n            1\n        ],\n        \"instituicao\": \"Dolores voluptas et vel voluptatem rerum quos nisi occaecati.\",\n        \"semestre\": null,\n        \"areaAtuacao\": \"psicologo\",\n        \"especializacoes\": \"Ducimus quo quod id at laborum dolor molestiae consequatur molestiae.\",\n        \"bio\": null,\n        \"id\": 14,\n        \"usuario\": {\n            \"id\": 14,\n            \"nome\": \"America\",\n            \"email\": \"Ebony77@gmail.com\",\n            \"tipo\": 1,\n            \"dataTermos\": \"2021-10-25T13:52:07.257Z\"\n        }\n    },\n    {\n        \"anoFormacao\": null,\n        \"aprovado\": null,\n        \"crp\": null,\n        \"formado\": false,\n        \"frentes\": [\n            1\n        ],\n        \"instituicao\": \"Corporis omnis odio officiis ab quis enim in est impedit.\",\n        \"semestre\": 5,\n        \"areaAtuacao\": null,\n        \"especializacoes\": \"Dolorum sit odit dignissimos officiis voluptate ipsa facere enim.\",\n        \"bio\": \"Distinctio enim illum nobis dolore illo voluptatem commodi. Ea magnam ut sint suscipit voluptas fugiat possimus et eos. Aspernatur alias exercitationem praesentium. Cumque consequatur aut voluptatem qui hic eaque assumenda occaecati quaerat. Aut molestiae et et dolor ad asperiores corrupti eligendi. Culpa quia dolor.\",\n        \"id\": 16,\n        \"usuario\": {\n            \"id\": 16,\n            \"nome\": \"Austen\",\n            \"email\": \"Keaton.Konopelski7@yahoo.com\",\n            \"tipo\": 2,\n            \"dataTermos\": \"2021-10-25T13:52:20.521Z\"\n        }\n    },\n    {\n        \"anoFormacao\": 2020,\n        \"aprovado\": null,\n        \"crp\": \"Ut sunt illum dolor sit qui dignissimos ut quae.\",\n        \"formado\": true,\n        \"frentes\": [\n            1\n        ],\n        \"instituicao\": \"Dolorem sit laborum nam id eos unde voluptas.\",\n        \"semestre\": null,\n        \"areaAtuacao\": \"psicologo\",\n        \"especializacoes\": \"Exercitationem porro molestiae quae eaque molestiae.\",\n        \"bio\": null,\n        \"id\": 17,\n        \"usuario\": {\n            \"id\": 17,\n            \"nome\": \"Laura\",\n            \"email\": \"Cecile_Runolfsdottir89@yahoo.com\",\n            \"tipo\": 1,\n            \"dataTermos\": \"2021-10-25T13:52:20.803Z\"\n        }\n    },\n    {\n        \"anoFormacao\": null,\n        \"aprovado\": null,\n        \"crp\": null,\n        \"formado\": false,\n        \"frentes\": [\n            0,\n            1,\n            2\n        ],\n        \"instituicao\": \"sadasdasd\",\n        \"semestre\": 1,\n        \"areaAtuacao\": null,\n        \"especializacoes\": null,\n        \"bio\": \"asdasdas\",\n        \"id\": 28,\n        \"usuario\": {\n            \"id\": 28,\n            \"nome\": \"Renan Cara legal\",\n            \"email\": \"renan.legal@teste.com\",\n            \"tipo\": 2,\n            \"dataTermos\": \"2021-10-27T19:39:00.730Z\"\n        }\n    },\n    {\n        \"anoFormacao\": 2021,\n        \"aprovado\": null,\n        \"crp\": \"teste\",\n        \"formado\": true,\n        \"frentes\": [\n            0\n        ],\n        \"instituicao\": \"teste\",\n        \"semestre\": null,\n        \"areaAtuacao\": \"professor\",\n        \"especializacoes\": null,\n        \"bio\": \"\",\n        \"id\": 29,\n        \"usuario\": {\n            \"id\": 29,\n            \"nome\": \"Richard Düssel\",\n            \"email\": \"richard.teste@teste.com\",\n            \"tipo\": 1,\n            \"dataTermos\": \"2021-10-28T12:38:44.865Z\"\n        }\n    },\n    {\n        \"anoFormacao\": 2019,\n        \"aprovado\": null,\n        \"crp\": \"Ut quia aut placeat.\",\n        \"formado\": true,\n        \"frentes\": [\n            1\n        ],\n        \"instituicao\": \"Error consequatur et sed quis maxime minima quis.\",\n        \"semestre\": null,\n        \"areaAtuacao\": \"psicologo\",\n        \"especializacoes\": \"Saepe hic aperiam laudantium nostrum magni facilis voluptatibus.\",\n        \"bio\": \"Alias debitis quasi sapiente odio ea molestiae. Porro enim voluptatem adipisci amet dolorum pariatur in officia. Eum laborum quia id sapiente hic dolorem doloremque dolorem. Rem sit ut nobis consequatur et debitis. Fugit aut sit harum necessitatibus earum beatae.\",\n        \"id\": 19,\n        \"usuario\": {\n            \"id\": 19,\n            \"nome\": \"Misael\",\n            \"email\": \"Ashleigh.Dietrich23@gmail.com\",\n            \"tipo\": 1,\n            \"dataTermos\": \"2021-10-25T14:09:09.455Z\"\n        }\n    },\n    {\n        \"anoFormacao\": 2020,\n        \"aprovado\": null,\n        \"crp\": \"Quia consequuntur voluptatem asperiores omnis aut excepturi mollitia dolorem repellat.\",\n        \"formado\": true,\n        \"frentes\": [\n            1\n        ],\n        \"instituicao\": \"Voluptatem nostrum est atque aut qui ut ut debitis.\",\n        \"semestre\": null,\n        \"areaAtuacao\": \"psicologo\",\n        \"especializacoes\": \"Qui laborum id voluptatem officia.\",\n        \"bio\": null,\n        \"id\": 31,\n        \"usuario\": {\n            \"id\": 31,\n            \"nome\": \"Rowland\",\n            \"email\": \"Glenda.Wolff17@gmail.com\",\n            \"tipo\": 1,\n            \"dataTermos\": \"2021-10-28T12:54:07.470Z\"\n        }\n    },\n    {\n        \"anoFormacao\": 2020,\n        \"aprovado\": null,\n        \"crp\": \"Commodi et odit ipsum non.\",\n        \"formado\": true,\n        \"frentes\": [\n            1\n        ],\n        \"instituicao\": \"Et perferendis at officiis accusamus accusamus voluptatem qui minima natus.\",\n        \"semestre\": null,\n        \"areaAtuacao\": \"psicologo\",\n        \"especializacoes\": \"Voluptatibus laudantium minus nostrum illo expedita et sequi sint sit.\",\n        \"bio\": null,\n        \"id\": 32,\n        \"usuario\": {\n            \"id\": 32,\n            \"nome\": \"Mortimer\",\n            \"email\": \"Pearline_Hermann76@yahoo.com\",\n            \"tipo\": 1,\n            \"dataTermos\": \"2021-10-28T18:27:55.550Z\"\n        }\n    },\n    {\n        \"anoFormacao\": 2020,\n        \"aprovado\": null,\n        \"crp\": \"Aut numquam commodi.\",\n        \"formado\": true,\n        \"frentes\": [\n            1\n        ],\n        \"instituicao\": \"Non voluptatem non porro corrupti.\",\n        \"semestre\": null,\n        \"areaAtuacao\": \"psicologo\",\n        \"especializacoes\": \"Ab provident nisi distinctio.\",\n        \"bio\": null,\n        \"id\": 33,\n        \"usuario\": {\n            \"id\": 33,\n            \"nome\": \"Hardy\",\n            \"email\": \"Hipolito86@yahoo.com\",\n            \"tipo\": 2,\n            \"dataTermos\": \"2021-10-28T18:28:37.119Z\"\n        }\n    },\n    {\n        \"anoFormacao\": 2020,\n        \"aprovado\": null,\n        \"crp\": \"Iure quos ut provident.\",\n        \"formado\": true,\n        \"frentes\": null,\n        \"instituicao\": \"Nesciunt aliquam ex.\",\n        \"semestre\": null,\n        \"areaAtuacao\": \"psicologo\",\n        \"especializacoes\": \"Iste facere illum.\",\n        \"bio\": null,\n        \"id\": 34,\n        \"usuario\": {\n            \"id\": 34,\n            \"nome\": \"Bettie\",\n            \"email\": \"Garfield.Jacobson77@yahoo.com\",\n            \"tipo\": 1,\n            \"dataTermos\": \"2021-10-28T18:44:58.015Z\"\n        }\n    },\n    {\n        \"anoFormacao\": 2020,\n        \"aprovado\": null,\n        \"crp\": \"Vel quidem dicta est quis voluptas quaerat consequatur.\",\n        \"formado\": true,\n        \"frentes\": null,\n        \"instituicao\": \"Sit laboriosam dolorum aut.\",\n        \"semestre\": null,\n        \"areaAtuacao\": \"psicologo\",\n        \"especializacoes\": \"Dolorem voluptatibus officia.\",\n        \"bio\": null,\n        \"id\": 36,\n        \"usuario\": {\n            \"id\": 36,\n            \"nome\": \"Telly\",\n            \"email\": \"Maximus_OKeefe35@yahoo.com\",\n            \"tipo\": 1,\n            \"dataTermos\": \"2021-10-28T18:56:12.611Z\"\n        }\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Atualizar Voluntário",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"telefone\": \"11953844213\",\n    \"genero\": \"M\",\n    \"frentes\": [2],\n    \"formado\": true,\n    \"crp\": \"xpto\",\n    \"anoFormacao\": \"2020\",\n    \"areaAtuacao\": \"professor\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/atualizar-voluntario/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"atualizar-voluntario",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"auth": {
@@ -413,7 +605,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"telefone\": \"11912345678\",\n  \"dataNascimento\": \"1996-07-12\",\n  \"cidade\": \"Acrelândia\",\n  \"UF\": \"AC\",\n  \"genero\": \"ND\",\n  \"tipoEscola\": 0,\n  \"escolaridade\": 0\n}",
+							"raw": "{\n  \"telefone\": \"11912345678\",\n  \"dataNascimento\": \"2006-07-12\",\n  \"cidade\": \"Acrelândia\",\n  \"UF\": \"AC\",\n  \"genero\": \"ND\",\n  \"tipoEscola\": 0,\n  \"escolaridade\": 0,\n  \"necessidades\": \"{{$randomLoremParagraph}}\",\n  \"expectativas\": \"{{$randomLoremParagraph}}\",\n  \"tratamentos\": \"{{$randomLoremParagraph}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -523,7 +715,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"telefone\": \"11912345678\",\n  \"dataNascimento\": \"1996-07-12\",\n  \"cidade\": \"Taboão da Serra\",\n  \"UF\": \"SP\",\n  \"genero\": \"ND\",\n  \"tipoEscola\": 1,\n  \"escolaridade\": 0\n}",
+							"raw": "{\n  \"telefone\": \"11912345678\",\n  \"dataNascimento\": \"1996-07-12\",\n  \"cidade\": \"Sao Paulo\",\n  \"UF\": \"SP\",\n  \"genero\": \"ND\",\n  \"tipoEscola\": 0,\n  \"escolaridade\": 0,\n  \"necessidades\": \"xpto\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -544,7 +736,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "2"
+									"value": "4"
 								}
 							]
 						}
@@ -737,7 +929,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
+									"pm.test(\"Status code is 201\", function () {",
 									"    pm.response.to.have.status(201);",
 									"    pm.environment.set('EMAIL', pm.response.json().email)",
 									"});",
@@ -752,7 +944,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"{{$randomFirstName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"senha\": \"{{SENHA}}\",\n    \"tipo\": 0\n}",
+							"raw": "{\n    \"nome\": \"{{$randomFirstName}} {{$randomLastName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"senha\": \"{{SENHA}}\",\n    \"tipo\": 0\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1280,7 +1472,7 @@
 											"listen": "test",
 											"script": {
 												"exec": [
-													"pm.test(\"Status code is 200\", function () {",
+													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
 													"    pm.environment.set('EMAIL', pm.response.json().email)",
 													"});",
@@ -1471,7 +1663,7 @@
 											"listen": "test",
 											"script": {
 												"exec": [
-													"pm.test(\"Status code is 200\", function () {",
+													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
 													"    pm.environment.set('EMAIL', pm.response.json().email)",
 													"});",
@@ -1777,7 +1969,7 @@
 											"listen": "test",
 											"script": {
 												"exec": [
-													"pm.test(\"Status code is 200\", function () {",
+													"pm.test(\"Status code is 201\", function () {",
 													"    pm.response.to.have.status(201);",
 													"    pm.environment.set('EMAIL', pm.response.json().email)",
 													"});",
@@ -2003,10 +2195,380 @@
 							]
 						}
 					]
+				},
+				{
+					"name": "Autorizar um atendente",
+					"item": [
+						{
+							"name": "Cadastro Inicial",
+							"item": [
+								{
+									"name": "Cadastro Inicial",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 201\", function () {",
+													"    pm.response.to.have.status(201);",
+													"    const { email, id } = pm.response.json();",
+													"    pm.environment.set('EMAIL', email);",
+													"     pm.environment.set('ID', id);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"nome\": \"{{$randomFirstName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"senha\": \"{{SENHA}}\",\n    \"tipo\": 2\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-inicial",
+											"protocol": "{{PROTOCOL}}",
+											"host": [
+												"{{HOST}}{{PORT}}"
+											],
+											"path": [
+												"cadastro-inicial"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Login",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"    const res = pm.response.json();",
+													"    pm.environment.set('BEARER_TOKEN', res.token);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"username\": \"{{EMAIL}}\",\n    \"password\": \"{{SENHA}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/auth/login",
+											"protocol": "{{PROTOCOL}}",
+											"host": [
+												"{{HOST}}{{PORT}}"
+											],
+											"path": [
+												"auth",
+												"login"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"auth": {
+								"type": "noauth"
+							},
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Cadastro voluntário",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": false,\n    \"semestre\": 5,\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"frentes\": [\n        1\n    ],\n    \"tipo\": 2,\n    \"bio\": \"{{$randomLoremParagraph}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/cadastro-voluntario",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"cadastro-voluntario"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login Admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    const res = pm.response.json();",
+											"    pm.environment.set('BEARER_TOKEN', res.token);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"admin@meconta.org\",\n    \"password\": \"C4FaNYpaVUIRvs5S\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/auth/login",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Autorizar Voluntário",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{BEARER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"aprovado\": false\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/admin/voluntarios/aprovar/:id",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"admin",
+										"voluntarios",
+										"aprovar",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			],
 			"auth": {
 				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Autorizar Voluntário",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"aprovado\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/admin/voluntarios/aprovar/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"admin",
+								"voluntarios",
+								"aprovar",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "33"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{BEARER_TOKEN}}",
+						"type": "string"
+					}
+				]
 			},
 			"event": [
 				{
