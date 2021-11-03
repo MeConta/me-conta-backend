@@ -1,12 +1,10 @@
-import * as dotenv from 'dotenv';
+import { config } from 'dotenv-flow';
 import * as bcrypt from 'bcrypt';
 import 'reflect-metadata';
 
 import { ROUTE_ARGS_METADATA } from '@nestjs/common/constants';
 
-dotenv.config({
-  path: './.env.test',
-});
+config();
 
 export const DEFAULT_PASSWORD = `s3Nh@F04r3$`;
 export const DEFAULT_PHONE = '11912345678';

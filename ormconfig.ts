@@ -1,9 +1,12 @@
-import { ConfigModule } from '@nestjs/config';
 import database from './src/config/database.config';
+import { config } from 'dotenv-flow';
 
-ConfigModule.forRoot({
-  isGlobal: true,
-  load: [database],
+const { parsed } = config({
+  node_env: process.env.NODE_ENV || 'development',
 });
+
+for (const [key, value] of Object.entries(parsed)) {
+  process.env[key] = value;
+}
 
 export default database();
