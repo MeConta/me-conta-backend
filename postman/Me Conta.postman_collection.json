@@ -2464,7 +2464,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"aprovado\": false\n}",
+									"raw": "{\n    \"aprovado\": true\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2487,6 +2487,55 @@
 										{
 											"key": "id",
 											"value": "{{ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Listar voluntários",
+					"item": [
+						{
+							"name": "Listar voluntários",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    const response = pm.response.json()",
+											"    pm.expect(response).to.be.an('array')",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/voluntarios/listar/:tipo",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"voluntarios",
+										"listar",
+										":tipo"
+									],
+									"variable": [
+										{
+											"key": "tipo",
+											"value": "2"
 										}
 									]
 								}
