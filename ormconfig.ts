@@ -6,7 +6,7 @@ const { parsed } = config({
 });
 
 for (const [key, value] of Object.entries(parsed)) {
-  process.env[key] = value;
+  process.env[key] = process.env[key] || value;
 }
 
 export default database();
