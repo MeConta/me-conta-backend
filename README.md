@@ -1,7 +1,7 @@
 # 💬 Me Conta
 
 ## ✳️ Sobre
-O Me Conta é uma plataforma que une jovens que buscam terapia a profissionais de Psicologia
+O **Me Conta** é uma plataforma que une jovens que buscam terapia a profissionais de Psicologia
 
 ## 🛠 Ferramentas Utilizadas
 - [Node](https://nodejs.dev)
@@ -22,10 +22,7 @@ git clone --recursive https://github.com/MeConta/me-conta.git
 ```bash
 docker compose up -d db
 ```
-- Vá para o repositório do backend
-```bash
-cd backend
-```
+
 - Execute o comando **npm install**:
 ```bash
 npm i
@@ -34,7 +31,7 @@ npm i
 ```bash
 npm run build
 ```
-- Rode a migração do banco de dados (não obrigatório, mas iniciará o banco de dados com algumas informações)
+- Se necessário, rode a migração do banco de dados
 ```bash
 npm run typeorm:migration:run
 ```
@@ -44,8 +41,23 @@ npm run typeorm:migration:run
 ```bash
 npm run start:dev
 ```
+Abra [http://localhost:3000](http://localhost:3000) no navegador para ver o resultado
+
+## 🐳 Iniciando com o Docker
+
+Se necessário, realize as migrações do banco de dados com o **docker compose**
+```bash
+docker compose run --rm migration
+```
+
+- Inicie o container do docker.
+```bash
+docker compose run -d api
+```
 
 Abra [http://localhost:3000](http://localhost:3000) no navegador para ver o resultado
+
+---
 
 ## 🪑 Migrações de banco de dados
 - Ao alterar uma entidade é necessário gerar nova migração para o banco de dados
@@ -56,14 +68,12 @@ npm run typeorm:migration:generate [nome da migração]
 ```bash
 npm run typeorm:migration:create [nome da migração]
 ```
-- compilar o projeto antes de executar as migrações
-```bash
-npm run build
-```
+
 - rodar as migrações para efetivar no banco
 ```bash
 npm run typeorm:migration:run
 ```
+---
 
 ## 🧪 Testes:
 - Testes unitários
@@ -71,8 +81,7 @@ npm run typeorm:migration:run
 npm run test
 ```
 - Cobertura de testes unitários
-```
-bash
+```bash
 npm run test:cov
 ```
 - Testes e2e
@@ -94,5 +103,5 @@ Foi adicionado ao projeto o [husky](https://github.com/typicode/husky) para veri
 
   > Exemplo de commit válido:
   ```bash
-  git commit -m"feat(#18): implementa testes unitários"
+  git commit -m "feat(#xx): implementa testes unitários"
   ```
