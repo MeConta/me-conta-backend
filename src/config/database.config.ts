@@ -16,11 +16,12 @@ const database = registerAs('database', () => {
       migrationsDir: 'migration',
     },
     extra: {
-      ssl: /*process.env.NODE_ENV === 'production'
+      ssl:
+        process.env.NODE_ENV === 'production'
           ? {
               rejectUnauthorized: false,
             }
-          :*/ null,
+          : null,
     },
   } as ConnectionOptions;
 });
