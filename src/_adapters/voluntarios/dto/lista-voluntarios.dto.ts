@@ -1,11 +1,11 @@
 import {
-  ObfuscatedVoluntarioOutput,
-  VoluntarioOutput,
-} from '../../../_business/voluntarios/casos-de-uso/listar-voluntarios.feat';
-import {
   AreaAtuacao,
   FrenteAtuacao,
 } from '../../../_business/voluntarios/entidades/voluntario.entity';
+import {
+  ObfuscatedVoluntarioOutput,
+  VoluntarioOutput,
+} from '../../../_business/voluntarios/dtos/voluntario.dto';
 import { UsuarioDto } from '../../usuarios/dto/usuario.dto';
 
 export class ListaVoluntariosDto
@@ -31,4 +31,5 @@ export class ListaVoluntariosDto
   instituicao: string;
   semestre?: number;
   usuario: UsuarioDto;
+  abordagem?: string;
 }

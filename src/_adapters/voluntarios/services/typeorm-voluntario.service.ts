@@ -11,11 +11,9 @@ import {
   IBuscarVoluntarios,
   IBuscarVoluntarioViaId,
 } from '../../../_business/voluntarios/services/voluntario.service';
-import {
-  Bio,
-  Voluntario,
-} from '../../../_business/voluntarios/entidades/voluntario.entity';
+import { Voluntario } from '../../../_business/voluntarios/entidades/voluntario.entity';
 import { UsuarioDbEntity } from '../../usuarios/entidades/usuario.db.entity';
+import { VoluntarioOutput } from '../../../_business/voluntarios/dtos/voluntario.dto';
 
 @Injectable()
 export class TypeormVoluntarioService
@@ -42,11 +40,11 @@ export class TypeormVoluntarioService
     });
   }
 
-  async findById(id: number): Promise<Voluntario & Bio> {
+  async findById(id: number): Promise<VoluntarioOutput> {
     return this.repository.findOne(id);
   }
 
-  async buscar(search?: Partial<Voluntario>): Promise<(Voluntario & Bio)[]> {
+  async buscar(search?: Partial<Voluntario>): Promise<VoluntarioOutput[]> {
     return this.repository.find({
       relations: [
         getManager().getRepository(UsuarioDbEntity).metadata.tableName,

@@ -1,15 +1,16 @@
-import { Bio, Voluntario } from '../entidades/voluntario.entity';
+import { Voluntario } from '../entidades/voluntario.entity';
 import { Usuario } from '../../usuarios/entidades/usuario.entity';
 import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { createMock } from '@golevelup/ts-jest';
 import { ListarVoluntarios } from './listar-voluntarios.feat';
 import { IBuscarVoluntarios } from '../services/voluntario.service';
 import { ITokenUser } from '../../auth/interfaces/auth';
+import { VoluntarioOutput } from '../dtos/voluntario.dto';
 
 class InMemoryVoluntarioService implements IBuscarVoluntarios {
-  voluntarios: (Voluntario & Bio)[] = [true, false, null].map<Voluntario & Bio>(
+  voluntarios: VoluntarioOutput[] = [true, false, null].map<VoluntarioOutput>(
     (aprovado, index) => ({
-      ...createMock<Voluntario & Bio>(),
+      ...createMock<VoluntarioOutput>(),
       aprovado,
       usuario: {
         ...createMock<Usuario>(),
@@ -18,7 +19,7 @@ class InMemoryVoluntarioService implements IBuscarVoluntarios {
       },
     }),
   );
-  async buscar(search?: Partial<Voluntario>): Promise<(Voluntario & Bio)[]> {
+  async buscar(search?: Partial<Voluntario>): Promise<VoluntarioOutput[]> {
     if (search?.aprovado && search?.usuario?.tipo) {
       return this.voluntarios.filter(
         (voluntario) =>

@@ -231,4 +231,10 @@ export class CreateVoluntarioDto implements Omit<NovoVoluntario, 'usuario'> {
     },
   )
   bio: string;
+
+  @IsOptional()
+  @IsNotEmptyString({
+    message: '$property não deve ser vazia',
+  })
+  abordagem?: string;
 }

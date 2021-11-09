@@ -1,14 +1,12 @@
-import { Bio, Voluntario } from '../entidades/voluntario.entity';
+import { Voluntario } from '../entidades/voluntario.entity';
 import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { IBuscarVoluntarios } from '../services/voluntario.service';
 import { ITokenUser } from '../../auth/interfaces/auth';
 import { Usuario } from '../../usuarios/entidades/usuario.entity';
-
-export type VoluntarioOutput = Voluntario & Bio;
-export type ObfuscatedVoluntarioOutput = Omit<
+import {
+  ObfuscatedVoluntarioOutput,
   VoluntarioOutput,
-  'aprovado' | 'semestre' | 'anoFormacao'
-> & { usuario: Pick<Usuario, 'nome' | 'email' | 'tipo'> };
+} from '../dtos/voluntario.dto';
 
 export class ListarVoluntarios {
   constructor(private readonly voluntarioService: IBuscarVoluntarios) {}
@@ -44,7 +42,9 @@ export class ListarVoluntarios {
           frentes,
           bio,
           usuario,
+          abordagem,
         } = voluntario;
+        // TODO: Melhorar esse mapping
         const { nome, tipo, email, id } = usuario;
         return {
           crp,
@@ -54,6 +54,7 @@ export class ListarVoluntarios {
           instituicao,
           frentes,
           bio,
+          abordagem,
           usuario: {
             nome,
             tipo,

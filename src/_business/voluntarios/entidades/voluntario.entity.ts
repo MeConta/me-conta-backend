@@ -27,3 +27,7 @@ export interface Voluntario {
 export interface Bio {
   bio?: string;
 }
+
+export interface Abordagem {
+  abordagem?: string;
+}

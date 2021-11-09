@@ -6,10 +6,10 @@ import { IBuscarPerfilByIdService } from '../../perfil/services/perfil.service';
 import { IBuscarVoluntarioViaId } from '../services/voluntario.service';
 import { VoluntarioNaoEncontradoError } from '../../admin/casos-de-uso/autorizar-voluntario.feat';
 import { createMock } from '@golevelup/ts-jest';
-import { Bio, Voluntario } from '../entidades/voluntario.entity';
 import { Perfil } from '../../usuarios/entidades/usuario.entity';
 import { lorem } from 'faker/locale/pt_BR';
 import { AtualizarVoluntario } from './atualizar-voluntario.feat';
+import { VoluntarioOutput } from '../dtos/voluntario.dto';
 
 describe('Atualizar Voluntário', () => {
   const voluntarios: NovoVoluntario[] = [];
@@ -31,7 +31,7 @@ describe('Atualizar Voluntário', () => {
   beforeEach(async () => {
     jest
       .spyOn(voluntarioService, 'findById')
-      .mockResolvedValue(createMock<Voluntario & Bio>());
+      .mockResolvedValue(createMock<VoluntarioOutput>());
     jest
       .spyOn(perfilService, 'findById')
       .mockResolvedValue(createMock<Perfil>());

@@ -10,6 +10,7 @@ import { TypeormDefaultEntity } from '../../entidades/typeorm.default.entity';
 import { UsuarioDbEntity } from '../../usuarios/entidades/usuario.db.entity';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 import {
+  Abordagem,
   AreaAtuacao,
   Bio,
   FrenteAtuacao,
@@ -19,7 +20,7 @@ import {
 @Entity('voluntario')
 export class VoluntarioDbEntity
   extends TypeormDefaultEntity
-  implements Voluntario, Bio
+  implements Voluntario, Bio, Abordagem
 {
   @Column({
     nullable: true,
@@ -71,6 +72,11 @@ export class VoluntarioDbEntity
     nullable: true,
   })
   bio?: string;
+
+  @Column({
+    nullable: true,
+  })
+  abordagem?: string;
 
   @PrimaryColumn()
   id: number;
