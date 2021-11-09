@@ -120,12 +120,6 @@ export class CreateVoluntarioDto implements Omit<NovoVoluntario, 'usuario'> {
    * @example '[0]'
    * @type Number
    */
-  @ValidateIf(
-    (voluntario: NovoVoluntario) => voluntario.tipo === TipoUsuario.ATENDENTE,
-    {
-      message: '$property não pode ser vazia',
-    },
-  )
   @IsNotEmpty({
     message: '$property não deve ser vazio',
   })

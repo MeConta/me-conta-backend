@@ -72,11 +72,9 @@ export class CadastrarVoluntario {
     /***
      * Supervisores:
      * - Devem NECESSARIAMENTE serem formados
-     * - NÃO DEVEM possuir frentes de atuação
      */
     if (tipo === TipoUsuario.SUPERVISOR) {
       input.formado = true;
-      input.frentes = null;
     }
 
     /***

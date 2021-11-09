@@ -196,7 +196,7 @@ describe('Cadastrar novo Voluntário', () => {
     expect(voluntarioService.voluntarios[0]).toEqual(
       expect.objectContaining({
         ...response,
-        frentes: null,
+        frentes: expect.any(Array),
         formado: true,
         semestre: null,
         anoFormacao: 2020,

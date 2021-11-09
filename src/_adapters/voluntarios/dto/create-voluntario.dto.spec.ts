@@ -52,21 +52,4 @@ describe('CreateVoluntarioDto', () => {
       isNotEmpty: expect.any(String),
     });
   });
-  it('Deve validar as frentes em um Dto de Voluntário Atendente', async () => {
-    transformed = plainToClass(CreateVoluntarioDto, {
-      ...input,
-      frentes: null,
-    });
-    const [error] = await validate(transformed);
-    const { property, constraints } = error;
-    expect(property).toBe('frentes');
-    expect(constraints).toMatchObject(
-      expect.objectContaining({
-        isEnum: expect.any(String),
-        arrayMinSize: expect.any(String),
-        isArray: expect.any(String),
-        isNotEmpty: expect.any(String),
-      }),
-    );
-  });
 });
