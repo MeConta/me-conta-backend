@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import database from './config/database.config';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { UsuarioModule } from './modules/usuario/usuario.module';
 import { AuthModule } from './modules/auth/auth.module';
@@ -11,22 +10,17 @@ import { AlunoModule } from './modules/aluno/aluno.module';
 import { RecuperacaoModule } from './modules/recuperacao/recuperacao.module';
 import { MailModule } from './mail/mail.module';
 import { AdminModule } from './modules/admin/admin.module';
+import { ConfigService } from './config/config.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [database],
       envFilePath: ['.env.local', '.env.production', '.env'],
       expandVariables: true,
       ignoreEnvFile: process.env.NODE_ENV === 'production',
     }),
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        ...configService.get('database'),
-      }),
-    }),
+    TypeOrmModule.forRoot(new ConfigService(process.env).typeOrmOptions),
     AuthModule.forRoot(),
     MailModule,
     PerfilModule,
