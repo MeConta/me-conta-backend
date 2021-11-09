@@ -2,7 +2,7 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { join } from 'path';
 
 export class ConfigService {
-  constructor(private env: { [k: string]: string | undefined }) {
+  constructor(private env?: { [k: string]: string | undefined }) {
     if (!env) {
       this.env = process.env;
     }
