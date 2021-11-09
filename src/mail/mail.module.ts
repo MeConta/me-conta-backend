@@ -26,7 +26,7 @@ import { MailerMailService } from '../_adapters/mail/services/mailer-mail.servic
           from: `"No Reply" <${config.get('EMAIL_FROM')}>`,
         },
         template: {
-          dir: join(__dirname, '..', '..', 'mail', 'templates'),
+          dir: join(__dirname, '..', 'mail', 'templates'),
           adapter: new PugAdapter(),
           options: {
             strict: true,

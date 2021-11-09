@@ -42,6 +42,7 @@ describe('Recuperar senha', () => {
   beforeEach(async () => {
     jest.spyOn(usuarioService, 'findByEmail').mockResolvedValue({
       ...createMock<Usuario>(),
+      nome: 'João Mota',
       email: 'teste@teste.com',
     } as Usuario);
     jest
@@ -62,6 +63,8 @@ describe('Recuperar senha', () => {
         to: 'teste@teste.com',
         context: {
           hash: 'unique_hash',
+          nome: 'João Mota',
+          url: '/nova-senha',
         },
       } as EmailOptions),
     );

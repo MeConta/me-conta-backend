@@ -47,6 +47,8 @@ export class RecuperarSenha {
         to: usuario.email,
         context: {
           hash,
+          nome: usuario.nome,
+          url: process.env.PASSWORD_RECOVERY_FRONT_URL,
         },
       });
     } catch (e) {

@@ -25,8 +25,7 @@ export class RecuperacaoController {
     try {
       return await this.recuperarSenha.execute(email);
     } catch (e) {
-      // TODO: Log de erro
-      // console.error(e);
+      console.error(e);
       return Promise.resolve();
     }
   }
