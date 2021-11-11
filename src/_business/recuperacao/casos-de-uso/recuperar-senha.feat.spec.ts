@@ -60,11 +60,11 @@ describe('Recuperar senha', () => {
     expect(recuperacaoService.randomString).toBeCalled();
     expect(emailService.send).toBeCalledWith(
       expect.objectContaining({
-        to: 'teste@teste.com',
+        to: expect.any(String),
         context: {
-          hash: 'unique_hash',
-          nome: 'João Mota',
-          url: '/nova-senha',
+          hash: expect.any(String),
+          nome: expect.any(String),
+          url: expect.any(String),
         },
       } as EmailOptions),
     );
