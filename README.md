@@ -22,11 +22,13 @@ git clone --recursive https://github.com/MeConta/me-conta.git
 ```bash
 docker compose up -d db
 ```
-
 - Execute o comando **npm install**:
 ```bash
 npm i
 ```
+- Crie o arquivo `.env.local` preenchendo as variáveis faltantes no `.env`
+> O `.env` não possuí os dados de **ADMIN** nem **SMTP**
+
 - Faça build do projeto
 ```bash
 npm run build
@@ -43,13 +45,15 @@ npm run start:dev
 ```
 Abra [http://localhost:3000](http://localhost:3000) no navegador para ver o resultado
 
-## 🐳 Iniciando com o Docker
+---
 
-Se necessário, realize as migrações do banco de dados com o **docker compose**
+## 🐳 Iniciando com o Docker
+- Crie o arquivo `.env.local` preenchendo as variáveis faltantes no `.env`
+> O `.env` não possuí os dados de **ADMIN** nem **SMTP**
+- Se necessário, realize as migrações do banco de dados com o **docker compose**
 ```bash
 docker compose run --rm migration
 ```
-
 - Inicie o container do docker.
 ```bash
 docker compose run -d api
@@ -59,7 +63,7 @@ Abra [http://localhost:3000](http://localhost:3000) no navegador para ver o resu
 
 ---
 
-## 🪑 Migrações de banco de dados
+## 🎲 Migrações de banco de dados
 - Ao alterar uma entidade é necessário gerar nova migração para o banco de dados
 ```bash
 npm run typeorm:migration:generate [nome da migração]
@@ -69,7 +73,7 @@ npm run typeorm:migration:generate [nome da migração]
 npm run typeorm:migration:create [nome da migração]
 ```
 
-- rodar as migrações para efetivar no banco
+- rodar as migrações para efetivar alterações no banco
 ```bash
 npm run typeorm:migration:run
 ```
@@ -90,16 +94,14 @@ npm run test:e2e
 ```
 ---
 
-## 🚀 Contribuindo com o projeto
+## 🚀 Commits no projeto
 
-Foi adicionado ao projeto o [husky](https://github.com/typicode/husky) para verificar alguns passos antes de autorizar o commit.
+O projeto possui [husky](https://github.com/typicode/husky) para verificar alguns passos antes de autorizar o commit.
 
-1. Aplicar correções relacionadas à Lint;
+1. Aplicar correções relacionadas à **Lint**;
 3. Validação da mensagem de commit conforme as regras do [conventional-commits](https://www.conventionalcommits.org/en/v1.0.0/);
   - Padrão utilizado:
-  ```bash
-  tipo(#issue-github): descrição
-  ```
+  > tipo(#issue): descrição
 
   > Exemplo de commit válido:
   ```bash
