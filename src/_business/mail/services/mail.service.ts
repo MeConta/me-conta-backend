@@ -9,3 +9,8 @@ export type EmailOptions = {
 export interface ISendEmailService {
   send(options: EmailOptions): Promise<void>;
 }
+
+export class EMailSendError extends Error {
+  code = 500;
+  message = 'Erro ao enviar e-mail';
+}

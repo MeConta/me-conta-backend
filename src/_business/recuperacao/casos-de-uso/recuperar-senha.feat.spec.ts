@@ -1,10 +1,11 @@
 import { createMock } from '@golevelup/ts-jest';
 import { UsuarioNaoEncontradoError } from '../../usuarios/erros/usuarios.errors';
 import { Usuario } from '../../usuarios/entidades/usuario.entity';
-import { EMailSendError, RecuperarSenha } from './recuperar-senha.feat';
+import { RecuperarSenha } from './recuperar-senha.feat';
 import { ISalvarHashRecuperacaoService } from '../services/recuperacao.service';
 import {
   EmailOptions,
+  EMailSendError,
   ISendEmailService,
 } from '../../mail/services/mail.service';
 import { IHashGenerateRandomString } from '../../usuarios/services/hash.service';
@@ -32,7 +33,6 @@ describe('Recuperar senha', () => {
       dateService,
       emailService,
       {
-        from: 'test-from@teste.com',
         subject: 'E-mail de recuperação de senha',
         template: '<p>#{hash}</p>',
       },

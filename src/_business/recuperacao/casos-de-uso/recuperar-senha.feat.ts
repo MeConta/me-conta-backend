@@ -2,16 +2,12 @@ import { UsuarioNaoEncontradoError } from '../../usuarios/erros/usuarios.errors'
 import { ISalvarHashRecuperacaoService } from '../services/recuperacao.service';
 import {
   EmailOptions,
+  EMailSendError,
   ISendEmailService,
 } from '../../mail/services/mail.service';
 import { IHashGenerateRandomString } from '../../usuarios/services/hash.service';
 import { IBuscarUsuarioViaEmailService } from '../../usuarios/services/usuario.service';
 import { DateUnits, IDateAdd } from '../../agenda/interfaces/date-time.service';
-
-export class EMailSendError extends Error {
-  code = 500;
-  message = 'Erro ao enviar e-mail';
-}
 
 export class RecuperarSenha {
   constructor(
@@ -20,10 +16,7 @@ export class RecuperarSenha {
       IHashGenerateRandomString,
     private readonly dateService: IDateAdd,
     private readonly emailService: ISendEmailService,
-    private readonly emailOptions: Pick<
-      EmailOptions,
-      'from' | 'subject' | 'template'
-    >,
+    private readonly emailOptions: Pick<EmailOptions, 'subject' | 'template'>,
   ) {}
 
   async execute(input: string): Promise<void> {

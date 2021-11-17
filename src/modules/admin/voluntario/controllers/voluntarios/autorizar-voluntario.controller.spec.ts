@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import {
   InternalServerErrorException,
   NotFoundException,
+  ServiceUnavailableException,
 } from '@nestjs/common';
 import {
   AutorizarVoluntario,
@@ -10,6 +11,7 @@ import {
 import { createMock } from '@golevelup/ts-jest';
 import { AutorizarVoluntarioInputDto } from '../../dto/autorizar-voluntario.dto';
 import { AutorizarVoluntarioController } from './autorizar-voluntario.controller';
+import { EMailSendError } from '../../../../../_business/mail/services/mail.service';
 
 describe('Aprovação de Voluntários', () => {
   let controller: AutorizarVoluntarioController;
@@ -51,12 +53,22 @@ describe('Aprovação de Voluntários', () => {
     ).rejects.toThrow(NotFoundException);
   });
 
+  it('Deve dar erro ao enviar o e-mail', async () => {
+    jest.spyOn(useCase, 'execute').mockRejectedValue(new EMailSendError());
+    await expect(() =>
+      controller.aprovar(
+        expect.any(Number),
+        expect.any(AutorizarVoluntarioInputDto),
+      ),
+    ).rejects.toThrow(ServiceUnavailableException);
+  });
+
   it('Deve dar erro genérico', async () => {
     jest.spyOn(useCase, 'execute').mockRejectedValue(new Error());
     await expect(() =>
       controller.aprovar(
         expect.any(Number),
-        expect.any(InternalServerErrorException),
+        expect.any(AutorizarVoluntarioInputDto),
       ),
     ).rejects.toThrow(InternalServerErrorException);
   });

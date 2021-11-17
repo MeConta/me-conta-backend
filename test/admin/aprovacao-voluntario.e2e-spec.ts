@@ -76,7 +76,7 @@ describe('Aprovação de Voluntários (e2e)', () => {
         .send({
           aprovado: true,
         } as AutorizarVoluntarioInputDto)
-        .expect(HttpStatus.OK);
+        .expect(HttpStatus.NO_CONTENT);
 
       const repo = app.get(Connection).getRepository(VoluntarioDbEntity);
       const { aprovado } = await repo.findOne(1);

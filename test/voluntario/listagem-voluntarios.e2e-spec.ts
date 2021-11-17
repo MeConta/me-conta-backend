@@ -14,13 +14,13 @@ import {
 import { CreateVoluntarioDto } from '../../src/_adapters/voluntarios/dto/create-voluntario.dto';
 import * as moment from 'moment';
 import { TipoUsuario } from '../../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { VoluntarioOutput } from '../../src/_business/voluntarios/casos-de-uso/listar-voluntarios.feat';
 import {
   AreaAtuacao,
   FrenteAtuacao,
 } from '../../src/_business/voluntarios/entidades/voluntario.entity';
 import { VoluntarioDbEntity } from '../../src/_adapters/voluntarios/entidades/voluntario-db.entity';
 import { Connection } from 'typeorm';
+import { VoluntarioOutput } from '../../src/_business/voluntarios/dtos/voluntario.dto';
 
 describe('Listagem de Voluntários (e2)', () => {
   let app: INestApplication;

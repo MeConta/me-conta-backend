@@ -1,0 +1,44 @@
+section
+	p Olá, #{nome}!
+
+	p
+		| Temos o prazer de informar que sua inscrição para ser voluntário na plataforma&nbsp;
+		a(href=url target="_blank") Me conta?
+		| &nbsp;foi aprovada!
+	br
+	p Estamos muito felizes para ter você como parte deste projeto incrível.
+
+	br
+
+	a.btn(target="__blank", href=url) Acessar o Me Conta?
+
+	br
+style.
+	p,
+	sub {
+		font-family: sans-serif;
+	}
+
+	section {
+		margin: 0 auto;
+		display: block;
+		width: auto;
+		max-width: 600px;
+	}
+	.btn {
+		display: block;
+		max-width: 400px;
+		padding: 12px 0px;
+		cursor: pointer;
+		border: none;
+		background: rgb(69, 143, 246);
+		height: auto;
+		font-size: 1.1rem;
+		font-weight: lighter;
+		font-family: sans-serif;
+		text-decoration: none;
+		color: white;
+		text-align: center;
+		border-radius: 34px;
+		margin: 0 auto;
+	}
