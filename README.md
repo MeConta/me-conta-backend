@@ -14,36 +14,37 @@ O **Me Conta** é uma plataforma que une jovens que buscam terapia a profissiona
 
 - Instale o [docker](https://www.docker.com)
 
+> Recomendamos desenvolver a partir do Monorepo deste projeto!
 - Clone o [monorepo](https://github.com/MeConta/me-conta) do projeto utilizando [git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules)
 ```bash
 git clone --recursive https://github.com/MeConta/me-conta.git
 ````
+### 🎲 Banco de dados
 - inicie o banco de dados via **docker compose**
 ```bash
 docker compose up -d db
 ```
-- Execute o comando **npm install**:
+- Instale as dependências **npm i**:
 ```bash
 npm i
 ```
 - Crie o arquivo `.env.local` preenchendo as variáveis faltantes no `.env`
 > O `.env` não possuí os dados de **ADMIN** nem **SMTP**
 
-- Faça build do projeto
-```bash
-npm run build
-```
 - Se necessário, rode a migração do banco de dados
 ```bash
 npm run typeorm:migration:run
 ```
 
-## ▶️ Executando o projeto
-- Inicie o **Nest** em modo de desenvolvimento (live reload)
+- Inicie o [**Nest**](http://nestjs.com) em modo de desenvolvimento
 ```bash
 npm run start:dev
 ```
-Abra [http://localhost:3000](http://localhost:3000) no navegador para ver o resultado
+
+- O Backend iniciará em [http://localhost:3000](http://localhost:3000)
+
+## :rocket: Postman
+Há _**collections**_ do [**_postman_**](https://www.postman.com) para ajudar na realização das chamadas
 
 ---
 
@@ -103,7 +104,7 @@ O projeto possui [husky](https://github.com/typicode/husky) para verificar algun
   - Padrão utilizado:
   > tipo(#issue): descrição
 
-  > Exemplo de commit válido:
+Exemplo de commit válido:
   ```bash
   git commit -m "feat(#xx): implementa testes unitários"
   ```
