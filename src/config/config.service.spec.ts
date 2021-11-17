@@ -17,6 +17,10 @@ describe('ConfigService', () => {
         NODE_ENV: 'production',
       });
     });
+    it('Deve carregar valores padrão quando não houver variáveis de ambiente', () => {
+      process.env = null;
+      service = new ConfigService(null);
+    });
     afterEach(() => {
       expect(service.typeOrmOptions).toBeDefined();
     });
