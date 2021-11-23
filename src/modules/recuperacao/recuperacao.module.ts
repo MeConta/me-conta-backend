@@ -27,8 +27,8 @@ import { ResetSenha } from '../../_business/recuperacao/casos-de-uso/reset-senha
 import { MomentDateTimeService } from '../../_adapters/agenda/services/moment-date-time.service';
 import {
   IDateAdd,
-  IDateGreaterThanService,
-} from '../../_business/agenda/interfaces/date-time.service';
+  IDateGreaterThan,
+} from '../../_business/agenda/services/date-time.service';
 
 @Injectable()
 export class NestRecuperarSenha extends RecuperarSenha {
@@ -60,7 +60,7 @@ export class NestResetSenha extends ResetSenha {
     @Inject(BcryptHashService)
     hashService: IHashHashService,
     @Inject(MomentDateTimeService)
-    dateService: IDateGreaterThanService,
+    dateService: IDateGreaterThan,
   ) {
     super(recuperacaoService, usuarioService, hashService, dateService);
   }

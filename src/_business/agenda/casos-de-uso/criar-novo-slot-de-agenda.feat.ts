@@ -1,84 +1,76 @@
-import { CriarSlotAgendaService } from '../interfaces/criar-slot-agenda.service';
 import {
+  DateUnit,
   IDateAdd,
-  IDateEndOfDay,
-  IDateStartOfDay,
-} from '../interfaces/date-time.service';
-import { IAuthorizationService } from '../../autorizacao/services/authorization.service';
-import { RecuperaSlotsAgendaService } from '../interfaces/recupera-slots-agenda.service';
+  IDateEndOf,
+  IDateStartOf,
+} from '../services/date-time.service';
+import { IBuscarUsuarioViaId } from '../../usuarios/casos-de-uso/buscar-usuario.id.feat';
 import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { SlotAgenda } from '../entidades/slot-agenda.entity';
+import {
+  CriarSlotAgendaService,
+  RecuperaSlotsAgendaService,
+} from '../services/agenda.service';
+import { UsuarioNaoEncontradoError } from '../../usuarios/erros/usuarios.errors';
 
-type CriarSlotInput = { inicio: Date; idUsuario: number };
+export type CriarSlotInput = {
+  voluntario: number;
+  slots: Pick<SlotAgenda, 'inicio'>[];
+};
+
+export class UsuarioNaoAtendente extends Error {
+  code = 422;
+  message = 'Usuário precisa ser atendente.';
+}
 
 export class CriarNovoSlotDeAgenda {
   constructor(
     private readonly agendaService: CriarSlotAgendaService &
       RecuperaSlotsAgendaService,
-    private readonly dateTimeHelper: IDateAdd & IDateStartOfDay & IDateEndOfDay,
-    private readonly authorizationService: IAuthorizationService,
+    private readonly dateHelper: IDateAdd & IDateStartOf & IDateEndOf,
+    private readonly usuarioService: IBuscarUsuarioViaId,
   ) {}
 
-  async execute(input: CriarSlotInput) {
-    await this.verificaPermissao(input.idUsuario);
+  async execute({ voluntario, slots }: CriarSlotInput) {
+    const usuario = await this.usuarioService.findById(voluntario);
+    if (!usuario) {
+      throw new UsuarioNaoEncontradoError();
+    }
 
-    const horarioInicio = input.inicio;
-    const horarioFim = this.dateTimeHelper.add(horarioInicio, 1);
+    if (usuario.tipo !== TipoUsuario.ATENDENTE) {
+      throw new UsuarioNaoAtendente();
+    }
 
-    await this.verificaDisponibilidadeDoHorario(
-      horarioInicio,
-      horarioFim,
-      input.idUsuario,
-    );
-
-    await this.agendaService.criarSlotNovo({
-      inicio: horarioInicio,
-      fim: horarioFim,
-      idAtendente: input.idUsuario,
-    });
+    for (const slot of slots) {
+      const { inicio } = slot;
+      const fim = this.dateHelper.add(inicio, 1, DateUnit.HOURS);
+      if (!(await this.verificarConflitoSlot(inicio, fim, voluntario))) {
+        await this.agendaService.cadastrar({
+          inicio,
+          fim,
+          atendenteId: voluntario,
+        });
+      } else {
+        console.log('olha o conflito!');
+      }
+    }
   }
 
-  private async verificaDisponibilidadeDoHorario(
+  private async verificarConflitoSlot(
     horarioInicioSlot: Date,
     horarioFimSlot: Date,
-    idAtendente: number,
-  ) {
-    const inicioDoDia = this.dateTimeHelper.startOfDay(horarioInicioSlot);
+    atendenteId: number,
+  ): Promise<boolean> {
+    const inicioDoDia = this.dateHelper.startOf(horarioInicioSlot);
 
-    const finalDoDia = this.dateTimeHelper.endOfDay(horarioFimSlot);
+    const finalDoDia = this.dateHelper.endOf(horarioFimSlot);
     const slotsNaAgenda = await this.agendaService.recuperaSlots({
       inicio: inicioDoDia,
       fim: finalDoDia,
-      idAtendente: idAtendente,
+      atendenteId,
     });
-    if (slotsNaAgenda.some(verificaSeSlotSobrepoe)) {
-      throw new HorarioOcupado();
-    }
-
-    function verificaSeSlotSobrepoe(slot) {
-      return slot.inicio < horarioFimSlot && slot.fim > horarioInicioSlot;
-    }
-  }
-
-  private async verificaPermissao(idUsuario: number) {
-    if (
-      !(await this.authorizationService.verificaTipoDoUsuario(
-        idUsuario,
-        TipoUsuario.ATENDENTE,
-      ))
-    ) {
-      throw new UsuarioNaoAtendente();
-    }
-  }
-}
-
-export class UsuarioNaoAtendente extends Error {
-  constructor() {
-    super('Usuário precisa ser atendente.');
-  }
-}
-
-export class HorarioOcupado extends Error {
-  constructor() {
-    super('Ja existe outro slot neste horario');
+    return slotsNaAgenda.some(
+      ({ inicio, fim }) => inicio < horarioFimSlot && fim > horarioInicioSlot,
+    );
   }
 }

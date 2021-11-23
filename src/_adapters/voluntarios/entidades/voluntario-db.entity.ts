@@ -3,6 +3,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryColumn,
 } from 'typeorm';
@@ -16,6 +17,8 @@ import {
   FrenteAtuacao,
   Voluntario,
 } from '../../../_business/voluntarios/entidades/voluntario.entity';
+import { SlotAgenda } from '../../../_business/agenda/entidades/slot-agenda.entity';
+import { SlotAgendaDbEntity } from '../../agenda/entidades/slot-agenda-db.entity';
 
 @Entity('voluntario')
 export class VoluntarioDbEntity
@@ -92,4 +95,9 @@ export class VoluntarioDbEntity
     name: 'id',
   })
   usuario: Usuario;
+
+  @OneToMany(() => SlotAgendaDbEntity, (slot) => slot.voluntario, {
+    eager: true,
+  })
+  slots: SlotAgenda[];
 }

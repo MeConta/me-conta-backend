@@ -11,6 +11,7 @@ import { VoluntarioDbEntity } from '../entidades/voluntario-db.entity';
 import { TypeormVoluntarioService } from './typeorm-voluntario.service';
 import { NovoVoluntario } from '../../../_business/voluntarios/casos-de-uso/cadastrar-voluntario.feat';
 import { FrenteAtuacao } from '../../../_business/voluntarios/entidades/voluntario.entity';
+import { SlotAgendaDbEntity } from '../../agenda/entidades/slot-agenda-db.entity';
 
 describe('VoluntarioService', () => {
   let connection: Connection;
@@ -34,7 +35,7 @@ describe('VoluntarioService', () => {
       database: ':memory:',
       dropSchema: true,
       logging: false,
-      entities: [UsuarioDbEntity, VoluntarioDbEntity],
+      entities: [UsuarioDbEntity, VoluntarioDbEntity, SlotAgendaDbEntity],
     });
   });
   beforeEach(async () => {

@@ -1,7 +1,12 @@
-import { CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  BaseEntity,
+  CreateDateColumn,
+  DeleteDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Exclude } from 'class-transformer';
 
-export abstract class TypeormDefaultEntity {
+export abstract class TypeormDefaultEntity extends BaseEntity {
   @CreateDateColumn()
   @Exclude()
   dataCriacao: Date;

@@ -35,7 +35,7 @@ export class TypeormUsuarioService
     usuario: NovoUsuario & { salt: string; dataTermos: Date },
   ): Promise<UsuarioDbEntity> {
     const entity = this.repository.create(usuario);
-    return await this.repository.save(entity);
+    return this.repository.save(entity);
   }
 
   async findByEmail(email: string): Promise<Usuario> {

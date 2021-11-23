@@ -1,28 +1,28 @@
 import {
-  DateUnits,
+  DateUnit,
   IDateAdd,
-  IDateEndOfDay,
-  IDateGreaterThanService,
-  IDateStartOfDay,
-} from '../../../_business/agenda/interfaces/date-time.service';
+  IDateEndOf,
+  IDateGreaterThan,
+  IDateStartOf,
+} from '../../../_business/agenda/services/date-time.service';
 import * as moment from 'moment';
 
 export class MomentDateTimeService
-  implements IDateAdd, IDateStartOfDay, IDateEndOfDay, IDateGreaterThanService
+  implements IDateAdd, IDateStartOf, IDateEndOf, IDateGreaterThan
 {
-  add(date: Date, amount: number, unit = DateUnits.HOURS): Date {
+  add(date: Date, amount: number, unit = DateUnit.HOURS): Date {
     return moment(date).add(amount, unit).toDate();
   }
 
-  startOfDay(date: Date): Date {
-    return moment(date).startOf('day').toDate();
+  startOf(date: Date, unit = DateUnit.DAYS): Date {
+    return moment(date).startOf(unit).toDate();
   }
 
-  endOfDay(date: Date): Date {
-    return moment(date).endOf('day').toDate();
+  endOf(date: Date, unit = DateUnit.DAYS): Date {
+    return moment(date).endOf(unit).toDate();
   }
 
-  dateGreaterThan(date: Date, than: Date): boolean {
+  greaterThan(date: Date, than: Date): boolean {
     return moment(date).isAfter(than);
   }
 }

@@ -4,7 +4,7 @@ import {
   IRemoverRecuperacaoService,
 } from '../services/recuperacao.service';
 import { IHashHashService } from '../../usuarios/services/hash.service';
-import { IDateGreaterThanService } from '../../agenda/interfaces/date-time.service';
+import { IDateGreaterThan } from '../../agenda/services/date-time.service';
 
 export type ResetSenhaInput = { hash: string; senha: string };
 
@@ -23,7 +23,7 @@ export class ResetSenha {
       IRemoverRecuperacaoService,
     private readonly usuarioService: IAtualizarUsuarioService,
     private readonly hashService: IHashHashService,
-    private readonly dateService: IDateGreaterThanService,
+    private readonly dateService: IDateGreaterThan,
   ) {}
 
   async execute(input: ResetSenhaInput): Promise<void> {
@@ -33,7 +33,7 @@ export class ResetSenha {
     if (!usuario) {
       throw new RecuperacaoNotFoundError();
     }
-    if (this.dateService.dateGreaterThan(new Date(), dataExpiracao)) {
+    if (this.dateService.greaterThan(new Date(), dataExpiracao)) {
       await this.recuperacaoService.remover(hash);
       throw new RecuperacaoExpiradaError();
     }

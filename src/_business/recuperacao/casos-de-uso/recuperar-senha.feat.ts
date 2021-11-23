@@ -7,7 +7,7 @@ import {
 } from '../../mail/services/mail.service';
 import { IHashGenerateRandomString } from '../../usuarios/services/hash.service';
 import { IBuscarUsuarioViaEmailService } from '../../usuarios/services/usuario.service';
-import { DateUnits, IDateAdd } from '../../agenda/interfaces/date-time.service';
+import { DateUnit, IDateAdd } from '../../agenda/services/date-time.service';
 
 export class RecuperarSenha {
   constructor(
@@ -31,7 +31,7 @@ export class RecuperarSenha {
       dataExpiracao: this.dateService.add(
         new Date(),
         +process.env.PASSWORD_RECOVERY_EXPIRATION_DAYS,
-        DateUnits.DAYS,
+        DateUnit.DAYS,
       ),
     });
     try {

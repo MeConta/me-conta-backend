@@ -10,7 +10,7 @@ import {
 } from '../../mail/services/mail.service';
 import { IHashGenerateRandomString } from '../../usuarios/services/hash.service';
 import { IBuscarUsuarioViaEmailService } from '../../usuarios/services/usuario.service';
-import { IDateAdd } from '../../agenda/interfaces/date-time.service';
+import { IDateAdd } from '../../agenda/services/date-time.service';
 
 describe('Recuperar senha', () => {
   let sut: RecuperarSenha;

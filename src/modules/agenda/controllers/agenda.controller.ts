@@ -1,15 +1,14 @@
-import { Body, Controller, NotAcceptableException, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { CriarNovoSlotDeAgenda } from '../../../_business/agenda/casos-de-uso/criar-novo-slot-de-agenda.feat';
 import { User } from '../../../_adapters/auth/decorators/user.decorator';
-import { Auth } from '../../../decorators';
+import { Auth, AuthParam } from '../../../decorators';
 import { ApiTags } from '@nestjs/swagger';
+import { ITokenUser } from '../../../_business/auth/interfaces/auth';
+import { CreateSlotAgendaDto } from '../../../_adapters/agenda/dto/create-slot-agenda.dto';
+import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 export function isValidDate(value: any): value is Date {
   return value instanceof Date && !isNaN(value as any);
-}
-
-class CriarSlotAgendaDto {
-  inicio: string;
 }
 
 @ApiTags('agenda')
@@ -18,18 +17,16 @@ export class AgendaController {
   constructor(private readonly criarNovoSlotDeAgenda: CriarNovoSlotDeAgenda) {}
 
   @Post()
-  @Auth()
+  @Auth(TipoUsuario.ATENDENTE)
+  @AuthParam()
+  @HttpCode(HttpStatus.NO_CONTENT)
   async create(
-    @Body() dto: CriarSlotAgendaDto,
-    @User() user: { id: number },
+    @Body() { slots }: CreateSlotAgendaDto,
+    @User() { id }: Pick<ITokenUser, 'id'>,
   ): Promise<void> {
-    const inicioData = new Date(dto.inicio);
-    if (!isValidDate(inicioData)) {
-      throw new NotAcceptableException('Data inválida');
-    }
     return this.criarNovoSlotDeAgenda.execute({
-      idUsuario: user.id,
-      inicio: inicioData,
+      voluntario: id,
+      slots: slots,
     });
   }
 }

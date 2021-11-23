@@ -11,6 +11,7 @@ import { RecuperacaoModule } from './modules/recuperacao/recuperacao.module';
 import { MailModule } from './mail/mail.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { ConfigService } from './config/config.service';
+import { AgendaModule } from './modules/agenda/agenda.module';
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { ConfigService } from './config/config.service';
     AlunoModule,
     RecuperacaoModule,
     AdminModule,
-    // AgendaModule,
+    AgendaModule,
   ],
   controllers: [AppController],
 })

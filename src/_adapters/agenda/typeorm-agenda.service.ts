@@ -1,16 +1,16 @@
-import {
-  CriarSlotAgendaParams,
-  CriarSlotAgendaService,
-} from '../../_business/agenda/interfaces/criar-slot-agenda.service';
-import {
-  RecuperarSlotsParams,
-  RecuperaSlotsAgendaService,
-} from '../../_business/agenda/interfaces/recupera-slots-agenda.service';
 import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
-import { SlotAgenda } from '../../_business/agenda/entidades/slot-agenda';
-import { SlotAgendaDbEntity } from './entidades/slot-agenda.db-entity';
+import { SlotAgendaDbEntity } from './entidades/slot-agenda-db.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
+import {
+  CriarSlotAgendaService,
+  RecuperaSlotsAgendaService,
+  SlotAgendaParam,
+} from '../../_business/agenda/services/agenda.service';
+import { SlotAgenda } from '../../_business/agenda/entidades/slot-agenda.entity';
+import { Voluntario } from '../../_business/voluntarios/entidades/voluntario.entity';
+
+import { DateUtils } from 'typeorm/util/DateUtils';
 
 @Injectable()
 export class TypeOrmAgendaService
@@ -20,26 +20,30 @@ export class TypeOrmAgendaService
     @InjectRepository(SlotAgendaDbEntity)
     private readonly agendaRepo: Repository<SlotAgendaDbEntity>,
   ) {}
-  async criarSlotNovo(param: CriarSlotAgendaParams): Promise<void> {
+  async cadastrar(param: SlotAgendaParam): Promise<void> {
     const entity = this.agendaRepo.create({
-      idAtendente: param.idAtendente,
-      fim: param.fim.getTime(),
-      inicio: param.inicio.getTime(),
+      voluntario: {
+        usuario: {
+          id: param.atendenteId,
+        },
+      } as Voluntario,
+      inicio: param.inicio,
+      fim: param.fim,
     });
     await this.agendaRepo.save(entity);
   }
 
-  async recuperaSlots(param: RecuperarSlotsParams): Promise<SlotAgenda[]> {
-    const slotAgendaDbEntities = await this.agendaRepo.find({
-      inicio: MoreThanOrEqual(param.inicio.getTime()),
-      fim: LessThanOrEqual(param.fim.getTime()),
-      idAtendente: param.idAtendente,
+  async recuperaSlots({
+    inicio,
+    fim,
+    atendenteId,
+  }: SlotAgendaParam): Promise<SlotAgenda[]> {
+    return this.agendaRepo.find({
+      where: {
+        voluntario: atendenteId,
+        inicio: MoreThanOrEqual(DateUtils.mixedDateToUtcDatetimeString(inicio)),
+        fim: LessThanOrEqual(DateUtils.mixedDateToUtcDatetimeString(fim)),
+      },
     });
-    return slotAgendaDbEntities.map((dbEntity) => ({
-      id: dbEntity.id,
-      idAtendente: dbEntity.idAtendente,
-      inicio: new Date(dbEntity.inicio),
-      fim: new Date(dbEntity.fim),
-    }));
   }
 }

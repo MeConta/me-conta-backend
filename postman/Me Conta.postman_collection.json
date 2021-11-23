@@ -154,7 +154,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": false,\n    \"areaAtuacao\": \"psicologo\",\n    \"crp\": \"{{$randomLoremSentence}}\",\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"tipo\": 1,\n    \"frentes\": [0,1,2],\n    \"bio\": \"{{$randomLoremParagraph}}\"\n}",
+							"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": true,\n    \"anoFormacao\": 2017,\n    \"areaAtuacao\": \"psicologo\",\n    \"crp\": \"{{$randomLoremSentence}}\",\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"tipo\": 2,\n    \"frentes\": [0,1,2],\n    \"bio\": \"{{$randomLoremParagraph}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1007,7 +1007,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nome\": \"{{$randomFirstName}} {{$randomLastName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"senha\": \"{{SENHA}}\",\n    \"tipo\": 0\n}",
+							"raw": "{\n    \"nome\": \"{{$randomFirstName}} {{$randomLastName}}\",\n    \"email\": \"{{$randomExampleEmail}}\",\n    \"senha\": \"{{SENHA}}\",\n    \"tipo\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1366,7 +1366,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"hash\": \"c536499a3cc501c1592a470509948ebd5a63f0a97e12d248\",\n    \"senha\": \"testedesenhaforte\"\n}",
+							"raw": "{\n    \"hash\": \"c1f31131af37a9171794cf924614faf80c90028bc590a2f7\",\n    \"senha\": \"testedesenhaforteparaadmin\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2179,7 +2179,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": true,\n    \"anoFormacao\": 2020,\n    \"areaAtuacao\": \"psicologo\",\n    \"crp\": \"{{$randomLoremSentence}}\",\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"frentes\": [\n        1\n    ],\n    \"tipo\": 1\n}",
+									"raw": "{\n    \"telefone\": \"11912345678\",\n    \"dataNascimento\": \"1996-07-12\",\n    \"cidade\": \"{{$randomCity}}\",\n    \"UF\": \"AC\",\n    \"genero\": \"F\",\n    \"formado\": true,\n    \"anoFormacao\": 2020,\n    \"areaAtuacao\": \"psicologo\",\n    \"crp\": \"{{$randomLoremSentence}}\",\n    \"instituicao\": \"{{$randomLoremSentence}}\",\n    \"especializacoes\": \"{{$randomLoremSentence}}\",\n    \"frentes\": [\n        1\n    ],\n    \"bio\": \"{{$randomLoremParagraph}}\",\n    \"tipo\": 1,\n    \"abordagem\": \"{{$randomLoremSentence}}\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2858,7 +2858,51 @@
 					"name": "Listar Voluntários",
 					"item": [
 						{
-							"name": "Listar voluntários",
+							"name": "Listar Atendentes",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    const response = pm.response.json()",
+											"    pm.expect(response).to.be.an('array')",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/voluntarios/listar/:tipo",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"voluntarios",
+										"listar",
+										":tipo"
+									],
+									"variable": [
+										{
+											"key": "tipo",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Listar Supervisores",
 							"event": [
 								{
 									"listen": "test",
@@ -2960,12 +3004,128 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "33"
+									"value": "2"
 								}
 							]
 						}
 					},
 					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{BEARER_TOKEN}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Agenda",
+			"item": [
+				{
+					"name": "Criação de Slots",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"slots\": [\n        {\n            \"inicio\": \"{{$randomDateFuture}}\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/agenda",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"agenda"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Slots criados",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"slots\": [\n        {\n            \"inicio\": \"{{$randomDateFuture}}\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/agenda",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"agenda"
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Nov 2021 12:55:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
 				}
 			],
 			"auth": {
