@@ -20,8 +20,9 @@ export class AgendaController {
     @Body() { slots }: CreateSlotAgendaDto,
     @User() { id }: Pick<ITokenUser, 'id'>,
   ): Promise<void> {
+    // TODO: Tratamentos de erro
     return this.criarNovoSlotDeAgenda.execute({
-      voluntario: id,
+      voluntarioId: id,
       slots: slots,
     });
   }

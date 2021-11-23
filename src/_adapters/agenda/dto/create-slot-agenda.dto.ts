@@ -20,7 +20,9 @@ export class SlotAgendaInputDto implements Pick<SlotAgenda, 'inicio'> {
   inicio: Date;
 }
 
-export class CreateSlotAgendaDto implements Omit<CriarSlotInput, 'voluntario'> {
+export class CreateSlotAgendaDto
+  implements Omit<CriarSlotInput, 'voluntarioId'>
+{
   @IsArray({
     message: '$property deve ser um array',
   })

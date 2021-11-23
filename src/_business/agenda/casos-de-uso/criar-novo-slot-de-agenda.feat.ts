@@ -4,7 +4,6 @@ import {
   IDateEndOf,
   IDateStartOf,
 } from '../services/date-time.service';
-import { IBuscarUsuarioViaId } from '../../usuarios/casos-de-uso/buscar-usuario.id.feat';
 import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { SlotAgenda } from '../entidades/slot-agenda.entity';
 import {
@@ -12,15 +11,21 @@ import {
   RecuperaSlotsAgendaService,
 } from '../services/agenda.service';
 import { UsuarioNaoEncontradoError } from '../../usuarios/erros/usuarios.errors';
+import { IBuscarVoluntarioViaId } from '../../voluntarios/services/voluntario.service';
 
 export type CriarSlotInput = {
-  voluntario: number;
+  voluntarioId: number;
   slots: Pick<SlotAgenda, 'inicio'>[];
 };
 
-export class UsuarioNaoAtendente extends Error {
+export class UsuarioNaoAtendenteError extends Error {
   code = 422;
   message = 'Usuário precisa ser atendente.';
+}
+
+export class VoluntarioNaoAprovadoError extends Error {
+  code = 403;
+  message = 'O Voluntário não foi aprovado';
 }
 
 export class CriarNovoSlotDeAgenda {
@@ -28,27 +33,30 @@ export class CriarNovoSlotDeAgenda {
     private readonly agendaService: CriarSlotAgendaService &
       RecuperaSlotsAgendaService,
     private readonly dateHelper: IDateAdd & IDateStartOf & IDateEndOf,
-    private readonly usuarioService: IBuscarUsuarioViaId,
+    private readonly voluntarioService: IBuscarVoluntarioViaId,
   ) {}
 
-  async execute({ voluntario, slots }: CriarSlotInput) {
-    const usuario = await this.usuarioService.findById(voluntario);
-    if (!usuario) {
+  async execute({ voluntarioId, slots }: CriarSlotInput) {
+    const voluntario = await this.voluntarioService.findById(voluntarioId);
+    if (!voluntario) {
       throw new UsuarioNaoEncontradoError();
     }
 
-    if (usuario.tipo !== TipoUsuario.ATENDENTE) {
-      throw new UsuarioNaoAtendente();
+    if (voluntario.usuario.tipo !== TipoUsuario.ATENDENTE) {
+      throw new UsuarioNaoAtendenteError();
+    }
+    if (!voluntario.aprovado) {
+      throw new VoluntarioNaoAprovadoError();
     }
 
     for (const slot of slots) {
       const { inicio } = slot;
       const fim = this.dateHelper.add(inicio, 1, DateUnit.HOURS);
-      if (!(await this.verificarConflitoSlot(inicio, fim, voluntario))) {
+      if (!(await this.verificarConflitoSlot(inicio, fim, voluntarioId))) {
         await this.agendaService.cadastrar({
           inicio,
           fim,
-          atendenteId: voluntario,
+          atendenteId: voluntarioId,
         });
       }
     }

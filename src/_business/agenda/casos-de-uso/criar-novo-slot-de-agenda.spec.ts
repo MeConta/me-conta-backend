@@ -1,10 +1,10 @@
 import {
   CriarNovoSlotDeAgenda,
-  UsuarioNaoAtendente,
+  UsuarioNaoAtendenteError,
+  VoluntarioNaoAprovadoError,
 } from './criar-novo-slot-de-agenda.feat';
 
 import { createMock } from '@golevelup/ts-jest';
-import { IBuscarUsuarioViaId } from '../../usuarios/casos-de-uso/buscar-usuario.id.feat';
 import { Usuario } from '../../usuarios/entidades/usuario.entity';
 import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import {
@@ -22,6 +22,7 @@ import {
   IDateStartOf,
 } from '../services/date-time.service';
 import { Voluntario } from '../../voluntarios/entidades/voluntario.entity';
+import { IBuscarVoluntarioViaId } from '../../voluntarios/services/voluntario.service';
 
 class InMemoryAgendaService
   implements CriarSlotAgendaService, RecuperaSlotsAgendaService
@@ -71,12 +72,12 @@ class InMemoryDatetimeService implements IDateAdd, IDateStartOf, IDateEndOf {
 
 describe('criar novo slot na agenda', () => {
   let agendaService: InMemoryAgendaService;
-  const usuarioService = createMock<IBuscarUsuarioViaId>();
+  const voluntarioService = createMock<IBuscarVoluntarioViaId>();
   const dateTimeUtils = new InMemoryDatetimeService();
   let sut: CriarNovoSlotDeAgenda;
 
   const request = {
-    voluntario: expect.any(Number),
+    voluntarioId: expect.any(Number),
     slots: [
       {
         inicio: moment().toDate(),
@@ -89,14 +90,18 @@ describe('criar novo slot na agenda', () => {
     sut = new CriarNovoSlotDeAgenda(
       agendaService,
       dateTimeUtils,
-      usuarioService,
+      voluntarioService,
     );
   });
 
   beforeEach(async () => {
-    jest.spyOn(usuarioService, 'findById').mockResolvedValue({
-      ...createMock<Usuario>(),
-      tipo: TipoUsuario.ATENDENTE,
+    jest.spyOn(voluntarioService, 'findById').mockResolvedValue({
+      ...createMock<Voluntario>(),
+      aprovado: true,
+      usuario: {
+        ...createMock<Usuario>(),
+        tipo: TipoUsuario.ATENDENTE,
+      },
     });
   });
 
@@ -118,10 +123,10 @@ describe('criar novo slot na agenda', () => {
   });
 
   it('Deve dar erro de usuário não encontrado caso o usuário não exista', async () => {
-    jest.spyOn(usuarioService, 'findById').mockResolvedValue(null);
+    jest.spyOn(voluntarioService, 'findById').mockResolvedValue(null);
     await expect(
       sut.execute({
-        voluntario: expect.any(Number),
+        voluntarioId: expect.any(Number),
         slots: [
           {
             inicio: moment().toDate(),
@@ -132,19 +137,43 @@ describe('criar novo slot na agenda', () => {
   });
 
   it('deve rejeitar se usuario não for atendente', async () => {
-    jest.spyOn(usuarioService, 'findById').mockResolvedValue({
-      ...createMock<Usuario>(),
-      tipo: TipoUsuario.ALUNO,
+    jest.spyOn(voluntarioService, 'findById').mockResolvedValue({
+      ...createMock<Voluntario>(),
+      usuario: {
+        ...createMock<Usuario>(),
+        tipo: TipoUsuario.ALUNO,
+      },
     });
     await expect(
       sut.execute({
-        voluntario: expect.any(Number),
+        voluntarioId: expect.any(Number),
         slots: [
           {
             inicio: expect.any(Date),
           },
         ],
       }),
-    ).rejects.toBeInstanceOf(UsuarioNaoAtendente);
+    ).rejects.toBeInstanceOf(UsuarioNaoAtendenteError);
+  });
+
+  it('deve rejeitar se usuario não for atendente aprovado', async () => {
+    jest.spyOn(voluntarioService, 'findById').mockResolvedValue({
+      ...createMock<Voluntario>(),
+      aprovado: false,
+      usuario: {
+        ...createMock<Usuario>(),
+        tipo: TipoUsuario.ATENDENTE,
+      },
+    });
+    await expect(
+      sut.execute({
+        voluntarioId: expect.any(Number),
+        slots: [
+          {
+            inicio: expect.any(Date),
+          },
+        ],
+      }),
+    ).rejects.toBeInstanceOf(VoluntarioNaoAprovadoError);
   });
 });

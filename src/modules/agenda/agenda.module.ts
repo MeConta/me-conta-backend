@@ -10,10 +10,10 @@ import {
 } from '../../_business/agenda/services/date-time.service';
 import { MomentDateTimeService } from '../../_adapters/agenda/services/moment-date-time.service';
 import { TypeOrmAgendaService } from '../../_adapters/agenda/typeorm-agenda.service';
-import { TypeormUsuarioService } from '../../_adapters/usuarios/services/typeorm-usuario.service';
 import { UsuarioDbEntity } from '../../_adapters/usuarios/entidades/usuario.db.entity';
-import { IBuscarUsuarioViaId } from '../../_business/usuarios/casos-de-uso/buscar-usuario.id.feat';
 import { VoluntarioDbEntity } from '../../_adapters/voluntarios/entidades/voluntario-db.entity';
+import { TypeormVoluntarioService } from '../../_adapters/voluntarios/services/typeorm-voluntario.service';
+import { IBuscarVoluntarioViaId } from '../../_business/voluntarios/services/voluntario.service';
 
 class NestCriarNovoSlotDeAgenda extends CriarNovoSlotDeAgenda {
   constructor(
@@ -21,8 +21,8 @@ class NestCriarNovoSlotDeAgenda extends CriarNovoSlotDeAgenda {
     agendaService: TypeOrmAgendaService,
     @Inject(MomentDateTimeService)
     dateTimeUtils: IDateAdd & IDateStartOf & IDateEndOf,
-    @Inject(TypeormUsuarioService)
-    usuarioService: IBuscarUsuarioViaId,
+    @Inject(TypeormVoluntarioService)
+    usuarioService: IBuscarVoluntarioViaId,
   ) {
     super(agendaService, dateTimeUtils, usuarioService);
   }
@@ -42,7 +42,7 @@ class NestCriarNovoSlotDeAgenda extends CriarNovoSlotDeAgenda {
       provide: CriarNovoSlotDeAgenda,
       useClass: NestCriarNovoSlotDeAgenda,
     },
-    TypeormUsuarioService,
+    TypeormVoluntarioService,
     TypeOrmAgendaService,
     MomentDateTimeService,
   ],
