@@ -1,4 +1,9 @@
-import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
+import {
+  FindConditions,
+  LessThanOrEqual,
+  MoreThanOrEqual,
+  Repository,
+} from 'typeorm';
 import { SlotAgendaDbEntity } from './entidades/slot-agenda-db.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
@@ -9,8 +14,6 @@ import {
 } from '../../_business/agenda/services/agenda.service';
 import { SlotAgenda } from '../../_business/agenda/entidades/slot-agenda.entity';
 import { Voluntario } from '../../_business/voluntarios/entidades/voluntario.entity';
-
-import { DateUtils } from 'typeorm/util/DateUtils';
 
 @Injectable()
 export class TypeOrmAgendaService
@@ -37,13 +40,24 @@ export class TypeOrmAgendaService
     inicio,
     fim,
     atendenteId,
-  }: SlotAgendaParam): Promise<SlotAgenda[]> {
+  }: Partial<SlotAgendaParam> = {}): Promise<SlotAgenda[]> {
+    const where: FindConditions<SlotAgenda> = {};
+    if (atendenteId) {
+      where.voluntario = {
+        usuario: {
+          id: atendenteId,
+        },
+      };
+    }
+
+    if (inicio) {
+      where.inicio = MoreThanOrEqual(inicio);
+    }
+    if (fim) {
+      where.fim = LessThanOrEqual(fim);
+    }
     return this.agendaRepo.find({
-      where: {
-        voluntario: atendenteId,
-        inicio: MoreThanOrEqual(DateUtils.mixedDateToUtcDatetimeString(inicio)),
-        fim: LessThanOrEqual(DateUtils.mixedDateToUtcDatetimeString(fim)),
-      },
+      where,
     });
   }
 }

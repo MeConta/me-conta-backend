@@ -7,10 +7,6 @@ import { ITokenUser } from '../../../_business/auth/interfaces/auth';
 import { CreateSlotAgendaDto } from '../../../_adapters/agenda/dto/create-slot-agenda.dto';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
-export function isValidDate(value: any): value is Date {
-  return value instanceof Date && !isNaN(value as any);
-}
-
 @ApiTags('agenda')
 @Controller('agenda')
 export class AgendaController {

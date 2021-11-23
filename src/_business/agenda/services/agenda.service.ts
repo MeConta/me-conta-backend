@@ -9,5 +9,5 @@ export interface CriarSlotAgendaService {
 }
 
 export interface RecuperaSlotsAgendaService {
-  recuperaSlots(param: SlotAgendaParam): Promise<SlotAgenda[]>;
+  recuperaSlots(param?: Partial<SlotAgendaParam>): Promise<SlotAgenda[]>;
 }

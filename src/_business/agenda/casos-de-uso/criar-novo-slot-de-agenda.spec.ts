@@ -74,6 +74,16 @@ describe('criar novo slot na agenda', () => {
   const usuarioService = createMock<IBuscarUsuarioViaId>();
   const dateTimeUtils = new InMemoryDatetimeService();
   let sut: CriarNovoSlotDeAgenda;
+
+  const request = {
+    voluntario: expect.any(Number),
+    slots: [
+      {
+        inicio: moment().toDate(),
+      },
+    ],
+  };
+
   beforeEach(() => {
     agendaService = new InMemoryAgendaService();
     sut = new CriarNovoSlotDeAgenda(
@@ -91,22 +101,22 @@ describe('criar novo slot na agenda', () => {
   });
 
   it('deve criar slot com data e hora de inicio e fim uma hora depois do inicio, e id da pessoa atendente', async () => {
-    const date = moment().toDate();
-    await sut.execute({
-      voluntario: 1,
-      slots: [
-        {
-          inicio: date,
-        },
-      ],
-    });
-    expect(agendaService.slots).toContainEqual({
-      id: expect.any(Number),
-      inicio: date,
-      fim: moment(date).add(1, 'hour').toDate(),
-      idAtendente: 1,
-    });
+    await sut.execute(request);
+    const [slot] = request.slots;
+    expect(agendaService.slots).toContainEqual(
+      expect.objectContaining({
+        inicio: slot.inicio,
+        fim: moment(slot.inicio).add(1, 'hour').toDate(),
+      }),
+    );
   });
+
+  it('Não deve criar um novo slot caso exista conflito de slots', async () => {
+    await sut.execute(request);
+    await sut.execute(request);
+    expect(agendaService.slots).toHaveLength(1);
+  });
+
   it('Deve dar erro de usuário não encontrado caso o usuário não exista', async () => {
     jest.spyOn(usuarioService, 'findById').mockResolvedValue(null);
     await expect(
@@ -120,7 +130,8 @@ describe('criar novo slot na agenda', () => {
       }),
     ).rejects.toThrow(UsuarioNaoEncontradoError);
   });
-  it('deve rejeitar se usuario nao for atendente', async () => {
+
+  it('deve rejeitar se usuario não for atendente', async () => {
     jest.spyOn(usuarioService, 'findById').mockResolvedValue({
       ...createMock<Usuario>(),
       tipo: TipoUsuario.ALUNO,

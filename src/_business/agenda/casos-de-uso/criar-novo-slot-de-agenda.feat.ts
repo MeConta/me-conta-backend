@@ -50,27 +50,22 @@ export class CriarNovoSlotDeAgenda {
           fim,
           atendenteId: voluntario,
         });
-      } else {
-        console.log('olha o conflito!');
       }
     }
   }
 
   private async verificarConflitoSlot(
-    horarioInicioSlot: Date,
-    horarioFimSlot: Date,
+    horarioInicio: Date,
+    horarioFim: Date,
     atendenteId: number,
   ): Promise<boolean> {
-    const inicioDoDia = this.dateHelper.startOf(horarioInicioSlot);
-
-    const finalDoDia = this.dateHelper.endOf(horarioFimSlot);
     const slotsNaAgenda = await this.agendaService.recuperaSlots({
-      inicio: inicioDoDia,
-      fim: finalDoDia,
       atendenteId,
+      inicio: this.dateHelper.startOf(horarioInicio),
+      fim: this.dateHelper.endOf(horarioFim),
     });
     return slotsNaAgenda.some(
-      ({ inicio, fim }) => inicio < horarioFimSlot && fim > horarioInicioSlot,
+      ({ inicio, fim }) => inicio < horarioFim && fim > horarioInicio,
     );
   }
 }

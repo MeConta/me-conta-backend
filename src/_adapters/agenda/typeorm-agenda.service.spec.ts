@@ -1,4 +1,9 @@
-import { Connection, createConnection, Repository } from 'typeorm';
+import {
+  Connection,
+  createConnection,
+  FindOperator,
+  Repository,
+} from 'typeorm';
 import { TypeOrmAgendaService } from './typeorm-agenda.service';
 import { SlotAgendaDbEntity } from './entidades/slot-agenda-db.entity';
 import * as moment from 'moment';
@@ -79,34 +84,29 @@ describe('Agenda Repo', () => {
       }),
     );
   });
-  // TODO: Esse teste não funciona
-  it.skip('deve retornar slots do período e atendente', async function () {
-    const slot = await repo.save(request);
-    //const dataInicio = moment().subtract(1, 'days').startOf('day').toDate();
-    //const dataFim = moment().add(1, 'days').endOf('day').toDate();
-    console.log('SLOT', slot);
-    console.log(
-      'saved!',
-      await repo.find({
-        loadEagerRelations: true,
-        //relations: ['voluntario'],
-        loadRelationIds: true,
-        where: {
-          voluntario: slot.atendenteId,
-          /*inicio: MoreThanOrEqual(
-            DateUtils.mixedDateToUtcDatetimeString(dataInicio),
-          ),
-          fim: LessThanOrEqual(DateUtils.mixedDateToUtcDatetimeString(dataFim)),*/
-        },
-      }),
-    );
-    const slots = await sut.recuperaSlots({
-      atendenteId: 1,
-      inicio: moment().subtract(1, 'days').startOf('day').toDate(),
-      fim: moment().add(1, 'days').endOf('day').toDate(),
-      // inicio: request.inicio,
-      // fim: request.fim,
-    });
+  it('deve recuperar slots de atendimento', async function () {
+    await repo.save(request);
+    const slots = await sut.recuperaSlots();
     await expect(slots).toHaveLength(1);
+  });
+  it('deve chamar o repository passando wheres', async function () {
+    // await repo.save(request);
+    jest.spyOn(repo, 'find');
+    await sut.recuperaSlots({
+      atendenteId: expect.any(Number),
+      inicio: expect.any(Date),
+      fim: expect.any(Date),
+    });
+    await expect(repo.find).toHaveBeenCalledWith({
+      where: {
+        voluntario: {
+          usuario: {
+            id: expect.any(Number),
+          },
+        },
+        inicio: expect.any(FindOperator),
+        fim: expect.any(FindOperator),
+      },
+    });
   });
 });
