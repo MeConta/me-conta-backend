@@ -1,5 +1,17 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
-import { CriarNovoSlotDeAgenda } from '../../../_business/agenda/casos-de-uso/criar-novo-slot-de-agenda.feat';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  InternalServerErrorException,
+  Post,
+  UnprocessableEntityException,
+} from '@nestjs/common';
+import {
+  CriarNovoSlotDeAgenda,
+  UsuarioNaoAtendenteError,
+  VoluntarioNaoAprovadoError,
+} from '../../../_business/agenda/casos-de-uso/criar-novo-slot-de-agenda.feat';
 import { User } from '../../../_adapters/auth/decorators/user.decorator';
 import { Auth, AuthParam } from '../../../decorators';
 import { ApiTags } from '@nestjs/swagger';
@@ -20,10 +32,19 @@ export class AgendaController {
     @Body() { slots }: CreateSlotAgendaDto,
     @User() { id }: Pick<ITokenUser, 'id'>,
   ): Promise<void> {
-    // TODO: Tratamentos de erro
-    return this.criarNovoSlotDeAgenda.execute({
-      voluntarioId: id,
-      slots: slots,
-    });
+    try {
+      return await this.criarNovoSlotDeAgenda.execute({
+        voluntarioId: id,
+        slots: slots,
+      });
+    } catch (e) {
+      switch (true) {
+        case e instanceof UsuarioNaoAtendenteError:
+        case e instanceof VoluntarioNaoAprovadoError:
+          throw new UnprocessableEntityException(e);
+        default:
+          throw new InternalServerErrorException(e);
+      }
+    }
   }
 }

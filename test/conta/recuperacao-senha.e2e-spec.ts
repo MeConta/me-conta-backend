@@ -1,4 +1,4 @@
-import { INestApplication } from '@nestjs/common';
+import { HttpStatus, INestApplication } from '@nestjs/common';
 import { TestingModule } from '@nestjs/testing';
 import { setupApp } from '../../src/config/app.config';
 import { createUser, getTestingModule } from '../utils.test';
@@ -13,6 +13,7 @@ import { UsuarioModule } from '../../src/modules/usuario/usuario.module';
 
 describe('Recuperação de senha (e2e)', () => {
   let app: INestApplication;
+  let user: Usuario;
   beforeEach(async () => {
     const moduleFixture: TestingModule = await getTestingModule(
       [UsuarioModule, MailModule, RecuperacaoModule],
@@ -28,14 +29,19 @@ describe('Recuperação de senha (e2e)', () => {
     setupApp(app);
     await app.init();
   });
+
+  beforeEach(async () => {
+    user = await createUser(app);
+  });
+
+  beforeEach(() => {
+    jest.spyOn(MailerMailService.prototype, 'send').mockResolvedValue();
+  });
+
   afterEach(async () => {
     await app.close();
   });
   describe('/senha/recuperacao (POST)', () => {
-    let user: Usuario;
-    beforeEach(async () => {
-      user = await createUser(app);
-    });
     it('Deve enviar um e-mail de recuperação', async () => {
       const { email } = user;
       await request(app.getHttpServer())
@@ -43,7 +49,7 @@ describe('Recuperação de senha (e2e)', () => {
         .send({
           email,
         } as RecuperacaoDto)
-        .expect(204);
+        .expect(HttpStatus.NO_CONTENT);
     });
   });
 });

@@ -9,10 +9,11 @@ import * as request from 'supertest';
 import { AgendaModule } from '../../src/modules/agenda/agenda.module';
 import { UsuarioModule } from '../../src/modules/usuario/usuario.module';
 import { VoluntarioModule } from '../../src/modules/voluntario/voluntario.module';
-import { PerfilModule } from '../../src/modules/perfil/perfil.module';
+import { Connection } from 'typeorm';
+import { VoluntarioDbEntity } from '../../src/_adapters/voluntarios/entidades/voluntario-db.entity';
 
 // TODO: esses testes não estão funcionando
-describe.skip('Criar slot de Agenda (e2e)', () => {
+describe('Criar slot de Agenda (e2e)', () => {
   let app: INestApplication;
   let token: string;
   const req = {
@@ -26,7 +27,6 @@ describe.skip('Criar slot de Agenda (e2e)', () => {
     const moduleFixture: TestingModule = await getTestingModule([
       AuthModule.forRoot(),
       UsuarioModule,
-      PerfilModule,
       VoluntarioModule,
       AgendaModule,
     ]);
@@ -36,6 +36,35 @@ describe.skip('Criar slot de Agenda (e2e)', () => {
     await app.init();
   });
   beforeEach(async () => {
+    /*const usuario = await createUser(app, TipoUsuario.ATENDENTE);
+
+    const usuarioRepo = app.get(Connection).getRepository(UsuarioDbEntity);
+
+    const dtoVoluntario: Omit<Voluntario, 'usuario'> & Bio = {
+      instituicao: lorem.words(),
+      frentes: [FrenteAtuacao.COACHING_DE_ROTINA_DE_ESTUDOS],
+      anoFormacao: +moment().format('YYYY'),
+      formado: true,
+      crp: lorem.words(),
+      bio: lorem.paragraphs(),
+    };
+
+    const voluntarioRepo = app
+      .get(Connection)
+      .getRepository(VoluntarioDbEntity);
+
+    await voluntarioRepo.save(
+      voluntarioRepo.create({
+        ...dtoVoluntario,
+        usuario: await usuarioRepo.findOne(1),
+        aprovado: true,
+      }),
+    );
+
+    token = await getToken(app, TipoUsuario.ATENDENTE, {
+      username: usuario.email,
+      password: DEFAULT_PASSWORD,
+    });*/
     token = await getToken(app, TipoUsuario.ATENDENTE);
   });
   afterEach(async () => {
@@ -44,13 +73,27 @@ describe.skip('Criar slot de Agenda (e2e)', () => {
 
   describe('/agenda (POST)', () => {
     it('Deve Criar um slot com sucesso', async () => {
-      const response = await request(app.getHttpServer())
+      await request(app.getHttpServer())
         .post('/agenda')
         .set('Authorization', `Bearer ${token}`)
         .send(req)
         .expect(HttpStatus.NO_CONTENT);
-      console.log('response', response);
-      //expect(response).toBeTruthy();
+    });
+    it('Não deve criar um slot para atendentes não aprovados', async () => {
+      const voluntarioRepo = app
+        .get(Connection)
+        .getRepository(VoluntarioDbEntity);
+
+      await voluntarioRepo.save({
+        ...(await voluntarioRepo.findOne(1)),
+        aprovado: null,
+      });
+
+      await request(app.getHttpServer())
+        .post('/agenda')
+        .set('Authorization', `Bearer ${token}`)
+        .send(req)
+        .expect(HttpStatus.UNPROCESSABLE_ENTITY);
     });
     it('Deve dar erro 400', async () => {
       await request(app.getHttpServer())
@@ -58,6 +101,19 @@ describe.skip('Criar slot de Agenda (e2e)', () => {
         .set('Authorization', `Bearer ${token}`)
         .send({ ...req, slots: null })
         .expect(HttpStatus.BAD_REQUEST);
+    });
+    it('Deve dar erro 401', async () => {
+      await request(app.getHttpServer())
+        .post('/agenda')
+        .send(req)
+        .expect(HttpStatus.UNAUTHORIZED);
+    });
+    it('Deve dar erro 403', async () => {
+      await request(app.getHttpServer())
+        .post('/agenda')
+        .set('Authorization', `Bearer ${await getToken(app)}`)
+        .send(req)
+        .expect(HttpStatus.FORBIDDEN);
     });
   });
 });

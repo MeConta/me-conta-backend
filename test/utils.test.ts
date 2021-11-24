@@ -2,7 +2,7 @@ import * as request from 'supertest';
 import { CreateUsuarioDto } from '../src/_adapters/usuarios/dto/create-usuario.dto';
 import { INestApplication, Provider } from '@nestjs/common';
 import { TipoUsuario } from '../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { internet, name } from 'faker/locale/pt_BR';
+import { internet, lorem, name } from 'faker/locale/pt_BR';
 import { AuthDto, TokenDto } from '../src/_adapters/auth/dto/auth.dto';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DEFAULT_PASSWORD } from '../jest.setup';
@@ -12,6 +12,14 @@ import { MailE2EModule } from './modules/mail-e2e.module';
 import { Connection } from 'typeorm';
 import { UsuarioDbEntity } from '../src/_adapters/usuarios/entidades/usuario.db.entity';
 import { Usuario } from '../src/_business/usuarios/entidades/usuario.entity';
+import { VoluntarioDbEntity } from '../src/_adapters/voluntarios/entidades/voluntario-db.entity';
+import {
+  Abordagem,
+  Bio,
+  FrenteAtuacao,
+  Voluntario,
+} from '../src/_business/voluntarios/entidades/voluntario.entity';
+import * as moment from 'moment';
 
 export async function createUser(
   app: INestApplication,
@@ -33,12 +41,43 @@ export async function createUser(
       tipo,
     } as CreateUsuarioDto);
 
-  const repo = await app.get(Connection).getRepository(UsuarioDbEntity);
+  const repo = app.get(Connection).getRepository(UsuarioDbEntity);
   return repo.findOne({
     where: {
       email,
     },
   });
+}
+
+export async function createVoluntario(
+  app: INestApplication,
+  usuario?: Usuario,
+  tipo: TipoUsuario.ATENDENTE | TipoUsuario.SUPERVISOR = TipoUsuario.ATENDENTE,
+  dto?: Omit<Voluntario, 'usuario'> & Partial<Bio> & Partial<Abordagem>,
+): Promise<Voluntario & Partial<Bio> & Partial<Abordagem>> {
+  if (!usuario) {
+    usuario = await createUser(app, tipo);
+  }
+
+  const voluntarioRepo = app.get(Connection).getRepository(VoluntarioDbEntity);
+
+  dto = {
+    instituicao: dto?.instituicao || lorem.words(),
+    frentes: dto?.frentes || [FrenteAtuacao.COACHING_DE_ROTINA_DE_ESTUDOS],
+    anoFormacao: dto?.anoFormacao || +moment().format('YYYY'),
+    formado: dto?.formado || true,
+    crp: dto?.crp || lorem.words(),
+    bio: dto?.bio || lorem.paragraphs(),
+    abordagem: dto?.abordagem || lorem.words(),
+    aprovado: dto?.aprovado || true,
+  };
+  return voluntarioRepo.save(
+    voluntarioRepo.create({
+      ...dto,
+      usuario,
+      aprovado: dto.aprovado,
+    }),
+  );
 }
 
 export async function getToken(
@@ -51,10 +90,10 @@ export async function getToken(
     senha: login?.password || DEFAULT_PASSWORD,
   };
 
-  const repo = await app.get(Connection).getRepository(UsuarioDbEntity);
+  const usuarioRepo = app.get(Connection).getRepository(UsuarioDbEntity);
 
   const { id } =
-    (await repo.findOne({
+    (await usuarioRepo.findOne({
       where: {
         email,
       },
@@ -64,10 +103,17 @@ export async function getToken(
       senha,
     }));
 
-  await repo.save({
+  const usuario = await usuarioRepo.save({
     id,
     tipo,
   });
+
+  switch (tipo) {
+    case TipoUsuario.ATENDENTE:
+    case TipoUsuario.SUPERVISOR:
+      await createVoluntario(app, usuario);
+      break;
+  }
 
   const { body } = await request(app.getHttpServer())
     .post('/auth/login')
