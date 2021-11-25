@@ -4,6 +4,7 @@ import {
   HttpCode,
   HttpStatus,
   InternalServerErrorException,
+  NotFoundException,
   Post,
   UnprocessableEntityException,
 } from '@nestjs/common';
@@ -14,17 +15,28 @@ import {
 } from '../../../_business/agenda/casos-de-uso/criar-novo-slot-de-agenda.feat';
 import { User } from '../../../_adapters/auth/decorators/user.decorator';
 import { Auth, AuthParam } from '../../../decorators';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiNotFoundResponse,
+  ApiTags,
+  ApiUnprocessableEntityResponse,
+} from '@nestjs/swagger';
 import { ITokenUser } from '../../../_business/auth/interfaces/auth';
 import { CreateSlotAgendaDto } from '../../../_adapters/agenda/dto/create-slot-agenda.dto';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { UsuarioNaoEncontradoError } from '../../../_business/usuarios/erros/usuarios.errors';
 
 @ApiTags('agenda')
 @Controller('agenda')
-export class AgendaController {
+export class CriarSlotAgendaController {
   constructor(private readonly criarNovoSlotDeAgenda: CriarNovoSlotDeAgenda) {}
 
   @Post()
+  @ApiUnprocessableEntityResponse({
+    description: 'Usuário não voluntário ou não aprovado',
+  })
+  @ApiNotFoundResponse({
+    description: 'Usuário não encontrado',
+  })
   @Auth(TipoUsuario.ATENDENTE)
   @AuthParam()
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -42,6 +54,8 @@ export class AgendaController {
         case e instanceof UsuarioNaoAtendenteError:
         case e instanceof VoluntarioNaoAprovadoError:
           throw new UnprocessableEntityException(e);
+        case e instanceof UsuarioNaoEncontradoError:
+          throw new NotFoundException(e);
         default:
           throw new InternalServerErrorException(e);
       }

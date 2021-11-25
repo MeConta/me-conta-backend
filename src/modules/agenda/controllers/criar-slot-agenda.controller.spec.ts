@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AgendaController } from './agenda.controller';
+import { CriarSlotAgendaController } from './criar-slot-agenda.controller';
 import { createMock } from '@golevelup/ts-jest';
 import {
   CriarNovoSlotDeAgenda,
@@ -10,11 +10,13 @@ import { CreateSlotAgendaDto } from '../../../_adapters/agenda/dto/create-slot-a
 import * as moment from 'moment';
 import {
   InternalServerErrorException,
+  NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
+import { UsuarioNaoEncontradoError } from '../../../_business/usuarios/erros/usuarios.errors';
 
-describe('AgendaController', () => {
-  let controller: AgendaController;
+describe('CriarNovoSlotDeAgendaController', () => {
+  let controller: CriarSlotAgendaController;
   let useCase: CriarNovoSlotDeAgenda;
   const request = {
     slots: [{ inicio: moment().toDate() }],
@@ -28,10 +30,12 @@ describe('AgendaController', () => {
           useValue: createMock<CriarNovoSlotDeAgenda>(),
         },
       ],
-      controllers: [AgendaController],
+      controllers: [CriarSlotAgendaController],
     }).compile();
 
-    controller = module.get<AgendaController>(AgendaController);
+    controller = module.get<CriarSlotAgendaController>(
+      CriarSlotAgendaController,
+    );
     useCase = module.get<CriarNovoSlotDeAgenda>(CriarNovoSlotDeAgenda);
   });
 
@@ -57,6 +61,14 @@ describe('AgendaController', () => {
       .mockRejectedValue(new VoluntarioNaoAprovadoError());
     await expect(() => controller.create(request, { id: 1 })).rejects.toThrow(
       UnprocessableEntityException,
+    );
+  });
+  it('Deve dar erro de usuário não encontrado', async () => {
+    jest
+      .spyOn(useCase, 'execute')
+      .mockRejectedValue(new UsuarioNaoEncontradoError());
+    await expect(() => controller.create(request, { id: 1 })).rejects.toThrow(
+      NotFoundException,
     );
   });
   it('Deve dar erro genérico', async () => {

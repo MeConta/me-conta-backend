@@ -12,7 +12,6 @@ import { VoluntarioModule } from '../../src/modules/voluntario/voluntario.module
 import { Connection } from 'typeorm';
 import { VoluntarioDbEntity } from '../../src/_adapters/voluntarios/entidades/voluntario-db.entity';
 
-// TODO: esses testes não estão funcionando
 describe('Criar slot de Agenda (e2e)', () => {
   let app: INestApplication;
   let token: string;
@@ -36,35 +35,6 @@ describe('Criar slot de Agenda (e2e)', () => {
     await app.init();
   });
   beforeEach(async () => {
-    /*const usuario = await createUser(app, TipoUsuario.ATENDENTE);
-
-    const usuarioRepo = app.get(Connection).getRepository(UsuarioDbEntity);
-
-    const dtoVoluntario: Omit<Voluntario, 'usuario'> & Bio = {
-      instituicao: lorem.words(),
-      frentes: [FrenteAtuacao.COACHING_DE_ROTINA_DE_ESTUDOS],
-      anoFormacao: +moment().format('YYYY'),
-      formado: true,
-      crp: lorem.words(),
-      bio: lorem.paragraphs(),
-    };
-
-    const voluntarioRepo = app
-      .get(Connection)
-      .getRepository(VoluntarioDbEntity);
-
-    await voluntarioRepo.save(
-      voluntarioRepo.create({
-        ...dtoVoluntario,
-        usuario: await usuarioRepo.findOne(1),
-        aprovado: true,
-      }),
-    );
-
-    token = await getToken(app, TipoUsuario.ATENDENTE, {
-      username: usuario.email,
-      password: DEFAULT_PASSWORD,
-    });*/
     token = await getToken(app, TipoUsuario.ATENDENTE);
   });
   afterEach(async () => {

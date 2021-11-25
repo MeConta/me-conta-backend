@@ -1,4 +1,5 @@
 import { Usuario } from '../../usuarios/entidades/usuario.entity';
+import { SlotAgenda } from '../../agenda/entidades/slot-agenda.entity';
 
 export enum FrenteAtuacao {
   SESSAO_ACOLHIMENTO,
@@ -22,6 +23,7 @@ export interface Voluntario {
   areaAtuacao?: AreaAtuacao;
   especializacoes?: string;
   usuario: Usuario;
+  slots?: SlotAgenda[];
 }
 
 export interface Bio {

@@ -13,7 +13,7 @@ import { IAtualizarUsuarioService } from '../../usuarios/services/usuario.servic
 import { ICadastrarPerfilService } from '../../perfil/services/perfil.service';
 
 export type NovoVoluntario = Perfil &
-  Omit<Voluntario, 'aprovado'> &
+  Omit<Voluntario, 'aprovado' | 'slots'> &
   Bio &
   Abordagem &
   Partial<Pick<NovoUsuario, 'tipo'>>;
