@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsInt, IsOptional, IsPositive } from 'class-validator';
 
-export class AtendenteIdParam {
+export class IdParam {
   @ApiProperty()
   @Type(() => Number)
   @IsOptional()

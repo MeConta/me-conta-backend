@@ -38,18 +38,19 @@ class InMemoryAgendaService
       id: this.slots.length,
       inicio,
       fim,
-      voluntario: {
+      voluntario: Promise.resolve({
         usuario: {
           id: atendenteId,
         },
-      } as Voluntario,
+      } as Voluntario),
     });
   }
 
   async recuperaSlots(param: SlotAgendaParam): Promise<SlotAgenda[]> {
-    return this.slots.filter((slot) => {
+    return this.slots.filter(async (slot) => {
+      const { usuario } = await slot.voluntario;
       return (
-        param.atendenteId === slot.voluntario.usuario.id &&
+        param.atendenteId === usuario.id &&
         (slot.inicio >= param.inicio || slot.fim <= param.fim)
       );
     });

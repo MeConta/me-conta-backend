@@ -18,11 +18,13 @@ export class SlotAgendaDbEntity
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => VoluntarioDbEntity, (voluntario) => voluntario.id)
+  @ManyToOne(() => VoluntarioDbEntity, (voluntario) => voluntario.id, {
+    lazy: true,
+  })
   @JoinColumn({
     name: 'voluntarioId',
   })
-  voluntario: Voluntario;
+  voluntario: Promise<Voluntario>;
 
   @Column()
   inicio: Date;

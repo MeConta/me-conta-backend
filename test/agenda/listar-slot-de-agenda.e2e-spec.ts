@@ -1,26 +1,12 @@
 import { HttpStatus, INestApplication } from '@nestjs/common';
-import { TestingModule } from '@nestjs/testing';
-import { getTestingModule } from '../utils.test';
-import { AuthModule } from '../../src/modules/auth/auth.module';
-import { UsuarioModule } from '../../src/modules/usuario/usuario.module';
-import { VoluntarioModule } from '../../src/modules/voluntario/voluntario.module';
-import { AgendaModule } from '../../src/modules/agenda/agenda.module';
-import { setupApp } from '../../src/config/app.config';
 import * as request from 'supertest';
+import { agendaTestingApp } from './agenda.utils';
 
 describe('Listar slots de Agenda (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
-    const moduleFixture: TestingModule = await getTestingModule([
-      AuthModule.forRoot(),
-      UsuarioModule,
-      VoluntarioModule,
-      AgendaModule,
-    ]);
-    app = await moduleFixture.createNestApplication();
-    setupApp(app);
-    await app.init();
+    app = await agendaTestingApp(app);
   });
 
   afterEach(async () => {

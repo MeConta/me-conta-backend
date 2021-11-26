@@ -9,7 +9,7 @@ import {
   IDateStartOf,
 } from '../../_business/agenda/services/date-time.service';
 import { MomentDateTimeService } from '../../_adapters/agenda/services/moment-date-time.service';
-import { TypeOrmAgendaService } from '../../_adapters/agenda/typeorm-agenda.service';
+import { TypeOrmAgendaService } from '../../_adapters/agenda/services/typeorm-agenda.service';
 import { UsuarioDbEntity } from '../../_adapters/usuarios/entidades/usuario.db.entity';
 import { VoluntarioDbEntity } from '../../_adapters/voluntarios/entidades/voluntario-db.entity';
 import { TypeormVoluntarioService } from '../../_adapters/voluntarios/services/typeorm-voluntario.service';
@@ -19,11 +19,19 @@ import {
 } from '../../_business/voluntarios/services/voluntario.service';
 import { ListarSlotsAgenda } from '../../_business/agenda/casos-de-uso/listar-slots.agenda.feat';
 import { ListarSlotsAgendaController } from './controllers/listar-slots-agenda.controller';
+import {
+  CriarSlotAgendaService,
+  IBuscarSlotAgendaByIdService,
+  IRemoverSlotAgendaService,
+  RecuperaSlotsAgendaService,
+} from '../../_business/agenda/services/agenda.service';
+import { RemoverSlotAgenda } from '../../_business/agenda/casos-de-uso/remover-slot-agenda.feat';
+import { RemoverSlotAgendaController } from './controllers/remover-slot-agenda.controller';
 
 class NestCriarNovoSlotDeAgenda extends CriarNovoSlotDeAgenda {
   constructor(
     @Inject(TypeOrmAgendaService)
-    agendaService: TypeOrmAgendaService,
+    agendaService: CriarSlotAgendaService & RecuperaSlotsAgendaService,
     @Inject(MomentDateTimeService)
     dateTimeUtils: IDateAdd & IDateStartOf & IDateEndOf,
     @Inject(TypeormVoluntarioService)
@@ -42,6 +50,15 @@ class NestListarNovoSlotDeAgenda extends ListarSlotsAgenda {
   }
 }
 
+class NestRemoverSlotAgenda extends RemoverSlotAgenda {
+  constructor(
+    @Inject(TypeOrmAgendaService)
+    agendaService: IBuscarSlotAgendaByIdService & IRemoverSlotAgendaService,
+  ) {
+    super(agendaService);
+  }
+}
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -50,7 +67,11 @@ class NestListarNovoSlotDeAgenda extends ListarSlotsAgenda {
       UsuarioDbEntity,
     ]),
   ],
-  controllers: [CriarSlotAgendaController, ListarSlotsAgendaController],
+  controllers: [
+    CriarSlotAgendaController,
+    ListarSlotsAgendaController,
+    RemoverSlotAgendaController,
+  ],
   providers: [
     {
       provide: CriarNovoSlotDeAgenda,
@@ -59,6 +80,10 @@ class NestListarNovoSlotDeAgenda extends ListarSlotsAgenda {
     {
       provide: ListarSlotsAgenda,
       useClass: NestListarNovoSlotDeAgenda,
+    },
+    {
+      provide: RemoverSlotAgenda,
+      useClass: NestRemoverSlotAgenda,
     },
     TypeormVoluntarioService,
     TypeOrmAgendaService,

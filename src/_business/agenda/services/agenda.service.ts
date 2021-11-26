@@ -11,3 +11,11 @@ export interface CriarSlotAgendaService {
 export interface RecuperaSlotsAgendaService {
   recuperaSlots(param?: Partial<SlotAgendaParam>): Promise<SlotAgenda[]>;
 }
+
+export interface IRemoverSlotAgendaService {
+  removerSlot(id: number): Promise<void>;
+}
+
+export interface IBuscarSlotAgendaByIdService {
+  findById(id: number): Promise<SlotAgenda>;
+}

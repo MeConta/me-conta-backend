@@ -6,7 +6,7 @@ import {
   Param,
 } from '@nestjs/common';
 import { ListarSlotsAgenda } from '../../../_business/agenda/casos-de-uso/listar-slots.agenda.feat';
-import { AtendenteIdParam } from '../../../_adapters/agenda/dto/atendente-id.param.dto';
+import { IdParam } from '../../../_adapters/agenda/dto/id.param.dto';
 import { VoluntarioNaoEncontradoError } from '../../../_business/admin/casos-de-uso/autorizar-voluntario.feat';
 
 @Controller('agenda')
@@ -17,7 +17,7 @@ export class ListarSlotsAgendaController {
   ) {}
 
   @Get(':id?')
-  async get(@Param() param?: AtendenteIdParam) {
+  async get(@Param() param?: IdParam) {
     try {
       return await this.listarSlotsAgenda.execute(param?.id);
     } catch (e) {

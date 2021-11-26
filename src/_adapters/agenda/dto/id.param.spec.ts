@@ -1,11 +1,11 @@
 import { plainToClass } from 'class-transformer';
-import { AtendenteIdParam } from './atendente-id.param.dto';
+import { IdParam } from './id.param.dto';
 
 describe('TipoUsuarioParam', () => {
-  let transformed: AtendenteIdParam;
+  let transformed: IdParam;
 
   beforeEach(() => {
-    transformed = plainToClass(AtendenteIdParam, {
+    transformed = plainToClass(IdParam, {
       id: '1',
     });
   });

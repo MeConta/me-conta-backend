@@ -98,6 +98,7 @@ export class VoluntarioDbEntity
 
   @OneToMany(() => SlotAgendaDbEntity, (slot) => slot.voluntario, {
     eager: true,
+    lazy: true,
   })
   slots: SlotAgenda[];
 }

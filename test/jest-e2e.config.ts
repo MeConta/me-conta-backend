@@ -1,4 +1,5 @@
 import type { Config } from '@jest/types';
+import 'reflect-metadata';
 
 // Sync object
 const jest: Config.InitialOptions = {

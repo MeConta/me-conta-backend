@@ -5,15 +5,15 @@ import {
   Repository,
 } from 'typeorm';
 import { TypeOrmAgendaService } from './typeorm-agenda.service';
-import { SlotAgendaDbEntity } from './entidades/slot-agenda-db.entity';
+import { SlotAgendaDbEntity } from '../entidades/slot-agenda-db.entity';
 import * as moment from 'moment';
-import { SlotAgendaParam } from '../../_business/agenda/services/agenda.service';
-import { VoluntarioDbEntity } from '../voluntarios/entidades/voluntario-db.entity';
-import { UsuarioDbEntity } from '../usuarios/entidades/usuario.db.entity';
-import { DEFAULT_PASSWORD, MOCKED_SALT } from '../../../jest.setup';
+import { SlotAgendaParam } from '../../../_business/agenda/services/agenda.service';
+import { VoluntarioDbEntity } from '../../voluntarios/entidades/voluntario-db.entity';
+import { UsuarioDbEntity } from '../../usuarios/entidades/usuario.db.entity';
+import { DEFAULT_PASSWORD, MOCKED_SALT } from '../../../../jest.setup';
 import { internet, lorem, name } from 'faker/locale/pt_BR';
-import { TipoUsuario } from '../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { FrenteAtuacao } from '../../_business/voluntarios/entidades/voluntario.entity';
+import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { FrenteAtuacao } from '../../../_business/voluntarios/entidades/voluntario.entity';
 describe('Agenda Repo', () => {
   let connection: Connection;
   let repo: Repository<SlotAgendaDbEntity>;
@@ -84,13 +84,12 @@ describe('Agenda Repo', () => {
       }),
     );
   });
-  it('deve recuperar slots de atendimento', async function () {
+  it('deve recuperar slots de atendimento', async () => {
     await repo.save(request);
     const slots = await sut.recuperaSlots();
     await expect(slots).toHaveLength(1);
   });
-  it('deve chamar o repository passando wheres', async function () {
-    // await repo.save(request);
+  it('deve chamar o repository passando wheres', async () => {
     jest.spyOn(repo, 'find');
     await sut.recuperaSlots({
       atendenteId: expect.any(Number),
@@ -99,14 +98,26 @@ describe('Agenda Repo', () => {
     });
     await expect(repo.find).toHaveBeenCalledWith({
       where: {
-        voluntario: {
+        voluntario: Promise.resolve({
           usuario: {
             id: expect.any(Number),
           },
-        },
+        }),
         inicio: expect.any(FindOperator),
         fim: expect.any(FindOperator),
       },
     });
+  });
+  it('Deve encontrar por id de slot', async () => {
+    await sut.cadastrar(request);
+    const [slotEntity] = await repo.find();
+    const slot = await sut.findById(slotEntity.id);
+    expect(slot).toBeDefined();
+  });
+  it('Deve remover um slot por id', async () => {
+    await sut.cadastrar(request);
+    const [slotEntity] = await repo.find();
+    await sut.removerSlot(slotEntity.id);
+    expect(await repo.find()).toHaveLength(0);
   });
 });

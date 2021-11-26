@@ -24,7 +24,7 @@ describe('Listar Slots de Agenda', () => {
             id: null,
             inicio: moment().toDate(),
             fim: moment().add(1, 'hours').toDate(),
-            voluntario: createMock<Voluntario>(),
+            voluntario: Promise.resolve(createMock<Voluntario>()),
           },
         ],
         usuario: {

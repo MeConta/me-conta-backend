@@ -3157,7 +3157,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "7"
 								}
 							]
 						}
@@ -3234,6 +3234,101 @@
 							],
 							"cookie": [],
 							"body": "[\n    {\n        \"voluntario\": {\n            \"id\": 2\n        },\n        \"slots\": []\n    },\n    {\n        \"voluntario\": {\n            \"id\": 7\n        },\n        \"slots\": [\n            {\n                \"id\": 8,\n                \"inicio\": \"2022-08-08T09:00:00.000Z\",\n                \"fim\": \"2022-08-08T10:00:00.000Z\"\n            },\n            {\n                \"id\": 9,\n                \"inicio\": \"2022-08-08T07:00:00.000Z\",\n                \"fim\": \"2022-08-08T08:00:00.000Z\"\n            },\n            {\n                \"id\": 10,\n                \"inicio\": \"2022-08-08T10:00:00.000Z\",\n                \"fim\": \"2022-08-08T11:00:00.000Z\"\n            },\n            {\n                \"id\": 17,\n                \"inicio\": \"2021-12-05T00:28:38.000Z\",\n                \"fim\": \"2021-12-05T01:28:38.000Z\"\n            },\n            {\n                \"id\": 18,\n                \"inicio\": \"2022-08-24T08:32:24.000Z\",\n                \"fim\": \"2022-08-24T09:32:24.000Z\"\n            },\n            {\n                \"id\": 24,\n                \"inicio\": \"2022-07-17T23:09:43.000Z\",\n                \"fim\": \"2022-07-18T00:09:43.000Z\"\n            }\n        ]\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Remover slot da Agenda",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"slots\": [\n        {\n            \"inicio\": \"2022-07-17T23:09:43.000Z\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/agenda/:id",
+							"protocol": "{{PROTOCOL}}",
+							"host": [
+								"{{HOST}}{{PORT}}"
+							],
+							"path": [
+								"agenda",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Remover slot da Agenda",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"slots\": [\n        {\n            \"inicio\": \"2022-07-17T23:09:43.000Z\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{PROTOCOL}}://{{HOST}}{{PORT}}/agenda/:id",
+									"protocol": "{{PROTOCOL}}",
+									"host": [
+										"{{HOST}}{{PORT}}"
+									],
+									"path": [
+										"agenda",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "8"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 26 Nov 2021 19:39:54 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": null
 						}
 					]
 				}
