@@ -55,7 +55,10 @@ export class AutorizarVoluntarioController {
         case e instanceof EMailSendError:
           throw new ServiceUnavailableException(e);
         default:
-          throw new InternalServerErrorException(e);
+          throw new InternalServerErrorException({
+            code: 500,
+            message: 'Erro genérico',
+          });
       }
     }
   }

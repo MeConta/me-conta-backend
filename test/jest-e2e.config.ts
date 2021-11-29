@@ -3,6 +3,7 @@ import 'reflect-metadata';
 
 // Sync object
 const jest: Config.InitialOptions = {
+  detectOpenHandles: true,
   moduleFileExtensions: ['js', 'json', 'ts'],
   setupFilesAfterEnv: ['../jest.setup.ts'],
   rootDir: '.',

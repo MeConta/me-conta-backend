@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Inject,
+  InternalServerErrorException,
   NotFoundException,
   Param,
 } from '@nestjs/common';
@@ -24,6 +25,10 @@ export class ListarSlotsAgendaController {
       if (e instanceof VoluntarioNaoEncontradoError) {
         throw new NotFoundException(e);
       }
+      throw new InternalServerErrorException({
+        code: 500,
+        message: 'Erro genérico',
+      });
     }
   }
 }

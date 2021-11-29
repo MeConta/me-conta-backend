@@ -3,7 +3,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { createMock } from '@golevelup/ts-jest';
 import { ListarSlotsAgendaController } from './listar-slots-agenda.controller';
 import { VoluntarioNaoEncontradoError } from '../../../_business/admin/casos-de-uso/autorizar-voluntario.feat';
-import { NotFoundException } from '@nestjs/common';
+import {
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 
 describe('ListarSlotsAgendaController', () => {
   let controller: ListarSlotsAgendaController;
@@ -41,6 +44,12 @@ describe('ListarSlotsAgendaController', () => {
       .mockRejectedValue(new VoluntarioNaoEncontradoError());
     await expect(() => controller.get(expect.any(Number))).rejects.toThrow(
       NotFoundException,
+    );
+  });
+  it('Deve Dar erro de genérico', async () => {
+    jest.spyOn(useCase, 'execute').mockRejectedValue(new Error());
+    await expect(() => controller.get(expect.any(Number))).rejects.toThrow(
+      InternalServerErrorException,
     );
   });
 });

@@ -3,6 +3,7 @@ import type { Config } from '@jest/types';
 // Sync object
 const jest: Config.InitialOptions = {
   verbose: true,
+  detectOpenHandles: true,
   setupFilesAfterEnv: ['../jest.setup.ts'],
   moduleFileExtensions: ['js', 'json', 'ts'],
   modulePathIgnorePatterns: ['<rootDir>/__old/'],
