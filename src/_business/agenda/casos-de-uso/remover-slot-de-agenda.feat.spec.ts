@@ -5,7 +5,11 @@ import { Voluntario } from '../../voluntarios/entidades/voluntario.entity';
 import * as moment from 'moment';
 import { Usuario } from '../../usuarios/entidades/usuario.entity';
 import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { RemoverSlotAgenda } from './remover-slot-agenda.feat';
+import {
+  RemoverSlotAgenda,
+  SlotAgendaNaoEncontradoError,
+  SlotNaoPertenceAoVoluntario,
+} from './remover-slot-agenda.feat';
 import {
   IBuscarSlotAgendaByIdService,
   IRemoverSlotAgendaService,
@@ -23,6 +27,7 @@ class InMemoryAgendaService
         voluntario: Promise.resolve({
           ...createMock<Voluntario>(),
           aprovado: true,
+          id: 1,
           usuario: {
             ...createMock<Usuario>(),
             id: 1,
@@ -58,8 +63,14 @@ describe('Remover um slot de agenda', () => {
   });
 
   it('Deve remover um slot', async () => {
-    await sut.execute(1);
+    await sut.execute(1, 1);
     expect(agendaService.slots).toHaveLength(0);
+  });
+
+  it('Deve dar erro de Slot não encontrado', async () => {
+    await expect(() => sut.execute(999, 1)).rejects.toThrow(
+      SlotAgendaNaoEncontradoError,
+    );
   });
 
   it('Deve dar erro de voluntário não encontrado caso ele não esteja aprovado', async () => {
@@ -70,8 +81,14 @@ describe('Remover um slot de agenda', () => {
       });
       return slot;
     });
-    await expect(() => sut.execute(1)).rejects.toThrow(
+    await expect(() => sut.execute(1, 1)).rejects.toThrow(
       VoluntarioNaoEncontradoError,
+    );
+  });
+
+  it('Deve dar erro de voluntário slot não pertencente ao voluntário', async () => {
+    await expect(() => sut.execute(1, 2)).rejects.toThrow(
+      SlotNaoPertenceAoVoluntario,
     );
   });
 });

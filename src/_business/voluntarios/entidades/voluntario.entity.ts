@@ -13,6 +13,7 @@ export enum AreaAtuacao {
 }
 
 export interface Voluntario {
+  id?: number;
   instituicao: string;
   formado: boolean;
   frentes?: FrenteAtuacao[];

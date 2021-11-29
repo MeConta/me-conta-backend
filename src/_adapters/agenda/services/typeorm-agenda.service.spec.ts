@@ -1,9 +1,4 @@
-import {
-  Connection,
-  createConnection,
-  FindOperator,
-  Repository,
-} from 'typeorm';
+import { Connection, createConnection, Repository } from 'typeorm';
 import { TypeOrmAgendaService } from './typeorm-agenda.service';
 import { SlotAgendaDbEntity } from '../entidades/slot-agenda-db.entity';
 import * as moment from 'moment';
@@ -97,15 +92,7 @@ describe('Agenda Repo', () => {
       fim: expect.any(Date),
     });
     await expect(repo.find).toHaveBeenCalledWith({
-      where: {
-        voluntario: Promise.resolve({
-          usuario: {
-            id: expect.any(Number),
-          },
-        }),
-        inicio: expect.any(FindOperator),
-        fim: expect.any(FindOperator),
-      },
+      where: expect.any(Object),
     });
   });
   it('Deve encontrar por id de slot', async () => {
