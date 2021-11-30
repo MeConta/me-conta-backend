@@ -8,12 +8,14 @@ import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.
 import {
   RemoverSlotAgenda,
   SlotAgendaNaoEncontradoError,
-  SlotNaoPertenceAoVoluntario,
+  SlotNaoPertenceAoVoluntarioError,
+  SlotNoPassadoError,
 } from './remover-slot-agenda.feat';
 import {
   IBuscarSlotAgendaByIdService,
   IRemoverSlotAgendaService,
 } from '../services/agenda.service';
+import { IDateGreaterThan } from '../services/date-time.service';
 
 class InMemoryAgendaService
   implements IRemoverSlotAgendaService, IBuscarSlotAgendaByIdService
@@ -22,8 +24,8 @@ class InMemoryAgendaService
     public slots: SlotAgenda[] = [
       {
         id: 1,
-        inicio: moment().toDate(),
-        fim: moment().add(1, 'hours').toDate(),
+        inicio: moment().add(1, 'day').toDate(),
+        fim: moment().add(1, 'day').add(1, 'hours').toDate(),
         voluntario: Promise.resolve({
           ...createMock<Voluntario>(),
           aprovado: true,
@@ -49,13 +51,20 @@ class InMemoryAgendaService
   }
 }
 
+class InMemoryDateHelper implements IDateGreaterThan {
+  greaterThan(date: Date, than: Date): boolean {
+    return moment(date).isAfter(moment(than));
+  }
+}
+
 describe('Remover um slot de agenda', () => {
   let sut: RemoverSlotAgenda;
   let agendaService: InMemoryAgendaService;
+  const dateHelper = new InMemoryDateHelper();
 
   beforeEach(() => {
     agendaService = new InMemoryAgendaService();
-    sut = new RemoverSlotAgenda(agendaService);
+    sut = new RemoverSlotAgenda(agendaService, dateHelper);
   });
 
   it('Deve ser definido', async () => {
@@ -88,7 +97,16 @@ describe('Remover um slot de agenda', () => {
 
   it('Deve dar erro de voluntário slot não pertencente ao voluntário', async () => {
     await expect(() => sut.execute(1, 2)).rejects.toThrow(
-      SlotNaoPertenceAoVoluntario,
+      SlotNaoPertenceAoVoluntarioError,
     );
+  });
+
+  it('Deve dar erro ao tentar remover slot no passado', async () => {
+    agendaService.slots[0].inicio = moment().subtract(1, 'years').toDate();
+    agendaService.slots[0].fim = moment()
+      .subtract(1, 'years')
+      .add(1, 'hours')
+      .toDate();
+    await expect(() => sut.execute(1, 1)).rejects.toThrow(SlotNoPassadoError);
   });
 });

@@ -6,6 +6,7 @@ import { CriarNovoSlotDeAgenda } from '../../_business/agenda/casos-de-uso/criar
 import {
   IDateAdd,
   IDateEndOf,
+  IDateGreaterThan,
   IDateStartOf,
 } from '../../_business/agenda/services/date-time.service';
 import { MomentDateTimeService } from '../../_adapters/agenda/services/moment-date-time.service';
@@ -54,8 +55,10 @@ class NestRemoverSlotAgenda extends RemoverSlotAgenda {
   constructor(
     @Inject(TypeOrmAgendaService)
     agendaService: IBuscarSlotAgendaByIdService & IRemoverSlotAgendaService,
+    @Inject(MomentDateTimeService)
+    dateHelpers: IDateGreaterThan,
   ) {
-    super(agendaService);
+    super(agendaService, dateHelpers);
   }
 }
 

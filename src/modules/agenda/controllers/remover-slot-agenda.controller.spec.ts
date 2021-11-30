@@ -2,13 +2,15 @@ import { Test, TestingModule } from '@nestjs/testing';
 import {
   RemoverSlotAgenda,
   SlotAgendaNaoEncontradoError,
-  SlotNaoPertenceAoVoluntario,
+  SlotNaoPertenceAoVoluntarioError,
+  SlotNoPassadoError,
 } from '../../../_business/agenda/casos-de-uso/remover-slot-agenda.feat';
 import { createMock } from '@golevelup/ts-jest';
 import {
   ForbiddenException,
   InternalServerErrorException,
   NotFoundException,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { VoluntarioNaoEncontradoError } from '../../../_business/admin/casos-de-uso/autorizar-voluntario.feat';
 import { RemoverSlotAgendaController } from './remover-slot-agenda.controller';
@@ -64,9 +66,15 @@ describe('RemoverSlotAgendaController', () => {
   it('Deve dar forbidden caso o slot não pertença ao voluntário', async () => {
     jest
       .spyOn(useCase, 'execute')
-      .mockRejectedValue(new SlotNaoPertenceAoVoluntario());
+      .mockRejectedValue(new SlotNaoPertenceAoVoluntarioError());
     await expect(() => controller.remover(idParam, user)).rejects.toThrow(
       ForbiddenException,
+    );
+  });
+  it('Deve dar unprocessable caso o slot esteja no passado', async () => {
+    jest.spyOn(useCase, 'execute').mockRejectedValue(new SlotNoPassadoError());
+    await expect(() => controller.remover(idParam, user)).rejects.toThrow(
+      UnprocessableEntityException,
     );
   });
   it('Deve dar erro genérico', async () => {

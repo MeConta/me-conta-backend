@@ -7,11 +7,13 @@ import {
   InternalServerErrorException,
   NotFoundException,
   Param,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import {
   RemoverSlotAgenda,
   SlotAgendaNaoEncontradoError,
-  SlotNaoPertenceAoVoluntario,
+  SlotNaoPertenceAoVoluntarioError,
+  SlotNoPassadoError,
 } from '../../../_business/agenda/casos-de-uso/remover-slot-agenda.feat';
 import { Auth } from '../../../_adapters/auth/decorators/auth.decorator';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
@@ -38,8 +40,10 @@ export class RemoverSlotAgendaController {
         case e instanceof SlotAgendaNaoEncontradoError:
         case e instanceof VoluntarioNaoEncontradoError:
           throw new NotFoundException(e);
-        case e instanceof SlotNaoPertenceAoVoluntario:
+        case e instanceof SlotNaoPertenceAoVoluntarioError:
           throw new ForbiddenException(e);
+        case e instanceof SlotNoPassadoError:
+          throw new UnprocessableEntityException(e);
         default:
           throw new InternalServerErrorException({
             code: 500,
