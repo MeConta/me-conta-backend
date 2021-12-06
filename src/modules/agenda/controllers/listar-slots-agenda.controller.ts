@@ -9,7 +9,13 @@ import {
 import { ListarSlotsAgenda } from '../../../_business/agenda/casos-de-uso/listar-slots.agenda.feat';
 import { IdParam } from '../../../_adapters/agenda/dto/id.param.dto';
 import { VoluntarioNaoEncontradoError } from '../../../_business/admin/casos-de-uso/autorizar-voluntario.feat';
+import {
+  ApiInternalServerErrorResponse,
+  ApiNotFoundResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('Agenda')
 @Controller('agenda')
 export class ListarSlotsAgendaController {
   constructor(
@@ -17,6 +23,12 @@ export class ListarSlotsAgendaController {
     private readonly listarSlotsAgenda: ListarSlotsAgenda,
   ) {}
 
+  @ApiInternalServerErrorResponse({
+    description: 'Erro genérico',
+  })
+  @ApiNotFoundResponse({
+    description: 'Voluntário não encontrado',
+  })
   @Get(':id?')
   async get(@Param() param?: IdParam) {
     try {

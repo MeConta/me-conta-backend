@@ -25,7 +25,7 @@ import { CreateSlotAgendaDto } from '../../../_adapters/agenda/dto/create-slot-a
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { UsuarioNaoEncontradoError } from '../../../_business/usuarios/erros/usuarios.errors';
 
-@ApiTags('agenda')
+@ApiTags('Agenda')
 @Controller('agenda')
 export class CriarSlotAgendaController {
   constructor(private readonly criarNovoSlotDeAgenda: CriarNovoSlotDeAgenda) {}

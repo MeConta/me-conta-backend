@@ -21,7 +21,15 @@ import { VoluntarioNaoEncontradoError } from '../../../_business/admin/casos-de-
 import { IdParam } from '../../../_adapters/agenda/dto/id.param.dto';
 import { User } from '../../../_adapters/auth/decorators/user.decorator';
 import { ITokenUser } from '../../../_business/auth/interfaces/auth';
+import {
+  ApiForbiddenResponse,
+  ApiInternalServerErrorResponse,
+  ApiNotFoundResponse,
+  ApiTags,
+  ApiUnprocessableEntityResponse
+} from "@nestjs/swagger";
 
+@ApiTags('Agenda')
 @Controller('agenda')
 export class RemoverSlotAgendaController {
   constructor(private readonly removerSlotAgenda: RemoverSlotAgenda) {}
@@ -29,6 +37,18 @@ export class RemoverSlotAgendaController {
   @Delete(':id')
   @Auth(TipoUsuario.ATENDENTE)
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiInternalServerErrorResponse({
+    description: 'Erro genérico',
+  })
+  @ApiNotFoundResponse({
+    description: 'Slot não encontrado',
+  })
+  @ApiForbiddenResponse({
+    description: 'Slot não pertence ao voluntário',
+  })
+  @ApiUnprocessableEntityResponse({
+    description: 'Não é possível deletar um slot no passado',
+  })
   async remover(
     @Param() { id }: IdParam,
     @User() user: Pick<ITokenUser, 'id'>,
