@@ -1,4 +1,4 @@
-import { Voluntario } from '../entidades/voluntario.entity';
+import { FrenteAtuacao, Voluntario } from '../entidades/voluntario.entity';
 import { Usuario } from '../../usuarios/entidades/usuario.entity';
 import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { createMock } from '@golevelup/ts-jest';
@@ -8,18 +8,28 @@ import { ITokenUser } from '../../auth/interfaces/auth';
 import { VoluntarioOutput } from '../dtos/voluntario.dto';
 
 class InMemoryVoluntarioService implements IBuscarVoluntarios {
-  voluntarios: VoluntarioOutput[] = [true, false, null].map<VoluntarioOutput>(
-    (aprovado, index) => ({
-      ...createMock<VoluntarioOutput>(),
-      aprovado,
-      usuario: {
-        ...createMock<Usuario>(),
-        tipo: TipoUsuario.ATENDENTE,
-        id: index,
-      },
-    }),
-  );
+  voluntarios: VoluntarioOutput[] = [
+    { aprovado: true, frentes: [0] },
+    { aprovado: false, frentes: [2] },
+    { aprovado: true, frentes: [1, 2] },
+    null,
+  ].map<VoluntarioOutput>((voluntario, index) => ({
+    ...createMock<VoluntarioOutput>(),
+    aprovado: voluntario?.aprovado,
+    frentes: voluntario?.frentes,
+    usuario: {
+      ...createMock<Usuario>(),
+      tipo: TipoUsuario.ATENDENTE,
+      id: index,
+    },
+  }));
   async buscar(search?: Partial<Voluntario>): Promise<VoluntarioOutput[]> {
+    if (search?.frentes) {
+      this.voluntarios = this.voluntarios.filter((voluntario) =>
+        voluntario.frentes?.some((v) => search.frentes.includes(v)),
+      );
+    }
+
     if (search?.aprovado && search?.usuario?.tipo) {
       return this.voluntarios.filter(
         (voluntario) =>
@@ -65,14 +75,29 @@ describe('Listagem de voluntários', () => {
       } as ITokenUser,
       TipoUsuario.ATENDENTE,
     );
+    expect(response).toHaveLength(2);
+  });
+
+  it('Deve retornar os voluntários para sessão de acolhimento', async () => {
+    const filtros = {
+      frente: FrenteAtuacao.SESSAO_ACOLHIMENTO,
+    };
+    const response = await sut.execute(
+      {
+        roles: [TipoUsuario.ALUNO],
+      } as ITokenUser,
+      TipoUsuario.ATENDENTE,
+      filtros,
+    );
     expect(response).toHaveLength(1);
+    expect(response[0]).toEqual(expect.objectContaining({ frentes: [0] }));
   });
 
   it('Deve retornar Todos os voluntários quando o requisitante for administrador', async () => {
     const response = await sut.execute({
       roles: [TipoUsuario.ADMINISTRADOR],
     } as ITokenUser);
-    expect(response).toHaveLength(3);
+    expect(response).toHaveLength(4);
   });
 
   it('Deve retornar Todos os voluntários de determinado tipo quando o requisitante for administrador', async () => {
@@ -82,6 +107,6 @@ describe('Listagem de voluntários', () => {
       } as ITokenUser,
       TipoUsuario.ATENDENTE,
     );
-    expect(response).toHaveLength(3);
+    expect(response).toHaveLength(4);
   });
 });

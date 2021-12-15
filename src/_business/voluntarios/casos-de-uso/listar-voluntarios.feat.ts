@@ -1,4 +1,4 @@
-import { Voluntario } from '../entidades/voluntario.entity';
+import { FrenteAtuacao, Voluntario } from '../entidades/voluntario.entity';
 import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { IBuscarVoluntarios } from '../services/voluntario.service';
 import { ITokenUser } from '../../auth/interfaces/auth';
@@ -8,12 +8,17 @@ import {
   VoluntarioOutput,
 } from '../dtos/voluntario.dto';
 
+interface FiltroVoluntarios {
+  frente: FrenteAtuacao;
+}
+
 export class ListarVoluntarios {
   constructor(private readonly voluntarioService: IBuscarVoluntarios) {}
 
   async execute(
     user?: ITokenUser,
     tipo?: TipoUsuario,
+    filtros?: FiltroVoluntarios,
   ): Promise<(VoluntarioOutput | ObfuscatedVoluntarioOutput)[]> {
     const isAdmin: boolean = user?.roles.includes(TipoUsuario.ADMINISTRADOR);
 
@@ -25,6 +30,10 @@ export class ListarVoluntarios {
 
     if (tipo) {
       search.usuario = { tipo } as Usuario;
+    }
+
+    if (filtros) {
+      search.frentes = [filtros.frente];
     }
 
     const voluntarios = await this.voluntarioService.buscar(search);
