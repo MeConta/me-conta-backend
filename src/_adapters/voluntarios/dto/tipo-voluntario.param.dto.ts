@@ -3,7 +3,7 @@ import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class TipoUsuarioParam {
+export class VoluntarioParam {
   /***
    * Tipo de Voluntário a ser recuperado:
    * 1. SUPERVISOR

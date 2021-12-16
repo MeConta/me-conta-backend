@@ -4,7 +4,7 @@ import { createMock } from '@golevelup/ts-jest';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { ListarVoluntariosController } from './listar-voluntarios.controller';
 import { ITokenUser } from '../../../_business/auth/interfaces/auth';
-import { TipoUsuarioParam } from '../../../_adapters/voluntarios/dto/tipo-voluntario.param.dto';
+import { VoluntarioParam } from '../../../_adapters/voluntarios/dto/tipo-voluntario.param.dto';
 
 describe('Buscar Voluntários', () => {
   let controller: ListarVoluntariosController;
@@ -45,7 +45,7 @@ describe('Buscar Voluntários', () => {
   it('Deve chamar o caso de uso com o tipo', async () => {
     await controller.listar(null, {
       tipo: TipoUsuario.ATENDENTE,
-    } as TipoUsuarioParam);
+    } as VoluntarioParam);
     expect(useCase.execute).toBeCalledWith(null, TipoUsuario.ATENDENTE);
   });
 });
