@@ -28,12 +28,12 @@ export class ListarVoluntarios {
       search.aprovado = true;
     }
 
-    if (tipo) {
+    if (tipo in TipoUsuario) {
       search.usuario = { tipo } as Usuario;
     }
 
-    if (filtros) {
-      search.frentes = [filtros.frente];
+    if (frenteAtuacao in FrenteAtuacao) {
+      search.frentes = [frenteAtuacao];
     }
 
     const voluntarios = await this.voluntarioService.buscar(search);
