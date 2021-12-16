@@ -26,8 +26,8 @@ import {
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiTags,
-  ApiUnprocessableEntityResponse
-} from "@nestjs/swagger";
+  ApiUnprocessableEntityResponse,
+} from '@nestjs/swagger';
 
 @ApiTags('Agenda')
 @Controller('agenda')

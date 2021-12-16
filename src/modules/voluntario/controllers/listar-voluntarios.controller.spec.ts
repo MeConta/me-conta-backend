@@ -25,8 +25,6 @@ describe('Buscar Voluntários', () => {
     useCase = module.get<ListarVoluntarios>(ListarVoluntarios);
   });
 
-  // beforeEach(async () => {});
-
   it('Deve ser definido', async () => {
     expect(controller).toBeDefined();
   });
