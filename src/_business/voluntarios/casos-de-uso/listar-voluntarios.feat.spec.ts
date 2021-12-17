@@ -79,15 +79,12 @@ describe('Listagem de voluntários', () => {
   });
 
   it('Deve retornar os voluntários para sessão de acolhimento', async () => {
-    const filtros = {
-      frente: FrenteAtuacao.SESSAO_ACOLHIMENTO,
-    };
     const response = await sut.execute(
       {
         roles: [TipoUsuario.ALUNO],
       } as ITokenUser,
       TipoUsuario.ATENDENTE,
-      filtros,
+      FrenteAtuacao.SESSAO_ACOLHIMENTO,
     );
     expect(response).toHaveLength(1);
     expect(response[0]).toEqual(expect.objectContaining({ frentes: [0] }));

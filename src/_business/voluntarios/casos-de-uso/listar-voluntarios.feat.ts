@@ -8,17 +8,13 @@ import {
   VoluntarioOutput,
 } from '../dtos/voluntario.dto';
 
-interface FiltroVoluntarios {
-  frente: FrenteAtuacao;
-}
-
 export class ListarVoluntarios {
   constructor(private readonly voluntarioService: IBuscarVoluntarios) {}
 
   async execute(
     user?: ITokenUser,
     tipo?: TipoUsuario,
-    filtros?: FiltroVoluntarios,
+    frenteAtuacao?: FrenteAtuacao,
   ): Promise<(VoluntarioOutput | ObfuscatedVoluntarioOutput)[]> {
     const isAdmin: boolean = user?.roles.includes(TipoUsuario.ADMINISTRADOR);
 

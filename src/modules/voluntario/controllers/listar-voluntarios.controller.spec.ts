@@ -4,7 +4,10 @@ import { createMock } from '@golevelup/ts-jest';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { ListarVoluntariosController } from './listar-voluntarios.controller';
 import { ITokenUser } from '../../../_business/auth/interfaces/auth';
-import { VoluntarioParam } from '../../../_adapters/voluntarios/dto/tipo-voluntario.param.dto';
+import {
+  VoluntarioParams,
+  VoluntarioQuery,
+} from '../../../_adapters/voluntarios/dto/tipo-voluntario.param.dto';
 
 describe('Buscar Voluntários', () => {
   let controller: ListarVoluntariosController;
@@ -38,12 +41,27 @@ describe('Buscar Voluntários', () => {
         roles: [TipoUsuario.ALUNO],
       } as ITokenUser),
       undefined,
+      undefined,
     );
   });
   it('Deve chamar o caso de uso com o tipo', async () => {
     await controller.listar(null, {
       tipo: TipoUsuario.ATENDENTE,
-    } as VoluntarioParam);
-    expect(useCase.execute).toBeCalledWith(null, TipoUsuario.ATENDENTE);
+    } as VoluntarioParams);
+    expect(useCase.execute).toBeCalledWith(
+      null,
+      TipoUsuario.ATENDENTE,
+      undefined,
+    );
+  });
+  it('Deve chamar o caso de uso com o tipo e filtro por frente', async () => {
+    await controller.listar(
+      null,
+      {
+        tipo: TipoUsuario.ATENDENTE,
+      } as VoluntarioParams,
+      { frente: 1 } as VoluntarioQuery,
+    );
+    expect(useCase.execute).toBeCalledWith(null, TipoUsuario.ATENDENTE, 1);
   });
 });

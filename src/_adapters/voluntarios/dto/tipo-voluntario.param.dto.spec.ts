@@ -1,12 +1,12 @@
-import { VoluntarioParam } from './tipo-voluntario.param.dto';
+import { VoluntarioParams } from './tipo-voluntario.param.dto';
 import { plainToClass } from 'class-transformer';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 describe('TipoUsuarioParam', () => {
-  let transformed: VoluntarioParam;
+  let transformed: VoluntarioParams;
 
   beforeEach(() => {
-    transformed = plainToClass(VoluntarioParam, {
+    transformed = plainToClass(VoluntarioParams, {
       tipo: TipoUsuario.ATENDENTE.toString(),
     });
   });

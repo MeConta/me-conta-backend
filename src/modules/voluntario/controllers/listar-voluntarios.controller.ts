@@ -1,9 +1,12 @@
-import { Controller, Get, Inject, Param } from '@nestjs/common';
+import { Controller, Get, Inject, Param, Query } from '@nestjs/common';
 import { ListarVoluntarios } from '../../../_business/voluntarios/casos-de-uso/listar-voluntarios.feat';
 import { User } from '../../../_adapters/auth/decorators/user.decorator';
 import { OptionalAuth } from '../../../_adapters/auth/decorators/auth.decorator';
 import { ITokenUser } from '../../../_business/auth/interfaces/auth';
-import { TipoUsuarioParam } from '../../../_adapters/voluntarios/dto/tipo-voluntario.param.dto';
+import {
+  VoluntarioQuery,
+  VoluntarioParams,
+} from '../../../_adapters/voluntarios/dto/tipo-voluntario.param.dto';
 import {
   ApiInternalServerErrorResponse,
   ApiOkResponse,
@@ -31,8 +34,9 @@ export class ListarVoluntariosController {
   @OptionalAuth()
   async listar(
     @User() user?: ITokenUser,
-    @Param() params?: TipoUsuarioParam,
+    @Param() params?: VoluntarioParams,
+    @Query() query?: VoluntarioQuery,
   ): Promise<ListaVoluntariosDto[]> {
-    return this.listarVoluntarios.execute(user, params?.tipo);
+    return this.listarVoluntarios.execute(user, params?.tipo, query?.frente);
   }
 }
