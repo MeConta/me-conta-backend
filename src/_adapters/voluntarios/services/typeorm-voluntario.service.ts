@@ -5,13 +5,16 @@ import {
 } from '../../../_business/voluntarios/casos-de-uso/cadastrar-voluntario.feat';
 import { InjectRepository } from '@nestjs/typeorm';
 import { VoluntarioDbEntity } from '../entidades/voluntario-db.entity';
-import { getManager, Repository } from 'typeorm';
+import { FindOperator, getManager, In, Repository } from 'typeorm';
 import {
   IAtualizarAprovacaoVoluntario,
   IBuscarVoluntarios,
   IBuscarVoluntarioViaId,
 } from '../../../_business/voluntarios/services/voluntario.service';
-import { Voluntario } from '../../../_business/voluntarios/entidades/voluntario.entity';
+import {
+  FrenteAtuacao,
+  Voluntario,
+} from '../../../_business/voluntarios/entidades/voluntario.entity';
 import { UsuarioDbEntity } from '../../usuarios/entidades/usuario.db.entity';
 import { VoluntarioOutput } from '../../../_business/voluntarios/dtos/voluntario.dto';
 
@@ -45,11 +48,20 @@ export class TypeormVoluntarioService
   }
 
   async buscar(search?: Partial<Voluntario>): Promise<VoluntarioOutput[]> {
+    let frenteOperator: FindOperator<FrenteAtuacao[]>;
+    const { frentes, ...simpleConditions } = search;
+    if (frentes) {
+      frenteOperator = In([frentes]);
+    }
+
     return this.repository.find({
       relations: [
         getManager().getRepository(UsuarioDbEntity).metadata.tableName,
       ],
-      where: search,
+      where: {
+        frentes: frenteOperator,
+        ...simpleConditions,
+      },
     });
   }
 }
