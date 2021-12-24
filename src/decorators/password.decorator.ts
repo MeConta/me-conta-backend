@@ -1,5 +1,4 @@
-import { isEmpty, registerDecorator, ValidationOptions } from 'class-validator';
-import * as zxcvbn from 'zxcvbn';
+import { registerDecorator, ValidationOptions } from 'class-validator';
 
 export function IsPasswordStrong(
   minScore?: number,
@@ -13,11 +12,8 @@ export function IsPasswordStrong(
       options: validationOptions,
       validator: {
         validate(value: string) {
-          if (isEmpty(value)) {
-            return false;
-          }
-          return (
-            zxcvbn(value).score > (minScore || +process.env.PASSWORD_STRENGTH)
+          return /^(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])(?=.*[0-9]).{8,}$/.test(
+            value,
           );
         },
         defaultMessage(): string {
