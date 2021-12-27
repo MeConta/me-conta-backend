@@ -1,14 +1,17 @@
 import { createMock } from '@golevelup/ts-jest';
 import { Atendimento, NovoAtendimento } from '../entidades/atendimentos.entity';
 import { IRealizarNovoAtendimentoService } from '../../../_adapters/atendimentos/services/atendimentos.service';
-import { RealizarAtendimento } from './realizar-atendimento.feat';
+import {
+  ConsultaNaoAconteceuError,
+  RealizarAtendimento,
+} from './realizar-atendimento.feat';
 import { VoluntarioNaoEncontradoError } from '../../admin/casos-de-uso/autorizar-voluntario.feat';
-import { IBuscarUsuarioViaId } from '../../usuarios/casos-de-uso/buscar-usuario.id.feat';
 import { IBuscarVoluntarioViaId } from '../../voluntarios/services/voluntario.service';
 import {
   AlunoNaoEncontradoError,
   IBuscarAlunoViaId,
 } from '../../alunos/casos-de-uso/atualizar-aluno.feat';
+import { IDateGreaterThan } from '../../agenda/services/date-time.service';
 
 class InMemoryAtendimentoService implements IRealizarNovoAtendimentoService {
   public atendimentos: Atendimento[] = [];
@@ -25,16 +28,19 @@ describe('Realizar atendimento', () => {
   let atendimentoService: InMemoryAtendimentoService;
   let voluntarioService: IBuscarVoluntarioViaId;
   let alunoService: IBuscarAlunoViaId;
+  let dateService: IDateGreaterThan;
   const request = createMock<NovoAtendimento>();
 
   beforeEach(async () => {
     atendimentoService = new InMemoryAtendimentoService();
     voluntarioService = createMock<IBuscarVoluntarioViaId>();
     alunoService = createMock<IBuscarAlunoViaId>();
+    dateService = createMock<IDateGreaterThan>();
     sut = new RealizarAtendimento(
       atendimentoService,
       voluntarioService,
       alunoService,
+      dateService,
     );
   });
   it('Deve ser Definido', () => {
@@ -57,6 +63,13 @@ describe('Realizar atendimento', () => {
     jest.spyOn(alunoService, 'findById').mockResolvedValue(null);
     await expect(() => sut.execute(request)).rejects.toThrow(
       AlunoNaoEncontradoError,
+    );
+  });
+
+  it('Não deve realizar o atendimento se a consulta for no futuro', async () => {
+    jest.spyOn(dateService, 'greaterThan').mockReturnValue(true);
+    await expect(() => sut.execute(request)).rejects.toThrow(
+      ConsultaNaoAconteceuError,
     );
   });
 });

@@ -6,12 +6,19 @@ import {
   AlunoNaoEncontradoError,
   IBuscarAlunoViaId,
 } from '../../alunos/casos-de-uso/atualizar-aluno.feat';
+import { IDateGreaterThan } from '../../agenda/services/date-time.service';
+
+export class ConsultaNaoAconteceuError extends Error {
+  code = 422;
+  message = 'A data da consulta está no futuro';
+}
 
 export class RealizarAtendimento {
   constructor(
     private readonly atendimentoService: IRealizarNovoAtendimentoService,
     private readonly voluntarioService: IBuscarVoluntarioViaId,
     private readonly alunoService: IBuscarAlunoViaId,
+    private readonly dateHelper: IDateGreaterThan,
   ) {}
   async execute(novoAtendimento: NovoAtendimento): Promise<void> {
     const voluntario = await this.voluntarioService.findById(
@@ -30,6 +37,9 @@ export class RealizarAtendimento {
     }
     if (!aluno) {
       throw new AlunoNaoEncontradoError();
+    }
+    if (this.dateHelper.greaterThan(novoAtendimento.data, new Date())) {
+      throw new ConsultaNaoAconteceuError();
     }
 
     await this.atendimentoService.realizar(novoAtendimento);
