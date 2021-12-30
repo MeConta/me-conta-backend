@@ -10,7 +10,7 @@ export type ResetSenhaInput = { hash: string; senha: string };
 
 export class RecuperacaoNotFoundError extends Error {
   code = 404;
-  message = 'Pedido de recuperação de senha não encontrado';
+  message = 'Pedido de recuperação de senha inválido';
 }
 export class RecuperacaoExpiradaError extends Error {
   code = 422;
