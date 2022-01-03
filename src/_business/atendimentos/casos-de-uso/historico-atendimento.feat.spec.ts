@@ -9,7 +9,8 @@ import { IHistoricoAtendimentoService } from '../../../_adapters/atendimentos/se
 
 class InMemoryAtendimentoService implements IHistoricoAtendimentoService {
   consultar(alunoId: number): Promise<Atendimento[]> {
-    return Promise.resolve([]);
+    const r = new Array<Atendimento>(2).fill(createMock<Atendimento>());
+    return Promise.resolve(r);
   }
 }
 
@@ -17,7 +18,6 @@ describe('Historico atendimentos', () => {
   let sut: HistoricoAtendimento;
   let atendimentoService: InMemoryAtendimentoService;
   let alunoService: IBuscarAlunoViaId;
-  const request = createMock<Atendimento[]>();
 
   beforeEach(async () => {
     atendimentoService = new InMemoryAtendimentoService();
@@ -32,5 +32,9 @@ describe('Historico atendimentos', () => {
   it('Não deve buscar o histórico se o aluno não existir', async () => {
     jest.spyOn(alunoService, 'findById').mockResolvedValue(null);
     await expect(() => sut.execute(1)).rejects.toThrow(AlunoNaoEncontradoError);
+  });
+
+  it('Deve buscar uma lista com 2 atendimentos', async () => {
+    await expect(await sut.execute(1)).toHaveLength(2);
   });
 });
