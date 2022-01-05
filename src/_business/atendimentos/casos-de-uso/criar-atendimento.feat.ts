@@ -1,5 +1,5 @@
 import { NovoAtendimento } from '../entidades/atendimentos.entity';
-import { IRealizarNovoAtendimentoService } from '../../../_adapters/atendimentos/services/atendimentos.service';
+import { INovoAtendimentoService } from '../../../_adapters/atendimentos/services/atendimentos.service';
 import { IBuscarVoluntarioViaId } from '../../voluntarios/services/voluntario.service';
 import { VoluntarioNaoEncontradoError } from '../../admin/casos-de-uso/autorizar-voluntario.feat';
 import {
@@ -13,9 +13,9 @@ export class ConsultaNaoAconteceuError extends Error {
   message = 'A data da consulta está no futuro';
 }
 
-export class RealizarAtendimento {
+export class CriarAtendimento {
   constructor(
-    private readonly atendimentoService: IRealizarNovoAtendimentoService,
+    private readonly atendimentoService: INovoAtendimentoService,
     private readonly voluntarioService: IBuscarVoluntarioViaId,
     private readonly alunoService: IBuscarAlunoViaId,
     private readonly dateHelper: IDateGreaterThan,
@@ -42,6 +42,6 @@ export class RealizarAtendimento {
       throw new ConsultaNaoAconteceuError();
     }
 
-    await this.atendimentoService.realizar(novoAtendimento);
+    await this.atendimentoService.criar(novoAtendimento);
   }
 }

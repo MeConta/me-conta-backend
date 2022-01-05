@@ -1,23 +1,11 @@
-import {
-  NovoAtendimento,
-  StatusAtendimento,
-} from '../../../_business/atendimentos/entidades/atendimentos.entity';
+import { NovoAtendimento } from '../../../_business/atendimentos/entidades/atendimentos.entity';
 import { Aluno } from '../../../_business/alunos/entidades/aluno.entity';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 import { Voluntario } from '../../../_business/voluntarios/entidades/voluntario.entity';
-import { IsDate, IsEnum, IsNotEmpty } from 'class-validator';
+import { IsDate, IsNotEmpty } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class RealizarAtendimentoDto implements NovoAtendimento {
-  /***
-   * Id do atendimento
-   * @Type number
-   */
-  @IsNotEmpty({
-    message: '$property não deve ser vazio',
-  })
-  id: number;
-
+export class CreateAtendimentoDto implements NovoAtendimento {
   /***
    * Voluntario associado ao atendimento
    * @Type Voluntario
@@ -49,18 +37,4 @@ export class RealizarAtendimentoDto implements NovoAtendimento {
   })
   @Type(() => Date)
   data: Date;
-
-  /***
-   * Status do atendimento
-   * @enum StatusAtendimento
-   * @type Number
-   * @example 0
-   */
-  @IsNotEmpty({
-    message: '$property não deve ser vazio',
-  })
-  @IsEnum(StatusAtendimento, {
-    message: '$property deve ser um valor de enum válido',
-  })
-  status: StatusAtendimento;
 }

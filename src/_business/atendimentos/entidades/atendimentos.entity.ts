@@ -15,4 +15,4 @@ export interface Atendimento {
   status: StatusAtendimento;
 }
 
-export type NovoAtendimento = Atendimento;
+export type NovoAtendimento = Omit<Atendimento, 'id' | 'status'>;
