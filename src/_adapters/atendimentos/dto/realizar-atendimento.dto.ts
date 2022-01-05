@@ -5,7 +5,16 @@ import {Voluntario} from "../../../_business/voluntarios/entidades/voluntario.en
 import {IsDate, IsEnum, IsNotEmpty} from "class-validator";
 import {Type} from "class-transformer";
 
-export class RealizarAtendimentoDto implements Omit<NovoAtendimento, 'id'> {
+export class RealizarAtendimentoDto implements NovoAtendimento {
+
+    /***
+     * Id do atendimento
+     * @Type number
+     */
+    @IsNotEmpty({
+        message: '$property não deve ser vazio',
+    })
+    id: number;
 
     /***
      * Voluntario associado ao atendimento
