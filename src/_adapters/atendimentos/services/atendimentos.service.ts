@@ -1,6 +1,7 @@
 import {
   Atendimento,
-  NovoAtendimento, StatusAtendimento,
+  NovoAtendimento,
+  StatusAtendimento,
 } from '../../../_business/atendimentos/entidades/atendimentos.entity';
 
 export interface INovoAtendimentoService {
