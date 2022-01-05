@@ -14,6 +14,7 @@ import {
 } from '../../../_business/atendimentos/entidades/atendimentos.entity';
 import { Aluno } from '../../../_business/alunos/entidades/aluno.entity';
 import { AlunoDbEntity } from '../../alunos/entidades/aluno.db.entity';
+import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 
 @Entity('atendimentos')
 export class AtendimentosDbEntity
@@ -40,7 +41,7 @@ export class AtendimentosDbEntity
   @JoinColumn({
     name: 'alunoId',
   })
-  aluno: Promise<Aluno>;
+  aluno: Promise<Aluno & Usuario>;
 
   @Column()
   status: StatusAtendimento;
