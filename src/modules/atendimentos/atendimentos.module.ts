@@ -7,6 +7,7 @@ import { TypeormVoluntarioService } from '../../_adapters/voluntarios/services/t
 import { IBuscarVoluntarioViaId } from '../../_business/voluntarios/services/voluntario.service';
 import { IBuscarAlunoViaId } from '../../_business/alunos/casos-de-uso/atualizar-aluno.feat';
 import { IDateGreaterThan } from '../../_business/agenda/services/date-time.service';
+import { MomentDateTimeService } from '../../_adapters/agenda/services/moment-date-time.service';
 
 @Injectable()
 class NestRealizarAtendimento extends RealizarAtendimento {
@@ -17,7 +18,7 @@ class NestRealizarAtendimento extends RealizarAtendimento {
     voluntarioService: IBuscarVoluntarioViaId,
     @Inject(TypeormAlunoService)
     alunoService: IBuscarAlunoViaId,
-
+    @Inject(MomentDateTimeService)
     dateHelper: IDateGreaterThan,
   ) {
     super(atendimentoService, voluntarioService, alunoService, dateHelper);
