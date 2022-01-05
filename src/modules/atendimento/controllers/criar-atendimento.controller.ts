@@ -8,28 +8,28 @@ import {
 } from '@nestjs/common';
 import {
   ConsultaNaoAconteceuError,
-  RealizarAtendimento,
-} from '../../../_business/atendimentos/casos-de-uso/realizar-atendimento.feat';
+  CriarAtendimento,
+} from '../../../_business/atendimentos/casos-de-uso/criar-atendimento.feat';
 import { AlunoNaoEncontradoError } from '../../../_business/alunos/casos-de-uso/atualizar-aluno.feat';
 import { VoluntarioNaoEncontradoError } from '../../../_business/admin/casos-de-uso/autorizar-voluntario.feat';
 import { ApiTags } from '@nestjs/swagger';
 import { Auth } from '../../../_adapters/auth/decorators/auth.decorator';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { RealizarAtendimentoDto } from '../../../_adapters/atendimentos/dto/realizar-atendimento.dto';
+import { CreateAtendimentoDto } from '../../../_adapters/atendimentos/dto/create-atendimento.dto';
 
 @ApiTags('Atendimento')
-@Controller('/atendimento/realizar/')
-export class RealizarAtendimentoController {
+@Controller('/atendimento')
+export class CriarAtendimentoController {
   constructor(
-    @Inject(RealizarAtendimento)
-    private readonly realizarAtendimento: RealizarAtendimento,
+    @Inject(CriarAtendimento)
+    private readonly criarAtendimento: CriarAtendimento,
   ) {}
 
   @Post()
   @Auth(TipoUsuario.ATENDENTE)
-  async realizar(@Body() dto: RealizarAtendimentoDto): Promise<void> {
+  async criar(@Body() dto: CreateAtendimentoDto): Promise<void> {
     try {
-      await this.realizarAtendimento.execute(dto);
+      await this.criarAtendimento.execute(dto);
     } catch (e) {
       switch (true) {
         case e instanceof VoluntarioNaoEncontradoError:
