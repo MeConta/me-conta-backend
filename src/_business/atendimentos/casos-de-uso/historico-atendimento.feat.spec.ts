@@ -34,7 +34,7 @@ describe('Historico atendimentos', () => {
     await expect(() => sut.execute(1)).rejects.toThrow(AlunoNaoEncontradoError);
   });
 
-  it('Deve buscar uma lista com 2 atendimentos', async () => {
+  it('Deve buscar uma lista com 2 atendimento', async () => {
     await expect(await sut.execute(1)).toHaveLength(2);
   });
 });

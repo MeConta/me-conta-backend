@@ -17,8 +17,8 @@ import { Auth } from '../../../_adapters/auth/decorators/auth.decorator';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { RealizarAtendimentoDto } from '../../../_adapters/atendimentos/dto/realizar-atendimento.dto';
 
-@ApiTags('Atendimentos')
-@Controller('/atendimentos/realizar/')
+@ApiTags('Atendimento')
+@Controller('/atendimento/realizar/')
 export class RealizarAtendimentoController {
   constructor(
     @Inject(RealizarAtendimento)
