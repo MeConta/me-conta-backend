@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { INovoAtendimentoService } from './atendimentos.service';
+import {
+  IHistoricoAtendimentoService,
+  INovoAtendimentoService,
+} from './atendimentos.service';
 import { AtendimentosDbEntity } from '../entidades/atendimentos-db.entity';
 import {
   Atendimento,
@@ -9,7 +12,9 @@ import {
 } from '../../../_business/atendimentos/entidades/atendimentos.entity';
 
 @Injectable()
-export class TypeormAtendimentosService implements INovoAtendimentoService {
+export class TypeormAtendimentosService
+  implements INovoAtendimentoService, IHistoricoAtendimentoService
+{
   constructor(
     @InjectRepository(AtendimentosDbEntity)
     private readonly repository: Repository<Atendimento>,
@@ -18,5 +23,13 @@ export class TypeormAtendimentosService implements INovoAtendimentoService {
   async criar(atendimento: NovoAtendimento): Promise<void> {
     const entity = this.repository.create(atendimento);
     await this.repository.save(entity);
+  }
+
+  async consultar(alunoId: number): Promise<Atendimento[]> {
+    return this.repository.find({
+      where: {
+        aluno: alunoId,
+      },
+    });
   }
 }
