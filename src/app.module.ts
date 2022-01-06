@@ -12,6 +12,7 @@ import { MailModule } from './mail/mail.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { ConfigService } from './config/config.service';
 import { AgendaModule } from './modules/agenda/agenda.module';
+import { AtendimentoModule } from './modules/atendimento/atendimento.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { AgendaModule } from './modules/agenda/agenda.module';
     RecuperacaoModule,
     AdminModule,
     AgendaModule,
+    AtendimentoModule,
   ],
   controllers: [AppController],
 })
