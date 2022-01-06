@@ -38,7 +38,7 @@ export class CriarAtendimento {
     if (!aluno) {
       throw new AlunoNaoEncontradoError();
     }
-    if (this.dateHelper.greaterThan(novoAtendimento.data, new Date())) {
+    if (this.dateHelper.greaterThan(novoAtendimento.dataCriacao, new Date())) {
       throw new ConsultaNaoAconteceuError();
     }
 

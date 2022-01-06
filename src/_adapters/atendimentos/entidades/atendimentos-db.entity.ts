@@ -32,8 +32,8 @@ export class AtendimentosDbEntity
   })
   voluntario: Promise<Voluntario>;
 
-  @Column()
-  data: Date;
+  @Column({ type: 'text' })
+  anotacoes: string;
 
   @ManyToOne(() => AlunoDbEntity, (aluno) => aluno.id, {
     lazy: true,

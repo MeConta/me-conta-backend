@@ -24,17 +24,15 @@ export class CreateAtendimentoDto implements NovoAtendimento {
   })
   aluno: Promise<Aluno & Usuario>;
 
-  /***
-   * Data de realização do atendimento
-   * @example '2021-12-10'
-   * @Type Date
-   */
-  @IsNotEmpty({
-    message: '$property não deve ser vazio',
-  })
   @IsDate({
     message: '$property deve ser uma data',
   })
   @Type(() => Date)
-  data: Date;
+  dataCriacao: Date;
+
+  /***
+   * Anotações sobre o atendimento
+   * @Type string
+   */
+  anotacoes: string;
 }

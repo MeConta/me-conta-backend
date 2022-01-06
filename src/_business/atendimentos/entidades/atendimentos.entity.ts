@@ -11,8 +11,9 @@ export interface Atendimento {
   id: number;
   voluntario: Promise<Voluntario>;
   aluno: Promise<Aluno & Usuario>;
-  data: Date;
   status: StatusAtendimento;
+  anotacoes: string;
+  dataCriacao: Date;
 }
 
 export type NovoAtendimento = Omit<Atendimento, 'id' | 'status'>;
