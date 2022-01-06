@@ -1,4 +1,8 @@
-import { NovoAtendimento } from '../entidades/atendimentos.entity';
+import {
+  Atendimento,
+  NovoAtendimento,
+  StatusAtendimento,
+} from '../entidades/atendimentos.entity';
 import { INovoAtendimentoService } from '../../../_adapters/atendimentos/services/atendimentos.service';
 import { IBuscarVoluntarioViaId } from '../../voluntarios/services/voluntario.service';
 import { VoluntarioNaoEncontradoError } from '../../admin/casos-de-uso/autorizar-voluntario.feat';
@@ -42,6 +46,7 @@ export class CriarAtendimento {
       throw new ConsultaNaoAconteceuError();
     }
 
+    (novoAtendimento as Atendimento).status = StatusAtendimento.ABERTO;
     await this.atendimentoService.criar(novoAtendimento);
   }
 }

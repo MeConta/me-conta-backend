@@ -2,7 +2,7 @@ import { NovoAtendimento } from '../../../_business/atendimentos/entidades/atend
 import { Aluno } from '../../../_business/alunos/entidades/aluno.entity';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 import { Voluntario } from '../../../_business/voluntarios/entidades/voluntario.entity';
-import { IsDate, IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateAtendimentoDto implements NovoAtendimento {
@@ -24,9 +24,6 @@ export class CreateAtendimentoDto implements NovoAtendimento {
   })
   aluno: Promise<Aluno & Usuario>;
 
-  @IsDate({
-    message: '$property deve ser uma data',
-  })
   @Type(() => Date)
   dataCriacao: Date;
 
@@ -34,5 +31,6 @@ export class CreateAtendimentoDto implements NovoAtendimento {
    * Anotações sobre o atendimento
    * @Type string
    */
+  @IsOptional()
   anotacoes: string;
 }
