@@ -1,6 +1,9 @@
 import { Inject, Injectable, Module } from '@nestjs/common';
 import { TypeormAlunoService } from '../../_adapters/alunos/services/typeorm-aluno.service';
-import { INovoAtendimentoService } from '../../_adapters/atendimentos/services/atendimentos.service';
+import {
+  IHistoricoAtendimentoService,
+  INovoAtendimentoService,
+} from '../../_adapters/atendimentos/services/atendimentos.service';
 import { TypeormAtendimentosService } from '../../_adapters/atendimentos/services/typeorm-atendimentos.service';
 import { CriarAtendimento } from '../../_business/atendimentos/casos-de-uso/criar-atendimento.feat';
 import { TypeormVoluntarioService } from '../../_adapters/voluntarios/services/typeorm-voluntario.service';
@@ -14,6 +17,8 @@ import { UsuarioDbEntity } from '../../_adapters/usuarios/entidades/usuario.db.e
 import { CriarAtendimentoController } from './controllers/criar-atendimento.controller';
 import { AtendimentosDbEntity } from '../../_adapters/atendimentos/entidades/atendimentos-db.entity';
 import { AlunoDbEntity } from '../../_adapters/alunos/entidades/aluno.db.entity';
+import { HistoricoAtendimento } from '../../_business/atendimentos/casos-de-uso/historico-atendimento.feat';
+import { HistoricoAtendimentoController } from './controllers/historico-atendimento.controller';
 
 @Injectable()
 class NestCriarAtendimento extends CriarAtendimento {
@@ -31,6 +36,18 @@ class NestCriarAtendimento extends CriarAtendimento {
   }
 }
 
+@Injectable()
+class NestHistoricoAtendimento extends HistoricoAtendimento {
+  constructor(
+    @Inject(TypeormAtendimentosService)
+    atendimentoService: IHistoricoAtendimentoService,
+    @Inject(TypeormAlunoService)
+    alunoService: IBuscarAlunoViaId,
+  ) {
+    super(alunoService, atendimentoService);
+  }
+}
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -40,11 +57,15 @@ class NestCriarAtendimento extends CriarAtendimento {
       UsuarioDbEntity,
     ]),
   ],
-  controllers: [CriarAtendimentoController],
+  controllers: [CriarAtendimentoController, HistoricoAtendimentoController],
   providers: [
     {
       provide: CriarAtendimento,
       useClass: NestCriarAtendimento,
+    },
+    {
+      provide: HistoricoAtendimento,
+      useClass: NestHistoricoAtendimento,
     },
     TypeormAtendimentosService,
     TypeormVoluntarioService,
