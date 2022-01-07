@@ -9,8 +9,9 @@ import { IHistoricoAtendimentoService } from '../../../_adapters/atendimentos/se
 
 class InMemoryAtendimentoService implements IHistoricoAtendimentoService {
   consultar(alunoId: number): Promise<Atendimento[]> {
-    const r = new Array<Atendimento>(2).fill(createMock<Atendimento>());
-    return Promise.resolve(r);
+    return Promise.resolve(
+      new Array<Atendimento>(2).fill(createMock<Atendimento>()),
+    );
   }
 }
 
