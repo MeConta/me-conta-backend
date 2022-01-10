@@ -32,7 +32,7 @@ export class AtendimentosDbEntity
   })
   voluntario: Promise<Voluntario>;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   anotacoes: string;
 
   @ManyToOne(() => AlunoDbEntity, (aluno) => aluno.id, {
