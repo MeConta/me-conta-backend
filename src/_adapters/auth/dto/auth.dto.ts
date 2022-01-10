@@ -41,6 +41,14 @@ export class TokenDto implements IToken {
     type: Number,
   })
   tipo: TipoUsuario;
+  /***
+   * Nome do usuário
+   * @example John Doe
+   */
+  @ApiProperty({
+    type: String,
+  })
+  nome: string;
 }
 
 export class TokenPayload implements ITokenPayload {
