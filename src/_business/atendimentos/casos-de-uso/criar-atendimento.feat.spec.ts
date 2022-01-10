@@ -2,7 +2,7 @@ import { createMock } from '@golevelup/ts-jest';
 import { NovoAtendimento } from '../entidades/atendimentos.entity';
 import { INovoAtendimentoService } from '../../../_adapters/atendimentos/services/atendimentos.service';
 import {
-  ConsultaNaoAconteceuError,
+  AtendimentoNaoAconteceuError,
   CriarAtendimento,
 } from './criar-atendimento.feat';
 import { VoluntarioNaoEncontradoError } from '../../admin/casos-de-uso/autorizar-voluntario.feat';
@@ -70,7 +70,7 @@ describe('Criar atendimento', () => {
   it('Não deve criar o atendimento se a consulta for no futuro', async () => {
     jest.spyOn(dateService, 'greaterThan').mockReturnValue(true);
     await expect(() => sut.execute(request)).rejects.toThrow(
-      ConsultaNaoAconteceuError,
+      AtendimentoNaoAconteceuError,
     );
   });
 });

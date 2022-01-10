@@ -7,7 +7,7 @@ import {
   Post,
 } from '@nestjs/common';
 import {
-  ConsultaNaoAconteceuError,
+  AtendimentoNaoAconteceuError,
   CriarAtendimento,
 } from '../../../_business/atendimentos/casos-de-uso/criar-atendimento.feat';
 import { AlunoNaoEncontradoError } from '../../../_business/alunos/casos-de-uso/atualizar-aluno.feat';
@@ -36,7 +36,7 @@ export class CriarAtendimentoController {
           throw new NotFoundException(e);
         case e instanceof AlunoNaoEncontradoError:
           throw new NotFoundException(e);
-        case e instanceof ConsultaNaoAconteceuError:
+        case e instanceof AtendimentoNaoAconteceuError:
         default:
           throw new InternalServerErrorException({
             code: 500,

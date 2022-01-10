@@ -12,9 +12,9 @@ import {
 } from '../../alunos/casos-de-uso/atualizar-aluno.feat';
 import { IDateGreaterThan } from '../../agenda/services/date-time.service';
 
-export class ConsultaNaoAconteceuError extends Error {
+export class AtendimentoNaoAconteceuError extends Error {
   code = 422;
-  message = 'A data da consulta está no futuro';
+  message = 'A data do atendimento está no futuro';
 }
 
 export class CriarAtendimento {
@@ -43,7 +43,7 @@ export class CriarAtendimento {
       throw new AlunoNaoEncontradoError();
     }
     if (this.dateHelper.greaterThan(novoAtendimento.dataCriacao, new Date())) {
-      throw new ConsultaNaoAconteceuError();
+      throw new AtendimentoNaoAconteceuError();
     }
 
     (novoAtendimento as Atendimento).status = StatusAtendimento.ABERTO;

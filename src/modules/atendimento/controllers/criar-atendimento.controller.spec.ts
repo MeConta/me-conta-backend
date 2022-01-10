@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import {
-  ConsultaNaoAconteceuError,
+  AtendimentoNaoAconteceuError,
   CriarAtendimento,
 } from '../../../_business/atendimentos/casos-de-uso/criar-atendimento.feat';
 import { CreateAtendimentoDto } from '../../../_adapters/atendimentos/dto/create-atendimento.dto';
@@ -51,7 +51,7 @@ describe('Criar Atendimento Controller', () => {
   it('Deve dar erro de consulta não aconteceu', async () => {
     jest
       .spyOn(criarAtendimento, 'execute')
-      .mockRejectedValue(new ConsultaNaoAconteceuError());
+      .mockRejectedValue(new AtendimentoNaoAconteceuError());
     await expect(() =>
       controller.criar(expect.any(criarAtendimento)),
     ).rejects.toThrow(InternalServerErrorException);
