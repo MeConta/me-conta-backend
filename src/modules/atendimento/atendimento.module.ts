@@ -1,6 +1,8 @@
 import { Inject, Injectable, Module } from '@nestjs/common';
 import { TypeormAlunoService } from '../../_adapters/alunos/services/typeorm-aluno.service';
 import {
+  IAtualizarStatusAtendimentoService,
+  IBuscarAtendimentoViaIdService,
   IHistoricoAtendimentoService,
   INovoAtendimentoService,
 } from '../../_adapters/atendimentos/services/atendimentos.service';
@@ -19,6 +21,8 @@ import { AtendimentosDbEntity } from '../../_adapters/atendimentos/entidades/ate
 import { AlunoDbEntity } from '../../_adapters/alunos/entidades/aluno.db.entity';
 import { HistoricoAtendimento } from '../../_business/atendimentos/casos-de-uso/historico-atendimento.feat';
 import { HistoricoAtendimentoController } from './controllers/historico-atendimento.controller';
+import { AtualizarAtendimentoController } from './controllers/atualizar-atendimento.controller';
+import { AtualizarAtendimento } from '../../_business/atendimentos/casos-de-uso/atualizar-atendimento.feat';
 
 @Injectable()
 class NestCriarAtendimento extends CriarAtendimento {
@@ -48,6 +52,17 @@ class NestHistoricoAtendimento extends HistoricoAtendimento {
   }
 }
 
+@Injectable()
+class NestAtualizarAtendimento extends AtualizarAtendimento {
+  constructor(
+    @Inject(TypeormAtendimentosService)
+    atendimentoService: IBuscarAtendimentoViaIdService &
+      IAtualizarStatusAtendimentoService,
+  ) {
+    super(atendimentoService);
+  }
+}
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -57,7 +72,11 @@ class NestHistoricoAtendimento extends HistoricoAtendimento {
       UsuarioDbEntity,
     ]),
   ],
-  controllers: [CriarAtendimentoController, HistoricoAtendimentoController],
+  controllers: [
+    CriarAtendimentoController,
+    HistoricoAtendimentoController,
+    AtualizarAtendimentoController,
+  ],
   providers: [
     {
       provide: CriarAtendimento,
@@ -66,6 +85,10 @@ class NestHistoricoAtendimento extends HistoricoAtendimento {
     {
       provide: HistoricoAtendimento,
       useClass: NestHistoricoAtendimento,
+    },
+    {
+      provide: AtualizarAtendimento,
+      useClass: NestAtualizarAtendimento,
     },
     TypeormAtendimentosService,
     TypeormVoluntarioService,
