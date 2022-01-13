@@ -4,13 +4,13 @@ import {
   StatusAtendimento,
 } from '../entidades/atendimentos.entity';
 import { INovoAtendimentoService } from '../../../_adapters/atendimentos/services/atendimentos.service';
-import { IBuscarVoluntarioViaId } from '../../voluntarios/services/voluntario.service';
-import { VoluntarioNaoEncontradoError } from '../../admin/casos-de-uso/autorizar-voluntario.feat';
 import {
   AlunoNaoEncontradoError,
   IBuscarAlunoViaId,
 } from '../../alunos/casos-de-uso/atualizar-aluno.feat';
 import { IDateGreaterThan } from '../../agenda/services/date-time.service';
+import { IBuscarSlotAgendaByIdService } from '../../agenda/services/agenda.service';
+import { SlotAgendaNaoEncontradoError } from '../../agenda/casos-de-uso/remover-slot-agenda.feat';
 
 export class AtendimentoNaoAconteceuError extends Error {
   code = 422;
@@ -20,14 +20,14 @@ export class AtendimentoNaoAconteceuError extends Error {
 export class CriarAtendimento {
   constructor(
     private readonly atendimentoService: INovoAtendimentoService,
-    private readonly voluntarioService: IBuscarVoluntarioViaId,
+    private readonly agendaService: IBuscarSlotAgendaByIdService,
     private readonly alunoService: IBuscarAlunoViaId,
     private readonly dateHelper: IDateGreaterThan,
   ) {}
   async execute(novoAtendimento: NovoAtendimento): Promise<void> {
-    const voluntario = await this.voluntarioService.findById(
+    const slotAgenda = await this.agendaService.findById(
       (
-        await novoAtendimento.voluntario
+        await novoAtendimento.slotAgenda
       ).id,
     );
     const aluno = await this.alunoService.findById(
@@ -36,8 +36,8 @@ export class CriarAtendimento {
       ).id,
     );
 
-    if (!voluntario) {
-      throw new VoluntarioNaoEncontradoError();
+    if (!slotAgenda) {
+      throw new SlotAgendaNaoEncontradoError();
     }
     if (!aluno) {
       throw new AlunoNaoEncontradoError();

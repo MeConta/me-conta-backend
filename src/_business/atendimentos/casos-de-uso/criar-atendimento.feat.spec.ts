@@ -5,13 +5,13 @@ import {
   AtendimentoNaoAconteceuError,
   CriarAtendimento,
 } from './criar-atendimento.feat';
-import { VoluntarioNaoEncontradoError } from '../../admin/casos-de-uso/autorizar-voluntario.feat';
-import { IBuscarVoluntarioViaId } from '../../voluntarios/services/voluntario.service';
 import {
   AlunoNaoEncontradoError,
   IBuscarAlunoViaId,
 } from '../../alunos/casos-de-uso/atualizar-aluno.feat';
 import { IDateGreaterThan } from '../../agenda/services/date-time.service';
+import { IBuscarSlotAgendaByIdService } from '../../agenda/services/agenda.service';
+import { SlotAgendaNaoEncontradoError } from '../../agenda/casos-de-uso/remover-slot-agenda.feat';
 
 class InMemoryAtendimentoService implements INovoAtendimentoService {
   public atendimentos: NovoAtendimento[] = [];
@@ -26,19 +26,19 @@ class InMemoryAtendimentoService implements INovoAtendimentoService {
 describe('Criar atendimento', () => {
   let sut: CriarAtendimento;
   let atendimentoService: InMemoryAtendimentoService;
-  let voluntarioService: IBuscarVoluntarioViaId;
+  let agendaService: IBuscarSlotAgendaByIdService;
   let alunoService: IBuscarAlunoViaId;
   let dateService: IDateGreaterThan;
   const request = createMock<NovoAtendimento>();
 
   beforeEach(async () => {
     atendimentoService = new InMemoryAtendimentoService();
-    voluntarioService = createMock<IBuscarVoluntarioViaId>();
+    agendaService = createMock<IBuscarSlotAgendaByIdService>();
     alunoService = createMock<IBuscarAlunoViaId>();
     dateService = createMock<IDateGreaterThan>();
     sut = new CriarAtendimento(
       atendimentoService,
-      voluntarioService,
+      agendaService,
       alunoService,
       dateService,
     );
@@ -53,10 +53,10 @@ describe('Criar atendimento', () => {
     expect(atendimentoService.atendimentos[0]).toBeDefined();
   });
 
-  it('Não deve criar o atendimento se o voluntário não existir', async () => {
-    jest.spyOn(voluntarioService, 'findById').mockResolvedValue(null);
+  it('Não deve criar o atendimento se a agenda não existir', async () => {
+    jest.spyOn(agendaService, 'findById').mockResolvedValue(null);
     await expect(() => sut.execute(request)).rejects.toThrow(
-      VoluntarioNaoEncontradoError,
+      SlotAgendaNaoEncontradoError,
     );
   });
 

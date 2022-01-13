@@ -1,6 +1,6 @@
-import { Voluntario } from '../../voluntarios/entidades/voluntario.entity';
 import { Aluno } from '../../alunos/entidades/aluno.entity';
 import { Usuario } from '../../usuarios/entidades/usuario.entity';
+import { SlotAgenda } from '../../agenda/entidades/slot-agenda.entity';
 
 export enum StatusAtendimento {
   ABERTO,
@@ -9,8 +9,8 @@ export enum StatusAtendimento {
 
 export interface Atendimento {
   id: number;
-  voluntario: Promise<Voluntario>;
   aluno: Promise<Aluno & Usuario>;
+  slotAgenda: Promise<SlotAgenda>;
   status: StatusAtendimento;
   anotacoes: string;
   dataCriacao: Date;
