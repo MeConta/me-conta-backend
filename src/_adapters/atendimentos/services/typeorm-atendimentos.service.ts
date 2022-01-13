@@ -28,7 +28,7 @@ export class TypeormAtendimentosService
   ) {}
 
   async atualizarStatus(
-    id: number,
+    id: Atendimento['id'],
     status: StatusAtendimento,
   ): Promise<Atendimento> {
     return this.repository.save({ id, status });
@@ -39,15 +39,13 @@ export class TypeormAtendimentosService
     await this.repository.save(entity);
   }
 
-  async consultar(alunoId: number): Promise<Atendimento[]> {
+  async consultar(aluno: Atendimento['aluno']): Promise<Atendimento[]> {
     return this.repository.find({
-      where: {
-        aluno: alunoId,
-      },
+      where: { aluno },
     });
   }
 
-  buscar(id: number): Promise<Atendimento> {
+  buscar(id: Atendimento['id']): Promise<Atendimento> {
     return this.repository.findOne(id);
   }
 }

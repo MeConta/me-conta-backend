@@ -9,13 +9,16 @@ export interface INovoAtendimentoService {
 }
 
 export interface IBuscarAtendimentoViaIdService {
-  buscar(id: number): Promise<Atendimento>;
+  buscar(id: Atendimento['id']): Promise<Atendimento>;
 }
 
 export interface IAtualizarStatusAtendimentoService {
-  atualizarStatus(id: number, status: StatusAtendimento): Promise<Atendimento>;
+  atualizarStatus(
+    id: Atendimento['id'],
+    status: StatusAtendimento,
+  ): Promise<Atendimento>;
 }
 
 export interface IHistoricoAtendimentoService {
-  consultar(alunoId: number): Promise<Atendimento[]>;
+  consultar(aluno: Atendimento['aluno']): Promise<Atendimento[]>;
 }
