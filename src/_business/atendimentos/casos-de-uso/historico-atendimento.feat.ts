@@ -4,13 +4,14 @@ import {
   AlunoNaoEncontradoError,
   IBuscarAlunoViaId,
 } from '../../alunos/casos-de-uso/atualizar-aluno.feat';
+import { Usuario } from '../../usuarios/entidades/usuario.entity';
 
 export class HistoricoAtendimento {
   constructor(
     private readonly alunoService: IBuscarAlunoViaId,
     private readonly atendimentoService: IHistoricoAtendimentoService,
   ) {}
-  async execute(alunoId: number): Promise<Atendimento[]> {
+  async execute(alunoId: Usuario['id']): Promise<Atendimento[]> {
     const aluno = await this.alunoService.findById(alunoId);
 
     if (!aluno) {

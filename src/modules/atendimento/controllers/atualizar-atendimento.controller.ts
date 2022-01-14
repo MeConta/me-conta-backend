@@ -21,6 +21,8 @@ import {
   AtualizarAtendimento,
 } from '../../../_business/atendimentos/casos-de-uso/atualizar-atendimento.feat';
 import { AtualizarAtendimentoDto } from '../../../_adapters/atendimentos/dto/atualizar-atendimento.dto';
+import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { Auth } from '../../../_adapters/auth/decorators/auth.decorator';
 
 @ApiTags('Atendimento')
 @Controller('/atendimento')
@@ -31,7 +33,7 @@ export class AtualizarAtendimentoController {
   ) {}
 
   @Patch(':id')
-  //@Auth(TipoUsuario.ATENDENTE)
+  @Auth(TipoUsuario.ATENDENTE)
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse({
     description: 'Atendimento atualizado com sucesso',
@@ -40,7 +42,7 @@ export class AtualizarAtendimentoController {
     description: 'Atendimento não encontrado',
   })
   async atualizar(
-    @Param('id', ParseIntPipe) id,
+    @Param('id', ParseIntPipe) id: number,
     @Body() dto: AtualizarAtendimentoDto,
   ): Promise<void> {
     try {

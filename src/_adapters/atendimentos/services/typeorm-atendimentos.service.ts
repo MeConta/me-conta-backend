@@ -13,6 +13,7 @@ import {
   NovoAtendimento,
   StatusAtendimento,
 } from '../../../_business/atendimentos/entidades/atendimentos.entity';
+import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 
 @Injectable()
 export class TypeormAtendimentosService
@@ -39,7 +40,7 @@ export class TypeormAtendimentosService
     await this.repository.save(entity);
   }
 
-  async consultar(aluno: Atendimento['aluno']): Promise<Atendimento[]> {
+  async consultar(aluno: Usuario['id']): Promise<Atendimento[]> {
     return this.repository.find({
       where: { aluno },
     });

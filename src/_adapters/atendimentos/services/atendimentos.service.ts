@@ -3,6 +3,7 @@ import {
   NovoAtendimento,
   StatusAtendimento,
 } from '../../../_business/atendimentos/entidades/atendimentos.entity';
+import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 
 export interface INovoAtendimentoService {
   criar(atendimento: NovoAtendimento): Promise<void>;
@@ -20,5 +21,5 @@ export interface IAtualizarStatusAtendimentoService {
 }
 
 export interface IHistoricoAtendimentoService {
-  consultar(aluno: Atendimento['aluno']): Promise<Atendimento[]>;
+  consultar(aluno: Usuario['id']): Promise<Atendimento[]>;
 }
