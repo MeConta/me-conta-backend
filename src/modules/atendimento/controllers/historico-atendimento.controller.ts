@@ -28,7 +28,7 @@ export class HistoricoAtendimentoController {
     @User() user: Pick<ITokenUser, 'id'>,
   ): Promise<Atendimento[]> {
     try {
-      return this.historicoAtendimento.execute(user.id);
+      return await this.historicoAtendimento.execute(user.id);
     } catch (e) {
       switch (true) {
         case e instanceof AlunoNaoEncontradoError:

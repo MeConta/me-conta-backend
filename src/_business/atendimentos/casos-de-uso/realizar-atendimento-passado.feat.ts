@@ -1,9 +1,5 @@
-import { IRealizarAtendimentosPassados } from '../../../_adapters/atendimentos/services/atendimentos.service';
-
 export class RealizarAtendimentoPassado {
-  constructor(
-    private readonly atendimentoService: IRealizarAtendimentosPassados,
-  ) {}
+  constructor(private readonly atendimentoService) {}
   async execute(): Promise<void> {
     await this.atendimentoService.realizarPassados();
   }

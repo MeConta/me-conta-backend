@@ -45,7 +45,7 @@ export class VoluntarioDbEntity
 
   @Column({
     nullable: true,
-    type: 'enum',
+    type: 'simple-enum',
     array: true,
     enum: FrenteAtuacao,
   })

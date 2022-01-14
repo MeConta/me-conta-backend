@@ -1,12 +1,11 @@
 import { RealizarAtendimentoPassado } from './realizar-atendimento-passado.feat';
-import { IRealizarAtendimentosPassados } from '../../../_adapters/atendimentos/services/atendimentos.service';
 import { createMock } from '@golevelup/ts-jest';
 
 describe('Realizar atendimento passado', () => {
   let sut: RealizarAtendimentoPassado;
-  let atendimentoService: IRealizarAtendimentosPassados;
+  let atendimentoService;
   beforeEach(async () => {
-    atendimentoService = createMock<IRealizarAtendimentosPassados>();
+    atendimentoService = createMock();
     sut = new RealizarAtendimentoPassado(atendimentoService);
   });
 

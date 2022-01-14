@@ -10,7 +10,7 @@ import {
 } from '../../../_business/atendimentos/casos-de-uso/criar-atendimento.feat';
 import { CreateAtendimentoDto } from '../../../_adapters/atendimentos/dto/create-atendimento.dto';
 import { AlunoNaoEncontradoError } from '../../../_business/alunos/casos-de-uso/atualizar-aluno.feat';
-import { VoluntarioNaoEncontradoError } from '../../../_business/admin/casos-de-uso/autorizar-voluntario.feat';
+import { SlotAgendaNaoEncontradoError } from '../../../_business/agenda/casos-de-uso/remover-slot-agenda.feat';
 
 describe('Criar Atendimento Controller', () => {
   let controller: CriarAtendimentoController;
@@ -33,7 +33,7 @@ describe('Criar Atendimento Controller', () => {
   it('Deve dar erro de Voluntário não encontrado', async () => {
     jest
       .spyOn(criarAtendimento, 'execute')
-      .mockRejectedValue(new VoluntarioNaoEncontradoError());
+      .mockRejectedValue(new SlotAgendaNaoEncontradoError());
     await expect(() =>
       controller.criar(expect.any(CreateAtendimentoDto)),
     ).rejects.toThrow(NotFoundException);
@@ -44,7 +44,7 @@ describe('Criar Atendimento Controller', () => {
       .spyOn(criarAtendimento, 'execute')
       .mockRejectedValue(new AlunoNaoEncontradoError());
     await expect(() =>
-      controller.criar(expect.any(criarAtendimento)),
+      controller.criar(expect.any(CreateAtendimentoDto)),
     ).rejects.toThrow(NotFoundException);
   });
 
@@ -53,14 +53,14 @@ describe('Criar Atendimento Controller', () => {
       .spyOn(criarAtendimento, 'execute')
       .mockRejectedValue(new AtendimentoNaoAconteceuError());
     await expect(() =>
-      controller.criar(expect.any(criarAtendimento)),
+      controller.criar(expect.any(CreateAtendimentoDto)),
     ).rejects.toThrow(InternalServerErrorException);
   });
 
   it('Deve dar erro genérico', async () => {
     jest.spyOn(criarAtendimento, 'execute').mockRejectedValue(new Error());
     await expect(() =>
-      controller.criar(expect.any(criarAtendimento)),
+      controller.criar(expect.any(CreateAtendimentoDto)),
     ).rejects.toThrow(InternalServerErrorException);
   });
 });

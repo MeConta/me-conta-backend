@@ -11,12 +11,13 @@ import {
   IBuscarVoluntarios,
   IBuscarVoluntarioViaId,
 } from '../../../_business/voluntarios/services/voluntario.service';
-import {
-  FrenteAtuacao,
-  Voluntario,
-} from '../../../_business/voluntarios/entidades/voluntario.entity';
+import { Voluntario } from '../../../_business/voluntarios/entidades/voluntario.entity';
 import { UsuarioDbEntity } from '../../usuarios/entidades/usuario.db.entity';
 import { VoluntarioOutput } from '../../../_business/voluntarios/dtos/voluntario.dto';
+
+type WhereCondition<T> = {
+  [P in keyof T]?: FindOperator<T[P] | T[P][]>;
+};
 
 @Injectable()
 export class TypeormVoluntarioService
@@ -47,11 +48,10 @@ export class TypeormVoluntarioService
     return this.repository.findOne(id);
   }
 
-  async buscar(search?: Partial<Voluntario>): Promise<VoluntarioOutput[]> {
-    let frenteOperator: FindOperator<FrenteAtuacao[]>;
-    const { frentes, ...simpleConditions } = search;
-    if (frentes) {
-      frenteOperator = In([frentes]);
+  async buscar(simpleWhere?: Partial<Voluntario>): Promise<VoluntarioOutput[]> {
+    const complexWhere: WhereCondition<Voluntario> = {};
+    if (simpleWhere?.frentes) {
+      complexWhere.frentes = In([simpleWhere.frentes]);
     }
 
     return this.repository.find({
@@ -59,8 +59,8 @@ export class TypeormVoluntarioService
         getManager().getRepository(UsuarioDbEntity).metadata.tableName,
       ],
       where: {
-        frentes: frenteOperator,
-        ...simpleConditions,
+        ...simpleWhere,
+        ...complexWhere,
       },
     });
   }

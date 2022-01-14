@@ -30,9 +30,11 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     jest.spyOn(auth, 'execute').mockResolvedValue(entity);
-    jest
-      .spyOn(login, 'execute')
-      .mockReturnValue({ token: 'TOKEN', tipo: TipoUsuario.ADMINISTRADOR });
+    jest.spyOn(login, 'execute').mockReturnValue({
+      token: 'TOKEN',
+      tipo: TipoUsuario.ADMINISTRADOR,
+      nome: 'Teste',
+    });
   });
 
   it('deve ser definido', async () => {
