@@ -1,19 +1,19 @@
 import { NovoAtendimento } from '../../../_business/atendimentos/entidades/atendimentos.entity';
 import { Aluno } from '../../../_business/alunos/entidades/aluno.entity';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
-import { Voluntario } from '../../../_business/voluntarios/entidades/voluntario.entity';
 import { IsNotEmpty, IsOptional } from 'class-validator';
 import { Type } from 'class-transformer';
+import { SlotAgenda } from '../../../_business/agenda/entidades/slot-agenda.entity';
 
 export class CreateAtendimentoDto implements NovoAtendimento {
   /***
-   * Voluntario associado ao atendimento
-   * @Type Voluntario
+   * SlotAgenda associado ao atendimento
+   * @Type SlotAgenda
    */
   @IsNotEmpty({
     message: '$property não deve ser vazio',
   })
-  voluntario: Promise<Voluntario>;
+  slotAgenda: Promise<SlotAgenda>;
 
   /***
    * Aluno associado ao atendimento

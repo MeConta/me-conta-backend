@@ -6,8 +6,6 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { TypeormDefaultEntity } from '../../entidades/typeorm.default.entity';
-import { Voluntario } from '../../../_business/voluntarios/entidades/voluntario.entity';
-import { VoluntarioDbEntity } from '../../voluntarios/entidades/voluntario-db.entity';
 import {
   Atendimento,
   StatusAtendimento,
@@ -15,6 +13,8 @@ import {
 import { Aluno } from '../../../_business/alunos/entidades/aluno.entity';
 import { AlunoDbEntity } from '../../alunos/entidades/aluno.db.entity';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
+import { SlotAgenda } from '../../../_business/agenda/entidades/slot-agenda.entity';
+import { SlotAgendaDbEntity } from '../../agenda/entidades/slot-agenda-db.entity';
 
 @Entity('atendimentos')
 export class AtendimentosDbEntity
@@ -24,13 +24,13 @@ export class AtendimentosDbEntity
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => VoluntarioDbEntity, (voluntario) => voluntario.id, {
+  @ManyToOne(() => SlotAgendaDbEntity, (slotAgenda) => slotAgenda.id, {
     lazy: true,
   })
   @JoinColumn({
-    name: 'voluntarioId',
+    name: 'slotAgendaId',
   })
-  voluntario: Promise<Voluntario>;
+  slotAgenda: Promise<SlotAgenda>;
 
   @Column({ type: 'text', nullable: true })
   anotacoes: string;

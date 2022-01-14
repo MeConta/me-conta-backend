@@ -9,7 +9,6 @@ import {
 import { TypeormAtendimentosService } from '../../_adapters/atendimentos/services/typeorm-atendimentos.service';
 import { CriarAtendimento } from '../../_business/atendimentos/casos-de-uso/criar-atendimento.feat';
 import { TypeormVoluntarioService } from '../../_adapters/voluntarios/services/typeorm-voluntario.service';
-import { IBuscarVoluntarioViaId } from '../../_business/voluntarios/services/voluntario.service';
 import { IBuscarAlunoViaId } from '../../_business/alunos/casos-de-uso/atualizar-aluno.feat';
 import { IDateGreaterThan } from '../../_business/agenda/services/date-time.service';
 import { MomentDateTimeService } from '../../_adapters/agenda/services/moment-date-time.service';
@@ -23,20 +22,22 @@ import { HistoricoAtendimento } from '../../_business/atendimentos/casos-de-uso/
 import { HistoricoAtendimentoController } from './controllers/historico-atendimento.controller';
 import { AtualizarAtendimentoController } from './controllers/atualizar-atendimento.controller';
 import { AtualizarAtendimento } from '../../_business/atendimentos/casos-de-uso/atualizar-atendimento.feat';
+import { IBuscarSlotAgendaByIdService } from '../../_business/agenda/services/agenda.service';
+import { TypeOrmAgendaService } from '../../_adapters/agenda/services/typeorm-agenda.service';
 
 @Injectable()
 class NestCriarAtendimento extends CriarAtendimento {
   constructor(
     @Inject(TypeormAtendimentosService)
     atendimentoService: INovoAtendimentoService,
-    @Inject(TypeormVoluntarioService)
-    voluntarioService: IBuscarVoluntarioViaId,
+    @Inject(TypeOrmAgendaService)
+    slotAgendaService: IBuscarSlotAgendaByIdService,
     @Inject(TypeormAlunoService)
     alunoService: IBuscarAlunoViaId,
     @Inject(MomentDateTimeService)
     dateHelper: IDateGreaterThan,
   ) {
-    super(atendimentoService, voluntarioService, alunoService, dateHelper);
+    super(atendimentoService, slotAgendaService, alunoService, dateHelper);
   }
 }
 
