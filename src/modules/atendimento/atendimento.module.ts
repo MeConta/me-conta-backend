@@ -24,6 +24,9 @@ import { AtualizarAtendimentoController } from './controllers/atualizar-atendime
 import { AtualizarAtendimento } from '../../_business/atendimentos/casos-de-uso/atualizar-atendimento.feat';
 import { IBuscarSlotAgendaByIdService } from '../../_business/agenda/services/agenda.service';
 import { TypeOrmAgendaService } from '../../_adapters/agenda/services/typeorm-agenda.service';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TasksService } from './services/TaskService';
+import { SlotAgendaDbEntity } from '../../_adapters/agenda/entidades/slot-agenda-db.entity';
 
 @Injectable()
 class NestCriarAtendimento extends CriarAtendimento {
@@ -71,7 +74,9 @@ class NestAtualizarAtendimento extends AtualizarAtendimento {
       AlunoDbEntity,
       VoluntarioDbEntity,
       UsuarioDbEntity,
+      SlotAgendaDbEntity,
     ]),
+    ScheduleModule.forRoot(),
   ],
   controllers: [
     CriarAtendimentoController,
@@ -92,9 +97,11 @@ class NestAtualizarAtendimento extends AtualizarAtendimento {
       useClass: NestAtualizarAtendimento,
     },
     TypeormAtendimentosService,
+    TypeOrmAgendaService,
     TypeormVoluntarioService,
     TypeormAlunoService,
     MomentDateTimeService,
+    TasksService,
   ],
 })
 export class AtendimentoModule {}

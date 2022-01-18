@@ -23,3 +23,7 @@ export interface IAtualizarStatusAtendimentoService {
 export interface IHistoricoAtendimentoService {
   consultar(aluno: Usuario['id']): Promise<Atendimento[]>;
 }
+
+export interface IBuscarAtendimentosAntigosEmAbertoService {
+  buscarAntigosEmAberto(): Promise<Atendimento[]>;
+}
