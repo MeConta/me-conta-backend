@@ -1,4 +1,9 @@
-import { Connection, createConnection, Repository } from 'typeorm';
+import {
+  Connection,
+  createConnection,
+  FindOperator,
+  Repository,
+} from 'typeorm';
 import {
   Estado,
   Genero,
@@ -108,5 +113,20 @@ describe('VoluntarioService', () => {
     const response = await service.buscar();
 
     expect(response).toHaveLength(1);
+  });
+
+  it('Deve buscar os voluntários filtrados por frente de atuação', async () => {
+    jest.spyOn(repository, 'find');
+    await repository.save(request);
+    await service.buscar({
+      frentes: [FrenteAtuacao.SESSAO_ACOLHIMENTO],
+    });
+
+    expect(repository.find).toHaveBeenCalledWith({
+      relations: expect.any(Array),
+      where: {
+        frentes: expect.any(FindOperator),
+      },
+    });
   });
 });
