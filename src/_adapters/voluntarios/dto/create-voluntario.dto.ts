@@ -169,6 +169,7 @@ export class CreateVoluntarioDto implements Omit<NovoVoluntario, 'usuario'> {
   @IsPositive({
     message: '$property deve ser maior do que zero',
   })
+  @Min(1900)
   anoFormacao: number;
 
   /***
