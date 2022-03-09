@@ -49,7 +49,7 @@ export class TypeOrmAgendaService
   }: Partial<SlotAgendaParam> = {}): Promise<SlotAgenda[]> {
     const where: FindConditions<SlotAgenda> = {};
     if (atendenteId) {
-      where.voluntario = Promise.resolve({
+      where.voluntario = await Promise.resolve({
         usuario: {
           id: atendenteId,
         },
