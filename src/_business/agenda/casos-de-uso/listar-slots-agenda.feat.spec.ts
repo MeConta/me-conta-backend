@@ -1,7 +1,7 @@
 import { Voluntario } from '../../voluntarios/entidades/voluntario.entity';
 import { createMock } from '@golevelup/ts-jest';
 import { Usuario } from '../../usuarios/entidades/usuario.entity';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { IBuscarVoluntarios } from '../../voluntarios/services/voluntario.service';
 import { VoluntarioNaoEncontradoError } from '../../admin/casos-de-uso/autorizar-voluntario.feat';
 import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
@@ -22,8 +22,8 @@ describe('Listar Slots de Agenda', () => {
         slots: [
           {
             id: null,
-            inicio: moment().toDate(),
-            fim: moment().add(1, 'hours').toDate(),
+            inicio: dayjs().toDate(),
+            fim: dayjs().add(1, 'hours').toDate(),
             voluntario: Promise.resolve(createMock<Voluntario>()),
           },
         ],

@@ -11,7 +11,7 @@ import { IHashGenerateRandomString } from '../../../_business/usuarios/services/
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { TypeormRecuperacaoService } from './typeorm-recuperacao.service';
-import * as moment from 'moment/moment';
+import * as dayjs from 'dayjs';
 
 describe('RecuperacaoService', () => {
   let connection: Connection;
@@ -24,7 +24,7 @@ describe('RecuperacaoService', () => {
   const recuperacao: Recuperacao = {
     usuario: { id: 1 } as Usuario,
     hash: 'HASHED_VALUE',
-    dataExpiracao: moment()
+    dataExpiracao: dayjs()
       .add(+process.env.PASSWORD_RECOVERY_EXPIRATION_DAYS, 'days')
       .toDate(),
   };

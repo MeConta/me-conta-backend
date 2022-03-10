@@ -13,7 +13,7 @@ import {
   SlotAgendaParam,
 } from '../services/agenda.service';
 import { SlotAgenda } from '../entidades/slot-agenda.entity';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { UsuarioNaoEncontradoError } from '../../usuarios/erros/usuarios.errors';
 import {
   DateUnit,
@@ -59,15 +59,15 @@ class InMemoryAgendaService
 
 class InMemoryDatetimeService implements IDateAdd, IDateStartOf, IDateEndOf {
   add(date: Date, amount: number, unit?: DateUnit): Date {
-    return moment(date).add(amount, unit).toDate();
+    return dayjs(date).add(amount, unit).toDate();
   }
 
   endOf(date: Date, unit: DateUnit = DateUnit.DAYS): Date {
-    return moment(date).endOf(unit).toDate();
+    return dayjs(date).endOf(unit).toDate();
   }
 
   startOf(date: Date, unit: DateUnit = DateUnit.DAYS): Date {
-    return moment(date).startOf(unit).toDate();
+    return dayjs(date).startOf(unit).toDate();
   }
 }
 
@@ -81,7 +81,7 @@ describe('criar novo slot na agenda', () => {
     voluntarioId: expect.any(Number),
     slots: [
       {
-        inicio: moment().toDate(),
+        inicio: dayjs().toDate(),
       },
     ],
   };
@@ -112,7 +112,7 @@ describe('criar novo slot na agenda', () => {
     expect(agendaService.slots).toContainEqual(
       expect.objectContaining({
         inicio: slot.inicio,
-        fim: moment(slot.inicio).add(1, 'hour').toDate(),
+        fim: dayjs(slot.inicio).add(1, 'hour').toDate(),
       }),
     );
   });
@@ -130,7 +130,7 @@ describe('criar novo slot na agenda', () => {
         voluntarioId: expect.any(Number),
         slots: [
           {
-            inicio: moment().toDate(),
+            inicio: dayjs().toDate(),
           },
         ],
       }),

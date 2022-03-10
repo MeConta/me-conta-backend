@@ -2,7 +2,7 @@ import { SlotAgenda } from '../entidades/slot-agenda.entity';
 import { VoluntarioNaoEncontradoError } from '../../admin/casos-de-uso/autorizar-voluntario.feat';
 import { createMock } from '@golevelup/ts-jest';
 import { Voluntario } from '../../voluntarios/entidades/voluntario.entity';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { Usuario } from '../../usuarios/entidades/usuario.entity';
 import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import {
@@ -24,8 +24,8 @@ class InMemoryAgendaService
     public slots: SlotAgenda[] = [
       {
         id: 1,
-        inicio: moment().add(1, 'day').toDate(),
-        fim: moment().add(1, 'day').add(1, 'hours').toDate(),
+        inicio: dayjs().add(1, 'day').toDate(),
+        fim: dayjs().add(1, 'day').add(1, 'hours').toDate(),
         voluntario: Promise.resolve({
           ...createMock<Voluntario>(),
           aprovado: true,
@@ -53,7 +53,7 @@ class InMemoryAgendaService
 
 class InMemoryDateHelper implements IDateGreaterThan {
   greaterThan(date: Date, than: Date): boolean {
-    return moment(date).isAfter(moment(than));
+    return dayjs(date).isAfter(dayjs(than));
   }
 }
 
@@ -102,8 +102,8 @@ describe('Remover um slot de agenda', () => {
   });
 
   it('Deve dar erro ao tentar remover slot no passado', async () => {
-    agendaService.slots[0].inicio = moment().subtract(1, 'years').toDate();
-    agendaService.slots[0].fim = moment()
+    agendaService.slots[0].inicio = dayjs().subtract(1, 'years').toDate();
+    agendaService.slots[0].fim = dayjs()
       .subtract(1, 'years')
       .add(1, 'hours')
       .toDate();

@@ -1,11 +1,11 @@
 import { plainToClass } from 'class-transformer';
 import { CreateSlotAgendaDto } from './create-slot-agenda.dto';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 
 describe('CreateAlunoDto', function () {
   it('Deve converter a data em um Dto de Aluno', function () {
     const transformed = plainToClass(CreateSlotAgendaDto, {
-      slots: [{ inicio: moment().format('YYYY-MM-DD HH:mm:ss') }],
+      slots: [{ inicio: dayjs().format('YYYY-MM-DD HH:mm:ss') }],
     });
     expect(transformed).toEqual(
       expect.objectContaining({

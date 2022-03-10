@@ -9,7 +9,7 @@ import { ResetSenhaInput } from '../../src/_business/recuperacao/casos-de-uso/re
 import { DEFAULT_PASSWORD } from '../../jest.setup';
 import { MailerMailService } from '../../src/_adapters/mail/services/mailer-mail.service';
 import { Connection, Repository } from 'typeorm';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { Usuario } from '../../src/_business/usuarios/entidades/usuario.entity';
 import { UsuarioModule } from '../../src/modules/usuario/usuario.module';
 
@@ -40,7 +40,7 @@ describe('Reset de senha (e2e)', () => {
         await recuperacaoRepo.create({
           usuario,
           hash: 'HASH',
-          dataExpiracao: moment().add(7, 'days').toDate(),
+          dataExpiracao: dayjs().add(7, 'days').toDate(),
         }),
       )
     ).hash;
@@ -78,7 +78,7 @@ describe('Reset de senha (e2e)', () => {
       await recuperacaoRepo.save({
         id: usuario.id,
         hash,
-        dataExpiracao: moment().subtract(1, 'day').toDate(),
+        dataExpiracao: dayjs().subtract(1, 'day').toDate(),
       });
       await request(app.getHttpServer())
         .post('/senha/reset')

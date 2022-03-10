@@ -4,7 +4,7 @@ import * as request from 'supertest';
 import { Connection, Repository } from 'typeorm';
 import { SlotAgendaDbEntity } from '../../src/_adapters/agenda/entidades/slot-agenda-db.entity';
 import { TipoUsuario } from '../../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { VoluntarioDbEntity } from '../../src/_adapters/voluntarios/entidades/voluntario-db.entity';
 import { agendaTestingApp } from './agenda.utils';
 
@@ -30,8 +30,8 @@ describe.skip('Remover um Slot de Agenda (e2e)', () => {
       const [voluntario] = await voluntarioRepo.find();
       await agendaRepo.save(
         agendaRepo.create({
-          inicio: moment().toDate(),
-          fim: moment().add(1, 'hours').toDate(),
+          inicio: dayjs().toDate(),
+          fim: dayjs().add(1, 'hours').toDate(),
           voluntario: Promise.resolve(voluntario),
         }),
       );

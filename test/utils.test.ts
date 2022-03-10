@@ -19,7 +19,7 @@ import {
   FrenteAtuacao,
   Voluntario,
 } from '../src/_business/voluntarios/entidades/voluntario.entity';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 
 export async function createUser(
   app: INestApplication,
@@ -64,7 +64,7 @@ export async function createVoluntario(
   dto = {
     instituicao: dto?.instituicao || lorem.words(),
     frentes: dto?.frentes || [FrenteAtuacao.COACHING_DE_ROTINA_DE_ESTUDOS],
-    anoFormacao: dto?.anoFormacao || +moment().format('YYYY'),
+    anoFormacao: dto?.anoFormacao || +dayjs().format('YYYY'),
     formado: dto?.formado || true,
     crp: dto?.crp || lorem.words(),
     bio: dto?.bio || lorem.paragraphs(),
