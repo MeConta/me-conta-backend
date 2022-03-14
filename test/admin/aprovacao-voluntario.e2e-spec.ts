@@ -1,6 +1,6 @@
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { DEFAULT_PHONE } from '../../jest.setup';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { address, lorem } from 'faker/locale/pt_BR';
 import {
   Estado,
@@ -25,7 +25,7 @@ describe('Aprovação de Voluntários (e2e)', () => {
   let token: string;
   const voluntarioReq = {
     telefone: DEFAULT_PHONE,
-    dataNascimento: moment().subtract(18, 'years').toDate(),
+    dataNascimento: dayjs().subtract(18, 'years').toDate(),
     cidade: address.city(),
     UF: Estado.AC,
     genero: Genero.PREFIRO_NAO_DECLARAR,

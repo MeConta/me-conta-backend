@@ -6,7 +6,7 @@ import {
   AreaAtuacao,
   FrenteAtuacao,
 } from '../../../_business/voluntarios/entidades/voluntario.entity';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { address, date, lorem } from 'faker/locale/pt_BR';
 import {
   Estado,
@@ -19,13 +19,13 @@ describe('CreateVoluntarioDto', () => {
     bio: lorem.paragraphs(2),
     crp: lorem.lines(1),
     areaAtuacao: AreaAtuacao.PSICOLOGO,
-    anoFormacao: +moment(date.past()).format('YYYY'),
+    anoFormacao: +dayjs(date.past()).format('YYYY'),
     cidade: address.city(),
     formado: true,
     semestre: 10,
     frentes: [FrenteAtuacao.SESSAO_ACOLHIMENTO],
     instituicao: lorem.sentence(1),
-    dataNascimento: moment().subtract(18, 'years').format('YYYY-MM-DD'),
+    dataNascimento: dayjs().subtract(18, 'years').format('YYYY-MM-DD'),
     genero: Genero.PREFIRO_NAO_DECLARAR,
     UF: Estado.AC,
     especializacoes: lorem.words(10),

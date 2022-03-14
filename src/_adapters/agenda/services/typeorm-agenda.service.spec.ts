@@ -1,7 +1,7 @@
 import { Connection, createConnection, Repository } from 'typeorm';
 import { TypeOrmAgendaService } from './typeorm-agenda.service';
 import { SlotAgendaDbEntity } from '../entidades/slot-agenda-db.entity';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { SlotAgendaParam } from '../../../_business/agenda/services/agenda.service';
 import { VoluntarioDbEntity } from '../../voluntarios/entidades/voluntario-db.entity';
 import { UsuarioDbEntity } from '../../usuarios/entidades/usuario.db.entity';
@@ -18,8 +18,8 @@ describe('Agenda Repo', () => {
 
   const request: SlotAgendaParam = {
     atendenteId: 1,
-    inicio: moment().toDate(),
-    fim: moment().add(1, 'hour').toDate(),
+    inicio: dayjs().toDate(),
+    fim: dayjs().add(1, 'hour').toDate(),
   };
 
   beforeAll(async () => {
@@ -55,7 +55,7 @@ describe('Agenda Repo', () => {
         usuario,
         aprovado: true,
         formado: false,
-        anoFormacao: +moment().format('YYYY'),
+        anoFormacao: +dayjs().format('YYYY'),
         bio: lorem.paragraphs(),
         frentes: [FrenteAtuacao.COACHING_DE_ROTINA_DE_ESTUDOS],
         instituicao: lorem.words(),

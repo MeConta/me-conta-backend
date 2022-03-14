@@ -1,5 +1,5 @@
 import { registerDecorator, ValidationOptions } from 'class-validator';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 
 export function MinAge(age: number, validationOptions?: ValidationOptions) {
   return (object: unknown, propertyName: string) => {
@@ -10,7 +10,7 @@ export function MinAge(age: number, validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         validate: (value: Date): boolean =>
-          moment(value).isBefore(moment().subtract(age, 'years')),
+          dayjs(value).isBefore(dayjs().subtract(age, 'years')),
         defaultMessage: (): string =>
           `$property must be greater or equal than ${age} years`,
       },

@@ -7,7 +7,7 @@ import {
   VoluntarioNaoAprovadoError,
 } from '../../../_business/agenda/casos-de-uso/criar-novo-slot-de-agenda.feat';
 import { CreateSlotAgendaDto } from '../../../_adapters/agenda/dto/create-slot-agenda.dto';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import {
   InternalServerErrorException,
   NotFoundException,
@@ -19,7 +19,7 @@ describe('CriarNovoSlotDeAgendaController', () => {
   let controller: CriarSlotAgendaController;
   let useCase: CriarNovoSlotDeAgenda;
   const request = {
-    slots: [{ inicio: moment().toDate() }],
+    slots: [{ inicio: dayjs().toDate() }],
   } as CreateSlotAgendaDto;
 
   beforeEach(async () => {

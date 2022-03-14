@@ -12,7 +12,7 @@ import {
   Genero,
 } from '../../src/_business/usuarios/entidades/usuario.entity';
 import { CreateVoluntarioDto } from '../../src/_adapters/voluntarios/dto/create-voluntario.dto';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { TipoUsuario } from '../../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import {
   AreaAtuacao,
@@ -27,14 +27,14 @@ describe('Listagem de Voluntários (e2)', () => {
   let token: string;
   const voluntarioReq = {
     telefone: DEFAULT_PHONE,
-    dataNascimento: moment().subtract(18, 'years').toDate(),
+    dataNascimento: dayjs().subtract(18, 'years').toDate(),
     cidade: address.city(),
     UF: Estado.AC,
     genero: Genero.PREFIRO_NAO_DECLARAR,
     instituicao: lorem.word(2),
     formado: false,
     semestre: 10,
-    anoFormacao: +moment().format('YYYY'),
+    anoFormacao: +dayjs().format('YYYY'),
     crp: lorem.words(3),
     areaAtuacao: AreaAtuacao.PROFESSOR,
     frentes: [FrenteAtuacao.SESSAO_ACOLHIMENTO],

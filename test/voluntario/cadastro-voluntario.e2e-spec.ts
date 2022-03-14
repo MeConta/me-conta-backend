@@ -9,7 +9,7 @@ import { lorem, address } from 'faker/locale/pt_BR';
 
 import { AuthModule } from '../../src/modules/auth/auth.module';
 import { CreateVoluntarioDto } from '../../src/_adapters/voluntarios/dto/create-voluntario.dto';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import {
   Estado,
   Genero,
@@ -43,7 +43,7 @@ describe('Criar Conta de Voluntário (e2e)', () => {
   describe('/cadastro-voluntario (POST)', () => {
     const req = {
       telefone: '11912345678',
-      dataNascimento: moment().subtract(18, 'year').toDate(),
+      dataNascimento: dayjs().subtract(18, 'year').toDate(),
       cidade: address.city(),
       UF: Estado.AC,
       genero: Genero.PREFIRO_NAO_DECLARAR,
@@ -71,7 +71,7 @@ describe('Criar Conta de Voluntário (e2e)', () => {
           ...req,
           tipo: TipoUsuario.SUPERVISOR,
           formado: true,
-          anoFormacao: +moment().format('YYYY'),
+          anoFormacao: +dayjs().format('YYYY'),
           crp: 'Teste',
           areaAtuacao: AreaAtuacao.PSICOLOGO,
         } as CreateVoluntarioDto)

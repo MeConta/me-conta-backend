@@ -3,7 +3,7 @@ import { getTestingModule, getToken } from '../utils.test';
 import { AuthModule } from '../../src/modules/auth/auth.module';
 import { setupApp } from '../../src/config/app.config';
 import { HttpStatus, INestApplication } from '@nestjs/common';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { TipoUsuario } from '../../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import * as request from 'supertest';
 import { AgendaModule } from '../../src/modules/agenda/agenda.module';
@@ -18,7 +18,7 @@ describe('Criar slot de Agenda (e2e)', () => {
   const req = {
     slots: [
       {
-        inicio: moment().toDate().toISOString(),
+        inicio: dayjs().toDate().toISOString(),
       },
     ],
   };
