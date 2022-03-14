@@ -5,6 +5,8 @@ import { Repository } from 'typeorm';
 import { StatusAtendimento } from '../../../_business/atendimentos/entidades/atendimentos.entity';
 import { NovoAtendimento } from '../../../_business/atendimentos/entidades/atendimentos.entity';
 
+import { LessThan } from 'typeorm';
+
 describe('TypeORM Atendimentos Service', () => {
   let service: TypeormAtendimentosService;
   let repository: Repository<AtendimentosDbEntity>;
@@ -47,6 +49,25 @@ describe('TypeORM Atendimentos Service', () => {
     expect(repository.find).toBeCalledWith({
       where: {
         aluno: alunoId,
+      },
+    });
+  });
+
+  it('Deve fazer uma busca pelo id do atendimento', () => {
+    const atendimentoId = expect.any(Number);
+    service.buscar(atendimentoId);
+    expect(repository.findOne).toBeCalledWith(atendimentoId);
+  });
+
+  it('Deve fazer uma busca por agendamentos antigos em aberto', () => {
+    service.buscarAntigosEmAberto();
+    expect(repository.find).toBeCalledWith({
+      relations: ['slotAgenda'],
+      where: {
+        status: StatusAtendimento.ABERTO,
+        slotAgenda: {
+          fim: LessThan(new Date()),
+        },
       },
     });
   });

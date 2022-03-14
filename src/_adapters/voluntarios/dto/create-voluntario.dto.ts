@@ -8,6 +8,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsOptional,
+  IsPositive,
   IsString,
   Max,
   Min,
@@ -165,6 +166,10 @@ export class CreateVoluntarioDto implements Omit<NovoVoluntario, 'usuario'> {
   @IsNotEmpty({
     message: '$property não deve ser vazio',
   })
+  @IsPositive({
+    message: '$property deve ser maior do que zero',
+  })
+  @Min(1900)
   anoFormacao: number;
 
   /***
