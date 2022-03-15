@@ -13,6 +13,7 @@ import { TypeormUsuarioService } from '../../_adapters/usuarios/services/typeorm
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsuarioDbEntity } from '../../_adapters/usuarios/entidades/usuario.db.entity';
 import { BcryptHashService } from '../../_adapters/usuarios/services/bcrypt-hash.service';
+import { LogoutController } from './controllers/logout.controller';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { BcryptHashService } from '../../_adapters/usuarios/services/bcrypt-hash
     TypeormUsuarioService,
     BcryptHashService,
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, LogoutController],
   exports: [PassportModule, AuthService, JwtModule],
 })
 export class AuthModule {
