@@ -23,15 +23,10 @@ export function setupApp(app: INestApplication): INestApplication {
 }
 
 export function setupSwagger(app: INestApplication): INestApplication {
-  // Swagger
-  // TODO: ajustar para não aparecer no ambiente de produção
-  /* if (process.env.NODE_ENV !== 'production') {
-      const document = SwaggerModule.createDocument(app, SwaggerConfig);
-      SwaggerModule.setup('api', app, document);
-    } */
+  if (process.env.NODE_ENV !== 'production') {
+    const document = SwaggerModule.createDocument(app, SwaggerConfig);
+    SwaggerModule.setup('api', app, document);
 
-  const document = SwaggerModule.createDocument(app, SwaggerConfig);
-  SwaggerModule.setup('api', app, document);
-
-  return app;
+    return app;
+  }
 }
