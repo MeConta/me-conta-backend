@@ -33,4 +33,10 @@ describe('AuthController', () => {
 
     expect(service.login).toBeCalled();
   });
+
+  it('deve chamar o serviço de logout', async () => {
+    await controller.logout({ id: expect.any(Number) });
+
+    expect(service.logout).toBeCalled();
+  });
 });

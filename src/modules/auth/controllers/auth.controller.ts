@@ -16,6 +16,8 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { AuthDto, Login, TokenDto } from '../../../_adapters/auth/dto/auth.dto';
+import { User } from '../../../_adapters/auth/decorators/user.decorator';
+import { ITokenUser } from '../../../_business/auth/interfaces/auth';
 
 @Controller('auth')
 @ApiBasicAuth()
@@ -37,5 +39,11 @@ export class AuthController {
   })
   async login(@Request() req: Login): Promise<TokenDto> {
     return this.authService.login(req.user);
+  }
+
+  @Post('logout')
+  @HttpCode(HttpStatus.OK)
+  async logout(@User() { id }: Pick<ITokenUser, 'id'>) {
+    return this.authService.logout(id);
   }
 }

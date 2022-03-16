@@ -9,7 +9,13 @@ import { ValidarUsuario } from '../../../_business/auth/casos-de-uso/validar-usu
 import { GerarToken } from '../../../_business/auth/casos-de-uso/gerar-token.feat';
 import { IJwtService } from '../../../_business/auth/interfaces/jwt.service';
 import { TokenDto } from '../dto/auth.dto';
-import { IBuscarUsuarioViaEmailService } from '../../../_business/usuarios/services/usuario.service';
+import {
+  IAtualizarUsuario,
+  IAtualizarUsuarioService,
+  IBuscarUsuarioViaEmailService,
+} from '../../../_business/usuarios/services/usuario.service';
+import { AtualizarUsuario } from '../../../_business/usuarios/casos-de-uso/atualizar-usuario.feat';
+import { IBuscarUsuarioViaId } from 'src/_business/usuarios/casos-de-uso/buscar-usuario.id.feat';
 
 @Injectable()
 export class NestAuthService extends ValidarUsuario {
@@ -35,12 +41,26 @@ export class NestLoginService extends GerarToken {
 }
 
 @Injectable()
+export class NestLogoutService extends AtualizarUsuario {
+  constructor(
+    @Inject(TypeormUsuarioService)
+    usuarioService: IBuscarUsuarioViaId &
+      IAtualizarUsuarioService &
+      IBuscarUsuarioViaEmailService,
+  ) {
+    super(usuarioService);
+  }
+}
+
+@Injectable()
 export class AuthService implements IAuthService {
   constructor(
     @Inject(NestAuthService)
     private auth: NestAuthService,
     @Inject(NestLoginService)
     private token: GerarToken,
+    @Inject(NestLogoutService)
+    private invalidateRefreshToken: NestLogoutService,
   ) {}
 
   async validateUser(email: string, senha: string): Promise<Usuario> {
@@ -49,5 +69,12 @@ export class AuthService implements IAuthService {
 
   login(user: Usuario): TokenDto {
     return this.token.execute(user);
+  }
+
+  logout(
+    id: number,
+    input: IAtualizarUsuario = { refreshTokenHashed: null },
+  ): void {
+    this.invalidateRefreshToken.execute(id, input);
   }
 }

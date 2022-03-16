@@ -32,4 +32,8 @@ export class UsuarioDto implements Usuario {
     example: 1,
   })
   tipo: TipoUsuario;
+
+  @Exclude()
+  @ApiHideProperty()
+  refreshTokenHashed?: string;
 }

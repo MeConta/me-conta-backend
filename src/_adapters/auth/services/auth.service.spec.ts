@@ -1,16 +1,26 @@
-import { AuthService, NestAuthService, NestLoginService } from './auth.service';
+import {
+  AuthService,
+  NestAuthService,
+  NestLoginService,
+  NestLogoutService,
+} from './auth.service';
 import { createMock } from '@golevelup/ts-jest';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 import { IHashCompareService } from '../../../_business/usuarios/services/hash.service';
 import { IJwtService } from '../../../_business/auth/interfaces/jwt.service';
-import { IBuscarUsuarioViaEmailService } from '../../../_business/usuarios/services/usuario.service';
+import {
+  IAtualizarUsuarioService,
+  IBuscarUsuarioViaEmailService,
+} from '../../../_business/usuarios/services/usuario.service';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { IBuscarUsuarioViaId } from 'src/_business/usuarios/casos-de-uso/buscar-usuario.id.feat';
 
 describe('AuthService', () => {
   let service: AuthService;
 
   let auth: NestAuthService;
   let login: NestLoginService;
+  let logout: NestLogoutService;
 
   const entity = {
     ...createMock<Usuario>(),
@@ -25,7 +35,14 @@ describe('AuthService', () => {
       createMock<IHashCompareService>(),
     );
     login = new NestLoginService(createMock<IJwtService>());
-    service = new AuthService(auth, login);
+    logout = new NestLogoutService(
+      createMock<
+        IBuscarUsuarioViaEmailService &
+          IBuscarUsuarioViaId &
+          IAtualizarUsuarioService
+      >(),
+    );
+    service = new AuthService(auth, login, logout);
   });
 
   beforeEach(async () => {
@@ -35,6 +52,7 @@ describe('AuthService', () => {
       tipo: TipoUsuario.ADMINISTRADOR,
       nome: 'Teste',
     });
+    jest.spyOn(logout, 'execute').mockResolvedValue();
   });
 
   it('deve ser definido', async () => {
@@ -55,6 +73,16 @@ describe('AuthService', () => {
     it('Deve chamar a assinatura de token', async () => {
       await service.login(entity);
       expect(login.execute).toBeCalledWith(entity);
+    });
+  });
+
+  describe('logout', () => {
+    it('Deve chamar o logout', async () => {
+      await service.logout(expect.any(Number));
+      expect(logout.execute).toBeCalledWith(
+        expect.any(Number),
+        expect.any(Object),
+      );
     });
   });
 });

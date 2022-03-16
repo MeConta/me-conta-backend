@@ -54,4 +54,5 @@ export interface Usuario {
   salt: string;
   tipo: TipoUsuario;
   dataTermos: Date;
+  refreshTokenHashed?: string;
 }
