@@ -3,6 +3,7 @@ import { AuthService } from '../../../_adapters/auth/services/auth.service';
 import { AuthController } from './auth.controller';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 import { createMock } from '@golevelup/ts-jest';
+import { Request } from 'express';
 
 describe('AuthController', () => {
   let service: AuthService;
@@ -32,5 +33,17 @@ describe('AuthController', () => {
     });
 
     expect(service.login).toBeCalled();
+  });
+
+  it('deve chamar o serviço de logout', async () => {
+    await controller.logout({ id: expect.any(Number) });
+
+    expect(service.logout).toBeCalled();
+  });
+
+  it('deve chamar o serviço de refresh token', async () => {
+    await controller.refresh(createMock<Request>(), { id: expect.any(Number) });
+
+    expect(service.refreshTokens).toBeCalled();
   });
 });

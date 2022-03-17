@@ -12,7 +12,14 @@ export class GerarToken {
       roles: [tipo],
     };
     return {
-      token: this.jwtService.sign(payload),
+      token: this.jwtService.sign(payload, {
+        expiresIn: `${process.env.JWT_TIMEOUT}`,
+        secret: `${process.env.JWT_SECRET}`,
+      }),
+      refreshToken: this.jwtService.sign(payload, {
+        expiresIn: `${process.env.JWT_REFRESH_TIMEOUT}`,
+        secret: `${process.env.JWT_REFRESH_SECRET}`,
+      }),
       tipo,
       nome,
     };

@@ -61,7 +61,7 @@ describe('TypeORM Atendimentos Service', () => {
 
   it('Deve fazer uma busca por agendamentos antigos em aberto', () => {
     service.buscarAntigosEmAberto();
-    expect(repository.find).toHaveBeenNthCalledWith(2, {
+    expect(repository.find).toBeCalledWith({
       relations: ['slotAgenda'],
       where: {
         status: StatusAtendimento.ABERTO,

@@ -1,16 +1,30 @@
-import { AuthService, NestAuthService, NestLoginService } from './auth.service';
+import {
+  AuthService,
+  NestAuthService,
+  NestLoginService,
+  NestLogoutService,
+  NestValidaUsuarioComRefreshTokenService,
+} from './auth.service';
 import { createMock } from '@golevelup/ts-jest';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 import { IHashCompareService } from '../../../_business/usuarios/services/hash.service';
 import { IJwtService } from '../../../_business/auth/interfaces/jwt.service';
-import { IBuscarUsuarioViaEmailService } from '../../../_business/usuarios/services/usuario.service';
+import {
+  IAtualizarUsuarioService,
+  IBuscarUsuarioViaEmailService,
+} from '../../../_business/usuarios/services/usuario.service';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { IBuscarUsuarioViaId } from '../../../_business/usuarios/casos-de-uso/buscar-usuario.id.feat';
+import { BcryptHashService } from '../../../_adapters/usuarios/services/bcrypt-hash.service';
 
 describe('AuthService', () => {
   let service: AuthService;
 
   let auth: NestAuthService;
   let login: NestLoginService;
+  let logout: NestLogoutService;
+  let hash: BcryptHashService;
+  let validaUsuarioComRefreshToken: NestValidaUsuarioComRefreshTokenService;
 
   const entity = {
     ...createMock<Usuario>(),
@@ -25,16 +39,40 @@ describe('AuthService', () => {
       createMock<IHashCompareService>(),
     );
     login = new NestLoginService(createMock<IJwtService>());
-    service = new AuthService(auth, login);
+    logout = new NestLogoutService(
+      createMock<
+        IBuscarUsuarioViaEmailService &
+          IBuscarUsuarioViaId &
+          IAtualizarUsuarioService
+      >(),
+    );
+    hash = new BcryptHashService();
+    validaUsuarioComRefreshToken = new NestValidaUsuarioComRefreshTokenService(
+      createMock<IBuscarUsuarioViaId>(),
+      createMock<IHashCompareService>(),
+    );
+
+    service = new AuthService(
+      auth,
+      login,
+      logout,
+      hash,
+      validaUsuarioComRefreshToken,
+    );
   });
 
   beforeEach(async () => {
     jest.spyOn(auth, 'execute').mockResolvedValue(entity);
     jest.spyOn(login, 'execute').mockReturnValue({
       token: 'TOKEN',
+      refreshToken: 'REFRESH-TOKEN',
       tipo: TipoUsuario.ADMINISTRADOR,
       nome: 'Teste',
     });
+    jest.spyOn(logout, 'execute').mockResolvedValue();
+    jest
+      .spyOn(validaUsuarioComRefreshToken, 'execute')
+      .mockResolvedValue(entity);
   });
 
   it('deve ser definido', async () => {
@@ -53,8 +91,30 @@ describe('AuthService', () => {
 
   describe('login', () => {
     it('Deve chamar a assinatura de token', async () => {
-      service.login(entity);
+      entity.salt = await hash.generateSalt();
+
+      await service.login(entity);
       expect(login.execute).toBeCalledWith(entity);
+    });
+  });
+
+  describe('logout', () => {
+    it('Deve chamar o logout', async () => {
+      service.logout(expect.any(Number));
+      expect(logout.execute).toBeCalledWith(
+        expect.any(Number),
+        expect.any(Object),
+      );
+    });
+  });
+
+  describe('refreshTokens', () => {
+    it('Deve chamar o refreshTokens', async () => {
+      await service.refreshTokens(expect.any(String), expect.any(Number));
+      expect(validaUsuarioComRefreshToken.execute).toBeCalledWith(
+        expect.any(String),
+        expect.any(Number),
+      );
     });
   });
 });

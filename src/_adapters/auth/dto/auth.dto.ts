@@ -33,6 +33,10 @@ export class TokenDto implements IToken {
    */
   token: string;
   /***
+   * Refresh Token JWT
+   */
+  refreshToken: string;
+  /***
    * Tipo do usuário logado
    * @enum TipoUsuario
    * @example 0
@@ -61,4 +65,8 @@ export class TokenUser implements ITokenUser {
   email: string;
   id: number;
   roles: TipoUsuario[];
+}
+
+export class RefreshTokenUser extends TokenUser {
+  refreshToken: string;
 }
