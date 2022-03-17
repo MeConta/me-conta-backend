@@ -31,7 +31,7 @@ describe('Criar Conta de Voluntário (e2e)', () => {
       VoluntarioModule,
     ]);
 
-    app = await moduleFixture.createNestApplication();
+    app = moduleFixture.createNestApplication();
     setupApp(app);
     await app.init();
   });

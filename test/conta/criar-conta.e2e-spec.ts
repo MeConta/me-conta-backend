@@ -17,7 +17,7 @@ describe('Criar Conta (e2e)', () => {
       UsuarioModule,
     ]);
 
-    app = await moduleFixture.createNestApplication();
+    app = moduleFixture.createNestApplication();
     setupApp(app);
     await app.init();
   });

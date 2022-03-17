@@ -24,7 +24,7 @@ describe('Reset de senha (e2e)', () => {
       RecuperacaoModule,
     ]);
 
-    app = await moduleFixture.createNestApplication();
+    app = moduleFixture.createNestApplication();
     recuperacaoRepo = app
       .get(Connection)
       .getRepository<RecuperacaoDbEntity>(RecuperacaoDbEntity);
@@ -37,7 +37,7 @@ describe('Reset de senha (e2e)', () => {
     usuario = await createUser(app);
     hash = (
       await recuperacaoRepo.save(
-        await recuperacaoRepo.create({
+        recuperacaoRepo.create({
           usuario,
           hash: 'HASH',
           dataExpiracao: dayjs().add(7, 'days').toDate(),

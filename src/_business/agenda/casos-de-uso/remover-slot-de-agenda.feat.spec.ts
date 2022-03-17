@@ -40,7 +40,7 @@ class InMemoryAgendaService
     ],
   ) {}
   findById(id: number): Promise<SlotAgenda> {
-    const [slot] = this.slots.filter((slot) => slot.id === id);
+    const [slot] = this.slots.filter((item) => item.id === id);
     return Promise.resolve(slot);
   }
 
@@ -83,7 +83,7 @@ describe('Remover um slot de agenda', () => {
   });
 
   it('Deve dar erro de voluntário não encontrado caso ele não esteja aprovado', async () => {
-    agendaService.slots.map((slot) => {
+    agendaService.slots.forEach((slot) => {
       slot.voluntario = Promise.resolve({
         ...createMock<Voluntario>(),
         aprovado: false,
