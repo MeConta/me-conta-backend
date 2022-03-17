@@ -17,7 +17,7 @@ describe('Autenticação (e2)', () => {
       UsuarioModule,
     ]);
 
-    app = await moduleFixture.createNestApplication();
+    app = moduleFixture.createNestApplication();
     setupApp(app);
     await app.init();
   });

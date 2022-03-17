@@ -64,8 +64,8 @@ describe('RecuperacaoService', () => {
     expect(connection.isConnected).toBeTruthy();
   });
 
-  it('Deve criar uma hash', async () => {
-    const response = await service.randomString();
+  it('Deve criar uma hash', () => {
+    const response = service.randomString();
     expect(response).toEqual(expect.any(String));
   });
 

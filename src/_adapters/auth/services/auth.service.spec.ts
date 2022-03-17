@@ -53,7 +53,7 @@ describe('AuthService', () => {
 
   describe('login', () => {
     it('Deve chamar a assinatura de token', async () => {
-      await service.login(entity);
+      service.login(entity);
       expect(login.execute).toBeCalledWith(entity);
     });
   });
