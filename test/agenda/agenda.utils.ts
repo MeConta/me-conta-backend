@@ -7,14 +7,14 @@ import { AgendaModule } from '../../src/modules/agenda/agenda.module';
 import { setupApp } from '../../src/config/app.config';
 import { INestApplication } from '@nestjs/common';
 
-export async function agendaTestingApp(app: INestApplication) {
+export async function agendaTestingApp() {
   const moduleFixture: TestingModule = await getTestingModule([
     AuthModule.forRoot(),
     UsuarioModule,
     VoluntarioModule,
     AgendaModule,
   ]);
-  app = await moduleFixture.createNestApplication();
+  const app: INestApplication = moduleFixture.createNestApplication();
   setupApp(app);
   return app.init();
 }

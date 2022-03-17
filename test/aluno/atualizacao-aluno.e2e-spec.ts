@@ -42,7 +42,7 @@ describe('Criar Conta (e2e)', () => {
       AlunoModule,
     ]);
 
-    app = await moduleFixture.createNestApplication();
+    app = moduleFixture.createNestApplication();
     setupApp(app);
     await app.init();
   });

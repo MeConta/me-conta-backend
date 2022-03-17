@@ -30,7 +30,7 @@ describe('Criar slot de Agenda (e2e)', () => {
       AgendaModule,
     ]);
 
-    app = await moduleFixture.createNestApplication();
+    app = moduleFixture.createNestApplication();
     setupApp(app);
     await app.init();
   });

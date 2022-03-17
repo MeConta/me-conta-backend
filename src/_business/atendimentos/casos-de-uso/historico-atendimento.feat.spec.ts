@@ -36,6 +36,6 @@ describe('Historico atendimentos', () => {
   });
 
   it('Deve buscar uma lista com 2 atendimento', async () => {
-    await expect(await sut.execute(1)).toHaveLength(2);
+    expect(await sut.execute(1)).toHaveLength(2);
   });
 });

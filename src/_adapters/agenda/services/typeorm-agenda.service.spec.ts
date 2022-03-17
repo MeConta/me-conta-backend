@@ -82,7 +82,7 @@ describe('Agenda Repo', () => {
   it('deve recuperar slots de atendimento', async () => {
     await repo.save(request);
     const slots = await sut.recuperaSlots();
-    await expect(slots).toHaveLength(1);
+    expect(slots).toHaveLength(1);
   });
   it('deve chamar o repository passando wheres', async () => {
     jest.spyOn(repo, 'find');
@@ -91,7 +91,7 @@ describe('Agenda Repo', () => {
       inicio: expect.any(Date),
       fim: expect.any(Date),
     });
-    await expect(repo.find).toHaveBeenCalledWith({
+    expect(repo.find).toHaveBeenCalledWith({
       where: expect.any(Object),
     });
   });

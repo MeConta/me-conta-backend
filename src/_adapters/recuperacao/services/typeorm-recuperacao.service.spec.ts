@@ -65,7 +65,7 @@ describe('RecuperacaoService', () => {
   });
 
   it('Deve criar uma hash', async () => {
-    const response = await service.randomString();
+    const response = service.randomString();
     expect(response).toEqual(expect.any(String));
   });
 

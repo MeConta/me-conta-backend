@@ -1,11 +1,11 @@
 import { TypeormAtendimentosService } from './typeorm-atendimentos.service';
 import { AtendimentosDbEntity } from '../entidades/atendimentos-db.entity';
 import { createMock } from '@golevelup/ts-jest';
-import { Repository } from 'typeorm';
-import { StatusAtendimento } from '../../../_business/atendimentos/entidades/atendimentos.entity';
-import { NovoAtendimento } from '../../../_business/atendimentos/entidades/atendimentos.entity';
-
-import { LessThan } from 'typeorm';
+import { Repository, LessThan } from 'typeorm';
+import {
+  NovoAtendimento,
+  StatusAtendimento,
+} from '../../../_business/atendimentos/entidades/atendimentos.entity';
 
 describe('TypeORM Atendimentos Service', () => {
   let service: TypeormAtendimentosService;

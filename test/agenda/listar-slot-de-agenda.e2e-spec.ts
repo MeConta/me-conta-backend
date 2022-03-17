@@ -6,7 +6,7 @@ describe('Listar slots de Agenda (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
-    app = await agendaTestingApp(app);
+    app = await agendaTestingApp();
   });
 
   afterEach(async () => {

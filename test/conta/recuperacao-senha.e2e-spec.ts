@@ -25,7 +25,7 @@ describe('Recuperação de senha (e2e)', () => {
       ],
     );
 
-    app = await moduleFixture.createNestApplication();
+    app = moduleFixture.createNestApplication();
     setupApp(app);
     await app.init();
   });

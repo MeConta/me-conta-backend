@@ -13,7 +13,7 @@ describe.skip('Remover um Slot de Agenda (e2e)', () => {
   let app: INestApplication;
   let token: string;
   beforeEach(async () => {
-    app = await agendaTestingApp(app);
+    app = await agendaTestingApp();
   });
   beforeEach(async () => {
     token = await getToken(app, TipoUsuario.ATENDENTE);
