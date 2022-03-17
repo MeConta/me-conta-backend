@@ -18,7 +18,9 @@ import {
   IBuscarUsuarioViaEmailService,
 } from '../../../_business/usuarios/services/usuario.service';
 import { AtualizarUsuario } from '../../../_business/usuarios/casos-de-uso/atualizar-usuario.feat';
-import { IBuscarUsuarioViaId } from 'src/_business/usuarios/casos-de-uso/buscar-usuario.id.feat';
+import { IBuscarUsuarioViaId } from '../../../_business/usuarios/casos-de-uso/buscar-usuario.id.feat';
+import { ValidarUsuarioComRefreshToken } from '../../../_business/auth/casos-de-uso/validar-usuario-com-refresh-token.feat';
+import { IToken } from '../../../_business/auth/interfaces/auth';
 
 @Injectable()
 export class NestAuthService extends ValidarUsuario {
@@ -56,6 +58,19 @@ export class NestLogoutService extends AtualizarUsuario {
 }
 
 @Injectable()
+export class NestValidaUsuarioComRefreshTokenService extends ValidarUsuarioComRefreshToken {
+  constructor(
+    @Inject(TypeormUsuarioService)
+    usuarioService: IBuscarUsuarioViaId,
+
+    @Inject(BcryptHashService)
+    hashService: IHashCompareService,
+  ) {
+    super(usuarioService, hashService);
+  }
+}
+
+@Injectable()
 export class AuthService implements IAuthService {
   constructor(
     @Inject(NestAuthService)
@@ -66,6 +81,8 @@ export class AuthService implements IAuthService {
     private updateUser: NestLogoutService,
     @Inject(BcryptHashService)
     private hashService: IHashHashService,
+    @Inject(NestValidaUsuarioComRefreshTokenService)
+    private validarUsuarioComRefreshToken: ValidarUsuarioComRefreshToken,
   ) {}
 
   async validateUser(email: string, senha: string): Promise<Usuario> {
@@ -90,5 +107,23 @@ export class AuthService implements IAuthService {
     input: IAtualizarUsuario = { refreshTokenHashed: null },
   ): void {
     this.updateUser.execute(id, input);
+  }
+
+  async refreshTokens(refreshToken: string, userId: number): Promise<IToken> {
+    const usuario = await this.validarUsuarioComRefreshToken.execute(
+      refreshToken,
+      userId,
+    );
+
+    const newTokens = this.token.execute(usuario);
+
+    const refreshTokenHashed = await this.hashService.hash(
+      newTokens.refreshToken,
+      usuario.salt,
+    );
+
+    await this.updateUser.execute(userId, { refreshTokenHashed });
+
+    return newTokens;
   }
 }

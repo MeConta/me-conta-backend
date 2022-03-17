@@ -3,6 +3,7 @@ import {
   NestAuthService,
   NestLoginService,
   NestLogoutService,
+  NestValidaUsuarioComRefreshTokenService,
 } from './auth.service';
 import { createMock } from '@golevelup/ts-jest';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
@@ -23,6 +24,7 @@ describe('AuthService', () => {
   let login: NestLoginService;
   let logout: NestLogoutService;
   let hash: BcryptHashService;
+  let validaUsuarioComRefreshToken: NestValidaUsuarioComRefreshTokenService;
 
   const entity = {
     ...createMock<Usuario>(),
@@ -45,8 +47,18 @@ describe('AuthService', () => {
       >(),
     );
     hash = new BcryptHashService();
+    validaUsuarioComRefreshToken = new NestValidaUsuarioComRefreshTokenService(
+      createMock<IBuscarUsuarioViaId>(),
+      createMock<IHashCompareService>(),
+    );
 
-    service = new AuthService(auth, login, logout, hash);
+    service = new AuthService(
+      auth,
+      login,
+      logout,
+      hash,
+      validaUsuarioComRefreshToken,
+    );
   });
 
   beforeEach(async () => {
@@ -58,6 +70,9 @@ describe('AuthService', () => {
       nome: 'Teste',
     });
     jest.spyOn(logout, 'execute').mockResolvedValue();
+    jest
+      .spyOn(validaUsuarioComRefreshToken, 'execute')
+      .mockResolvedValue(entity);
   });
 
   it('deve ser definido', async () => {
@@ -85,10 +100,20 @@ describe('AuthService', () => {
 
   describe('logout', () => {
     it('Deve chamar o logout', async () => {
-      await service.logout(expect.any(Number));
+      service.logout(expect.any(Number));
       expect(logout.execute).toBeCalledWith(
         expect.any(Number),
         expect.any(Object),
+      );
+    });
+  });
+
+  describe('refreshTokens', () => {
+    it('Deve chamar o refreshTokens', async () => {
+      await service.refreshTokens(expect.any(String), expect.any(Number));
+      expect(validaUsuarioComRefreshToken.execute).toBeCalledWith(
+        expect.any(String),
+        expect.any(Number),
       );
     });
   });

@@ -6,4 +6,5 @@ export interface IAuthService {
   validateUser(email: string, password: string): Promise<Usuario>;
   login(usuario: Usuario): Promise<IToken>;
   logout(id: number, input: IAtualizarUsuario): void;
+  refreshTokens(refreshToken: string, userId: number): Promise<IToken>;
 }

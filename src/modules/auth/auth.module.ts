@@ -4,6 +4,7 @@ import {
   NestAuthService,
   NestLoginService,
   NestLogoutService,
+  NestValidaUsuarioComRefreshTokenService,
 } from '../../_adapters/auth/services/auth.service';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from '../../_adapters/auth/strategies/local.strategy';
@@ -29,6 +30,7 @@ import { JwtRefreshTokenStrategy } from '../../_adapters/auth/strategies/jwt-ref
     NestAuthService,
     NestLoginService,
     NestLogoutService,
+    NestValidaUsuarioComRefreshTokenService,
     TypeormUsuarioService,
     BcryptHashService,
   ],
