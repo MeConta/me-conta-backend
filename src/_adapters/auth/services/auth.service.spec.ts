@@ -13,7 +13,8 @@ import {
   IBuscarUsuarioViaEmailService,
 } from '../../../_business/usuarios/services/usuario.service';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { IBuscarUsuarioViaId } from 'src/_business/usuarios/casos-de-uso/buscar-usuario.id.feat';
+import { IBuscarUsuarioViaId } from '../../../_business/usuarios/casos-de-uso/buscar-usuario.id.feat';
+import { BcryptHashService } from '../../../_adapters/usuarios/services/bcrypt-hash.service';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -21,6 +22,7 @@ describe('AuthService', () => {
   let auth: NestAuthService;
   let login: NestLoginService;
   let logout: NestLogoutService;
+  let hash: BcryptHashService;
 
   const entity = {
     ...createMock<Usuario>(),
@@ -42,13 +44,16 @@ describe('AuthService', () => {
           IAtualizarUsuarioService
       >(),
     );
-    service = new AuthService(auth, login, logout);
+    hash = new BcryptHashService();
+
+    service = new AuthService(auth, login, logout, hash);
   });
 
   beforeEach(async () => {
     jest.spyOn(auth, 'execute').mockResolvedValue(entity);
     jest.spyOn(login, 'execute').mockReturnValue({
       token: 'TOKEN',
+      refreshToken: 'REFRESH-TOKEN',
       tipo: TipoUsuario.ADMINISTRADOR,
       nome: 'Teste',
     });
@@ -71,6 +76,8 @@ describe('AuthService', () => {
 
   describe('login', () => {
     it('Deve chamar a assinatura de token', async () => {
+      entity.salt = await hash.generateSalt();
+
       await service.login(entity);
       expect(login.execute).toBeCalledWith(entity);
     });

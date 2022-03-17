@@ -41,6 +41,13 @@ export class AuthController {
     return this.authService.login(req.user);
   }
 
+  // @Post('refresh')
+  // @UseGuards(JwtRefreshTokenStrategy)
+  // @HttpCode(HttpStatus.OK)
+  // async refresh(@User() user: Usuario) {
+  //   return this.authService.logout(id);
+  // }
+
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   async logout(@User() { id }: Pick<ITokenUser, 'id'>) {

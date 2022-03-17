@@ -2,7 +2,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 import { TypeormUsuarioService } from '../../usuarios/services/typeorm-usuario.service';
-import { IHashCompareService } from '../../../_business/usuarios/services/hash.service';
+import {
+  IHashCompareService,
+  IHashHashService,
+} from '../../../_business/usuarios/services/hash.service';
 import { BcryptHashService } from '../../usuarios/services/bcrypt-hash.service';
 import { IAuthService } from '../../../_business/auth/interfaces/auth.service';
 import { ValidarUsuario } from '../../../_business/auth/casos-de-uso/validar-usuario.feat';
@@ -60,21 +63,32 @@ export class AuthService implements IAuthService {
     @Inject(NestLoginService)
     private token: GerarToken,
     @Inject(NestLogoutService)
-    private invalidateRefreshToken: NestLogoutService,
+    private updateUser: NestLogoutService,
+    @Inject(BcryptHashService)
+    private hashService: IHashHashService,
   ) {}
 
   async validateUser(email: string, senha: string): Promise<Usuario> {
     return this.auth.execute(email, senha);
   }
 
-  login(user: Usuario): TokenDto {
-    return this.token.execute(user);
+  async login(user: Usuario): Promise<TokenDto> {
+    const tokensReturned = this.token.execute(user);
+
+    const refreshTokenHashed = await this.hashService.hash(
+      tokensReturned.refreshToken,
+      user.salt,
+    );
+
+    await this.updateUser.execute(user.id, { refreshTokenHashed });
+
+    return tokensReturned;
   }
 
   logout(
     id: number,
     input: IAtualizarUsuario = { refreshTokenHashed: null },
   ): void {
-    this.invalidateRefreshToken.execute(id, input);
+    this.updateUser.execute(id, input);
   }
 }
