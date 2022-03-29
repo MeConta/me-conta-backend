@@ -1,4 +1,4 @@
-import { DynamicModule, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import {
   AuthService,
   NestAuthService,
@@ -19,7 +19,8 @@ import { JwtRefreshTokenStrategy } from '../../_adapters/auth/strategies/jwt-ref
 
 @Module({
   imports: [
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    PassportModule.register({}),
+    JwtModule.register({}),
     TypeOrmModule.forFeature([UsuarioDbEntity]),
   ],
   providers: [
@@ -35,18 +36,24 @@ import { JwtRefreshTokenStrategy } from '../../_adapters/auth/strategies/jwt-ref
     BcryptHashService,
   ],
   controllers: [AuthController],
-  exports: [PassportModule, AuthService, JwtModule],
+  exports: [
+    PassportModule,
+    AuthService,
+    JwtModule,
+    JwtStrategy,
+    JwtRefreshTokenStrategy,
+  ],
 })
 export class AuthModule {
-  static forRoot(): DynamicModule {
-    return {
-      imports: [
-        JwtModule.register({
-          secret: `${process.env.JWT_SECRET}`,
-          signOptions: { expiresIn: `${process.env.JWT_TIMEOUT}` },
-        }),
-      ],
-      module: AuthModule,
-    };
-  }
+  // static forRoot(): DynamicModule {
+  //   return {
+  //     imports: [
+  //       JwtModule.register({
+  //         secret: `${process.env.JWT_SECRET}`,
+  //         signOptions: { expiresIn: `${process.env.JWT_TIMEOUT}` },
+  //       }),
+  //     ],
+  //     module: AuthModule,
+  //   };
+  // }
 }

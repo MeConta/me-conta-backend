@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   HttpCode,
   HttpStatus,
@@ -7,10 +8,12 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { Request as ExpressRequest } from 'express';
 
 import { AuthService } from '../../../_adapters/auth/services/auth.service';
-import { LocalAuthGuard } from '../../../_adapters/auth/guards';
+import {
+  JwtRefreshGuard,
+  LocalAuthGuard,
+} from '../../../_adapters/auth/guards';
 import {
   ApiBasicAuth,
   ApiBody,
@@ -20,8 +23,8 @@ import {
 import { AuthDto, Login, TokenDto } from '../../../_adapters/auth/dto/auth.dto';
 import { User } from '../../../_adapters/auth/decorators/user.decorator';
 import { ITokenUser } from '../../../_business/auth/interfaces/auth';
-import { JwtRefreshTokenStrategy } from '../../../_adapters/auth/strategies/jwt-refresh-token.strategy';
-import { OptionalAuth } from '../../../_adapters/auth/decorators/auth.decorator';
+import { Auth } from '../../../_adapters/auth/decorators/auth.decorator';
+import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 @Controller('auth')
 @ApiBasicAuth()
@@ -46,24 +49,26 @@ export class AuthController {
   }
 
   @Post('refresh')
-  @UseGuards(JwtRefreshTokenStrategy)
+  @UseGuards(JwtRefreshGuard)
   @HttpCode(HttpStatus.OK)
-  @OptionalAuth()
   async refresh(
-    @Request() request: ExpressRequest,
+    // TODO: Melhorar o tipo desse parâmetro
+    @Body() { refreshToken }: Record<string, any>,
     @User() { id }: Pick<ITokenUser, 'id'>,
-  ) {
-    const refreshTokenHeader = request
-      ?.get('x-refresh-token')
-      ?.replace('Bearer', '')
-      .trim();
+  ): Promise<TokenDto> {
+    console.log(refreshToken);
 
-    return this.authService.refreshTokens(refreshTokenHeader, id);
+    return this.authService.refreshTokens(refreshToken, id);
   }
 
   @Post('logout')
+  @Auth(
+    TipoUsuario.ATENDENTE,
+    TipoUsuario.SUPERVISOR,
+    TipoUsuario.ADMINISTRADOR,
+    TipoUsuario.ALUNO,
+  )
   @HttpCode(HttpStatus.OK)
-  @OptionalAuth()
   async logout(@User() { id }: Pick<ITokenUser, 'id'>) {
     return this.authService.logout(id);
   }
