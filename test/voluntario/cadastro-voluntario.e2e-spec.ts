@@ -26,7 +26,7 @@ describe('Criar Conta de Voluntário (e2e)', () => {
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await getTestingModule([
-      AuthModule.forRoot(),
+      AuthModule,
       UsuarioModule,
       VoluntarioModule,
     ]);

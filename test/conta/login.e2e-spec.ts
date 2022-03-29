@@ -13,7 +13,7 @@ describe('Autenticação (e2)', () => {
   let app: INestApplication;
   beforeEach(async () => {
     const moduleFixture: TestingModule = await getTestingModule([
-      AuthModule.forRoot(),
+      AuthModule,
       UsuarioModule,
     ]);
 

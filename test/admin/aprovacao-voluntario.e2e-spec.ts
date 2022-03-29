@@ -37,7 +37,7 @@ describe('Aprovação de Voluntários (e2e)', () => {
 
   beforeEach(async () => {
     const moduleFixture = await getTestingModule([
-      AuthModule.forRoot(),
+      AuthModule,
       UsuarioModule,
       VoluntarioModule,
       AdminModule,

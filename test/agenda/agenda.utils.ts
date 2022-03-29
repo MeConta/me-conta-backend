@@ -9,7 +9,7 @@ import { INestApplication } from '@nestjs/common';
 
 export async function agendaTestingApp() {
   const moduleFixture: TestingModule = await getTestingModule([
-    AuthModule.forRoot(),
+    AuthModule,
     UsuarioModule,
     VoluntarioModule,
     AgendaModule,

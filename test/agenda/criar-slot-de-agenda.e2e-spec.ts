@@ -24,7 +24,7 @@ describe('Criar slot de Agenda (e2e)', () => {
   };
   beforeEach(async () => {
     const moduleFixture: TestingModule = await getTestingModule([
-      AuthModule.forRoot(),
+      AuthModule,
       UsuarioModule,
       VoluntarioModule,
       AgendaModule,

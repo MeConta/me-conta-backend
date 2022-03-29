@@ -23,7 +23,7 @@ describe('Criar Conta (e2e)', () => {
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await getTestingModule([
-      AuthModule.forRoot(),
+      AuthModule,
       UsuarioModule,
       AlunoModule,
     ]);

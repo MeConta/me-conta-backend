@@ -44,7 +44,7 @@ describe('Listagem de Voluntários (e2)', () => {
   } as CreateVoluntarioDto;
   beforeEach(async () => {
     const moduleFixture = await getTestingModule([
-      AuthModule.forRoot(),
+      AuthModule,
       UsuarioModule,
       VoluntarioModule,
     ]);
