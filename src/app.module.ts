@@ -23,7 +23,7 @@ import { AtendimentoModule } from './modules/atendimento/atendimento.module';
       ignoreEnvFile: process.env.NODE_ENV === 'production',
     }),
     TypeOrmModule.forRoot(new ConfigService(process.env).typeOrmOptions),
-    AuthModule.forRoot(),
+    AuthModule,
     MailModule,
     PerfilModule,
     UsuarioModule,

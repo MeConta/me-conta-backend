@@ -4,6 +4,7 @@ import {
   IToken,
   ITokenPayload,
   ITokenUser,
+  IRefreshToken,
 } from '../../../_business/auth/interfaces/auth';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
@@ -55,6 +56,11 @@ export class TokenDto implements IToken {
   nome: string;
 }
 
+export class RefreshTokenDto implements IRefreshToken {
+  @ApiProperty({ type: String })
+  refreshToken: string;
+}
+
 export class TokenPayload implements ITokenPayload {
   email: string;
   roles: TipoUsuario[];
@@ -65,8 +71,4 @@ export class TokenUser implements ITokenUser {
   email: string;
   id: number;
   roles: TipoUsuario[];
-}
-
-export class RefreshTokenUser extends TokenUser {
-  refreshToken: string;
 }

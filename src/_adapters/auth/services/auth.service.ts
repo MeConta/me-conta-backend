@@ -20,7 +20,6 @@ import {
 import { AtualizarUsuario } from '../../../_business/usuarios/casos-de-uso/atualizar-usuario.feat';
 import { IBuscarUsuarioViaId } from '../../../_business/usuarios/casos-de-uso/buscar-usuario.id.feat';
 import { ValidarUsuarioComRefreshToken } from '../../../_business/auth/casos-de-uso/validar-usuario-com-refresh-token.feat';
-import { IToken } from '../../../_business/auth/interfaces/auth';
 
 @Injectable()
 export class NestAuthService extends ValidarUsuario {
@@ -109,7 +108,7 @@ export class AuthService implements IAuthService {
     this.updateUser.execute(id, input);
   }
 
-  async refreshTokens(refreshToken: string, userId: number): Promise<IToken> {
+  async refreshTokens(refreshToken: string, userId: number): Promise<TokenDto> {
     const usuario = await this.validarUsuarioComRefreshToken.execute(
       refreshToken,
       userId,
@@ -122,7 +121,7 @@ export class AuthService implements IAuthService {
       usuario.salt,
     );
 
-    await this.updateUser.execute(userId, { refreshTokenHashed });
+    this.updateUser.execute(usuario.id, { refreshTokenHashed });
 
     return newTokens;
   }
