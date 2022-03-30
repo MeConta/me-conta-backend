@@ -47,13 +47,11 @@ export class TypeormUsuarioService
   }
 
   async atualizar(id: number, input: IAtualizarUsuario): Promise<Usuario> {
-    console.log('Id do usuario', id);
-    console.log('Dados atualizados', input);
-
-    const usuarioAtualizado = await this.repository.save({
+    await this.repository.update(id, {
       ...input,
-      id,
     });
+
+    const usuarioAtualizado = await this.findById(id);
 
     console.log(usuarioAtualizado);
 
