@@ -45,7 +45,7 @@ export class AuthController {
     type: AuthDto,
   })
   async login(@Request() req: Login): Promise<TokenDto> {
-    return this.authService.login(req.user);
+    return await this.authService.login(req.user);
   }
 
   @Post('refresh')
