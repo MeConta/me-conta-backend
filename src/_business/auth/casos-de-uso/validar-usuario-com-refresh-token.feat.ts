@@ -8,12 +8,8 @@ export class ValidarUsuarioComRefreshToken {
     private readonly hashService: IHashCompareService,
   ) {}
 
-  async execute(refreshToken: string, userId: number): Promise<Usuario> {
-    console.log(typeof userId);
-    const usuario = await this.usuarioService.findById(userId);
-
-    console.log('refreshToken', refreshToken);
-    console.log('Usuario com refresh token atualizado', usuario);
+  async execute(refreshToken: string, id: number): Promise<Usuario> {
+    const usuario = await this.usuarioService.findById(id);
 
     const hashMatch = await this.hashService.compare(
       refreshToken,

@@ -108,10 +108,10 @@ export class AuthService implements IAuthService {
     this.updateUser.execute(id, input);
   }
 
-  async refreshTokens(refreshToken: string, userId: number): Promise<TokenDto> {
+  async refreshTokens(refreshToken: string, id: number): Promise<TokenDto> {
     const usuario = await this.validarUsuarioComRefreshToken.execute(
       refreshToken,
-      userId,
+      id,
     );
 
     const newTokens = this.token.execute(usuario);

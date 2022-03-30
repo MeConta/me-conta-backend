@@ -56,6 +56,8 @@ export class AuthController {
     @Body() { refreshToken }: Record<string, any>,
     @User() { id }: Pick<ITokenUser, 'id'>,
   ): Promise<TokenDto> {
+    console.log(id);
+
     return this.authService.refreshTokens(refreshToken, id);
   }
 
