@@ -16,6 +16,19 @@ describe('TypeORM Atendimentos Service', () => {
       create(): AtendimentosDbEntity {
         return createMock<AtendimentosDbEntity>();
       },
+      find(): Promise<AtendimentosDbEntity[]> {
+        return Promise.resolve([
+          createMock<AtendimentosDbEntity>({
+            id: expect.any(Number),
+            slotAgenda: Promise.resolve(
+              createMock({ fim: new Date('December 17, 1995 03:24:00') }),
+            ),
+          }),
+          createMock<AtendimentosDbEntity>({
+            slotAgenda: Promise.resolve(createMock({ fim: new Date() })),
+          }),
+        ]);
+      },
     });
     service = new TypeormAtendimentosService(repository);
   });
@@ -59,17 +72,31 @@ describe('TypeORM Atendimentos Service', () => {
     expect(repository.findOne).toBeCalledWith(atendimentoId);
   });
 
-  // TODO: Teste para buscar atendimentos em aberto
-  // it('Deve fazer uma busca por agendamentos antigos em aberto', () => {
-  //   service.buscarAntigosEmAberto();
-  //   expect(repository.find).toBeCalledWith({
-  //     relations: ['slotAgenda'],
-  //     where: {
-  //       status: StatusAtendimento.ABERTO,
-  //       slotAgenda: {
-  //         fim: LessThan(new Date()),
-  //       },
-  //     },
-  //   });
-  // });
+  it('Deve fazer uma busca por agendamentos antigos em aberto', async () => {
+    const atendimentos = await service.buscarAntigosEmAberto();
+
+    expect(atendimentos.length).toBe(2);
+
+    const currentTime = new Date();
+    expect((await atendimentos[0].slotAgenda).fim.getTime()).toBeLessThan(
+      currentTime.getTime(),
+    );
+
+    expect(repository.find).lastCalledWith({
+      relations: ['slotAgenda'],
+      where: {
+        slotAgenda: {
+          fim: {
+            _getSql: undefined,
+            _multipleParameters: false,
+            _objectLiteralParameters: undefined,
+            _type: 'lessThan',
+            _useParameter: true,
+            _value: expect.any(Date),
+          },
+        },
+        status: StatusAtendimento.ABERTO,
+      },
+    });
+  });
 });
