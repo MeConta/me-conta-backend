@@ -47,7 +47,7 @@ export class TypeormUsuarioService
   }
 
   async atualizar(id: number, input: IAtualizarUsuario): Promise<Usuario> {
-    return this.repository.save({
+    return await this.repository.save({
       ...input,
       id,
     });
