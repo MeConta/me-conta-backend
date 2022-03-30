@@ -53,8 +53,6 @@ export class TypeormUsuarioService
 
     const usuarioAtualizado = await this.findById(id);
 
-    console.log(usuarioAtualizado);
-
     return usuarioAtualizado;
   }
 }
