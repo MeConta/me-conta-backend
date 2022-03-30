@@ -96,8 +96,6 @@ export class AuthService implements IAuthService {
       user.salt,
     );
 
-    console.log('Refresh Token hashed', refreshTokenHashed);
-
     await this.updateUser.execute(user.id, { refreshTokenHashed });
 
     return tokensReturned;

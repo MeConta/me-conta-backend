@@ -47,9 +47,16 @@ export class TypeormUsuarioService
   }
 
   async atualizar(id: number, input: IAtualizarUsuario): Promise<Usuario> {
-    return await this.repository.save({
+    console.log('Id do usuario', id);
+    console.log('Dados atualizados', input);
+
+    const usuarioAtualizado = await this.repository.save({
       ...input,
       id,
     });
+
+    console.log(usuarioAtualizado);
+
+    return usuarioAtualizado;
   }
 }

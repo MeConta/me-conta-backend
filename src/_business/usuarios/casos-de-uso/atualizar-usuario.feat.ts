@@ -20,9 +20,7 @@ export class AtualizarUsuario {
       throw new EmailJaUtilizadoError();
     }
 
-    const usuarioComRefreshToken = await this.service.atualizar(id, input);
-
-    console.log('Usuario com refresh token', usuarioComRefreshToken);
+    await this.service.atualizar(id, input);
   }
 }
 
