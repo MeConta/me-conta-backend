@@ -11,9 +11,6 @@ export class ValidarUsuarioComRefreshToken {
   async execute(refreshToken: string, userId: number): Promise<Usuario> {
     const usuario = await this.usuarioService.findById(userId);
 
-    console.log('Refresh Token Received', refreshToken);
-    console.log('Refresh Token User', usuario);
-
     const hashMatch = await this.hashService.compare(
       refreshToken,
       usuario.refreshTokenHashed,

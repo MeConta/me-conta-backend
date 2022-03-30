@@ -19,7 +19,10 @@ export class AtualizarUsuario {
     if (input.email && !(await this.service.findByEmail(input.email))) {
       throw new EmailJaUtilizadoError();
     }
-    await this.service.atualizar(id, input);
+
+    const usuarioComRefreshToken = await this.service.atualizar(id, input);
+
+    console.log('Usuario com refresh token', usuarioComRefreshToken);
   }
 }
 
