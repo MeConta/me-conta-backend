@@ -27,8 +27,8 @@ export class TypeormUsuarioService
     private readonly repository: Repository<UsuarioDbEntity>,
   ) {}
 
-  async findById(input: number): Promise<Usuario> {
-    return this.repository.findOne(input);
+  async findById(id: number): Promise<Usuario> {
+    return this.repository.findOne({ where: { id } });
   }
 
   async cadastrar(
