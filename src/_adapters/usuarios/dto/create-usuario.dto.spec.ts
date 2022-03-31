@@ -2,7 +2,7 @@ import { plainToClass } from 'class-transformer';
 import { CreateUsuarioDto } from './create-usuario.dto';
 import { createMock } from '@golevelup/ts-jest';
 import { NovoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { name } from 'faker/locale/pt_BR';
+import { name } from '@faker-js/faker/locale/pt_BR';
 describe('CreateUsuarioDto', () => {
   const input = createMock<NovoUsuario>();
   let transformed: CreateUsuarioDto;

@@ -10,7 +10,7 @@ import {
 import { UsuarioDbEntity } from '../../usuarios/entidades/usuario.db.entity';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { DEFAULT_PASSWORD, MOCKED_SALT } from '../../../../jest.setup';
-import { name, internet, date } from 'faker/locale/pt_BR';
+import { name, internet, date } from '@faker-js/faker/locale/pt_BR';
 import {
   IAtualizarPerfilService,
   IBuscarPerfilByIdService,

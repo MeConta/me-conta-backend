@@ -18,7 +18,7 @@ import { AlunoModule } from '../../src/modules/aluno/aluno.module';
 import { PerfilModule } from '../../src/modules/perfil/perfil.module';
 import * as request from 'supertest';
 import { AtualizarAlunoDto } from '../../src/_adapters/alunos/dto/atualizar-aluno.dto';
-import { name } from 'faker/locale/pt_BR';
+import { name } from '@faker-js/faker/locale/pt_BR';
 
 describe('Criar Conta (e2e)', () => {
   let app: INestApplication;

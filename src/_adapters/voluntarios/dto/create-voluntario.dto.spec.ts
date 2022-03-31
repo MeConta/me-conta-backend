@@ -7,7 +7,7 @@ import {
   FrenteAtuacao,
 } from '../../../_business/voluntarios/entidades/voluntario.entity';
 import * as dayjs from 'dayjs';
-import { address, date, lorem } from 'faker/locale/pt_BR';
+import { address, date, lorem } from '@faker-js/faker/locale/pt_BR';
 import {
   Estado,
   Genero,
