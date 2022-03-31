@@ -2,7 +2,7 @@ import { RecuperacaoController } from './recuperacao.controller';
 import { RecuperarSenha } from '../../../_business/recuperacao/casos-de-uso/recuperar-senha.feat';
 import { Test, TestingModule } from '@nestjs/testing';
 import { createMock } from '@golevelup/ts-jest';
-import { internet } from 'faker/locale/pt_BR';
+import { internet } from '@faker-js/faker/locale/pt_BR';
 
 describe('Recuperação Controller', () => {
   let controller: RecuperacaoController;

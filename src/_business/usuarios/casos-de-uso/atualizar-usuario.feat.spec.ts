@@ -7,7 +7,7 @@ import {
   EmailJaUtilizadoError,
 } from './atualizar-usuario.feat';
 import { UsuarioNaoEncontradoError } from '../erros/usuarios.errors';
-import { name, internet } from 'faker/locale/pt_BR';
+import { name, internet } from '@faker-js/faker/locale/pt_BR';
 import {
   IAtualizarUsuario,
   IAtualizarUsuarioService,

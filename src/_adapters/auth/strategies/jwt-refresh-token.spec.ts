@@ -1,5 +1,5 @@
 import { JwtRefreshTokenStrategy } from './jwt-refresh-token.strategy';
-import { internet } from 'faker';
+import { internet } from '@faker-js/faker/locale/pt_BR';
 
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { TokenPayload } from '../dto/auth.dto';

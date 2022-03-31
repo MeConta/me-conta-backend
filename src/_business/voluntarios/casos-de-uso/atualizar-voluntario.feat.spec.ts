@@ -7,7 +7,7 @@ import { IBuscarVoluntarioViaId } from '../services/voluntario.service';
 import { VoluntarioNaoEncontradoError } from '../../admin/casos-de-uso/autorizar-voluntario.feat';
 import { createMock } from '@golevelup/ts-jest';
 import { Perfil } from '../../usuarios/entidades/usuario.entity';
-import { lorem } from 'faker/locale/pt_BR';
+import { lorem } from '@faker-js/faker/locale/pt_BR';
 import { AtualizarVoluntario } from './atualizar-voluntario.feat';
 import { VoluntarioOutput } from '../dtos/voluntario.dto';
 

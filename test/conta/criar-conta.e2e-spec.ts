@@ -6,7 +6,7 @@ import { CreateUsuarioDto } from '../../src/_adapters/usuarios/dto/create-usuari
 import { TipoUsuario } from '../../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { setupApp } from '../../src/config/app.config';
 import { createUser, getTestingModule } from '../utils.test';
-import { internet, name } from 'faker/locale/pt_BR';
+import { internet, name } from '@faker-js/faker/locale/pt_BR';
 import { DEFAULT_PASSWORD } from '../../jest.setup';
 
 describe('Criar Conta (e2e)', () => {
