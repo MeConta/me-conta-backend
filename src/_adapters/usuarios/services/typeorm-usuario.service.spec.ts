@@ -4,7 +4,7 @@ import { TypeormUsuarioService } from './typeorm-usuario.service';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { DEFAULT_PASSWORD, MOCKED_SALT } from '../../../../jest.setup';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
-import { name, internet } from 'faker/locale/pt_BR';
+import { name, internet } from '@faker-js/faker/locale/pt_BR';
 
 describe('Usuario', () => {
   let connection: Connection;

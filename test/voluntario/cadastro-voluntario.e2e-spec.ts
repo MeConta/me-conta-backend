@@ -5,7 +5,7 @@ import { UsuarioModule } from '../../src/modules/usuario/usuario.module';
 import { TipoUsuario } from '../../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { setupApp } from '../../src/config/app.config';
 import { getTestingModule, getToken } from '../utils.test';
-import { lorem, address } from 'faker/locale/pt_BR';
+import { lorem, address } from '@faker-js/faker/locale/pt_BR';
 
 import { AuthModule } from '../../src/modules/auth/auth.module';
 import { CreateVoluntarioDto } from '../../src/_adapters/voluntarios/dto/create-voluntario.dto';
