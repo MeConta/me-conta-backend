@@ -107,4 +107,19 @@ describe('Agenda Repo', () => {
     await sut.removerSlot(slotEntity.id);
     expect(await repo.find()).toHaveLength(0);
   });
+  it('Deve atualizar um slot por id', async () => {
+    await sut.cadastrar(request);
+    const [slot] = await repo.find();
+    await sut.atualiza(slot.id, {
+      inicio: expect.any(Date),
+      fim: expect.any(Date),
+    });
+    expect(slot).toEqual(
+      expect.objectContaining({
+        id: request.atendenteId,
+        inicio: expect.any(Date),
+        fim: expect.any(Date),
+      }),
+    );
+  });
 });

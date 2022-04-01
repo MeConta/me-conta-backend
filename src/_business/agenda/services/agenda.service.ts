@@ -19,3 +19,10 @@ export interface IRemoverSlotAgendaService {
 export interface IBuscarSlotAgendaByIdService {
   findById(id: number): Promise<SlotAgenda>;
 }
+
+export interface IAtualizaSlotAgendaService {
+  atualiza(
+    id: number,
+    input: Omit<SlotAgendaParam, 'atendenteId'>,
+  ): Promise<SlotAgenda>;
+}
