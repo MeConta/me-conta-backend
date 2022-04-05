@@ -116,7 +116,7 @@ describe('Agenda Repo', () => {
     });
     expect(slot).toEqual(
       expect.objectContaining({
-        id: request.atendenteId,
+        id: request.voluntarioId,
         inicio: expect.any(Date),
         fim: expect.any(Date),
       }),

@@ -12,6 +12,7 @@ import { VoluntarioModule } from '../../src/modules/voluntario/voluntario.module
 import { AgendaModule } from '../../src/modules/agenda/agenda.module';
 import { setupApp } from '../../src/config/app.config';
 import { VoluntarioDbEntity } from '../../src/_adapters/voluntarios/entidades/voluntario-db.entity';
+import { AtualizarSlotAgendaDto } from '../../src/_adapters/agenda/dto/atualizar-slot-agenda.dto';
 
 describe('Atualizar slot de Agenda (e2e)', () => {
   let app: INestApplication;
@@ -58,6 +59,9 @@ describe('Atualizar slot de Agenda (e2e)', () => {
         {
           inicio: dayjs().add(6, 'day').toDate(),
         },
+        {
+          inicio: dayjs().add(1, 'day').toDate(),
+        },
       ],
     };
 
@@ -74,9 +78,9 @@ describe('Atualizar slot de Agenda (e2e)', () => {
     it('Deve atualizar um slot com sucesso', async () => {
       const updateReq = {
         slot: {
-          inicio: dayjs().add(5, 'day').toDate().toISOString(),
+          inicio: dayjs().add(5, 'day').toDate(),
         },
-      };
+      } as AtualizarSlotAgendaDto;
 
       await request(app.getHttpServer())
         .put('/agenda/1')
@@ -91,6 +95,35 @@ describe('Atualizar slot de Agenda (e2e)', () => {
         .set('Authorization', `Bearer ${token}`)
         .send(req)
         .expect(HttpStatus.NOT_FOUND);
+    });
+
+    // TODO: Teste para slots conflitantes
+    // it('Deve dar erro quando a data do slot a ser atualizado conflita com um slot já existente', async () => {
+    //   const reqConflict = {
+    //     slot: {
+    //       inicio: dayjs().subtract(4, 'day').toDate(),
+    //     },
+    //   };
+
+    //   await request(app.getHttpServer())
+    //     .put('/agenda/3')
+    //     .set('Authorization', `Bearer ${token}`)
+    //     .send(reqConflict)
+    //     .expect(HttpStatus.CONFLICT);
+    // });
+
+    it('Deve dar erro quando o slot a ser atualizado será realizado no prazo de 24 horas', async () => {
+      const reqBadRequest = {
+        slot: {
+          inicio: dayjs().add(4, 'day').toDate(),
+        },
+      };
+
+      await request(app.getHttpServer())
+        .put('/agenda/4')
+        .set('Authorization', `Bearer ${token}`)
+        .send(reqBadRequest)
+        .expect(HttpStatus.BAD_REQUEST);
     });
 
     it('Deve dar erro 400', async () => {

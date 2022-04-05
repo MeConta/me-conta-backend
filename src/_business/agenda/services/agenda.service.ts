@@ -23,6 +23,6 @@ export interface IBuscarSlotAgendaByIdService {
 export interface IAtualizaSlotAgendaService {
   atualiza(
     id: number,
-    input: Omit<SlotAgendaParam, 'atendenteId'>,
+    input: Omit<SlotAgendaParam, 'voluntarioId'>,
   ): Promise<SlotAgenda>;
 }

@@ -74,7 +74,7 @@ export class TypeOrmAgendaService
 
   async atualiza(
     id: number,
-    input: Omit<SlotAgendaParam, 'atendenteId'>,
+    input: Omit<SlotAgendaParam, 'voluntarioId'>,
   ): Promise<SlotAgenda> {
     await this.agendaRepo.update(id, input);
 

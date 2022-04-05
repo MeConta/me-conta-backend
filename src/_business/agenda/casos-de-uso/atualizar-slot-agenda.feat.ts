@@ -99,7 +99,7 @@ export class AtualizarSlotDeAgenda {
     atendenteId: number,
   ): Promise<boolean> {
     const slotsNaAgenda = await this.agendaService.recuperaSlots({
-      atendenteId,
+      voluntarioId: atendenteId,
       inicio: this.dateHelper.startOf(horarioInicio),
       fim: this.dateHelper.endOf(horarioFim),
     });
