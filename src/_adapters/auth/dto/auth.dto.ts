@@ -9,7 +9,6 @@ import {
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
 
 export class Login implements ILogin {
   user: Usuario;
@@ -59,7 +58,6 @@ export class TokenDto implements IToken {
 
 export class RefreshTokenDto implements IRefreshToken {
   @ApiProperty({ type: String })
-  @Type(() => String)
   refreshToken: string;
 }
 

@@ -56,7 +56,7 @@ export class CriarNovoSlotDeAgenda {
         await this.agendaService.cadastrar({
           inicio,
           fim,
-          atendenteId: voluntarioId,
+          voluntarioId,
         });
       }
     }
@@ -68,7 +68,7 @@ export class CriarNovoSlotDeAgenda {
     atendenteId: number,
   ): Promise<boolean> {
     const slotsNaAgenda = await this.agendaService.recuperaSlots({
-      atendenteId,
+      voluntarioId: atendenteId,
       inicio: this.dateHelper.startOf(horarioInicio),
       fim: this.dateHelper.endOf(horarioFim),
     });

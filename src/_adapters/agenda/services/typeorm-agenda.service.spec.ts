@@ -17,7 +17,7 @@ describe('Agenda Repo', () => {
   let sut: TypeOrmAgendaService;
 
   const request: SlotAgendaParam = {
-    atendenteId: 1,
+    voluntarioId: 1,
     inicio: dayjs().toDate(),
     fim: dayjs().add(1, 'hour').toDate(),
   };
@@ -87,7 +87,7 @@ describe('Agenda Repo', () => {
   it('deve chamar o repository passando wheres', async () => {
     jest.spyOn(repo, 'find');
     await sut.recuperaSlots({
-      atendenteId: expect.any(Number),
+      voluntarioId: expect.any(Number),
       inicio: expect.any(Date),
       fim: expect.any(Date),
     });

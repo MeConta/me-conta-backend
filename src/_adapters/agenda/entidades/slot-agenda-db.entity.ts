@@ -18,6 +18,9 @@ export class SlotAgendaDbEntity
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column()
+  voluntarioId: number;
+
   @ManyToOne(() => VoluntarioDbEntity, (voluntario) => voluntario.id, {
     lazy: true,
   })

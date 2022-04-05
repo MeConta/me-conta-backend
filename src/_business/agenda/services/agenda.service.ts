@@ -1,7 +1,7 @@
 import { SlotAgenda } from '../entidades/slot-agenda.entity';
 
 export type SlotAgendaParam = Omit<SlotAgenda, 'id' | 'voluntario'> & {
-  atendenteId: number;
+  voluntarioId: number;
 };
 
 export interface CriarSlotAgendaService {
