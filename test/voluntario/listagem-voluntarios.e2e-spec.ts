@@ -5,7 +5,7 @@ import { AuthModule } from '../../src/modules/auth/auth.module';
 import { UsuarioModule } from '../../src/modules/usuario/usuario.module';
 import { VoluntarioModule } from '../../src/modules/voluntario/voluntario.module';
 import { setupApp } from '../../src/config/app.config';
-import { address, lorem } from 'faker/locale/pt_BR';
+import { address, lorem } from '@faker-js/faker/locale/pt_BR';
 import { DEFAULT_PHONE } from '../../jest.setup';
 import {
   Estado,

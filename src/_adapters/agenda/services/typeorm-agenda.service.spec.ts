@@ -6,7 +6,7 @@ import { SlotAgendaParam } from '../../../_business/agenda/services/agenda.servi
 import { VoluntarioDbEntity } from '../../voluntarios/entidades/voluntario-db.entity';
 import { UsuarioDbEntity } from '../../usuarios/entidades/usuario.db.entity';
 import { DEFAULT_PASSWORD, MOCKED_SALT } from '../../../../jest.setup';
-import { internet, lorem, name } from 'faker/locale/pt_BR';
+import { internet, lorem, name } from '@faker-js/faker/locale/pt_BR';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { FrenteAtuacao } from '../../../_business/voluntarios/entidades/voluntario.entity';
 describe('Agenda Repo', () => {

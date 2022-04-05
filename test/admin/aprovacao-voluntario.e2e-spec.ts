@@ -1,7 +1,7 @@
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { DEFAULT_PHONE } from '../../jest.setup';
 import * as dayjs from 'dayjs';
-import { address, lorem } from 'faker/locale/pt_BR';
+import { address, lorem } from '@faker-js/faker/locale/pt_BR';
 import {
   Estado,
   Genero,
