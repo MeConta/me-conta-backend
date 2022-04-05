@@ -15,7 +15,6 @@ import {
   SlotAgendaParam,
 } from '../../../_business/agenda/services/agenda.service';
 import { SlotAgenda } from '../../../_business/agenda/entidades/slot-agenda.entity';
-import { Voluntario } from '../../../_business/voluntarios/entidades/voluntario.entity';
 
 @Injectable()
 export class TypeOrmAgendaService
@@ -31,11 +30,7 @@ export class TypeOrmAgendaService
   ) {}
   async cadastrar(param: SlotAgendaParam): Promise<void> {
     const entity = this.agendaRepo.create({
-      voluntario: Promise.resolve({
-        usuario: {
-          id: param.atendenteId,
-        },
-      } as Voluntario),
+      voluntarioId: param.voluntarioId,
       inicio: param.inicio,
       fim: param.fim,
     });
@@ -45,13 +40,13 @@ export class TypeOrmAgendaService
   async recuperaSlots({
     inicio,
     fim,
-    atendenteId,
+    voluntarioId,
   }: Partial<SlotAgendaParam> = {}): Promise<SlotAgenda[]> {
     const where: FindConditions<SlotAgenda> = {};
-    if (atendenteId) {
+    if (voluntarioId) {
       where.voluntario = await Promise.resolve({
         usuario: {
-          id: atendenteId,
+          id: voluntarioId,
         },
       });
     }

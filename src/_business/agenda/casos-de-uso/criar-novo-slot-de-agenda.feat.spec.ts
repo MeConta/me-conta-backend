@@ -32,7 +32,7 @@ class InMemoryAgendaService
   async cadastrar({
     inicio,
     fim,
-    atendenteId,
+    voluntarioId,
   }: SlotAgendaParam): Promise<void> {
     this.slots.push({
       id: this.slots.length,
@@ -40,7 +40,7 @@ class InMemoryAgendaService
       fim,
       voluntario: Promise.resolve({
         usuario: {
-          id: atendenteId,
+          id: voluntarioId,
         },
       } as Voluntario),
     });
@@ -50,7 +50,7 @@ class InMemoryAgendaService
     return this.slots.filter(async (slot) => {
       const { usuario } = await slot.voluntario;
       return (
-        param.atendenteId === usuario.id &&
+        param.voluntarioId === usuario.id &&
         (slot.inicio >= param.inicio || slot.fim <= param.fim)
       );
     });
