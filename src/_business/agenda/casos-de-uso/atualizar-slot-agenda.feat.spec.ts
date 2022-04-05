@@ -7,6 +7,7 @@ import {
 import {
   IAtualizaSlotAgendaService,
   IBuscarSlotAgendaByIdService,
+  RecuperaSlotsAgendaService,
   SlotAgendaParam,
 } from '../services/agenda.service';
 import { SlotAgenda } from '../entidades/slot-agenda.entity';
@@ -14,31 +15,59 @@ import * as dayjs from 'dayjs';
 import {
   DateUnit,
   IDateAdd,
+  IDateEndOf,
   IDateGreaterThan,
+  IDateStartOf,
 } from '../services/date-time.service';
 import { createMock } from '@golevelup/ts-jest';
 import { Voluntario } from '../../../_business/voluntarios/entidades/voluntario.entity';
+import { SlotOcupadoError } from './atualizar-slot-agenda.feat';
 
 class InMemoryAgendaService
-  implements IAtualizaSlotAgendaService, IBuscarSlotAgendaByIdService
+  implements
+    IAtualizaSlotAgendaService,
+    IBuscarSlotAgendaByIdService,
+    RecuperaSlotsAgendaService
 {
   constructor(
     public slots: SlotAgenda[] = [
-      {
+      createMock<SlotAgenda>({
         id: 16,
         inicio: dayjs().add(4, 'day').toDate(),
         fim: dayjs().add(97, 'hour').toDate(),
-        voluntario: {
-          ...createMock<Promise<Voluntario>>(),
-        },
-      },
-      {
+        voluntario: Promise.resolve(
+          createMock({
+            id: 1,
+            ...createMock<Promise<Voluntario>>(),
+          }),
+        ),
+      }),
+      createMock<SlotAgenda>({
         id: 12,
         ...createMock<SlotAgenda>(),
-        voluntario: {
-          ...createMock<Promise<Voluntario>>(),
-        },
-      },
+        voluntario: Promise.resolve(
+          createMock({ id: 1, ...createMock<Promise<Voluntario>>() }),
+        ),
+      }),
+      createMock<SlotAgenda>({
+        id: 13,
+        inicio: dayjs().add(2, 'day').toDate(),
+        fim: dayjs().add(49, 'hour').toDate(),
+        voluntario: Promise.resolve(
+          createMock({ id: 1, ...createMock<Promise<Voluntario>>() }),
+        ),
+      }),
+      createMock<SlotAgenda>({
+        id: 15,
+        inicio: dayjs().add(5, 'day').toDate(),
+        fim: dayjs().add(121, 'hour').toDate(),
+        voluntario: Promise.resolve(
+          createMock({
+            id: 1,
+            ...createMock<Promise<Voluntario>>(),
+          }),
+        ),
+      }),
     ],
   ) {}
 
@@ -60,24 +89,34 @@ class InMemoryAgendaService
     return slotEncontrado;
   }
 
-  // async recuperaSlots(param: SlotAgendaParam): Promise<SlotAgenda[]> {
-  //   return this.slots.filter(async (slot) => {
-  //     const { usuario } = await slot.voluntario;
-  //     return (
-  //       param.atendenteId === usuario.id &&
-  //       (slot.inicio >= param.inicio || slot.fim <= param.fim)
-  //     );
-  //   });
-  // }
+  async recuperaSlots(param: SlotAgendaParam): Promise<SlotAgenda[]> {
+    return this.slots.filter(async (slot) => {
+      const { usuario } = await slot.voluntario;
+      return (
+        param.atendenteId === usuario.id &&
+        (slot.inicio >= param.inicio || slot.fim <= param.fim)
+      );
+    });
+  }
 }
 
-class InMemoryDatetimeService implements IDateAdd, IDateGreaterThan {
+class InMemoryDatetimeService
+  implements IDateAdd, IDateGreaterThan, IDateStartOf, IDateEndOf
+{
   add(date: Date, amount: number, unit?: DateUnit): Date {
     return dayjs(date).add(amount, unit).toDate();
   }
 
   greaterThan(date: Date, than: Date): boolean {
     return dayjs(date).isAfter(than);
+  }
+
+  endOf(date: Date, unit: DateUnit = DateUnit.DAYS): Date {
+    return dayjs(date).endOf(unit).toDate();
+  }
+
+  startOf(date: Date, unit: DateUnit = DateUnit.DAYS): Date {
+    return dayjs(date).startOf(unit).toDate();
   }
 }
 
@@ -97,7 +136,7 @@ describe('atualizar slot na agenda', () => {
       slot: {
         inicio: dateTimeUtils.add(
           agendaService.slots[0].inicio,
-          4,
+          3,
           DateUnit.DAYS,
         ),
       },
@@ -142,44 +181,18 @@ describe('atualizar slot na agenda', () => {
     ).rejects.toThrow(SlotNaAgendaNaoEncontrado);
   });
 
-  // it('deve rejeitar se usuario não for atendente', async () => {
-  //   jest.spyOn(voluntarioService, 'findById').mockResolvedValue({
-  //     ...createMock<Voluntario>(),
-  //     usuario: {
-  //       ...createMock<Usuario>(),
-  //       tipo: TipoUsuario.ALUNO,
-  //     },
-  //   });
-  //   await expect(
-  //     sut.execute({
-  //       voluntarioId: expect.any(Number),
-  //       slots: [
-  //         {
-  //           inicio: expect.any(Date),
-  //         },
-  //       ],
-  //     }),
-  //   ).rejects.toBeInstanceOf(UsuarioNaoAtendenteError);
-  // });
-
-  // it('deve rejeitar se usuario não for atendente aprovado', async () => {
-  //   jest.spyOn(voluntarioService, 'findById').mockResolvedValue({
-  //     ...createMock<Voluntario>(),
-  //     aprovado: false,
-  //     usuario: {
-  //       ...createMock<Usuario>(),
-  //       tipo: TipoUsuario.ATENDENTE,
-  //     },
-  //   });
-  //   await expect(
-  //     sut.execute({
-  //       voluntarioId: expect.any(Number),
-  //       slots: [
-  //         {
-  //           inicio: expect.any(Date),
-  //         },
-  //       ],
-  //     }),
-  //   ).rejects.toBeInstanceOf(VoluntarioNaoAprovadoError);
-  // });
+  it('deve dar erro se o slot atualizado conflitar com outro já existente', async () => {
+    await expect(
+      sut.execute({
+        id: 13,
+        slot: {
+          inicio: dateTimeUtils.add(
+            agendaService.slots[2].inicio,
+            3,
+            DateUnit.DAYS,
+          ),
+        },
+      }),
+    ).rejects.toBeInstanceOf(SlotOcupadoError);
+  });
 });

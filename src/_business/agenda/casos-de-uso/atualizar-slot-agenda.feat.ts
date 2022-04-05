@@ -2,12 +2,15 @@ import { SlotAgenda } from '../entidades/slot-agenda.entity';
 import {
   IAtualizaSlotAgendaService,
   IBuscarSlotAgendaByIdService,
+  RecuperaSlotsAgendaService,
 } from '../services/agenda.service';
 
 import {
   DateUnit,
   IDateAdd,
+  IDateEndOf,
   IDateGreaterThan,
+  IDateStartOf,
 } from '../services/date-time.service';
 
 export type AtualizarSlotInput = {
@@ -20,6 +23,11 @@ export class SlotNaAgendaNaoEncontrado extends Error {
   message = 'Slot não encontrado na agenda.';
 }
 
+export class SlotOcupadoError extends Error {
+  code = '409';
+  message = 'Já existe um slot cadastrado para esse horário.';
+}
+
 export class SlotComMenosDe24HorasError extends Error {
   code = 400;
   message =
@@ -29,8 +37,12 @@ export class SlotComMenosDe24HorasError extends Error {
 export class AtualizarSlotDeAgenda {
   constructor(
     private readonly agendaService: IAtualizaSlotAgendaService &
-      IBuscarSlotAgendaByIdService,
-    private readonly dateHelper: IDateAdd & IDateGreaterThan,
+      IBuscarSlotAgendaByIdService &
+      RecuperaSlotsAgendaService,
+    private readonly dateHelper: IDateAdd &
+      IDateGreaterThan &
+      IDateStartOf &
+      IDateEndOf,
   ) {}
 
   async execute({ id, slot }: AtualizarSlotInput): Promise<SlotAgenda> {
@@ -45,6 +57,18 @@ export class AtualizarSlotDeAgenda {
     }
 
     const fim = this.dateHelper.add(slot.inicio, 1, DateUnit.HOURS);
+
+    if (
+      await this.verificarConflitoSlot(
+        slot.inicio,
+        fim,
+        (
+          await slotEncontrado.voluntario
+        ).id,
+      )
+    ) {
+      throw new SlotOcupadoError();
+    }
 
     const slotAtualizado = await this.agendaService.atualiza(id, {
       ...slot,
@@ -66,6 +90,22 @@ export class AtualizarSlotDeAgenda {
     return this.dateHelper.greaterThan(
       dataInicioAtualizada,
       dataDeHojeMais24horas,
+    );
+  }
+
+  private async verificarConflitoSlot(
+    horarioInicio: Date,
+    horarioFim: Date,
+    atendenteId: number,
+  ): Promise<boolean> {
+    const slotsNaAgenda = await this.agendaService.recuperaSlots({
+      atendenteId,
+      inicio: this.dateHelper.startOf(horarioInicio),
+      fim: this.dateHelper.endOf(horarioFim),
+    });
+
+    return slotsNaAgenda.some(
+      ({ inicio, fim }) => inicio < horarioFim && fim > horarioInicio,
     );
   }
 }
