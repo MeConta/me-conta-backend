@@ -13,6 +13,7 @@ import {
   IRemoverSlotAgendaService,
   RecuperaSlotsAgendaService,
   SlotAgendaParam,
+  IAtualizaSlotAgendaService,
 } from '../../../_business/agenda/services/agenda.service';
 import { SlotAgenda } from '../../../_business/agenda/entidades/slot-agenda.entity';
 
@@ -22,7 +23,8 @@ export class TypeOrmAgendaService
     CriarSlotAgendaService,
     RecuperaSlotsAgendaService,
     IBuscarSlotAgendaByIdService,
-    IRemoverSlotAgendaService
+    IRemoverSlotAgendaService,
+    IAtualizaSlotAgendaService
 {
   constructor(
     @InjectRepository(SlotAgendaDbEntity)
@@ -68,5 +70,16 @@ export class TypeOrmAgendaService
 
   async removerSlot(id: number): Promise<void> {
     await this.agendaRepo.softDelete({ id });
+  }
+
+  async atualiza(
+    id: number,
+    input: Omit<SlotAgendaParam, 'voluntarioId'>,
+  ): Promise<SlotAgenda> {
+    await this.agendaRepo.update(id, input);
+
+    const slotUpdated = await this.agendaRepo.findOne({ id });
+
+    return slotUpdated;
   }
 }

@@ -14,7 +14,7 @@ import {
   VoluntarioNaoAprovadoError,
 } from '../../../_business/agenda/casos-de-uso/criar-novo-slot-de-agenda.feat';
 import { User } from '../../../_adapters/auth/decorators/user.decorator';
-import { Auth, AuthParam } from '../../../decorators';
+import { Auth } from '../../../decorators';
 import {
   ApiNotFoundResponse,
   ApiTags,
@@ -38,7 +38,7 @@ export class CriarSlotAgendaController {
     description: 'Usuário não encontrado',
   })
   @Auth(TipoUsuario.ATENDENTE)
-  @AuthParam()
+  // @AuthParam()
   @HttpCode(HttpStatus.NO_CONTENT)
   async create(
     @Body() { slots }: CreateSlotAgendaDto,

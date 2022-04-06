@@ -22,12 +22,15 @@ import { ListarSlotsAgenda } from '../../_business/agenda/casos-de-uso/listar-sl
 import { ListarSlotsAgendaController } from './controllers/listar-slots-agenda.controller';
 import {
   CriarSlotAgendaService,
+  IAtualizaSlotAgendaService,
   IBuscarSlotAgendaByIdService,
   IRemoverSlotAgendaService,
   RecuperaSlotsAgendaService,
 } from '../../_business/agenda/services/agenda.service';
 import { RemoverSlotAgenda } from '../../_business/agenda/casos-de-uso/remover-slot-agenda.feat';
 import { RemoverSlotAgendaController } from './controllers/remover-slot-agenda.controller';
+import { AtualizarSlotAgendaController } from './controllers/atualizar-slot-agenda.controller';
+import { AtualizarSlotDeAgenda } from '../../_business/agenda/casos-de-uso/atualizar-slot-agenda.feat';
 
 class NestCriarNovoSlotDeAgenda extends CriarNovoSlotDeAgenda {
   constructor(
@@ -62,6 +65,19 @@ class NestRemoverSlotAgenda extends RemoverSlotAgenda {
   }
 }
 
+class NestAtualizaSlotAgenda extends AtualizarSlotDeAgenda {
+  constructor(
+    @Inject(TypeOrmAgendaService)
+    agendaService: IAtualizaSlotAgendaService &
+      IBuscarSlotAgendaByIdService &
+      RecuperaSlotsAgendaService,
+    @Inject(MomentDateTimeService)
+    dateHelpers: IDateAdd & IDateGreaterThan & IDateStartOf & IDateEndOf,
+  ) {
+    super(agendaService, dateHelpers);
+  }
+}
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -74,6 +90,7 @@ class NestRemoverSlotAgenda extends RemoverSlotAgenda {
     CriarSlotAgendaController,
     ListarSlotsAgendaController,
     RemoverSlotAgendaController,
+    AtualizarSlotAgendaController,
   ],
   providers: [
     {
@@ -87,6 +104,10 @@ class NestRemoverSlotAgenda extends RemoverSlotAgenda {
     {
       provide: RemoverSlotAgenda,
       useClass: NestRemoverSlotAgenda,
+    },
+    {
+      provide: AtualizarSlotDeAgenda,
+      useClass: NestAtualizaSlotAgenda,
     },
     TypeormVoluntarioService,
     TypeOrmAgendaService,
