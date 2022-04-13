@@ -45,7 +45,7 @@ export class NestRecuperarSenha extends RecuperarSenha {
   ) {
     super(usuarioService, recuperacaoService, dateService, emailService, {
       subject: '[Me conta?] Recuperação de senha',
-      template: './recuperacao',
+      template: '../../mail/templates/recuperacao',
     });
   }
 }

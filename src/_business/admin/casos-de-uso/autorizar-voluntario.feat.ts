@@ -32,8 +32,8 @@ export class AutorizarVoluntario {
     await this.service.atualizarAprovacao(id, status);
     try {
       const template = status
-        ? './voluntario-aprovacao'
-        : './voluntario-reprovacao';
+        ? '../../mail/templates/voluntario-aprovacao'
+        : '../../mail/templates/voluntario-reprovacao';
       const { usuario } = voluntario;
       await this.emailService.send({
         ...this.emailOptions,

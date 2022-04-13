@@ -12,7 +12,7 @@ export class MailerMailService implements ISendEmailService {
     private readonly mailerService: MailerService,
   ) {}
 
-  send(options: EmailOptions): Promise<void> {
-    return this.mailerService.sendMail(options as ISendMailOptions);
+  async send(options: EmailOptions): Promise<void> {
+    return await this.mailerService.sendMail(options as ISendMailOptions);
   }
 }
