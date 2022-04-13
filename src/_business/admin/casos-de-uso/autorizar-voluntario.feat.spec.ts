@@ -66,7 +66,7 @@ describe('Autorizar voluntário', () => {
     it('Deve enviar e-mail de aprovação', async () => {
       expect(emailService.send).toBeCalledWith(
         expect.objectContaining({
-          template: './voluntario-aprovacao',
+          template: '../../mail/templates/voluntario-aprovacao',
         }),
       );
     });
@@ -83,7 +83,7 @@ describe('Autorizar voluntário', () => {
     it('Deve enviar e-mail de reprovação', async () => {
       expect(emailService.send).toBeCalledWith(
         expect.objectContaining({
-          template: './voluntario-reprovacao',
+          template: '../../mail/templates/voluntario-reprovacao',
         }),
       );
     });
