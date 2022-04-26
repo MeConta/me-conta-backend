@@ -24,14 +24,17 @@ export class AutorizarVoluntario {
     private readonly emailOptions: Pick<EmailOptions, 'subject'>,
   ) {}
 
-  async execute(id: number, status: boolean): Promise<void> {
+  async execute(
+    id: number,
+    { link, aprovado }: Pick<Voluntario, 'aprovado' | 'link'>,
+  ): Promise<void> {
     const voluntario = await this.service.findById(id);
     if (!voluntario) {
       throw new VoluntarioNaoEncontradoError();
     }
-    await this.service.atualizarAprovacao(id, status);
+    await this.service.atualizarAprovacao(id, { link, aprovado });
     try {
-      const template = status
+      const template = aprovado
         ? '../../mail/templates/voluntario-aprovacao'
         : '../../mail/templates/voluntario-reprovacao';
       const { usuario } = voluntario;

@@ -44,10 +44,10 @@ export class AutorizarVoluntarioController {
   async aprovar(
     @Param('id') id: number,
     @Body()
-    dto: AutorizarVoluntarioInputDto,
+    { aprovado, link }: AutorizarVoluntarioInputDto,
   ): Promise<void> {
     try {
-      await this.autorizarVoluntario.execute(id, dto.aprovado);
+      await this.autorizarVoluntario.execute(id, { aprovado, link });
     } catch (e) {
       switch (true) {
         case e instanceof VoluntarioNaoEncontradoError:
