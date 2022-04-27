@@ -75,6 +75,7 @@ describe('Aprovação de Voluntários (e2e)', () => {
         .set('Authorization', `Bearer ${token}`)
         .send({
           aprovado: true,
+          link: 'meet.google.com/huc-yrpy-nes',
         } as AutorizarVoluntarioInputDto)
         .expect(HttpStatus.NO_CONTENT);
 
@@ -109,6 +110,7 @@ describe('Aprovação de Voluntários (e2e)', () => {
         .set('Authorization', `Bearer ${token}`)
         .send({
           aprovado: true,
+          link: 'meet.google.com/huc-yrpy-nes',
         } as AutorizarVoluntarioInputDto)
         .expect(HttpStatus.NOT_FOUND);
     });

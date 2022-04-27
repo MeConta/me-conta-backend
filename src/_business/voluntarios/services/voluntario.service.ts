@@ -3,7 +3,10 @@ import { Usuario } from '../../usuarios/entidades/usuario.entity';
 import { VoluntarioOutput } from '../dtos/voluntario.dto';
 
 export interface IAtualizarAprovacaoVoluntario {
-  atualizarAprovacao(id: number, aprovado: boolean): Promise<void>;
+  atualizarAprovacao(
+    id: number,
+    { aprovado, link }: Pick<Voluntario, 'aprovado' | 'link'>,
+  ): Promise<void>;
 }
 
 export interface IBuscarVoluntarioViaId {

@@ -35,10 +35,13 @@ describe('Aprovação de Voluntários', () => {
     expect(controller).toBeDefined();
   });
   it('Deve aprovar um voluntário', async () => {
-    await controller.aprovar(1, { aprovado: true });
+    await controller.aprovar(1, {
+      aprovado: true,
+      link: 'meet.google.com/acs-cbso-yfy',
+    });
     expect(useCase.execute).toBeCalledWith(
       expect.any(Number),
-      expect.any(Boolean),
+      expect.any(Object),
     );
   });
   it('Deve dar erro de voluntário não encontrado', async () => {

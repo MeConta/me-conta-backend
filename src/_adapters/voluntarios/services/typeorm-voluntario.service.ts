@@ -37,10 +37,14 @@ export class TypeormVoluntarioService
     await this.repository.save(entity);
   }
 
-  async atualizarAprovacao(id: number, aprovado: boolean): Promise<void> {
+  async atualizarAprovacao(
+    id: number,
+    { link, aprovado }: Pick<Voluntario, 'link' | 'aprovado'>,
+  ): Promise<void> {
     await this.repository.save({
       id,
       aprovado,
+      link,
     });
   }
 

@@ -25,6 +25,7 @@ export interface Voluntario {
   especializacoes?: string;
   usuario: Usuario;
   slots?: SlotAgenda[];
+  link?: string;
 }
 
 export interface Bio {

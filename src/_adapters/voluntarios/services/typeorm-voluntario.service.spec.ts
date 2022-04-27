@@ -92,7 +92,10 @@ describe('VoluntarioService', () => {
   it('Deve atualizar a aprovação de um voluntário', async () => {
     const { id } = await repository.save(request);
 
-    await service.atualizarAprovacao(id, true);
+    await service.atualizarAprovacao(id, {
+      aprovado: true,
+      link: 'meet.google.com/acs-cbso-yfy',
+    });
 
     const { aprovado } = await repository.findOne(id);
 

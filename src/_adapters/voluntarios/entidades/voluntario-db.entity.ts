@@ -100,4 +100,7 @@ export class VoluntarioDbEntity
     eager: true,
   })
   slots: SlotAgenda[];
+
+  @Column({ nullable: true })
+  link: string;
 }
