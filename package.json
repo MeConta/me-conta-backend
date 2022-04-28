@@ -98,6 +98,11 @@
     "tsconfig-paths": "^3.10.1",
     "typescript": "^4.3.5"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test"
+    }
+  },
   "main": ".eslintrc.js",
   "directories": {
     "test": "test"
