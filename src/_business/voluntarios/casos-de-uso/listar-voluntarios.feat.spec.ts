@@ -23,6 +23,7 @@ class InMemoryVoluntarioService implements IBuscarVoluntarios {
       id: index,
     },
   }));
+
   async buscar(search?: Partial<Voluntario>): Promise<VoluntarioOutput[]> {
     if (search?.frentes) {
       this.voluntarios = this.voluntarios.filter((voluntario) =>
@@ -63,47 +64,53 @@ describe('Listagem de voluntários', () => {
   });
 
   it('Deve retornar os voluntários ativos e com dados ofuscados quando o requisitante não for administrador', async () => {
-    const [response] = await sut.execute(null);
+    const [response] = await sut.execute({
+      user: {
+        roles: [TipoUsuario.ALUNO],
+      } as ITokenUser,
+    });
     expect(response).toBeDefined();
     expect(response).not.toHaveProperty('aprovado');
   });
 
   it('Deve retornar os voluntários ativos de determinado tipo e com dados ofuscados quando o requisitante não for administrador', async () => {
-    const response = await sut.execute(
-      {
+    const response = await sut.execute({
+      user: {
         roles: [TipoUsuario.ALUNO],
       } as ITokenUser,
-      TipoUsuario.ATENDENTE,
-    );
+      tipo: TipoUsuario.ATENDENTE,
+    });
     expect(response).toHaveLength(2);
   });
 
   it('Deve retornar os voluntários para sessão de acolhimento', async () => {
-    const response = await sut.execute(
-      {
+    const response = await sut.execute({
+      user: {
         roles: [TipoUsuario.ALUNO],
       } as ITokenUser,
-      TipoUsuario.ATENDENTE,
-      FrenteAtuacao.SESSAO_ACOLHIMENTO,
-    );
+      tipo: TipoUsuario.ATENDENTE,
+      frenteAtuacao: FrenteAtuacao.SESSAO_ACOLHIMENTO,
+    });
     expect(response).toHaveLength(1);
     expect(response[0]).toEqual(expect.objectContaining({ frentes: [0] }));
   });
 
   it('Deve retornar Todos os voluntários quando o requisitante for administrador', async () => {
     const response = await sut.execute({
-      roles: [TipoUsuario.ADMINISTRADOR],
-    } as ITokenUser);
+      user: {
+        roles: [TipoUsuario.ADMINISTRADOR],
+      } as ITokenUser,
+    });
     expect(response).toHaveLength(4);
   });
 
   it('Deve retornar Todos os voluntários de determinado tipo quando o requisitante for administrador', async () => {
-    const response = await sut.execute(
-      {
+    const response = await sut.execute({
+      user: {
         roles: [TipoUsuario.ADMINISTRADOR],
       } as ITokenUser,
-      TipoUsuario.ATENDENTE,
-    );
+      tipo: TipoUsuario.ATENDENTE,
+    });
     expect(response).toHaveLength(4);
   });
 });

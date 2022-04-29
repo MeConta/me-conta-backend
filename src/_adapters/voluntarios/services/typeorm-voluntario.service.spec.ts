@@ -19,11 +19,12 @@ import { FrenteAtuacao } from '../../../_business/voluntarios/entidades/voluntar
 import { SlotAgendaDbEntity } from '../../agenda/entidades/slot-agenda-db.entity';
 
 describe('VoluntarioService', () => {
+  const usuarioNome = 'Teste';
   let connection: Connection;
   let repository: Repository<VoluntarioDbEntity>;
   let service: TypeormVoluntarioService;
   const request = {
-    usuario: { id: 1 } as Usuario,
+    usuario: { id: 1, nome: usuarioNome } as Usuario,
     genero: Genero.FEMININO,
     estado: Estado.AC,
     dataNascimento: new Date(),
@@ -51,16 +52,26 @@ describe('VoluntarioService', () => {
 
   beforeEach(async () => {
     const usuarioEntity = connection.getRepository(UsuarioDbEntity);
-    const usuario = usuarioEntity.create({
+    const usuario1 = usuarioEntity.create({
       id: 1,
-      nome: 'Teste',
+      nome: usuarioNome,
       email: 'email@email.com',
       senha: 's3Nh4vAl!d@',
       tipo: TipoUsuario.ATENDENTE,
       salt: MOCKED_SALT,
       dataTermos: new Date(),
     });
-    await usuarioEntity.save(usuario);
+    const usuario2 = usuarioEntity.create({
+      id: 2,
+      nome: 'outroUsuario',
+      email: 'email2@email.com',
+      senha: 's3Nh41Al!d@',
+      tipo: TipoUsuario.ATENDENTE,
+      salt: MOCKED_SALT,
+      dataTermos: new Date(),
+    });
+    await usuarioEntity.save(usuario1);
+    await usuarioEntity.save(usuario2);
   });
 
   afterAll(async () => {
@@ -102,12 +113,54 @@ describe('VoluntarioService', () => {
     expect(aprovado).toBeTruthy();
   });
 
-  it('Deve buscar voluntários via propriedades', async () => {
+  it('Deve buscar voluntários por status de aprovação', async () => {
     await repository.save({ ...request, aprovado: true });
 
     const response = await service.buscar({ aprovado: true });
 
     expect(response).toHaveLength(1);
+  });
+
+  // TODO: quando for criar a feature de ordernação por ordem alfabetica, pode usar esse teste
+  // it('Deve ordernar voluntários por nome', async () => {
+  //   await repository.save(request);
+  //   await repository.save({ ...request, usuario: { id: 2 } } as any);
+
+  //   const response = await service.buscar();
+  //   console.log(response);
+
+  //   expect(response).toHaveLength(2);
+  //   expect(response[0]).toEqual(
+  //     expect.objectContaining({
+  //       usuario: expect.objectContaining({
+  //         nome: 'outroUsuario',
+  //       }),
+  //     }),
+  //   );
+  //   expect(response[1]).toEqual(
+  //     expect.objectContaining({
+  //       usuario: expect.objectContaining({
+  //         nome: usuarioNome,
+  //       }),
+  //     }),
+  //   );
+  // });
+
+  it('Deve buscar voluntários filtrando por nome', async () => {
+    await repository.save(request);
+
+    const response = await service.buscar({
+      usuario: { nome: usuarioNome.substring(0, 3) },
+    } as any);
+
+    expect(response).toHaveLength(1);
+    expect(response[0]).toEqual(
+      expect.objectContaining({
+        usuario: expect.objectContaining({
+          nome: usuarioNome,
+        }),
+      }),
+    );
   });
 
   it('Deve buscar todos os voluntários', async () => {
