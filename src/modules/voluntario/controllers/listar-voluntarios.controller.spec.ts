@@ -36,23 +36,27 @@ describe('Buscar Voluntários', () => {
     await controller.listar({
       roles: [TipoUsuario.ALUNO],
     } as ITokenUser);
-    expect(useCase.execute).toBeCalledWith(
-      expect.objectContaining({
+    expect(useCase.execute).toBeCalledWith({
+      tipo: undefined,
+      frenteAtuacao: undefined,
+      user: {
         roles: [TipoUsuario.ALUNO],
-      } as ITokenUser),
-      undefined,
-      undefined,
-    );
+      },
+      aprovado: undefined,
+      nome: undefined,
+    });
   });
   it('Deve chamar o caso de uso com o tipo', async () => {
     await controller.listar(null, {
       tipo: TipoUsuario.ATENDENTE,
     } as VoluntarioParams);
-    expect(useCase.execute).toBeCalledWith(
-      null,
-      TipoUsuario.ATENDENTE,
-      undefined,
-    );
+    expect(useCase.execute).toBeCalledWith({
+      tipo: TipoUsuario.ATENDENTE,
+      user: null,
+      frenteAtuacao: undefined,
+      aprovado: undefined,
+      nome: undefined,
+    });
   });
   it('Deve chamar o caso de uso com o tipo e filtro por frente', async () => {
     await controller.listar(
@@ -62,6 +66,12 @@ describe('Buscar Voluntários', () => {
       } as VoluntarioParams,
       { frente: 1 } as VoluntarioQuery,
     );
-    expect(useCase.execute).toBeCalledWith(null, TipoUsuario.ATENDENTE, 1);
+    expect(useCase.execute).toBeCalledWith({
+      tipo: TipoUsuario.ATENDENTE,
+      frenteAtuacao: 1,
+      user: null,
+      aprovado: undefined,
+      nome: undefined,
+    });
   });
 });

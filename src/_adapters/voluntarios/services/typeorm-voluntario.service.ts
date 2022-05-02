@@ -5,7 +5,7 @@ import {
 } from '../../../_business/voluntarios/casos-de-uso/cadastrar-voluntario.feat';
 import { InjectRepository } from '@nestjs/typeorm';
 import { VoluntarioDbEntity } from '../entidades/voluntario-db.entity';
-import { FindOperator, getManager, In, Repository } from 'typeorm';
+import { FindOperator, getManager, In, Like, Repository } from 'typeorm';
 import {
   IAtualizarAprovacaoVoluntario,
   IBuscarVoluntarios,
@@ -14,6 +14,7 @@ import {
 import { Voluntario } from '../../../_business/voluntarios/entidades/voluntario.entity';
 import { UsuarioDbEntity } from '../../usuarios/entidades/usuario.db.entity';
 import { VoluntarioOutput } from '../../../_business/voluntarios/dtos/voluntario.dto';
+import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
 
 type WhereCondition<T> = {
   [P in keyof T]?: FindOperator<T[P] | T[P][]>;
@@ -52,10 +53,17 @@ export class TypeormVoluntarioService
     return this.repository.findOne(id);
   }
 
-  async buscar(simpleWhere?: Partial<Voluntario>): Promise<VoluntarioOutput[]> {
-    const complexWhere: WhereCondition<Voluntario> = {};
+  async buscar(
+    simpleWhere?: Partial<Voluntario & { usuario: Usuario }>,
+  ): Promise<VoluntarioOutput[]> {
+    const complexWhere: WhereCondition<Voluntario & { usuario: Usuario }> = {};
     if (simpleWhere?.frentes) {
       complexWhere.frentes = In([simpleWhere.frentes]);
+    }
+    if (simpleWhere?.usuario?.nome) {
+      complexWhere.usuario = {
+        nome: Like(`%${simpleWhere.usuario.nome}%`),
+      } as any;
     }
 
     return this.repository.find({

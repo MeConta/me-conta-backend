@@ -8,24 +8,37 @@ import {
   VoluntarioOutput,
 } from '../dtos/voluntario.dto';
 
+interface IRequest {
+  user?: ITokenUser;
+  tipo?: TipoUsuario;
+  frenteAtuacao?: FrenteAtuacao;
+  aprovado?: boolean;
+  nome?: string;
+}
 export class ListarVoluntarios {
   constructor(private readonly voluntarioService: IBuscarVoluntarios) {}
 
-  async execute(
-    user?: ITokenUser,
-    tipo?: TipoUsuario,
-    frenteAtuacao?: FrenteAtuacao,
-  ): Promise<(VoluntarioOutput | ObfuscatedVoluntarioOutput)[]> {
+  async execute({
+    user,
+    tipo,
+    frenteAtuacao,
+    aprovado,
+    nome,
+  }: IRequest): Promise<(VoluntarioOutput | ObfuscatedVoluntarioOutput)[]> {
     const isAdmin: boolean = user?.roles.includes(TipoUsuario.ADMINISTRADOR);
 
     const search: Partial<Voluntario & { usuario: Usuario }> = {};
 
-    if (!isAdmin) {
+    if (!isAdmin || aprovado) {
       search.aprovado = true;
     }
 
+    if (nome) {
+      search.usuario = { nome } as Usuario;
+    }
+
     if (tipo in TipoUsuario) {
-      search.usuario = { tipo } as Usuario;
+      search.usuario = { ...search.usuario, tipo } as Usuario;
     }
 
     if (frenteAtuacao in FrenteAtuacao) {
@@ -36,38 +49,38 @@ export class ListarVoluntarios {
 
     if (isAdmin) {
       return voluntarios;
-    } else {
-      return voluntarios.map<ObfuscatedVoluntarioOutput>((voluntario) => {
-        const {
-          crp,
-          especializacoes,
-          areaAtuacao,
-          formado,
-          instituicao,
-          frentes,
-          bio,
-          usuario,
-          abordagem,
-        } = voluntario;
-        // TODO: Melhorar esse mapping
-        const { nome, tipo, email, id } = usuario;
-        return {
-          crp,
-          especializacoes,
-          areaAtuacao,
-          formado,
-          instituicao,
-          frentes,
-          bio,
-          abordagem,
-          usuario: {
-            nome,
-            tipo,
-            email,
-            id,
-          },
-        } as ObfuscatedVoluntarioOutput;
-      });
     }
+
+    return voluntarios.map<ObfuscatedVoluntarioOutput>((voluntario) => {
+      const {
+        crp,
+        especializacoes,
+        areaAtuacao,
+        formado,
+        instituicao,
+        frentes,
+        bio,
+        usuario,
+        abordagem,
+      } = voluntario;
+      // TODO: Melhorar esse mapping
+      const { nome, tipo, email, id } = usuario;
+      return {
+        crp,
+        especializacoes,
+        areaAtuacao,
+        formado,
+        instituicao,
+        frentes,
+        bio,
+        abordagem,
+        usuario: {
+          nome,
+          tipo,
+          email,
+          id,
+        },
+      } as ObfuscatedVoluntarioOutput;
+    });
   }
 }

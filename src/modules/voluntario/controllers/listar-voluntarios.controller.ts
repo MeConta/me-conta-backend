@@ -37,6 +37,12 @@ export class ListarVoluntariosController {
     @Param() params?: VoluntarioParams,
     @Query() query?: VoluntarioQuery,
   ): Promise<ListaVoluntariosDto[]> {
-    return this.listarVoluntarios.execute(user, params?.tipo, query?.frente);
+    return this.listarVoluntarios.execute({
+      user,
+      tipo: params?.tipo,
+      frenteAtuacao: query?.frente,
+      aprovado: query?.aprovado,
+      nome: query?.nome,
+    });
   }
 }
