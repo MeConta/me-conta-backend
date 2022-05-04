@@ -39,6 +39,5 @@ export class UsuarioDbEntity extends TypeormDefaultEntity implements Usuario {
   dataTermos: Date;
 
   @Column({ nullable: true })
-  // @Exclude()
   refreshTokenHashed: string;
 }

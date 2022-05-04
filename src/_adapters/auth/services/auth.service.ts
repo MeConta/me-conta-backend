@@ -20,6 +20,9 @@ import {
 import { AtualizarUsuario } from '../../../_business/usuarios/casos-de-uso/atualizar-usuario.feat';
 import { IBuscarUsuarioViaId } from '../../../_business/usuarios/casos-de-uso/buscar-usuario.id.feat';
 import { ValidarUsuarioComRefreshToken } from '../../../_business/auth/casos-de-uso/validar-usuario-com-refresh-token.feat';
+import { BuscarVoluntarioViaId } from '../../../_business/voluntarios/casos-de-uso/buscar-voluntario.id.feat';
+import { TypeormVoluntarioService } from '../../../_adapters/voluntarios/services/typeorm-voluntario.service';
+import { IBuscarVoluntarioViaId } from '../../../_business/voluntarios/services/voluntario.service';
 
 @Injectable()
 export class NestAuthService extends ValidarUsuario {
@@ -69,6 +72,14 @@ export class NestValidaUsuarioComRefreshTokenService extends ValidarUsuarioComRe
   }
 }
 
+export class NestValidaVoluntarioComPerfilCompleto extends BuscarVoluntarioViaId {
+  constructor(
+    @Inject(TypeormVoluntarioService) voluntarioService: IBuscarVoluntarioViaId,
+  ) {
+    super(voluntarioService);
+  }
+}
+
 @Injectable()
 export class AuthService implements IAuthService {
   constructor(
@@ -82,6 +93,8 @@ export class AuthService implements IAuthService {
     private hashService: IHashHashService,
     @Inject(NestValidaUsuarioComRefreshTokenService)
     private validarUsuarioComRefreshToken: ValidarUsuarioComRefreshToken,
+    @Inject(NestValidaVoluntarioComPerfilCompleto)
+    private validaVoluntarioComPerfilCompleto: BuscarVoluntarioViaId,
   ) {}
 
   async validateUser(email: string, senha: string): Promise<Usuario> {
@@ -89,12 +102,17 @@ export class AuthService implements IAuthService {
   }
 
   async login(user: Usuario): Promise<TokenDto> {
+    const volunteerProfile =
+      await this.validaVoluntarioComPerfilCompleto.execute(user.id);
+
     const tokensReturned = this.token.execute(user);
 
     const refreshTokenHashed = await this.hashService.hash(
       tokensReturned.refreshToken,
       user.salt,
     );
+
+    tokensReturned.perfilCompleto = volunteerProfile ? true : false;
 
     await this.updateUser.execute(user.id, { refreshTokenHashed });
 

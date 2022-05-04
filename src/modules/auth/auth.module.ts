@@ -5,6 +5,7 @@ import {
   NestLoginService,
   NestLogoutService,
   NestValidaUsuarioComRefreshTokenService,
+  NestValidaVoluntarioComPerfilCompleto,
 } from '../../_adapters/auth/services/auth.service';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from '../../_adapters/auth/strategies/local.strategy';
@@ -16,12 +17,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsuarioDbEntity } from '../../_adapters/usuarios/entidades/usuario.db.entity';
 import { BcryptHashService } from '../../_adapters/usuarios/services/bcrypt-hash.service';
 import { JwtRefreshTokenStrategy } from '../../_adapters/auth/strategies/jwt-refresh-token.strategy';
+import { TypeormVoluntarioService } from '../../_adapters/voluntarios/services/typeorm-voluntario.service';
+import { VoluntarioDbEntity } from '../../_adapters/voluntarios/entidades/voluntario-db.entity';
 
 @Module({
   imports: [
     PassportModule.register({}),
     JwtModule.register({}),
-    TypeOrmModule.forFeature([UsuarioDbEntity]),
+    TypeOrmModule.forFeature([UsuarioDbEntity, VoluntarioDbEntity]),
   ],
   providers: [
     AuthService,
@@ -34,6 +37,8 @@ import { JwtRefreshTokenStrategy } from '../../_adapters/auth/strategies/jwt-ref
     NestValidaUsuarioComRefreshTokenService,
     TypeormUsuarioService,
     BcryptHashService,
+    NestValidaVoluntarioComPerfilCompleto,
+    TypeormVoluntarioService,
   ],
   controllers: [AuthController],
   exports: [

@@ -11,9 +11,10 @@ export class BuscarVoluntarioViaId {
 
   async execute(id: number): Promise<Voluntario> {
     const voluntario = await this.voluntarioService.findById(id);
-    if (!voluntario) {
-      throw new VoluntarioNaoEncontradoError();
-    }
+
+    // if (!voluntario) {
+    //   throw new VoluntarioNaoEncontradoError();
+    // }
 
     return voluntario;
   }
