@@ -29,6 +29,8 @@ export class ListarVoluntarios {
 
     const search: Partial<Voluntario & { usuario: Usuario }> = {};
 
+    search.aprovado = aprovado;
+
     if (!isAdmin || aprovado) {
       search.aprovado = true;
     }
@@ -44,8 +46,6 @@ export class ListarVoluntarios {
     if (frenteAtuacao in FrenteAtuacao) {
       search.frentes = [frenteAtuacao];
     }
-
-    console.log(search);
 
     const voluntarios = await this.voluntarioService.buscar(search);
 
@@ -64,6 +64,7 @@ export class ListarVoluntarios {
         bio,
         usuario,
         abordagem,
+        aprovado,
       } = voluntario;
       // TODO: Melhorar esse mapping
       const { nome, tipo, email, id } = usuario;
@@ -76,6 +77,7 @@ export class ListarVoluntarios {
         frentes,
         bio,
         abordagem,
+        aprovado,
         usuario: {
           nome,
           tipo,
