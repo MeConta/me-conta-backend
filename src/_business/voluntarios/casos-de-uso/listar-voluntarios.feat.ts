@@ -32,7 +32,7 @@ export class ListarVoluntarios {
     if (!isAdmin || aprovado) {
       search.aprovado = true;
     } else if (isAdmin && aprovado === false) {
-      search.aprovado = false;
+      search.aprovado = null;
     }
 
     if (nome) {
