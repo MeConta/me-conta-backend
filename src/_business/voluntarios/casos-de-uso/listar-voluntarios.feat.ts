@@ -45,6 +45,8 @@ export class ListarVoluntarios {
       search.frentes = [frenteAtuacao];
     }
 
+    console.log(search);
+
     const voluntarios = await this.voluntarioService.buscar(search);
 
     if (isAdmin) {
