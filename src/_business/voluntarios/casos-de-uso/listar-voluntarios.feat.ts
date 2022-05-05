@@ -29,10 +29,10 @@ export class ListarVoluntarios {
 
     const search: Partial<Voluntario & { usuario: Usuario }> = {};
 
-    search.aprovado = aprovado;
-
     if (!isAdmin || aprovado) {
       search.aprovado = true;
+    } else if (isAdmin && aprovado === false) {
+      search.aprovado = false;
     }
 
     if (nome) {
@@ -64,7 +64,6 @@ export class ListarVoluntarios {
         bio,
         usuario,
         abordagem,
-        aprovado,
       } = voluntario;
       // TODO: Melhorar esse mapping
       const { nome, tipo, email, id } = usuario;
@@ -77,7 +76,6 @@ export class ListarVoluntarios {
         frentes,
         bio,
         abordagem,
-        aprovado,
         usuario: {
           nome,
           tipo,
