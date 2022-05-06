@@ -20,6 +20,8 @@ import { SlotAgendaDbEntity } from '../../agenda/entidades/slot-agenda-db.entity
 
 describe('VoluntarioService', () => {
   const usuarioNome = 'Teste';
+  const usuarioNome2 = 'Teste2';
+
   let connection: Connection;
   let repository: Repository<VoluntarioDbEntity>;
   let service: TypeormVoluntarioService;
@@ -33,6 +35,18 @@ describe('VoluntarioService', () => {
     semestre: 10,
     frentes: [FrenteAtuacao.COACHING_DE_ROTINA_DE_ESTUDOS],
     instituicao: 'Teste',
+  } as NovoVoluntario & { aprovado?: boolean };
+
+  const request2 = {
+    usuario: { id: 2, nome: usuarioNome2 } as Usuario,
+    genero: Genero.FEMININO,
+    estado: Estado.AM,
+    dataNascimento: new Date(),
+    cidade: 'Manaus',
+    formado: false,
+    semestre: 8,
+    frentes: [FrenteAtuacao.SESSAO_ACOLHIMENTO],
+    instituicao: 'Teste2',
   } as NovoVoluntario & { aprovado?: boolean };
 
   beforeAll(async () => {
@@ -117,6 +131,15 @@ describe('VoluntarioService', () => {
     await repository.save({ ...request, aprovado: true });
 
     const response = await service.buscar({ aprovado: true });
+
+    expect(response).toHaveLength(1);
+  });
+
+  it('Deve buscar voluntários esperando aprovação quando o valor passado pro campo aprovado for null', async () => {
+    await repository.save({ ...request, aprovado: null });
+    await repository.save({ ...request2, aprovado: true });
+
+    const response = await service.buscar({ aprovado: null });
 
     expect(response).toHaveLength(1);
   });

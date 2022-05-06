@@ -5,7 +5,14 @@ import {
 } from '../../../_business/voluntarios/casos-de-uso/cadastrar-voluntario.feat';
 import { InjectRepository } from '@nestjs/typeorm';
 import { VoluntarioDbEntity } from '../entidades/voluntario-db.entity';
-import { FindOperator, getManager, In, Like, Repository } from 'typeorm';
+import {
+  FindOperator,
+  getManager,
+  In,
+  IsNull,
+  Like,
+  Repository,
+} from 'typeorm';
 import {
   IAtualizarAprovacaoVoluntario,
   IBuscarVoluntarios,
@@ -60,10 +67,15 @@ export class TypeormVoluntarioService
     if (simpleWhere?.frentes) {
       complexWhere.frentes = In([simpleWhere.frentes]);
     }
+
     if (simpleWhere?.usuario?.nome) {
       complexWhere.usuario = {
         nome: Like(`%${simpleWhere.usuario.nome}%`),
       } as any;
+    }
+
+    if (simpleWhere?.aprovado === null) {
+      complexWhere.aprovado = IsNull();
     }
 
     return this.repository.find({
