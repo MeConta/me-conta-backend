@@ -4,11 +4,15 @@ import {
   HttpCode,
   HttpStatus,
   Inject,
+  InternalServerErrorException,
+  NotFoundException,
   Post,
 } from '@nestjs/common';
 import { RecuperarSenha } from '../../../_business/recuperacao/casos-de-uso/recuperar-senha.feat';
 import { RecuperacaoDto } from '../../../_adapters/recuperacao/dto/recuperacao.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiInternalServerErrorResponse, ApiTags } from '@nestjs/swagger';
+import { UsuarioNaoEncontradoError } from '../../../_business/usuarios/erros/usuarios.errors';
+import { EMailSendError } from '../../../_business/mail/services/mail.service';
 
 @ApiTags('Senha')
 @Controller('senha/recuperacao')
@@ -18,6 +22,9 @@ export class RecuperacaoController {
     private readonly recuperarSenha: RecuperarSenha,
   ) {}
 
+  @ApiInternalServerErrorResponse({
+    description: 'Erro genérico',
+  })
   @Post()
   @HttpCode(HttpStatus.NO_CONTENT)
   async recuperar(@Body() input: RecuperacaoDto): Promise<void> {
@@ -25,8 +32,14 @@ export class RecuperacaoController {
     try {
       return await this.recuperarSenha.execute(email);
     } catch (e) {
-      console.error(e);
-      return Promise.resolve();
+      //console.error(e);
+      //return Promise.resolve();
+      if (e instanceof UsuarioNaoEncontradoError) {
+        throw new NotFoundException(e);
+      }
+      if (e instanceof EMailSendError) {
+        throw new InternalServerErrorException(e);
+      }
     }
   }
 }

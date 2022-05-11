@@ -72,7 +72,6 @@ describe('Recuperar senha', () => {
 
   it('Deve dar erro de usuário não encontrado', async () => {
     jest.spyOn(usuarioService, 'findByEmail').mockResolvedValue(null);
-
     await expect(() => sut.execute('teste@teste.com')).rejects.toThrow(
       UsuarioNaoEncontradoError,
     );
