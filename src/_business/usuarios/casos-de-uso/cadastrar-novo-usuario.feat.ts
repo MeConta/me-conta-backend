@@ -29,7 +29,7 @@ export interface ICadastrarNovoUsuario {
 
 export class DuplicatedError extends Error {
   public code = 409;
-  public message = 'e-mail duplicado';
+  public message = 'E-mail duplicado';
 }
 
 export class NoAdminCreationError extends Error {
