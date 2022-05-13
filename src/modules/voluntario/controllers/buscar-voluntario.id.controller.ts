@@ -38,7 +38,7 @@ export class BuscarVoluntarioViaIdController {
   })
   async buscar(@Param('id') id: number): Promise<BuscarVoluntariosDto> {
     try {
-      return this.useCase.execute(id);
+      return await this.useCase.execute(id);
     } catch (e) {
       switch (true) {
         case e instanceof VoluntarioNaoEncontradoError:
