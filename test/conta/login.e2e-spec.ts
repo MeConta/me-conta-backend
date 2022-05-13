@@ -7,7 +7,7 @@ import * as request from 'supertest';
 import { AuthModule } from '../../src/modules/auth/auth.module';
 import { TokenDto } from '../../src/_adapters/auth/dto/auth.dto';
 import { Usuario } from '../../src/_business/usuarios/entidades/usuario.entity';
-import { DEFAULT_PASSWORD } from '../../jest.setup';
+import { DEFAULT_PASSWORD, DEFAULT_WRONG_PASSWORD } from '../../jest.setup';
 
 describe('Autenticação (e2)', () => {
   let app: INestApplication;
@@ -45,7 +45,7 @@ describe('Autenticação (e2)', () => {
         .post('/auth/login')
         .send({
           username: user.email,
-          password: 'senha-incorreta',
+          password: DEFAULT_WRONG_PASSWORD,
         })
         .expect(401);
     });
