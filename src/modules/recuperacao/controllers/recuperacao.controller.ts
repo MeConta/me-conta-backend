@@ -32,8 +32,6 @@ export class RecuperacaoController {
     try {
       return await this.recuperarSenha.execute(email);
     } catch (e) {
-      //console.error(e);
-      //return Promise.resolve();
       if (e instanceof UsuarioNaoEncontradoError) {
         throw new NotFoundException(e);
       }
