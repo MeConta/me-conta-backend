@@ -29,6 +29,8 @@ import {
   IDateAdd,
   IDateGreaterThan,
 } from '../../_business/agenda/services/date-time.service';
+import { ValidaHash } from '../../_business/recuperacao/casos-de-uso/validar-hash.feat';
+import { HashController } from './controllers/validar-hash.controller';
 
 @Injectable()
 export class NestRecuperarSenha extends RecuperarSenha {
@@ -66,6 +68,22 @@ export class NestResetSenha extends ResetSenha {
   }
 }
 
+@Injectable()
+export class NestValidaHash extends ValidaHash {
+  constructor(
+    @Inject(TypeormRecuperacaoService)
+    recuperacaoService: IBuscarRecuperacaoService & IRemoverRecuperacaoService,
+    @Inject(TypeormUsuarioService)
+    usuarioService: IAtualizarUsuarioService,
+    @Inject(BcryptHashService)
+    hashService: IHashHashService,
+    @Inject(MomentDateTimeService)
+    dateService: IDateGreaterThan,
+  ) {
+    super(recuperacaoService, usuarioService, hashService, dateService);
+  }
+}
+
 @Module({
   imports: [TypeOrmModule.forFeature([UsuarioDbEntity, RecuperacaoDbEntity])],
   providers: [
@@ -81,7 +99,11 @@ export class NestResetSenha extends ResetSenha {
       provide: ResetSenha,
       useClass: NestResetSenha,
     },
+    {
+      provide: ValidaHash,
+      useClass: NestValidaHash,
+    },
   ],
-  controllers: [RecuperacaoController, ResetController],
+  controllers: [RecuperacaoController, ResetController, HashController],
 })
 export class RecuperacaoModule {}
