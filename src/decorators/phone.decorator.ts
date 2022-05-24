@@ -9,7 +9,7 @@ export function IsPhone(validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         validate(value: any) {
-          return /(^\d{10}$)|(^\d{11}$)/.test(value);
+          return /^[1-9]{2}(?:[2-8]|9[1-9])[0-9]{3}[0-9]{4}$/.test(value);
         },
         defaultMessage(): string {
           return `$property is not valid phone`;
