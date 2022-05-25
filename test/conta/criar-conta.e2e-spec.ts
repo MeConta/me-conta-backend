@@ -24,7 +24,7 @@ describe('Criar Conta (e2e)', () => {
 
   describe('/cadastro-inicial (POST)', () => {
     const req = {
-      nome: name.firstName(),
+      nome: name.firstName() + ' ' + name.lastName(),
       email: internet.email(),
       senha: DEFAULT_PASSWORD,
       tipo: TipoUsuario.ALUNO,

@@ -12,12 +12,16 @@ import {
 } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { IsNotEmptyString, IsPasswordStrong } from '../../../decorators';
 import { Transform } from 'class-transformer';
+import { IsFullName } from '../../../decorators/full-name.decorator';
 
 export class CreateUsuarioDto implements NovoUsuario {
   /***
    * O Nome de usuário
    * @example 'Maria Silva'
    */
+  @IsFullName({
+    message: '$property deve ter nome e sobrenome',
+  })
   @MinLength(2, {
     message: '$property deve ter mais de 2 caracteres',
   })
