@@ -14,7 +14,7 @@ export function IsFullName(validationOptions?: ValidationOptions) {
           );
         },
         defaultMessage(): string {
-          return `$property is not valid phone`;
+          return `$property must be a full name`;
         },
       },
     });
