@@ -11,6 +11,7 @@ export class GerarToken {
       sub: id,
       roles: [tipo],
     };
+
     return {
       token: this.jwtService.sign(payload, {
         expiresIn: `${process.env.JWT_TIMEOUT}`,
@@ -22,6 +23,7 @@ export class GerarToken {
       }),
       tipo,
       nome,
+      perfilCompleto: false,
     };
   }
 }

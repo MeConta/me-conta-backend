@@ -10,6 +10,7 @@ export interface IToken {
   refreshToken: string;
   tipo: TipoUsuario;
   nome: string;
+  perfilCompleto: boolean;
 }
 
 export interface ITokenPayload {

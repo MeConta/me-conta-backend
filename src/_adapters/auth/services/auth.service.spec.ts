@@ -4,6 +4,8 @@ import {
   NestLoginService,
   NestLogoutService,
   NestValidaUsuarioComRefreshTokenService,
+  NestValidaVoluntarioComPerfilCompleto,
+  NestValidaAlunoComPerfilCompleto,
 } from './auth.service';
 import { createMock } from '@golevelup/ts-jest';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
@@ -16,15 +18,18 @@ import {
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { IBuscarUsuarioViaId } from '../../../_business/usuarios/casos-de-uso/buscar-usuario.id.feat';
 import { BcryptHashService } from '../../../_adapters/usuarios/services/bcrypt-hash.service';
+import { IBuscarVoluntarioViaId } from '../../../_business/voluntarios/services/voluntario.service';
+import { IBuscarAlunoViaId } from '../../../_business/alunos/services/alunos.service';
 
 describe('AuthService', () => {
   let service: AuthService;
-
   let auth: NestAuthService;
   let login: NestLoginService;
   let logout: NestLogoutService;
   let hash: BcryptHashService;
   let validaUsuarioComRefreshToken: NestValidaUsuarioComRefreshTokenService;
+  let validaVoluntarioComPerfilCompleto: NestValidaVoluntarioComPerfilCompleto;
+  let validaAlunoComPerfilCompleto: NestValidaAlunoComPerfilCompleto;
 
   const entity = {
     ...createMock<Usuario>(),
@@ -51,6 +56,13 @@ describe('AuthService', () => {
       createMock<IBuscarUsuarioViaId>(),
       createMock<IHashCompareService>(),
     );
+    validaVoluntarioComPerfilCompleto =
+      new NestValidaVoluntarioComPerfilCompleto(
+        createMock<IBuscarVoluntarioViaId>(),
+      );
+    validaAlunoComPerfilCompleto = new NestValidaAlunoComPerfilCompleto(
+      createMock<IBuscarAlunoViaId>(),
+    );
 
     service = new AuthService(
       auth,
@@ -58,6 +70,8 @@ describe('AuthService', () => {
       logout,
       hash,
       validaUsuarioComRefreshToken,
+      validaVoluntarioComPerfilCompleto,
+      validaAlunoComPerfilCompleto,
     );
   });
 
@@ -68,6 +82,7 @@ describe('AuthService', () => {
       refreshToken: 'REFRESH-TOKEN',
       tipo: TipoUsuario.ADMINISTRADOR,
       nome: 'Teste',
+      perfilCompleto: false,
     });
     jest.spyOn(logout, 'execute').mockResolvedValue();
     jest

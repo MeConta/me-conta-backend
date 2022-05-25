@@ -20,5 +20,7 @@ describe('Gerar Token', () => {
         token: 'TOKEN',
       }),
     );
+
+    expect(response).toHaveProperty('perfilCompleto');
   });
 });
