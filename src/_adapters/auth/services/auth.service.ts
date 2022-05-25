@@ -23,6 +23,12 @@ import { ValidarUsuarioComRefreshToken } from '../../../_business/auth/casos-de-
 import { BuscarVoluntarioViaId } from '../../../_business/voluntarios/casos-de-uso/buscar-voluntario.id.feat';
 import { TypeormVoluntarioService } from '../../../_adapters/voluntarios/services/typeorm-voluntario.service';
 import { IBuscarVoluntarioViaId } from '../../../_business/voluntarios/services/voluntario.service';
+import { BuscarAlunoViaId } from '../../../_business/alunos/casos-de-uso/buscar-aluno.id.feat';
+import { IBuscarAlunoViaId } from '../../../_business/alunos/services/alunos.service';
+import { TypeormAlunoService } from '../../../_adapters/alunos/services/typeorm-aluno.service';
+import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
+import { Aluno } from '../../../_business/alunos/entidades/aluno.entity';
+import { Voluntario } from '../../../_business/voluntarios/entidades/voluntario.entity';
 
 @Injectable()
 export class NestAuthService extends ValidarUsuario {
@@ -80,6 +86,12 @@ export class NestValidaVoluntarioComPerfilCompleto extends BuscarVoluntarioViaId
   }
 }
 
+export class NestValidaAlunoComPerfilCompleto extends BuscarAlunoViaId {
+  constructor(@Inject(TypeormAlunoService) alunoService: IBuscarAlunoViaId) {
+    super(alunoService);
+  }
+}
+
 @Injectable()
 export class AuthService implements IAuthService {
   constructor(
@@ -95,6 +107,8 @@ export class AuthService implements IAuthService {
     private validarUsuarioComRefreshToken: ValidarUsuarioComRefreshToken,
     @Inject(NestValidaVoluntarioComPerfilCompleto)
     private validaVoluntarioComPerfilCompleto: BuscarVoluntarioViaId,
+    @Inject(NestValidaAlunoComPerfilCompleto)
+    private validaAlunoComPerfilCompleto: BuscarAlunoViaId,
   ) {}
 
   async validateUser(email: string, senha: string): Promise<Usuario> {
@@ -102,20 +116,21 @@ export class AuthService implements IAuthService {
   }
 
   async login(user: Usuario): Promise<TokenDto> {
-    const volunteerProfile =
-      await this.validaVoluntarioComPerfilCompleto.execute(user.id);
-
+    let UserProfile: Aluno | Voluntario;
+    if (user.tipo == TipoUsuario.ALUNO) {
+      UserProfile = await this.validaAlunoComPerfilCompleto.execute(user.id);
+    } else {
+      UserProfile = await this.validaVoluntarioComPerfilCompleto.execute(
+        user.id,
+      );
+    }
     const tokensReturned = this.token.execute(user);
-
     const refreshTokenHashed = await this.hashService.hash(
       tokensReturned.refreshToken,
       user.salt,
     );
-
-    tokensReturned.perfilCompleto = volunteerProfile ? true : false;
-
+    tokensReturned.perfilCompleto = UserProfile ? true : false;
     await this.updateUser.execute(user.id, { refreshTokenHashed });
-
     return tokensReturned;
   }
 
