@@ -9,9 +9,10 @@ export function IsFullName(validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         validate(value: any) {
-          return new RegExp(/^((\w|[à-ú]){3,} (\w|[à-ú]|'){3,})/, 'si').test(
-            value,
-          );
+          return new RegExp(
+            /^((\w|[à-ú]|'|.|,){2,} (\w|[à-ú]|'|.|,){2,})/,
+            'si',
+          ).test(value);
         },
         defaultMessage(): string {
           return `$property must be a full name`;

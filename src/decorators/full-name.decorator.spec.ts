@@ -53,12 +53,12 @@ describe('IsFullName', () => {
     await expect(
       target.transform(
         <Testing>{
-          test: 'João áãàâéêèēeëíîìïóõôòúüùûū',
+          test: 'João áãàâéêèëíîìïóõôòúüùû',
         },
         metadata,
       ),
     ).resolves.toEqual({
-      test: 'João áãàâéêèēeëíîìïóõôòúüùûū',
+      test: 'João áãàâéêèëíîìïóõôòúüùû',
     } as Testing);
   });
   it('Deve validar um sobrenome com apóstrofo', async () => {
