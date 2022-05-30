@@ -9,7 +9,7 @@ export function IsFullName(validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         validate(value: any) {
-          return /^(([a-zA-Zà-úÀ-Ú][',.-áãàâéêèēeëíîìïóõôòúüùûū]*){2,})+\s+(([a-zA-Zà-úÀ-Ú\s][',.-áãàâéêèēeëíîìïóõôòúüùûū]*){2,})+$/.test(
+          return new RegExp(/^((\w|[à-ú]){3,} (\w|[à-ú]|'){3,})/, 'si').test(
             value,
           );
         },
