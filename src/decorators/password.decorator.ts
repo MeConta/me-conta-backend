@@ -1,5 +1,4 @@
 import { isEmpty, registerDecorator, ValidationOptions } from 'class-validator';
-import * as zxcvbn from 'zxcvbn';
 
 export function IsPasswordStrong(
   minScore?: number,
@@ -16,9 +15,9 @@ export function IsPasswordStrong(
           if (isEmpty(value)) {
             return false;
           }
-          return (
-            zxcvbn(value).score > (minScore || +process.env.PASSWORD_STRENGTH)
-          );
+          return new RegExp(
+            /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#!])[0-9a-zA-Z$*&@#!]{8,20}$/,
+          ).test(value);
         },
         defaultMessage(): string {
           return `$property is too weak`;
