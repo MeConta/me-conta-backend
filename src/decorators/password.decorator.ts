@@ -1,9 +1,6 @@
 import { isEmpty, registerDecorator, ValidationOptions } from 'class-validator';
 
-export function IsPasswordStrong(
-  minScore?: number,
-  validationOptions?: ValidationOptions,
-) {
+export function IsPasswordStrong(validationOptions?: ValidationOptions) {
   return (object: any, propertyName: string) => {
     registerDecorator({
       target: object.constructor,

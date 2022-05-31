@@ -17,7 +17,7 @@ export class ResetSenhaInputDto implements ResetSenhaInput {
   @IsNotEmpty({
     message: '$property não pode ser vazio',
   })
-  @IsPasswordStrong(null, {
+  @IsPasswordStrong({
     message: '$property deve ser uma senha forte',
   })
   senha!: string;
