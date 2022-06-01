@@ -13,7 +13,7 @@ export function IsPasswordStrong(validationOptions?: ValidationOptions) {
             return false;
           }
           return new RegExp(
-            /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#!])[0-9a-zA-Z$*&@#!]{8,20}$/,
+            /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#!])[0-9a-zA-Z$*&@#!]{8,}$/,
           ).test(value);
         },
         defaultMessage(): string {
