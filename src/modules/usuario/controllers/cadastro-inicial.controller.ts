@@ -30,7 +30,7 @@ export class CadastroInicialController {
     description: 'Usuário já cadastrado',
   })
   @ApiInternalServerErrorResponse({
-    description: 'Erro genérico',
+    description: 'Erro interno de servidor',
   })
   @Post()
   async cadastrar(
@@ -50,7 +50,7 @@ export class CadastroInicialController {
       }
       throw new InternalServerErrorException({
         code: 500,
-        message: 'Erro genérico',
+        message: 'Erro interno de servidor',
       });
     }
   }

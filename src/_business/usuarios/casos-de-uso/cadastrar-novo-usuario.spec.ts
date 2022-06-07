@@ -4,6 +4,7 @@ import {
   ICadastrarNovoUsuario,
   NoAdminCreationError,
   NovoUsuario,
+  QueryError,
   TipoUsuario,
 } from './cadastrar-novo-usuario.feat';
 import { Usuario } from '../entidades/usuario.entity';
@@ -14,6 +15,10 @@ import {
 import { createMock } from '@golevelup/ts-jest';
 
 class InMemoryUsuarioService implements ICadastrarNovoUsuario {
+  findByEmail(email: string) {
+    const usuario = this.usuarios.find((usuario) => usuario.email == email);
+    return Promise.resolve(usuario);
+  }
   usuarios: Usuario[] = [];
   cadastrar(
     usuario: NovoUsuario & { salt: string; dataTermos: Date },
@@ -61,7 +66,12 @@ describe('Cadastrar novo usuário', () => {
     );
   });
   it('Deve dar erro de usuário duplicado', async () => {
-    jest.spyOn(usuarioService, 'cadastrar').mockRejectedValue(new Error());
+    await sut.execute({
+      nome: 'João',
+      email: 'fake@email.com',
+      tipo: TipoUsuario.ALUNO,
+      senha: 's3nh4F0rT#',
+    });
     await expect(() =>
       sut.execute({
         nome: 'João',
@@ -70,6 +80,17 @@ describe('Cadastrar novo usuário', () => {
         senha: 's3nh4F0rT#',
       }),
     ).rejects.toThrow(DuplicatedError);
+  });
+  it('Deve dar erro genérico caso ocorra problema com cadastro', async () => {
+    jest.spyOn(usuarioService, 'cadastrar').mockRejectedValue(new Error(''));
+    await expect(() =>
+      sut.execute({
+        nome: 'João',
+        email: 'fake@email.com',
+        tipo: TipoUsuario.ALUNO,
+        senha: 's3nh4F0rT#',
+      }),
+    ).rejects.toThrow(QueryError);
   });
   it('Deve dar erro ao tentar cadastrar um administrador', async () => {
     await expect(() =>

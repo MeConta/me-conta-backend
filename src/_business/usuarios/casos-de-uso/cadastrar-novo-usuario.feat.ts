@@ -22,6 +22,7 @@ export type NovoUsuarioResponse = Pick<
   'id' | 'email' | 'nome' | 'tipo'
 >;
 export interface ICadastrarNovoUsuario {
+  findByEmail(email: string): Promise<Usuario>;
   cadastrar(
     usuario: NovoUsuario & { salt: string; dataTermos: Date },
   ): Promise<Usuario>;
@@ -37,6 +38,11 @@ export class NoAdminCreationError extends Error {
   public message = 'Não pode criar administrador';
 }
 
+export class QueryError extends Error {
+  code = 500;
+  message = 'Erro ao executar query';
+}
+
 export class CadastrarNovoUsuario {
   constructor(
     private readonly usuarioService: ICadastrarNovoUsuario,
@@ -47,6 +53,10 @@ export class CadastrarNovoUsuario {
     if (input.tipo === TipoUsuario.ADMINISTRADOR) {
       throw new NoAdminCreationError();
     }
+    const usuario = await this.usuarioService.findByEmail(input.email);
+    if (usuario) {
+      throw new DuplicatedError();
+    }
     try {
       const SALT = await this.passwordService.generateSalt();
       return await this.usuarioService.cadastrar({
@@ -56,7 +66,7 @@ export class CadastrarNovoUsuario {
         dataTermos: new Date(),
       });
     } catch (e) {
-      throw new DuplicatedError();
+      throw new QueryError();
     }
   }
 }
