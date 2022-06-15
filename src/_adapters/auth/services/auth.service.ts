@@ -129,7 +129,8 @@ export class AuthService implements IAuthService {
       tokensReturned.refreshToken,
       user.salt,
     );
-    tokensReturned.perfilCompleto = UserProfile ? true : false;
+    tokensReturned.perfilCompleto =
+      UserProfile || user.tipo === TipoUsuario.ADMINISTRADOR ? true : false;
     await this.updateUser.execute(user.id, { refreshTokenHashed });
     return tokensReturned;
   }
