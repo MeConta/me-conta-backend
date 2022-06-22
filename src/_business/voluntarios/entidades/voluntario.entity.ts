@@ -12,6 +12,12 @@ export enum AreaAtuacao {
   PSICOLOGO = 'psicologo',
 }
 
+export enum StatusAprovacao {
+  REPROVADO = 1,
+  APROVADO = 2,
+  ABERTO = 3,
+}
+
 export interface Voluntario {
   id?: number;
   instituicao: string;

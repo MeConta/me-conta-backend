@@ -1,8 +1,11 @@
-import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { Transform, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { FrenteAtuacao } from '../../../_business/voluntarios/entidades/voluntario.entity';
+import {
+  FrenteAtuacao,
+  StatusAprovacao,
+} from '../../../_business/voluntarios/entidades/voluntario.entity';
 
 export class VoluntarioParams {
   /***
@@ -34,17 +37,34 @@ export class VoluntarioQuery {
   @Type(() => Number)
   frente: FrenteAtuacao;
 
+  /***
+   * Tipo de Status:
+   * 1. REPROVADO
+   * 2. APROVADO
+   * 3. ABERTO
+   * 4. TODOS
+   */
   @ApiProperty({
-    type: Boolean,
+    enum: [
+      StatusAprovacao.REPROVADO,
+      StatusAprovacao.APROVADO,
+      StatusAprovacao.ABERTO,
+    ],
     required: false,
   })
-  @IsBoolean({
-    message: '$property deve ser um booleano',
-  })
   @IsOptional()
-  @Transform(({ value }) => value === 'true')
-  @Type(() => Boolean)
-  aprovado: boolean;
+  @IsEnum(
+    [
+      StatusAprovacao.REPROVADO,
+      StatusAprovacao.APROVADO,
+      StatusAprovacao.ABERTO,
+    ],
+    {
+      message: '$property deve ser um tipo de status válido',
+    },
+  )
+  @Type(() => Number)
+  status: StatusAprovacao;
 
   @ApiProperty({
     type: String,

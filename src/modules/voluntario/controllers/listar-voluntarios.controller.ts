@@ -41,7 +41,7 @@ export class ListarVoluntariosController {
       user,
       tipo: params?.tipo,
       frenteAtuacao: query?.frente,
-      aprovado: query?.aprovado,
+      status: query?.status,
       nome: query?.nome,
     });
   }

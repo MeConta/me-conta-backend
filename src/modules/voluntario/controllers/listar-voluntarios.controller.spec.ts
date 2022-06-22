@@ -74,4 +74,68 @@ describe('Buscar Voluntários', () => {
       nome: undefined,
     });
   });
+  it('Deve chamar o caso de uso com o filtro para status de aprovado', async () => {
+    await controller.listar(
+      null,
+      {
+        tipo: TipoUsuario.ATENDENTE,
+      } as VoluntarioParams,
+      { status: 2 } as VoluntarioQuery,
+    );
+    expect(useCase.execute).toBeCalledWith({
+      tipo: TipoUsuario.ATENDENTE,
+      frenteAtuacao: undefined,
+      user: null,
+      status: 2,
+      nome: undefined,
+    });
+  });
+  it('Deve chamar o caso de uso com o filtro para status de reprovado', async () => {
+    await controller.listar(
+      null,
+      {
+        tipo: TipoUsuario.ATENDENTE,
+      } as VoluntarioParams,
+      { status: 1 } as VoluntarioQuery,
+    );
+    expect(useCase.execute).toBeCalledWith({
+      tipo: TipoUsuario.ATENDENTE,
+      frenteAtuacao: undefined,
+      user: null,
+      status: 1,
+      nome: undefined,
+    });
+  });
+  it('Deve chamar o caso de uso com o filtro para status em aberto', async () => {
+    await controller.listar(
+      null,
+      {
+        tipo: TipoUsuario.ATENDENTE,
+      } as VoluntarioParams,
+      { status: 3 } as VoluntarioQuery,
+    );
+    expect(useCase.execute).toBeCalledWith({
+      tipo: TipoUsuario.ATENDENTE,
+      frenteAtuacao: undefined,
+      user: null,
+      status: 3,
+      nome: undefined,
+    });
+  });
+  it('Deve chamar o caso de uso mostrando todos os usuários', async () => {
+    await controller.listar(
+      null,
+      {
+        tipo: TipoUsuario.ATENDENTE,
+      } as VoluntarioParams,
+      {} as VoluntarioQuery,
+    );
+    expect(useCase.execute).toBeCalledWith({
+      tipo: TipoUsuario.ATENDENTE,
+      frenteAtuacao: undefined,
+      user: null,
+      status: undefined,
+      nome: undefined,
+    });
+  });
 });

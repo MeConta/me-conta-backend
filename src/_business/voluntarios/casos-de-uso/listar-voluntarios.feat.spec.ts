@@ -12,6 +12,7 @@ class InMemoryVoluntarioService implements IBuscarVoluntarios {
     { aprovado: true, frentes: [0] },
     { aprovado: false, frentes: [2] },
     { aprovado: true, frentes: [1, 2] },
+    { aprovado: null, frentes: [0] },
     null,
   ].map<VoluntarioOutput>((voluntario, index) => ({
     ...createMock<VoluntarioOutput>(),
@@ -37,7 +38,7 @@ class InMemoryVoluntarioService implements IBuscarVoluntarios {
           search.aprovado === voluntario.aprovado &&
           search.usuario.tipo === voluntario.usuario.tipo,
       );
-    } else if (search?.aprovado) {
+    } else if (search?.aprovado !== undefined) {
       return this.voluntarios.filter(
         (voluntario) => search.aprovado === voluntario.aprovado,
       );
@@ -101,7 +102,50 @@ describe('Listagem de voluntários', () => {
         roles: [TipoUsuario.ADMINISTRADOR],
       } as ITokenUser,
     });
-    expect(response).toHaveLength(4);
+    expect(response).toHaveLength(5);
+  });
+
+  it('Deve retornar os voluntários aprovados', async () => {
+    const aprovado = 2;
+    const response = await sut.execute({
+      user: {
+        roles: [TipoUsuario.ADMINISTRADOR],
+      } as ITokenUser,
+      status: aprovado,
+    });
+    expect(response).toHaveLength(2);
+    expect(response).toEqual([
+      { aprovado: true, frentes: [0], usuario: { id: 0, tipo: 2 } },
+      { aprovado: true, frentes: [1, 2], usuario: { id: 2, tipo: 2 } },
+    ]);
+  });
+
+  it('Deve retornar os voluntários reprovados quando o requisitante for administrador', async () => {
+    const reprovado = 1;
+    const response = await sut.execute({
+      user: {
+        roles: [TipoUsuario.ADMINISTRADOR],
+      } as ITokenUser,
+      status: reprovado,
+    });
+    expect(response).toHaveLength(1);
+    expect(response).toEqual([
+      { aprovado: false, frentes: [2], usuario: { id: 1, tipo: 2 } },
+    ]);
+  });
+
+  it('Deve retornar os voluntários com status em aberto quando o requisitante for administrador', async () => {
+    const aberto = 3;
+    const response = await sut.execute({
+      user: {
+        roles: [TipoUsuario.ADMINISTRADOR],
+      } as ITokenUser,
+      status: aberto,
+    });
+    expect(response).toHaveLength(1);
+    expect(response).toEqual([
+      { aprovado: null, frentes: [0], usuario: { id: 3, tipo: 2 } },
+    ]);
   });
 
   it('Deve retornar Todos os voluntários de determinado tipo quando o requisitante for administrador', async () => {
@@ -111,6 +155,6 @@ describe('Listagem de voluntários', () => {
       } as ITokenUser,
       tipo: TipoUsuario.ATENDENTE,
     });
-    expect(response).toHaveLength(4);
+    expect(response).toHaveLength(5);
   });
 });

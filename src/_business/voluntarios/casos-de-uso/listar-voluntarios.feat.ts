@@ -1,4 +1,8 @@
-import { FrenteAtuacao, Voluntario } from '../entidades/voluntario.entity';
+import {
+  FrenteAtuacao,
+  StatusAprovacao,
+  Voluntario,
+} from '../entidades/voluntario.entity';
 import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { IBuscarVoluntarios } from '../services/voluntario.service';
 import { ITokenUser } from '../../auth/interfaces/auth';
@@ -12,7 +16,7 @@ interface IRequest {
   user?: ITokenUser;
   tipo?: TipoUsuario;
   frenteAtuacao?: FrenteAtuacao;
-  aprovado?: boolean;
+  status?: StatusAprovacao;
   nome?: string;
 }
 export class ListarVoluntarios {
@@ -22,18 +26,12 @@ export class ListarVoluntarios {
     user,
     tipo,
     frenteAtuacao,
-    aprovado,
+    status,
     nome,
   }: IRequest): Promise<(VoluntarioOutput | ObfuscatedVoluntarioOutput)[]> {
-    const isAdmin: boolean = user?.roles.includes(TipoUsuario.ADMINISTRADOR);
-
     const search: Partial<Voluntario & { usuario: Usuario }> = {};
-
-    if (!isAdmin || aprovado) {
-      search.aprovado = true;
-    } else if (isAdmin && aprovado === false) {
-      search.aprovado = null;
-    }
+    const isAdmin: boolean = user?.roles.includes(TipoUsuario.ADMINISTRADOR);
+    this.setStatus(status, search, isAdmin);
 
     if (nome) {
       search.usuario = { nome } as Usuario;
@@ -84,5 +82,27 @@ export class ListarVoluntarios {
         },
       } as ObfuscatedVoluntarioOutput;
     });
+  }
+
+  private setStatus(
+    status: StatusAprovacao,
+    search: Partial<Voluntario & { usuario: Usuario }>,
+    isAdmin: boolean,
+  ): void {
+    if (isAdmin) {
+      switch (status) {
+        case StatusAprovacao.REPROVADO:
+          search.aprovado = false;
+          break;
+        case StatusAprovacao.APROVADO:
+          search.aprovado = true;
+          break;
+        case StatusAprovacao.ABERTO:
+          search.aprovado = null;
+          break;
+      }
+    } else {
+      search.aprovado = true;
+    }
   }
 }
