@@ -42,7 +42,6 @@ export class VoluntarioQuery {
    * 1. REPROVADO
    * 2. APROVADO
    * 3. ABERTO
-   * 4. TODOS
    */
   @ApiProperty({
     enum: [
