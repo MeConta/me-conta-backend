@@ -144,6 +144,38 @@ describe('VoluntarioService', () => {
     expect(response).toHaveLength(1);
   });
 
+  it('Deve ordernar voluntários por ordem cronológica', async () => {
+    await repository.save({
+      ...request,
+      usuario: { id: 2 },
+      dataCriacao: new Date('2020-03-25'),
+    } as any);
+    await repository.save({
+      ...request,
+      usuario: { id: 1 },
+      dataCriacao: new Date('2024-03-25'),
+    } as any);
+    const response = await service.buscar();
+
+    expect(response).toHaveLength(2);
+    expect(response[0]).toEqual(
+      expect.objectContaining({
+        usuario: expect.objectContaining({
+          nome: 'outroUsuario',
+          id: 2,
+        }),
+      }),
+    );
+    expect(response[1]).toEqual(
+      expect.objectContaining({
+        usuario: expect.objectContaining({
+          nome: usuarioNome,
+          id: 1,
+        }),
+      }),
+    );
+  });
+
   // TODO: quando for criar a feature de ordernação por ordem alfabetica, pode usar esse teste
   // it('Deve ordernar voluntários por nome', async () => {
   //   await repository.save(request);
@@ -205,6 +237,9 @@ describe('VoluntarioService', () => {
       relations: expect.any(Array),
       where: {
         frentes: expect.any(FindOperator),
+      },
+      order: {
+        dataCriacao: 'ASC',
       },
     });
   });

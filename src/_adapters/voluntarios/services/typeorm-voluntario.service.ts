@@ -86,6 +86,9 @@ export class TypeormVoluntarioService
         ...simpleWhere,
         ...complexWhere,
       },
+      order: {
+        dataCriacao: 'ASC',
+      },
     });
   }
 }
