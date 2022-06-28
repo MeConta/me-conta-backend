@@ -2,6 +2,7 @@ import {
   AtualizarSlotDeAgenda,
   SlotComMenosDe24HorasError,
   SlotNaAgendaNaoEncontrado,
+  SlotOcupadoError
 } from './atualizar-slot-agenda.feat';
 
 import {
@@ -21,7 +22,6 @@ import {
 } from '../services/date-time.service';
 import { createMock } from '@golevelup/ts-jest';
 import { Voluntario } from '../../../_business/voluntarios/entidades/voluntario.entity';
-import { SlotOcupadoError } from './atualizar-slot-agenda.feat';
 
 class InMemoryAgendaService
   implements
@@ -29,8 +29,13 @@ class InMemoryAgendaService
     IBuscarSlotAgendaByIdService,
     RecuperaSlotsAgendaService
 {
-  constructor(
-    public slots: SlotAgenda[] = [
+  public slots: SlotAgenda[] = [];
+  constructor() {
+    this.makeSlotsMock();
+  }
+
+  private makeSlotsMock(): void {
+    this.slots = [
       createMock<SlotAgenda>({
         id: 16,
         inicio: dayjs().add(4, 'day').toDate(),
@@ -68,13 +73,11 @@ class InMemoryAgendaService
           }),
         ),
       }),
-    ],
-  ) {}
+    ]
+  }
 
   async findById(id: number): Promise<SlotAgenda> {
-    const slotEncontrado = this.slots.find((slot) => slot.id === id);
-
-    return slotEncontrado;
+    return this.slots.find((slot) => slot.id === id);
   }
 
   async atualiza(
