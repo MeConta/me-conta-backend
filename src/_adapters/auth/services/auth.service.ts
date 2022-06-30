@@ -29,6 +29,8 @@ import { TypeormAlunoService } from '../../../_adapters/alunos/services/typeorm-
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { Aluno } from '../../../_business/alunos/entidades/aluno.entity';
 import { Voluntario } from '../../../_business/voluntarios/entidades/voluntario.entity';
+import { TypeormPerfilService } from '../../../_adapters/perfil/services/typeorm-perfil.service';
+import { IBuscarPerfilByIdService } from '../../../_business/perfil/services/perfil.service';
 
 @Injectable()
 export class NestAuthService extends ValidarUsuario {
@@ -81,8 +83,9 @@ export class NestValidaUsuarioComRefreshTokenService extends ValidarUsuarioComRe
 export class NestValidaVoluntarioComPerfilCompleto extends BuscarVoluntarioViaId {
   constructor(
     @Inject(TypeormVoluntarioService) voluntarioService: IBuscarVoluntarioViaId,
+    @Inject(TypeormPerfilService) perfilService: IBuscarPerfilByIdService,
   ) {
-    super(voluntarioService);
+    super(voluntarioService, perfilService);
   }
 }
 

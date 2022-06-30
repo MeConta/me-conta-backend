@@ -22,6 +22,8 @@ import { TypeormVoluntarioService } from '../../_adapters/voluntarios/services/t
 import { VoluntarioDbEntity } from '../../_adapters/voluntarios/entidades/voluntario-db.entity';
 import { TypeormAlunoService } from '../../_adapters/alunos/services/typeorm-aluno.service';
 import { AlunoDbEntity } from '../../_adapters/alunos/entidades/aluno.db.entity';
+import { TypeormPerfilService } from '../../_adapters/perfil/services/typeorm-perfil.service';
+import { PerfilDbEntity } from '../../_adapters/perfil/entidades/perfil.db.entity';
 
 @Module({
   imports: [
@@ -31,6 +33,7 @@ import { AlunoDbEntity } from '../../_adapters/alunos/entidades/aluno.db.entity'
       UsuarioDbEntity,
       VoluntarioDbEntity,
       AlunoDbEntity,
+      PerfilDbEntity,
     ]),
   ],
   providers: [
@@ -48,6 +51,7 @@ import { AlunoDbEntity } from '../../_adapters/alunos/entidades/aluno.db.entity'
     NestValidaAlunoComPerfilCompleto,
     TypeormVoluntarioService,
     TypeormAlunoService,
+    TypeormPerfilService,
   ],
   controllers: [AuthController],
   exports: [

@@ -105,8 +105,6 @@ export class ListarVoluntarios {
       }
     } else if (isStudent) {
       search.aprovado = true;
-    } else {
-      search.aprovado = undefined;
     }
   }
 }

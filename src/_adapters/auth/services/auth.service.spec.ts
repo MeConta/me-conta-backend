@@ -20,6 +20,7 @@ import { IBuscarUsuarioViaId } from '../../../_business/usuarios/casos-de-uso/bu
 import { BcryptHashService } from '../../../_adapters/usuarios/services/bcrypt-hash.service';
 import { IBuscarVoluntarioViaId } from '../../../_business/voluntarios/services/voluntario.service';
 import { IBuscarAlunoViaId } from '../../../_business/alunos/services/alunos.service';
+import { IBuscarPerfilByIdService } from '../../../_business/perfil/services/perfil.service';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -59,6 +60,7 @@ describe('AuthService', () => {
     validaVoluntarioComPerfilCompleto =
       new NestValidaVoluntarioComPerfilCompleto(
         createMock<IBuscarVoluntarioViaId>(),
+        createMock<IBuscarPerfilByIdService>(),
       );
     validaAlunoComPerfilCompleto = new NestValidaAlunoComPerfilCompleto(
       createMock<IBuscarAlunoViaId>(),

@@ -1,4 +1,5 @@
 import { createMock } from '@golevelup/ts-jest';
+import { IBuscarPerfilByIdService } from 'src/_business/perfil/services/perfil.service';
 import { VoluntarioOutput } from '../dtos/voluntario.dto';
 import { IBuscarVoluntarioViaId } from '../services/voluntario.service';
 import {
@@ -28,7 +29,8 @@ describe('Buscar Voluntário', () => {
 
   beforeEach(() => {
     voluntarioService = new InMemoryVoluntarioService();
-    sut = new BuscarVoluntarioViaId(voluntarioService);
+    const perfilServiceMock = createMock<IBuscarPerfilByIdService>();
+    sut = new BuscarVoluntarioViaId(voluntarioService, perfilServiceMock);
   });
 
   it.skip('Deve lançar um erro caso voluntário não exista', async () => {

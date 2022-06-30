@@ -71,8 +71,10 @@ class NestBuscarVoluntario extends BuscarVoluntarioViaId {
   constructor(
     @Inject(TypeormVoluntarioService)
     voluntarioService: IBuscarVoluntarioViaId,
+    @Inject(TypeormPerfilService)
+    perfilService: IBuscarPerfilByIdService,
   ) {
-    super(voluntarioService);
+    super(voluntarioService, perfilService);
   }
 }
 
