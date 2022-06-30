@@ -32,6 +32,7 @@ export class ListarVoluntariosController {
   })
   @Get(':tipo?')
   @OptionalAuth()
+  //@Auth(TipoUsuario.ADMINISTRADOR, TipoUsuario.ALUNO)
   async listar(
     @User() user?: ITokenUser,
     @Param() params?: VoluntarioParams,

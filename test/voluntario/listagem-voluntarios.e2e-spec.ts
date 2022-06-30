@@ -82,7 +82,8 @@ describe('Listagem de Voluntários (e2)', () => {
     await app.close();
   });
   describe('/voluntarios/listar/:tipo (GET)', () => {
-    it('Deve listar os voluntários estando deslogado', async () => {
+    //a definir se usuário deslogado pode visualizar os voluntários aprovados
+    it.skip('Deve listar os voluntários estando deslogado', async () => {
       const { body } = await request(app.getHttpServer())
         .get('/voluntarios/listar/')
         .expect(HttpStatus.OK);
@@ -91,7 +92,18 @@ describe('Listagem de Voluntários (e2)', () => {
       expect(voluntario).toBeDefined();
     });
 
-    it('Deve listar os voluntários estando logado', async () => {
+    it('Deve listar os voluntários estando logado como administrador', async () => {
+      const { body } = await request(app.getHttpServer())
+        .get('/voluntarios/listar/')
+        .set('Authorization', `Bearer ${token}`)
+        .expect(HttpStatus.OK);
+      expect(body).toHaveLength(2);
+      const [voluntario] = body;
+      expect(voluntario).toBeDefined();
+    });
+
+    it('Deve listar os voluntários estando logado como estudante', async () => {
+      token = await getToken(app, TipoUsuario.ALUNO);
       const { body } = await request(app.getHttpServer())
         .get('/voluntarios/listar/')
         .set('Authorization', `Bearer ${token}`)
@@ -116,9 +128,20 @@ describe('Listagem de Voluntários (e2)', () => {
       );
     });
 
-    it('Deve listar os voluntários de um tipo específico', async () => {
+    it('Deve listar os voluntários de um tipo específico logado como administrador', async () => {
       const { body } = await request(app.getHttpServer())
         .get(`/voluntarios/listar/${TipoUsuario.ATENDENTE}`)
+        .set('Authorization', `Bearer ${token}`)
+        .expect(HttpStatus.OK);
+
+      expect(body).toHaveLength(1);
+    });
+
+    it('Deve listar os voluntários de um tipo específico logado como estudante', async () => {
+      token = await getToken(app, TipoUsuario.ALUNO);
+      const { body } = await request(app.getHttpServer())
+        .get(`/voluntarios/listar/${TipoUsuario.ATENDENTE}`)
+        .set('Authorization', `Bearer ${token}`)
         .expect(HttpStatus.OK);
 
       expect(body).toHaveLength(1);

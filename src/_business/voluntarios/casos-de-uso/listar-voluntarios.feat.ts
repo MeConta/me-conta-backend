@@ -31,7 +31,8 @@ export class ListarVoluntarios {
   }: IRequest): Promise<(VoluntarioOutput | ObfuscatedVoluntarioOutput)[]> {
     const search: Partial<Voluntario & { usuario: Usuario }> = {};
     const isAdmin: boolean = user?.roles.includes(TipoUsuario.ADMINISTRADOR);
-    this.setStatus(status, search, isAdmin);
+    const isStudent: boolean = user?.roles.includes(TipoUsuario.ALUNO);
+    this.setStatus(status, search, isAdmin, isStudent);
 
     if (nome) {
       search.usuario = { nome } as Usuario;
@@ -88,6 +89,7 @@ export class ListarVoluntarios {
     status: StatusAprovacao,
     search: Partial<Voluntario & { usuario: Usuario }>,
     isAdmin: boolean,
+    isStudent: boolean,
   ): void {
     if (isAdmin) {
       switch (status) {
@@ -101,8 +103,10 @@ export class ListarVoluntarios {
           search.aprovado = null;
           break;
       }
-    } else {
+    } else if (isStudent) {
       search.aprovado = true;
+    } else {
+      search.aprovado = undefined;
     }
   }
 }
