@@ -2,7 +2,7 @@ import {
   AtualizarSlotDeAgenda,
   SlotComMenosDe24HorasError,
   SlotNaAgendaNaoEncontrado,
-  SlotOcupadoError
+  SlotOcupadoError,
 } from './atualizar-slot-agenda.feat';
 
 import {
@@ -73,7 +73,7 @@ class InMemoryAgendaService
           }),
         ),
       }),
-    ]
+    ];
   }
 
   async findById(id: number): Promise<SlotAgenda> {

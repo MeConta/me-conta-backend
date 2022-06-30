@@ -1,7 +1,7 @@
 import { Controller, Get, Inject, Param, Query } from '@nestjs/common';
 import { ListarVoluntarios } from '../../../_business/voluntarios/casos-de-uso/listar-voluntarios.feat';
 import { User } from '../../../_adapters/auth/decorators/user.decorator';
-import { OptionalAuth } from '../../../_adapters/auth/decorators/auth.decorator';
+import { Auth } from '../../../_adapters/auth/decorators/auth.decorator';
 import { ITokenUser } from '../../../_business/auth/interfaces/auth';
 import {
   VoluntarioQuery,
@@ -13,6 +13,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { ListaVoluntariosDto } from '../../../_adapters/voluntarios/dto/lista-voluntarios.dto';
+import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 
 @ApiTags('Voluntário')
 @Controller('voluntarios/listar')
@@ -31,8 +32,7 @@ export class ListarVoluntariosController {
     description: 'Erro genérico',
   })
   @Get(':tipo?')
-  @OptionalAuth()
-  //@Auth(TipoUsuario.ADMINISTRADOR, TipoUsuario.ALUNO)
+  @Auth(TipoUsuario.ADMINISTRADOR, TipoUsuario.ALUNO)
   async listar(
     @User() user?: ITokenUser,
     @Param() params?: VoluntarioParams,
