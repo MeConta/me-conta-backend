@@ -4,12 +4,12 @@ import {
 } from '../../../_business/voluntarios/entidades/voluntario.entity';
 import {
   ObfuscatedVoluntarioOutput,
-  VoluntarioOutput,
+  VoluntarioComPerfil,
 } from '../../../_business/voluntarios/dtos/voluntario.dto';
 import { UsuarioDto } from '../../usuarios/dto/usuario.dto';
 
 export class BuscarVoluntariosDto
-  implements VoluntarioOutput, ObfuscatedVoluntarioOutput
+  implements VoluntarioComPerfil, ObfuscatedVoluntarioOutput
 {
   /***
    * @example 2020

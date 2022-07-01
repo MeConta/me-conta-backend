@@ -1,6 +1,5 @@
 import { IBuscarPerfilByIdService } from 'src/_business/perfil/services/perfil.service';
-import { Perfil } from 'src/_business/usuarios/entidades/usuario.entity';
-import { Voluntario } from '../entidades/voluntario.entity';
+import { VoluntarioComPerfil } from '../dtos/voluntario.dto';
 import { IBuscarVoluntarioViaId } from '../services/voluntario.service';
 
 export class VoluntarioNaoEncontradoError extends Error {
@@ -14,13 +13,10 @@ export class BuscarVoluntarioViaId {
     private readonly perfilService: IBuscarPerfilByIdService,
   ) {}
 
-  async execute(id: number): Promise<Voluntario & Perfil> {
+  async execute(id: number): Promise<VoluntarioComPerfil> {
     const voluntario = await this.voluntarioService.findById(id);
     const perfil = await this.perfilService.findById(id);
-    const voluntariocomperfil = { ...perfil, ...voluntario };
-    // if (!voluntario) {
-    //   throw new VoluntarioNaoEncontradoError();
-    //  }
+    const voluntariocomperfil = { ...voluntario, ...perfil };
     return voluntariocomperfil;
   }
 }
