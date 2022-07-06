@@ -108,3 +108,5 @@ Exemplo de commit válido:
   ```bash
   git commit -m "feat(#xx): implementa testes unitários"
   ```
+## 👣 Check in dance
+[Passos](https://github.com/MeConta/me-conta/blob/main/check-in-dance.md) para atualizar as mudanças locais no github 
