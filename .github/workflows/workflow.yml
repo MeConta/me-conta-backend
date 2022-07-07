@@ -3,8 +3,6 @@ on:
   push:
     branches: [ main ]
   workflow_dispatch:
-env:
-  SHOULD_RUN_SONNARCLOUD: false
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -21,7 +19,7 @@ jobs:
           npm run test:e2e
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
-        if: ${{ $SHOULD_RUN_SONNARCLOUD }}
+        if: ${{ false }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
