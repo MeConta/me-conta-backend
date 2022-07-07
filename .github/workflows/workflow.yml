@@ -32,12 +32,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-    upload-artifact:
-      runs-on: ubuntu-latest
-      needs:
-      - build-and-test
-      - test-e2e-and-sonnar
-      steps:
+  upload-artifact:
+    runs-on: ubuntu-latest
+    needs:
+    - build-and-test
+    - test-e2e-and-sonnar
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Install Dependencies
@@ -50,12 +50,12 @@ jobs:
           name: me-conta-backend
           path: dist/
 
-    upload-heroku-container:
-      runs-on: ubuntu-latest
-      needs:
-      - build-and-test
-      - test-e2e-and-sonnar
-      steps:
+  upload-heroku-container:
+    runs-on: ubuntu-latest
+    needs:
+    - build-and-test
+    - test-e2e-and-sonnar
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Login no Heroku Container
