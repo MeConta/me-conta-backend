@@ -21,7 +21,7 @@ jobs:
           npm run test:e2e
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
-        if: ${{ SHOULD_RUN_SONNARCLOUD }}
+        if: ${{ $SHOULD_RUN_SONNARCLOUD }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
