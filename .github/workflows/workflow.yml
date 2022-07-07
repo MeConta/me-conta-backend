@@ -31,7 +31,7 @@ jobs:
       url: https://me-conta-backend.herokuapp.com
     environment: 
       name: DEV
-      url: $url
+      url: ${{ $url }}
     steps:
       - name: test
         run: echo 'deploy on dev'
