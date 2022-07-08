@@ -23,14 +23,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      - name: NPM build
-        run: npm run build
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: me-conta-backend
-          path: dist/
-
+          
   upload-heroku-container:
     runs-on: ubuntu-latest
     needs:
