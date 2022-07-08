@@ -1,4 +1,4 @@
-name: CI-CD
+name: CICD
 on:
   push:
     branches: [ main ]
@@ -14,14 +14,6 @@ jobs:
         uses: bahmutov/npm-install@v1
       - name: Unit Tests
         run: npm run test:cov
-
-  test-e2e-and-sonnar:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Install Dependencies
-        uses: bahmutov/npm-install@v1
       - name: E2E Tests
         run: | 
           cp .env .env.test
@@ -31,17 +23,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-  upload-artifact:
-    runs-on: ubuntu-latest
-    needs:
-    - build-and-test
-    - test-e2e-and-sonnar
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Install Dependencies
-        uses: bahmutov/npm-install@v1
       - name: NPM build
         run: npm run build
       - name: Upload Artifact
@@ -54,7 +35,6 @@ jobs:
     runs-on: ubuntu-latest
     needs:
     - build-and-test
-    - test-e2e-and-sonnar
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -71,7 +51,6 @@ jobs:
   deploy-dev:
     runs-on: ubuntu-latest
     needs:
-      - build-and-test
       - upload-heroku-container
     environment: 
       name: DEV
@@ -82,6 +61,7 @@ jobs:
 
   deploy-hml:
     runs-on: ubuntu-latest
+    if: ${{ false }}
     needs: deploy-dev
     environment: HML
     steps:
@@ -90,6 +70,7 @@ jobs:
 
   deploy-prd:
     runs-on: ubuntu-latest
+    if: ${{ false }}
     needs: deploy-hml
     environment: PRD
     steps:
