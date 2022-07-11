@@ -42,9 +42,13 @@ export class AutorizarVoluntario {
         ...this.emailOptions,
         template,
         to: usuario.email,
+        subject: aprovado
+          ? '[Me Conta] Você foi aprovado!'
+          : '[Me Conta] Perfil não aprovado',
         context: {
           nome: usuario.nome,
           url: process.env.FRONT_URL,
+          logo: process.env.BACK_URL + 'logo.png',
         },
       });
     } catch (e) {

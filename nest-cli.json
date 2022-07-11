@@ -8,6 +8,6 @@
         "introspectComments": true
       }
     }],
-    "assets": ["mail/templates/**/*.pug"]
+    "assets": ["mail/templates/**/*.pug", "../public/assets/*.png"]
   }
 }

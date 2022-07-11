@@ -1,22 +1,26 @@
 section
 	p Olá, #{nome}!
-
 	p
 		| Infelizmente seu pedido para ser voluntário na plataforma&nbsp;
 		a(href=url target="_blank") Me conta?
-		| &nbsp;foi reprovado.
+		| &nbsp;não foi aprovado.
 
-	p Fale conosco para maiores informações.
-
+	p Caso haja alguma dúvida, entre em contato conosco pelo e-mail central@meconta.org
 	br
 
-	a.btn(target="__blank" href=url) Acessar o Me Conta?
-
+	img(src=logo, alt='logo', style='width:128px;height:43px;')
 	br
+
 style.
 	p,
 	sub {
 		font-family: sans-serif;
+	}
+
+	img {
+		display: block;
+		text-align: center;
+		margin: 0 auto;
 	}
 
 	section {

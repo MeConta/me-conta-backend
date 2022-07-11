@@ -74,6 +74,7 @@ describe('Autorizar voluntário', () => {
     it('Deve enviar e-mail de aprovação', async () => {
       expect(emailService.send).toBeCalledWith(
         expect.objectContaining({
+          subject: '[Me Conta] Você foi aprovado!',
           template: '../../mail/templates/voluntario-aprovacao',
         }),
       );
@@ -93,6 +94,7 @@ describe('Autorizar voluntário', () => {
     it('Deve enviar e-mail de reprovação', async () => {
       expect(emailService.send).toBeCalledWith(
         expect.objectContaining({
+          subject: '[Me Conta] Perfil não aprovado',
           template: '../../mail/templates/voluntario-reprovacao',
         }),
       );

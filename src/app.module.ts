@@ -13,6 +13,8 @@ import { AdminModule } from './modules/admin/admin.module';
 import { ConfigService } from './config/config.service';
 import { AgendaModule } from './modules/agenda/agenda.module';
 import { AtendimentoModule } from './modules/atendimento/atendimento.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -21,6 +23,9 @@ import { AtendimentoModule } from './modules/atendimento/atendimento.module';
       envFilePath: ['.env.local', '.env.production', '.env'],
       expandVariables: true,
       ignoreEnvFile: process.env.NODE_ENV === 'production',
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public', 'assets'),
     }),
     TypeOrmModule.forRoot(new ConfigService(process.env).typeOrmOptions),
     AuthModule,
