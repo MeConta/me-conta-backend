@@ -25,7 +25,7 @@ import { join } from 'path';
       ignoreEnvFile: process.env.NODE_ENV === 'production',
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'public', 'assets'),
+      rootPath: join(__dirname, 'public', 'assets'),
     }),
     TypeOrmModule.forRoot(new ConfigService(process.env).typeOrmOptions),
     AuthModule,
