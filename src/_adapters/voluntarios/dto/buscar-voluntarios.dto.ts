@@ -32,4 +32,5 @@ export class BuscarVoluntariosDto
   semestre?: number;
   usuario: UsuarioDto;
   abordagem?: string;
+  link?: string;
 }
