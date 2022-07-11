@@ -1,11 +1,5 @@
 import { AutorizarVoluntarioInput } from '../../../../_business/admin/casos-de-uso/autorizar-voluntario.feat';
-import {
-  IsBoolean,
-  IsNotEmpty,
-  IsString,
-  IsUrl,
-  ValidateIf,
-} from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsUrl, ValidateIf } from 'class-validator';
 
 export class AutorizarVoluntarioInputDto implements AutorizarVoluntarioInput {
   @IsBoolean({
@@ -16,8 +10,7 @@ export class AutorizarVoluntarioInputDto implements AutorizarVoluntarioInput {
   })
   aprovado: boolean;
 
-  @IsString({ message: '$property deve ser uma url válida!' })
-  @IsUrl()
+  @IsUrl({}, { message: 'Link inválido' })
   @ValidateIf(
     (autorizarVoluntarioObject) => autorizarVoluntarioObject.aprovado === true,
   )
