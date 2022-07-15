@@ -12,6 +12,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Install Dependencies
         uses: bahmutov/npm-install@v1
+      - name: Build
+        run: npm run build
       - name: Unit Tests
         run: npm run test:cov
       - name: E2E Tests
@@ -53,6 +55,13 @@ jobs:
         run: heroku container:push -a $HEROKU_APP_NAME web
       - name: Release to Heroku
         run: heroku container:release -a $HEROKU_APP_NAME web
+      - name: google-chat-notification
+        uses: Co-qn/google-chat-notification@v1
+        if: failure()
+        with:
+          name: Deploy Dev Failure
+          url: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
+          status: ${{ job.status }}
 
   deploy-hml:
     runs-on: ubuntu-latest
