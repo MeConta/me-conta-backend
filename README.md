@@ -19,6 +19,16 @@ O **Me Conta** é uma plataforma que une jovens que buscam terapia a profissiona
 ```bash
 git clone --recursive https://github.com/MeConta/me-conta.git
 ````
+
+## 🏠 Variáveis de Ambiente (.env.local)
+Para desenvolvimento local, é necessário criar o arquivo `.env.local` na raiz do projeto e adicionar as variáveis necessárias.
+
+> Preencha os seguintes campos:
+> - ADMIN_EMAIL=\<seu-email>
+> - ADMIN_PASSWORD=\<senha-qualquer>
+
+---
+
 ### 🎲 Banco de dados
 - inicie o banco de dados via **docker compose**
 ```bash
