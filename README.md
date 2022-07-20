@@ -8,6 +8,7 @@ O **Me Conta** é uma plataforma que une jovens que buscam terapia a profissiona
 - [NestJS](https://nestjs.com)
 - [Jest](https://jestjs.io)
 
+---
 ## 💻 Configurando o Ambiente
 
 - Instale o [NVM](https://github.com/nvm-sh/nvm) (Gerenciador de versão do Node)
@@ -15,6 +16,8 @@ O **Me Conta** é uma plataforma que une jovens que buscam terapia a profissiona
 - Instale o [Docker CLI através do Colima](https://github.com/abiosoft/colima) (Executador de containers com mínimo setup)
 
   - Observação: Com a alteração dos termos de uso do Docker Desktop aconselhamos o uso do Colima nas máquinas. Qualquer outro executador de containers Docker pode ser utilizado.
+  
+---
 
 ## 💻 Clonando o repositório
 
@@ -23,11 +26,12 @@ O **Me Conta** é uma plataforma que une jovens que buscam terapia a profissiona
 ```bash
 git clone https://github.com/MeConta/me-conta-backend
 ````
+---
 
 ## 🏠 Adicionando variáveis de ambiente (.env.local)
-Para desenvolvimento local, é necessário criar o arquivo `.env.local` na raiz do projeto e adicionar as variáveis necessárias.
+Existe o arquivo `.env` com todas as variáveis utilizadas para rodar o sistema. Para desenvolvimento local, é preciso criar o arquivo `.env.local` na raiz do projeto e adicionar algumas variáveis, conforme abaixo:
 
-> Preencha os seguintes campos para login como admin no sistema:
+> Adicione as seguintes variáveis para login como admin no sistema:
 > - ADMIN_EMAIL=\<seu-email>
 > - ADMIN_PASSWORD=\<senha-qualquer>
 
@@ -41,7 +45,7 @@ Para desenvolvimento local, é necessário criar o arquivo `.env.local` na raiz 
 
 ---
 
-### 🎲 Banco de dados
+## 🎲 Banco de dados
 - inicie o banco de dados via **docker compose**
 ```bash
 docker compose up -d db
@@ -63,8 +67,11 @@ npm run start:dev
 
 - O Backend iniciará em [http://localhost:3000](http://localhost:3000)
 
+---
 ## 🧩 Swagger
 É possível acessar a documentação da API pelo [Swagger da API](http://localhost:3000/api) e simular os endpoints
+
+---
 
 
 ## 🔗	 Ambiente de desenvolvimento ###
@@ -77,10 +84,11 @@ O ambiente de desenvolvimento está no Heroku, e seguem os links abaixo:
 
 ---
 
----
-
 ## 🐳 Iniciando com o Docker
-- Crie o arquivo `.env.local` preenchendo as variáveis faltantes no `.env`
+Atualmente, é possível rodar o sistema utilizando Docker. Porém, ele não reage em tempo real as alterações feitas no projeto, como acontece ao subir utilizando o nestJS em modo de desenvolvimento.
+
+Para rodar a aplicação, siga os passos abaixo: 
+- Deve-se ter o arquivo `.env.local` criado e as variáveis preenchidas
 > O `.env` não possuí os dados de **ADMIN** nem **SMTP**
 - Se necessário, realize as migrações do banco de dados com o **docker compose**
 ```bash
@@ -91,7 +99,7 @@ docker compose run --rm migration
 docker compose run -d api
 ```
 
-Abra [http://localhost:3000](http://localhost:3000) no navegador para ver o resultado
+- Abra [http://localhost:3000](http://localhost:3000) no navegador para ver o resultado
 
 ---
 
@@ -100,27 +108,27 @@ Abra [http://localhost:3000](http://localhost:3000) no navegador para ver o resu
 ```bash
 npm run typeorm:migration:generate [nome da migração]
 ```
-- Se necessário, criar uma migração vazia (caso precise incluir algum dado no banco, por exemplo)
+- Se necessário criar uma migração vazia (por exemplo: caso precise incluir uma nova tabela no banco)
 ```bash
 npm run typeorm:migration:create [nome da migração]
 ```
 
-- rodar as migrações para efetivar alterações no banco
+- Rodar as migrações para efetivar alterações no banco
 ```bash
 npm run typeorm:migration:run
 ```
 ---
 
 ## 🧪 Testes:
-- Testes unitários
+- Rodar todos os testes
 ```bash
 npm run test
 ```
-- Cobertura de testes unitários
+- Rodar apenas testes unitários
 ```bash
 npm run test:cov
 ```
-- Testes e2e
+- Rodar apenas testes de integração
 ```bash
 npm run test:e2e
 ```
