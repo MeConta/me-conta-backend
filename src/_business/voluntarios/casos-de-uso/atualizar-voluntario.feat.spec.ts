@@ -45,6 +45,7 @@ describe('Atualizar Voluntário', () => {
   it('Deve ser definido', () => {
     expect(sut).toBeDefined();
   });
+
   it('Deve atualizar um Voluntário', async () => {
     const bio = lorem.paragraphs(3);
     await sut.execute(0, {
@@ -53,6 +54,7 @@ describe('Atualizar Voluntário', () => {
     const [voluntario] = voluntarios;
     expect(voluntario.bio).toBe(bio);
   });
+
   it('Deve atualizar o link do Voluntário', async () => {
     const link = 'www.google.com';
     await sut.execute(0, {
@@ -68,6 +70,26 @@ describe('Atualizar Voluntário', () => {
     });
     expect(cadastroVoluntario.execute).toBeCalledWith({ aprovado });
   });
+
+  it('Deve chamar cadastro voluntário execute com o novo link', async () => {
+    const voluntarioOutput = {
+      link: 'www.oldLink.com.br',
+    } as VoluntarioOutput;
+    const newLink = 'www.newLink.com.br';
+
+    jest
+      .spyOn(voluntarioService, 'findById')
+      .mockResolvedValue(voluntarioOutput);
+
+    await sut.execute(0, {
+      link: newLink,
+    });
+
+    expect(cadastroVoluntario.execute).toBeCalledWith({
+      link: newLink,
+    });
+  });
+
   describe('Deve dar erro de Voluntário não encontrado', () => {
     it('Não há voluntário cadastrado', () => {
       jest.spyOn(voluntarioService, 'findById').mockResolvedValue(null);
