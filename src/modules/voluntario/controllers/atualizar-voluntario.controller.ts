@@ -2,7 +2,6 @@ import {
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiTags,
-  PartialType,
 } from '@nestjs/swagger';
 import {
   Body,
@@ -16,7 +15,6 @@ import {
   Patch,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { CreateVoluntarioDto } from '../../../_adapters/voluntarios/dto/create-voluntario.dto';
 import { AtualizarVoluntario } from '../../../_business/voluntarios/casos-de-uso/atualizar-voluntario.feat';
 import { VoluntarioNaoEncontradoError } from '../../../_business/admin/casos-de-uso/autorizar-voluntario.feat';
 import {
@@ -25,11 +23,26 @@ import {
 } from '../../../_adapters/auth/decorators/auth.decorator';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { CamposDeFormacaoError } from '../../../_business/voluntarios/casos-de-uso/cadastrar-voluntario.feat';
+import { IsBoolean, IsOptional, IsString, IsUrl } from 'class-validator';
 
-class AtualizarVoluntarioDto extends PartialType(CreateVoluntarioDto) {}
+class AtualizarVoluntarioDto {
+  @IsOptional()
+  @IsBoolean({
+    message: '$property deve ser um valor booleano',
+  })
+  status?: boolean;
+
+  @IsOptional()
+  @IsString({ message: '$property deve ser uma url válida!' })
+  @IsUrl()
+  linkSession?: string;
+
+  @IsOptional()
+  bio?: string;
+}
 
 @ApiTags('Voluntário')
-@Controller('atualizar-voluntario')
+@Controller('voluntario')
 export class AtualizarVoluntarioController {
   constructor(
     @Inject(AtualizarVoluntario)
@@ -54,7 +67,11 @@ export class AtualizarVoluntarioController {
     @Body() dto: AtualizarVoluntarioDto,
   ): Promise<void> {
     try {
-      await this.useCase.execute(id, dto);
+      await this.useCase.execute(id, {
+        link: dto.linkSession,
+        aprovado: dto.status,
+        bio: dto.bio,
+      });
     } catch (e) {
       switch (true) {
         case e instanceof VoluntarioNaoEncontradoError:

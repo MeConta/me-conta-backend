@@ -14,13 +14,14 @@ import { CamposDeFormacaoError } from '../../../_business/voluntarios/casos-de-u
 describe('Atualizar Voluntário Controller', () => {
   let controller: AtualizarVoluntarioController;
   let useCase: AtualizarVoluntario;
+  const mockAtualizarVoluntario = createMock<AtualizarVoluntario>();
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
         {
           provide: AtualizarVoluntario,
-          useValue: createMock<AtualizarVoluntario>(),
+          useValue: mockAtualizarVoluntario,
         },
       ],
       controllers: [AtualizarVoluntarioController],
@@ -58,5 +59,16 @@ describe('Atualizar Voluntário Controller', () => {
     await expect(() =>
       controller.atualizar(expect.any(Number), expect.any(AtualizarAlunoDto)),
     ).rejects.toThrow(InternalServerErrorException);
+  });
+
+  it('Deve chamar voluntário service com parametros corretos', async () => {
+    jest.spyOn(useCase, 'execute').mockResolvedValue();
+    const atualizarInput = {
+      bio: 'lorem ipslom',
+      link: 'wwww.meconta.com',
+      aprovado: true,
+    };
+    await useCase.execute(12, atualizarInput);
+    expect(mockAtualizarVoluntario.execute).toBeCalledWith(12, atualizarInput);
   });
 });

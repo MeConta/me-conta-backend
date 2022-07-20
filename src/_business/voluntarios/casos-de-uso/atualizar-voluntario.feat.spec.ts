@@ -53,6 +53,21 @@ describe('Atualizar Voluntário', () => {
     const [voluntario] = voluntarios;
     expect(voluntario.bio).toBe(bio);
   });
+  it('Deve atualizar o link do Voluntário', async () => {
+    const link = 'www.google.com';
+    await sut.execute(0, {
+      link,
+    });
+    expect(cadastroVoluntario.execute).toBeCalledWith({ link });
+  });
+
+  it('Deve atualizar o status de aprovado do Voluntário', async () => {
+    const aprovado = true;
+    await sut.execute(0, {
+      aprovado,
+    });
+    expect(cadastroVoluntario.execute).toBeCalledWith({ aprovado });
+  });
   describe('Deve dar erro de Voluntário não encontrado', () => {
     it('Não há voluntário cadastrado', () => {
       jest.spyOn(voluntarioService, 'findById').mockResolvedValue(null);

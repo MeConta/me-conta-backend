@@ -1,12 +1,13 @@
 import { IBuscarVoluntarioViaId } from '../services/voluntario.service';
 import { IBuscarPerfilByIdService } from '../../perfil/services/perfil.service';
-import {
-  CadastrarVoluntario,
-  NovoVoluntario,
-} from './cadastrar-voluntario.feat';
+import { CadastrarVoluntario } from './cadastrar-voluntario.feat';
 import { VoluntarioNaoEncontradoError } from '../../admin/casos-de-uso/autorizar-voluntario.feat';
 
-type AtualizarVoluntarioInput = Partial<NovoVoluntario>;
+type AtualizarVoluntarioInput = {
+  aprovado?: boolean;
+  link?: string;
+  bio?: string;
+};
 
 export class AtualizarVoluntario {
   constructor(
