@@ -10,22 +10,34 @@ O **Me Conta** é uma plataforma que une jovens que buscam terapia a profissiona
 
 ## 💻 Configurando o Ambiente
 
-- Instale o [Node](https://nodejs.org/en/download/)
+- Instale o [NVM](https://github.com/nvm-sh/nvm) (Gerenciador de versão do Node)
 
-- Instale o [docker](https://www.docker.com)
+- Instale o [Docker CLI através do Colima](https://github.com/abiosoft/colima) (Executador de containers com mínimo setup)
 
-> Recomendamos desenvolver a partir do Monorepo deste projeto!
-- Clone o [monorepo](https://github.com/MeConta/me-conta) do projeto utilizando [git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules)
+  - Observação: Com a alteração dos termos de uso do Docker Desktop aconselhamos o uso do Colima nas máquinas. Qualquer outro executador de containers Docker pode ser utilizado.
+
+## 💻 Clonando o repositório
+
+- Clone o [projeto](https://github.com/MeConta/me-conta-backend)
+
 ```bash
-git clone --recursive https://github.com/MeConta/me-conta.git
+git clone https://github.com/MeConta/me-conta-backend
 ````
 
-## 🏠 Variáveis de Ambiente (.env.local)
+## 🏠 Adicionando variáveis de ambiente (.env.local)
 Para desenvolvimento local, é necessário criar o arquivo `.env.local` na raiz do projeto e adicionar as variáveis necessárias.
 
-> Preencha os seguintes campos:
+> Preencha os seguintes campos para login como admin no sistema:
 > - ADMIN_EMAIL=\<seu-email>
 > - ADMIN_PASSWORD=\<senha-qualquer>
+
+> Caso seja necessário simular as funcionalidades de envio de email, adicionar as seguintes variáveis:
+> - EMAIL_SMTP_HOST=\<host-smtp>
+> - EMAIL_SMTP_PORT=\<porta-smtp>
+> - EMAIL_SMTP_USERNAME=\<usuario-smtp>
+> - EMAIL_SMTP_PASSWORD=\<senha-smtp>
+> - EMAIL_FROM=\<email-origem>
+> - EMAIL_CONTACT_TO=\<email-contato>
 
 ---
 
@@ -38,8 +50,6 @@ docker compose up -d db
 ```bash
 npm i
 ```
-- Crie o arquivo `.env.local` preenchendo as variáveis faltantes no `.env`
-> O `.env` não possuí os dados de **ADMIN** nem **SMTP**
 
 - Se necessário, rode a migração do banco de dados
 ```bash
@@ -53,8 +63,19 @@ npm run start:dev
 
 - O Backend iniciará em [http://localhost:3000](http://localhost:3000)
 
-## :rocket: Postman
-Há _**collections**_ do [**_postman_**](https://www.postman.com) para ajudar na realização das chamadas
+## 🧩 Swagger
+É possível acessar a documentação da API pelo [Swagger da API](http://localhost:3000/api) e simular os endpoints
+
+
+## 🔗	 Ambiente de desenvolvimento ###
+
+O ambiente de desenvolvimento está no Heroku, e seguem os links abaixo:
+
+| Backend                                  | Swagger                                  | Frontend                                  | Storybook                                  |
+|------------------------------------------|-------------------------------------------|------------------------------------------|-------------------------------------------|
+| [Backend](https://me-conta-backend.herokuapp.com)| [Swagger](https://me-conta-backend.herokuapp.com/api)| [Frontend](https://me-conta-frontend.herokuapp.com) | [Storybook](https://me-conta-storybook.herokuapp.com) | 
+
+---
 
 ---
 
