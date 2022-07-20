@@ -140,12 +140,29 @@ O projeto possui [husky](https://github.com/typicode/husky) para verificar algun
 
 1. Aplicar correções relacionadas à **Lint**;
 3. Validação da mensagem de commit conforme as regras do [conventional-commits](https://www.conventionalcommits.org/en/v1.0.0/);
-  - Padrão utilizado:
-  > tipo(#issue): descrição
+  - Padrão no desenvolvimento de um card:
+  > tipo(#numero_do_card): descrição em inglês (em letras minúsculas)
+  - Padrão de desenvolvimento não relacionado a cards
+  > tipo(escopo): descrição em inglês (em letras minúsculas)
 
-Exemplo de commit válido:
+Exemplos de tipos:
+  - feat: introduz uma nova funcionalidade à base de código;
+  - fix: correção de um bug na base de código;
+  - build: Introduz uma mudança que afeta o build do sistema ou alguma dependência externa (exemplos de escopos: gulp, broccoli, npm);
+  - chore: atualização de ferramentas, configurações e bibliotecas 
+  - ci: Introduz uma mudança aos arquivos e scripts de configuração do CI/CD (exemplos de escopos: Travis, Circle, BrowserStack, SauceLabs)
+  - docs: Alterações na documentação 
+  - style: Introduz uma mudança que não afeta o significado do código (remoção de espaços em branco, formatação, ponto e virgula faltando, etc)
+  - refactor: Uma mudança no código que nem corrige um bug nem adiciona uma nova funcionalidade
+  - perf: Um mundança no código que melhora a performance
+  - test: Adicionar testes faltando ou corrigir testes existentes
+
+Exemplos de commits válidos:
   ```bash
-  git commit -m "feat(#xx): implementa testes unitários"
+  git commit -m "feat(#300): creating auth service"
+  git commit -m "fix(#30): correcting volunteer filter by type"
+  git commit -m "style(lint): removing some lint warnings"
+  git commit -m "docs(readme): removing deploy section from readme"
   ```
 ## 👣 Check in dance
 [Passos](https://github.com/MeConta/me-conta/blob/main/check-in-dance.md) para atualizar as mudanças locais no github 
