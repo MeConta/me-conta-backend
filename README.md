@@ -3,6 +3,8 @@
 ## ✳️ Sobre
 O **Me Conta** é uma plataforma que une jovens que buscam terapia a profissionais de Psicologia
 
+---
+
 ## 🛠 Ferramentas Utilizadas
 - [Node](https://nodejs.dev)
 - [NestJS](https://nestjs.com)
@@ -73,17 +75,6 @@ npm run start:dev
 
 ---
 
-
-## 🔗	 Ambiente de desenvolvimento ###
-
-O ambiente de desenvolvimento está no Heroku, e seguem os links abaixo:
-
-| Backend                                  | Swagger                                  | Frontend                                  | Storybook                                  |
-|------------------------------------------|-------------------------------------------|------------------------------------------|-------------------------------------------|
-| [Backend](https://me-conta-backend.herokuapp.com)| [Swagger](https://me-conta-backend.herokuapp.com/api)| [Frontend](https://me-conta-frontend.herokuapp.com) | [Storybook](https://me-conta-storybook.herokuapp.com) | 
-
----
-
 ## 🐳 Iniciando com o Docker
 Atualmente, é possível rodar o sistema utilizando Docker. Porém, ele não reage em tempo real as alterações feitas no projeto, como acontece ao subir utilizando o nestJS em modo de desenvolvimento.
 
@@ -100,6 +91,12 @@ docker compose run -d api
 ```
 
 - Abra [http://localhost:3000](http://localhost:3000) no navegador para ver o resultado
+
+---
+
+## :warning: Começando a desenvolver - Conheça o Check in Dance 👣 
+
+O "Check in dance" é uma prática usada para garantir que nosso código esteja sempre atualizado e seguindo os padrões de desenvolvimento definidos pela equipe. Veja o [Passo-a-passo](https://github.com/MeConta/me-conta-backend/blob/main/check-in-dance.md).
 
 ---
 
@@ -164,5 +161,14 @@ Exemplos de commits válidos:
   git commit -m "style(lint): removing some lint warnings"
   git commit -m "docs(readme): removing deploy section from readme"
   ```
-## 👣 Check in dance
-[Passos](https://github.com/MeConta/me-conta/blob/main/check-in-dance.md) para atualizar as mudanças locais no github 
+---
+
+## 🔗	 Ambiente de desenvolvimento ###
+
+O ambiente de desenvolvimento está no Heroku, e seguem os links abaixo:
+
+| Backend                                  | Swagger                                  | Frontend                                  | Storybook                                  |
+|------------------------------------------|-------------------------------------------|------------------------------------------|-------------------------------------------|
+| [Backend](https://me-conta-backend.herokuapp.com)| [Swagger](https://me-conta-backend.herokuapp.com/api)| [Frontend](https://me-conta-frontend.herokuapp.com) | [Storybook](https://me-conta-storybook.herokuapp.com) | 
+
+---
