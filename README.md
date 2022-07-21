@@ -23,11 +23,11 @@ O **Me Conta** é uma plataforma que une jovens que buscam terapia a profissiona
 
 ## 💻 Clonando o repositório
 
-- Clone o [projeto](https://github.com/MeConta/me-conta-backend)
+- Clone o projeto
 
-```bash
-git clone https://github.com/MeConta/me-conta-backend
-````
+  ```bash
+  git clone https://github.com/MeConta/me-conta-backend
+  ````
 ---
 
 ## 🏠 Adicionando variáveis de ambiente (.env.local)
@@ -49,23 +49,23 @@ Existe o arquivo `.env` com todas as variáveis utilizadas para rodar o sistema.
 
 ## 🎲 Banco de dados
 - inicie o banco de dados via **docker compose**
-```bash
-docker compose up -d db
-```
+  ```bash
+  docker compose up -d db
+  ```
 - Instale as dependências **npm i**:
-```bash
-npm i
-```
+  ```bash
+  npm i
+  ```
 
 - Se necessário, rode a migração do banco de dados
-```bash
-npm run typeorm:migration:run
-```
+  ```bash
+  npm run typeorm:migration:run
+  ```
 
 - Inicie o [**Nest**](http://nestjs.com) em modo de desenvolvimento
-```bash
-npm run start:dev
-```
+  ```bash
+  npm run start:dev
+  ```
 
 - O Backend iniciará em [http://localhost:3000](http://localhost:3000)
 
@@ -82,13 +82,13 @@ Para rodar a aplicação, siga os passos abaixo:
 - Deve-se ter o arquivo `.env.local` criado e as variáveis preenchidas
 > O `.env` não possuí os dados de **ADMIN** nem **SMTP**
 - Se necessário, realize as migrações do banco de dados com o **docker compose**
-```bash
-docker compose run --rm migration
-```
+  ```bash
+  docker compose run --rm migration
+  ```
 - Inicie o container do docker.
-```bash
-docker compose run -d api
-```
+  ```bash
+  docker compose run -d api
+  ```
 
 - Abra [http://localhost:3000](http://localhost:3000) no navegador para ver o resultado
 
@@ -102,33 +102,33 @@ O "Check in dance" é uma prática usada para garantir que nosso código esteja 
 
 ## 🎲 Migrações de banco de dados
 - Ao alterar uma entidade é necessário gerar nova migração para o banco de dados
-```bash
-npm run typeorm:migration:generate [nome da migração]
-```
+  ```bash
+  npm run typeorm:migration:generate [nome da migração]
+  ```
 - Se necessário criar uma migração vazia (por exemplo: caso precise incluir uma nova tabela no banco)
-```bash
-npm run typeorm:migration:create [nome da migração]
-```
+  ```bash
+  npm run typeorm:migration:create [nome da migração]
+  ```
 
 - Rodar as migrações para efetivar alterações no banco
-```bash
-npm run typeorm:migration:run
-```
+  ```bash
+  npm run typeorm:migration:run
+  ```
 ---
 
 ## 🧪 Testes:
 - Rodar todos os testes
-```bash
-npm run test
-```
+  ```bash
+  npm run test
+  ```
 - Rodar apenas testes unitários
-```bash
-npm run test:cov
-```
+  ```bash
+  npm run test:cov
+  ```
 - Rodar apenas testes de integração
-```bash
-npm run test:e2e
-```
+  ```bash
+  npm run test:e2e
+  ```
 ---
 
 ## 🚀 Commits no projeto
