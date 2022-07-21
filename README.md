@@ -13,7 +13,7 @@ O **Me Conta** é uma plataforma que une jovens que buscam terapia a profissiona
 ---
 ## 💻 Configurando o Ambiente
 
-- Instale o [NVM](https://github.com/nvm-sh/nvm) (Gerenciador de versão do Node)
+- Instale o [NVM](https://github.com/nvm-sh/nvm) (Gerenciador de versão do Node) e adicione a versão LTS do [node](https://nodejs.org/en/) ao nvm
 
 - Instale o [Docker CLI através do Colima](https://github.com/abiosoft/colima) (Executador de containers com mínimo setup)
 
@@ -47,7 +47,7 @@ Existe o arquivo `.env` com todas as variáveis utilizadas para rodar o sistema.
 
 ---
 
-## 🎲 Banco de dados
+## ▶️ Executando o projeto
 - inicie o banco de dados via **docker compose**
   ```bash
   docker compose up -d db
