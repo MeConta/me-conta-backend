@@ -7,13 +7,13 @@ export class AtualizarVoluntarioDto {
     message: '$property deve ser um valor booleano',
   })
   @ApiProperty()
-  status?: boolean;
+  aprovado?: boolean;
 
   @IsOptional()
   @IsString({ message: '$property deve ser uma url válida!' })
   @IsUrl()
   @ApiProperty()
-  linkSession?: string;
+  link?: string;
 
   @IsOptional()
   @ApiProperty()

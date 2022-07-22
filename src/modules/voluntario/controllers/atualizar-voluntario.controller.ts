@@ -52,8 +52,8 @@ export class AtualizarVoluntarioController {
   ): Promise<void> {
     try {
       await this.useCase.execute(id, {
-        link: dto.linkSession,
-        aprovado: dto.status,
+        link: dto.link,
+        aprovado: dto.aprovado,
         bio: dto.bio,
       });
     } catch (e) {
