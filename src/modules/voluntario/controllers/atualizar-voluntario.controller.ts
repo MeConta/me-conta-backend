@@ -23,23 +23,7 @@ import {
 } from '../../../_adapters/auth/decorators/auth.decorator';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { CamposDeFormacaoError } from '../../../_business/voluntarios/casos-de-uso/cadastrar-voluntario.feat';
-import { IsBoolean, IsOptional, IsString, IsUrl } from 'class-validator';
-
-class AtualizarVoluntarioDto {
-  @IsOptional()
-  @IsBoolean({
-    message: '$property deve ser um valor booleano',
-  })
-  status?: boolean;
-
-  @IsOptional()
-  @IsString({ message: '$property deve ser uma url válida!' })
-  @IsUrl()
-  linkSession?: string;
-
-  @IsOptional()
-  bio?: string;
-}
+import { AtualizarVoluntarioDto } from '../../../_adapters/voluntarios/dto/atualizar-voluntatio.dto';
 
 @ApiTags('Voluntário')
 @Controller('voluntario')
