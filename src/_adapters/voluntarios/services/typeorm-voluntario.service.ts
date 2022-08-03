@@ -42,7 +42,12 @@ export class TypeormVoluntarioService
 
   async cadastrar(voluntario: NovoVoluntario): Promise<void> {
     const entity = this.repository.create(voluntario);
+    this.sortFrentesAtuacao(voluntario);
     await this.repository.save(entity);
+  }
+
+  private sortFrentesAtuacao(voluntario: NovoVoluntario): void {
+    voluntario.frentes.sort();
   }
 
   async atualizarAprovacao(
@@ -64,6 +69,7 @@ export class TypeormVoluntarioService
     simpleWhere?: Partial<Voluntario & { usuario: Usuario }>,
   ): Promise<VoluntarioOutput[]> {
     const complexWhere: WhereCondition<Voluntario & { usuario: Usuario }> = {};
+
     if (simpleWhere?.frentes) {
       complexWhere.frentes = In([simpleWhere.frentes]);
     }

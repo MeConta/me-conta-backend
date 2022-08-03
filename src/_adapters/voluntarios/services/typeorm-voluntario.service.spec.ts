@@ -49,6 +49,22 @@ describe('VoluntarioService', () => {
     instituicao: 'Teste2',
   } as NovoVoluntario & { aprovado?: boolean };
 
+  const volunteersFrentes = {
+    usuario: { id: 3, nome: usuarioNome2 } as Usuario,
+    genero: Genero.FEMININO,
+    estado: Estado.AM,
+    dataNascimento: new Date(),
+    cidade: 'Manaus',
+    formado: false,
+    semestre: 8,
+    frentes: [
+      FrenteAtuacao.COACHING_DE_ROTINA_DE_ESTUDOS,
+      FrenteAtuacao.SESSAO_ACOLHIMENTO,
+      FrenteAtuacao.ORIENTACAO_VOCACIONAL,
+    ],
+    instituicao: 'Teste2',
+  } as NovoVoluntario & { aprovado?: boolean };
+
   beforeAll(async () => {
     connection = await createConnection({
       type: 'sqlite',
@@ -84,8 +100,18 @@ describe('VoluntarioService', () => {
       salt: MOCKED_SALT,
       dataTermos: new Date(),
     });
+    const usuario3 = usuarioEntity.create({
+      id: 3,
+      nome: 'outroUsuario',
+      email: 'email3@email.com',
+      senha: 's3Nh41Al!d@',
+      tipo: TipoUsuario.ATENDENTE,
+      salt: MOCKED_SALT,
+      dataTermos: new Date(),
+    });
     await usuarioEntity.save(usuario1);
     await usuarioEntity.save(usuario2);
+    await usuarioEntity.save(usuario3);
   });
 
   afterAll(async () => {
@@ -102,6 +128,20 @@ describe('VoluntarioService', () => {
     expect(voluntarios[0]).toEqual(
       expect.objectContaining({
         id: expect.any(Number),
+      } as VoluntarioDbEntity),
+    );
+  });
+
+  it.skip('Deve cadastrar novo voluntário com frentes de atuação ordenadas', async () => {
+    await service.cadastrar(volunteersFrentes);
+    const voluntarios = await repository.find();
+    expect(voluntarios[0].frentes).toEqual(
+      expect.objectContaining({
+        frentes: [
+          FrenteAtuacao.SESSAO_ACOLHIMENTO,
+          FrenteAtuacao.COACHING_DE_ROTINA_DE_ESTUDOS,
+          FrenteAtuacao.ORIENTACAO_VOCACIONAL,
+        ],
       } as VoluntarioDbEntity),
     );
   });
