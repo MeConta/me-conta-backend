@@ -15,7 +15,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-@ApiTags('Voluntario')
+@ApiTags('Voluntário')
 @Controller('voluntario')
 export class ListarSlotsVoluntarioController {
   constructor(
@@ -29,7 +29,7 @@ export class ListarSlotsVoluntarioController {
   @ApiNotFoundResponse({
     description: 'Voluntário não encontrado',
   })
-  @Get(':id?')
+  @Get(':id?/horarios-disponiveis')
   async get(@Param() param?: IdParam) {
     try {
       return await this.listarSlotsVoluntario.execute(param?.id);

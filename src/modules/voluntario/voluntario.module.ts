@@ -27,6 +27,8 @@ import {
 import { AtualizarVoluntario } from '../../_business/voluntarios/casos-de-uso/atualizar-voluntario.feat';
 import { AtualizarVoluntarioController } from './controllers/atualizar-voluntario.controller';
 import { BuscarVoluntarioViaIdController } from './controllers/buscar-voluntario.id.controller';
+import { ListarSlotsVoluntarioController } from './controllers/listar-slots-voluntario.controller';
+import { ListarSlotsVoluntario } from '../../_business/voluntarios/casos-de-uso/listar-slots-voluntario.feat';
 
 @Injectable()
 class NestCadastrarVoluntario extends CadastrarVoluntario {
@@ -107,12 +109,17 @@ class NestBuscarVoluntario extends BuscarVoluntarioViaId {
       provide: BuscarVoluntarioViaId,
       useClass: NestBuscarVoluntario,
     },
+    {
+      provide: ListarSlotsVoluntario,
+      useClass: NestListarVoluntario,
+    },
   ],
   controllers: [
     CadastroVoluntarioController,
     ListarVoluntariosController,
     AtualizarVoluntarioController,
     BuscarVoluntarioViaIdController,
+    ListarSlotsVoluntarioController,
   ],
 })
 export class VoluntarioModule {}
