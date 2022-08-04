@@ -27,11 +27,14 @@ export class ListarSlotsVoluntario {
     if (atendenteId && !voluntarios.length) {
       throw new VoluntarioNaoEncontradoError();
     }
+    function filtrarSlots(slots) {
+      return slots.inicio > Date.now();
+    }
     return voluntarios.map<SlotAgendaComVoluntario>((voluntario) => ({
       voluntario: {
         id: voluntario.usuario.id,
       },
-      slots: voluntario.slots,
+      slots: voluntario.slots.filter(filtrarSlots),
     }));
   }
 }
