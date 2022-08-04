@@ -80,6 +80,16 @@ class NestBuscarVoluntario extends BuscarVoluntarioViaId {
   }
 }
 
+@Injectable()
+class NestListarSlotsVoluntario extends ListarSlotsVoluntario {
+  constructor(
+    @Inject(TypeormVoluntarioService)
+    voluntarioService: IBuscarVoluntarios,
+  ) {
+    super(voluntarioService);
+  }
+}
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -111,7 +121,7 @@ class NestBuscarVoluntario extends BuscarVoluntarioViaId {
     },
     {
       provide: ListarSlotsVoluntario,
-      useClass: NestListarVoluntario,
+      useClass: NestListarSlotsVoluntario,
     },
   ],
   controllers: [
