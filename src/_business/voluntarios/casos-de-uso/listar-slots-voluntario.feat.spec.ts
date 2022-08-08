@@ -54,15 +54,10 @@ describe('Listar Slots de Agenda', () => {
     expect(sut).toBeDefined();
   });
 
-  it('Deve listar os slots de todos os atendente', async () => {
-    const response = await sut.execute();
-    expect(response).toHaveLength(2);
-  });
-
   it('Deve listar os slots de um atendente a partir da data atual', async () => {
     jest.spyOn(voluntarioService, 'buscar').mockResolvedValue([voluntarios[0]]);
     const response = await sut.execute(1);
-    expect(response[0].slots).toHaveLength(1);
+    expect(response).toHaveLength(1);
   });
 
   it('Deve dar erro de voluntario não encontrado', async () => {

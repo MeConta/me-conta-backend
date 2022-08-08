@@ -1,19 +1,13 @@
 import { IBuscarVoluntarios } from '../services/voluntario.service';
 import { VoluntarioNaoEncontradoError } from '../../admin/casos-de-uso/autorizar-voluntario.feat';
 import { TipoUsuario } from '../../usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { Voluntario } from '../entidades/voluntario.entity';
 import { Usuario } from '../../usuarios/entidades/usuario.entity';
-
-export type SlotAgendaComVoluntario = Pick<Voluntario, 'slots'> & {
-  voluntario: Pick<Usuario, 'id'>;
-};
+import { SlotAgenda } from 'src/_business/agenda/entidades/slot-agenda.entity';
 
 export class ListarSlotsVoluntario {
   constructor(private readonly voluntarioService: IBuscarVoluntarios) {}
 
-  async execute(
-    atendenteId?: number,
-  ): Promise<SlotAgendaComVoluntario | SlotAgendaComVoluntario[]> {
+  async execute(atendenteId?: number): Promise<SlotAgenda[]> {
     const search = {
       aprovado: true,
       usuario: {
@@ -27,14 +21,12 @@ export class ListarSlotsVoluntario {
     if (atendenteId && !voluntarios.length) {
       throw new VoluntarioNaoEncontradoError();
     }
+
+    const voluntario = voluntarios[0];
+
     function filtrarSlots(slots) {
       return slots.inicio > Date.now();
     }
-    return voluntarios.map<SlotAgendaComVoluntario>((voluntario) => ({
-      voluntario: {
-        id: voluntario.usuario.id,
-      },
-      slots: voluntario.slots.filter(filtrarSlots),
-    }));
+    return voluntario.slots.filter(filtrarSlots);
   }
 }
