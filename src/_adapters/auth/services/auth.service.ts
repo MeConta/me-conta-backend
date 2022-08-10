@@ -128,7 +128,8 @@ export class AuthService implements IAuthService {
       UserProfile = await this.validaVoluntarioComPerfilCompleto.execute(
         user.id,
       );
-      permissaoNavegar = !!UserProfile?.aprovado;
+      permissaoNavegar =
+        !!UserProfile?.aprovado || user.tipo === TipoUsuario.ADMINISTRADOR;
     }
     const tokensReturned = this.token.execute(user);
     const refreshTokenHashed = await this.hashService.hash(

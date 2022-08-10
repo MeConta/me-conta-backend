@@ -173,6 +173,44 @@ describe('AuthService', () => {
       });
       expect(login.execute).toBeCalledWith(entity);
     });
+
+    it('Deve retornar permissaoNavegar true quando o usuário é do tipo administrador e o status aprovado é false', async () => {
+      entity.salt = await hash.generateSalt();
+      const usuarioAdm = { ...entity, tipo: TipoUsuario.ADMINISTRADOR };
+      const voluntario = { aprovado: false } as Voluntario;
+      jest
+        .spyOn(validaVoluntarioComPerfilCompleto, 'execute')
+        .mockResolvedValue(voluntario);
+      const loginResult = await service.login(usuarioAdm);
+
+      expect(loginResult).toEqual({
+        nome: 'Teste',
+        perfilCompleto: true,
+        permissaoNavegar: true,
+        refreshToken: 'REFRESH-TOKEN',
+        tipo: 3,
+        token: 'TOKEN',
+      });
+    });
+
+    it('Deve retornar permissaoNavegar true quando o usuário é do tipo administrador e o status aprovado é null', async () => {
+      entity.salt = await hash.generateSalt();
+      const usuarioAdm = { ...entity, tipo: TipoUsuario.ADMINISTRADOR };
+      const voluntario = { aprovado: null } as Voluntario;
+      jest
+        .spyOn(validaVoluntarioComPerfilCompleto, 'execute')
+        .mockResolvedValue(voluntario);
+      const loginResult = await service.login(usuarioAdm);
+
+      expect(loginResult).toEqual({
+        nome: 'Teste',
+        perfilCompleto: true,
+        permissaoNavegar: true,
+        refreshToken: 'REFRESH-TOKEN',
+        tipo: 3,
+        token: 'TOKEN',
+      });
+    });
   });
 
   describe('logout', () => {
