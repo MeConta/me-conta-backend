@@ -24,6 +24,7 @@ export class GerarToken {
       tipo,
       nome,
       perfilCompleto: false,
+      permissaoNavegar: false,
     };
   }
 }

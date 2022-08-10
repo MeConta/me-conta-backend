@@ -120,12 +120,15 @@ export class AuthService implements IAuthService {
 
   async login(user: Usuario): Promise<TokenDto> {
     let UserProfile: Aluno | Voluntario;
+    let permissaoNavegar = false;
     if (user.tipo == TipoUsuario.ALUNO) {
       UserProfile = await this.validaAlunoComPerfilCompleto.execute(user.id);
+      permissaoNavegar = UserProfile ? true : false;
     } else {
       UserProfile = await this.validaVoluntarioComPerfilCompleto.execute(
         user.id,
       );
+      permissaoNavegar = !!UserProfile?.aprovado;
     }
     const tokensReturned = this.token.execute(user);
     const refreshTokenHashed = await this.hashService.hash(
@@ -134,6 +137,7 @@ export class AuthService implements IAuthService {
     );
     tokensReturned.perfilCompleto =
       UserProfile || user.tipo === TipoUsuario.ADMINISTRADOR ? true : false;
+    tokensReturned.permissaoNavegar = permissaoNavegar;
     await this.updateUser.execute(user.id, { refreshTokenHashed });
     return tokensReturned;
   }

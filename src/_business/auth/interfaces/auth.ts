@@ -11,6 +11,7 @@ export interface IToken {
   tipo: TipoUsuario;
   nome: string;
   perfilCompleto: boolean;
+  permissaoNavegar: boolean;
 }
 
 export interface ITokenPayload {

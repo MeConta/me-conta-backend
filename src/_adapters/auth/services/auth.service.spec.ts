@@ -21,6 +21,7 @@ import { BcryptHashService } from '../../../_adapters/usuarios/services/bcrypt-h
 import { IBuscarVoluntarioViaId } from '../../../_business/voluntarios/services/voluntario.service';
 import { IBuscarAlunoViaId } from '../../../_business/alunos/services/alunos.service';
 import { IBuscarPerfilByIdService } from '../../../_business/perfil/services/perfil.service';
+import { Voluntario } from 'src/_business/voluntarios/entidades/voluntario.entity';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -37,6 +38,7 @@ describe('AuthService', () => {
     id: 0,
     nome: 'Teste',
     email: 'teste@teste.com',
+    tipo: TipoUsuario.ATENDENTE,
   } as Usuario;
 
   beforeEach(async () => {
@@ -85,6 +87,7 @@ describe('AuthService', () => {
       tipo: TipoUsuario.ADMINISTRADOR,
       nome: 'Teste',
       perfilCompleto: false,
+      permissaoNavegar: false,
     });
     jest.spyOn(logout, 'execute').mockResolvedValue();
     jest
@@ -111,6 +114,63 @@ describe('AuthService', () => {
       entity.salt = await hash.generateSalt();
 
       await service.login(entity);
+      expect(login.execute).toBeCalledWith(entity);
+    });
+
+    it('Deve returnar permissaoNavegar falso quando o usuário é do tipo atendente and reprovado', async () => {
+      entity.salt = await hash.generateSalt();
+      const voluntario = { aprovado: false } as Voluntario;
+      jest
+        .spyOn(validaVoluntarioComPerfilCompleto, 'execute')
+        .mockResolvedValue(voluntario);
+      const loginResult = await service.login(entity);
+
+      expect(loginResult).toEqual({
+        nome: 'Teste',
+        perfilCompleto: true,
+        permissaoNavegar: false,
+        refreshToken: 'REFRESH-TOKEN',
+        tipo: 3,
+        token: 'TOKEN',
+      });
+      expect(login.execute).toBeCalledWith(entity);
+    });
+
+    it('Deve returnar permissaoNavegar falso quando o usuário é do tipo atendente e aprovado é null', async () => {
+      entity.salt = await hash.generateSalt();
+      const voluntario = { aprovado: null } as Voluntario;
+      jest
+        .spyOn(validaVoluntarioComPerfilCompleto, 'execute')
+        .mockResolvedValue(voluntario);
+      const loginResult = await service.login(entity);
+
+      expect(loginResult).toEqual({
+        nome: 'Teste',
+        perfilCompleto: true,
+        permissaoNavegar: false,
+        refreshToken: 'REFRESH-TOKEN',
+        tipo: 3,
+        token: 'TOKEN',
+      });
+      expect(login.execute).toBeCalledWith(entity);
+    });
+
+    it('Deve retornar permissaoNavegar true quando o usuário é do tipo atendente e aprovado é true', async () => {
+      entity.salt = await hash.generateSalt();
+      const voluntario = { aprovado: true } as Voluntario;
+      jest
+        .spyOn(validaVoluntarioComPerfilCompleto, 'execute')
+        .mockResolvedValue(voluntario);
+      const loginResult = await service.login(entity);
+
+      expect(loginResult).toEqual({
+        nome: 'Teste',
+        perfilCompleto: true,
+        permissaoNavegar: true,
+        refreshToken: 'REFRESH-TOKEN',
+        tipo: 3,
+        token: 'TOKEN',
+      });
       expect(login.execute).toBeCalledWith(entity);
     });
   });
