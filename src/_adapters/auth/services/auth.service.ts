@@ -127,7 +127,6 @@ export class AuthService implements IAuthService {
     let UserProfile: Aluno | Voluntario;
     let permissaoNavegar: boolean;
 
-    console.log(user);
     if (user.tipo == TipoUsuario.ALUNO) {
       UserProfile = await this.validaAlunoComPerfilCompleto.execute(user.id);
       permissaoNavegar = UserProfile ? true : false;
@@ -135,7 +134,6 @@ export class AuthService implements IAuthService {
       UserProfile = await this.validaVoluntarioComPerfilCompleto.execute(
         user.id,
       );
-      console.log(UserProfile);
       permissaoNavegar =
         !!UserProfile?.aprovado || user.tipo === TipoUsuario.ADMINISTRADOR;
     }
@@ -143,18 +141,7 @@ export class AuthService implements IAuthService {
   }
 
   async login(user: Usuario): Promise<TokenDto> {
-    let UserProfile: Aluno | Voluntario;
     const validarUsuarioResult = await this.validarPerfilUsuario(user);
-    // if (user.tipo == TipoUsuario.ALUNO) {
-    //   UserProfile = await this.validaAlunoComPerfilCompleto.execute(user.id);
-    //   permissaoNavegar = UserProfile ? true : false;
-    // } else {
-    //   UserProfile = await this.validaVoluntarioComPerfilCompleto.execute(
-    //     user.id,
-    //   );
-    //   permissaoNavegar =
-    //     !!UserProfile?.aprovado || user.tipo === TipoUsuario.ADMINISTRADOR;
-    // }
     const tokensReturned = this.token.execute(
       user,
       validarUsuarioResult.permissaoNavegar,
