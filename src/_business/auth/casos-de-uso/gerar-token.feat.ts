@@ -4,12 +4,13 @@ import { IJwtService } from '../interfaces/jwt.service';
 
 export class GerarToken {
   constructor(private readonly jwtService: IJwtService) {}
-  execute(usuario: Usuario): IToken {
+  execute(usuario: Usuario, permissaoNavegar: boolean): IToken {
     const { email, id, tipo, nome } = usuario;
     const payload: ITokenPayload = {
       email,
       sub: id,
       roles: [tipo],
+      permissaoNavegar,
     };
 
     return {
@@ -24,7 +25,6 @@ export class GerarToken {
       tipo,
       nome,
       perfilCompleto: false,
-      permissaoNavegar: false,
     };
   }
 }

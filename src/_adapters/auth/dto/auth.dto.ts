@@ -59,11 +59,6 @@ export class TokenDto implements IToken {
     type: Boolean,
   })
   perfilCompleto: boolean;
-
-  @ApiProperty({
-    type: Boolean,
-  })
-  permissaoNavegar: boolean;
 }
 
 export class RefreshTokenDto implements IRefreshToken {
@@ -75,6 +70,7 @@ export class TokenPayload implements ITokenPayload {
   email: string;
   roles: TipoUsuario[];
   sub: number;
+  permissaoNavegar: boolean;
 }
 
 export class TokenUser implements ITokenUser {

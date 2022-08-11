@@ -95,6 +95,11 @@ export class NestValidaAlunoComPerfilCompleto extends BuscarAlunoViaId {
   }
 }
 
+type ValidarUsuarioType = {
+  user: Aluno | Voluntario;
+  permissaoNavegar: boolean;
+};
+
 @Injectable()
 export class AuthService implements IAuthService {
   constructor(
@@ -118,9 +123,11 @@ export class AuthService implements IAuthService {
     return this.auth.execute(email, senha);
   }
 
-  async login(user: Usuario): Promise<TokenDto> {
+  async validarPerfilUsuario(user: Usuario): Promise<ValidarUsuarioType> {
     let UserProfile: Aluno | Voluntario;
-    let permissaoNavegar = false;
+    let permissaoNavegar: boolean;
+
+    console.log(user);
     if (user.tipo == TipoUsuario.ALUNO) {
       UserProfile = await this.validaAlunoComPerfilCompleto.execute(user.id);
       permissaoNavegar = UserProfile ? true : false;
@@ -128,17 +135,38 @@ export class AuthService implements IAuthService {
       UserProfile = await this.validaVoluntarioComPerfilCompleto.execute(
         user.id,
       );
+      console.log(UserProfile);
       permissaoNavegar =
         !!UserProfile?.aprovado || user.tipo === TipoUsuario.ADMINISTRADOR;
     }
-    const tokensReturned = this.token.execute(user);
+    return { user: UserProfile, permissaoNavegar };
+  }
+
+  async login(user: Usuario): Promise<TokenDto> {
+    let UserProfile: Aluno | Voluntario;
+    const validarUsuarioResult = await this.validarPerfilUsuario(user);
+    // if (user.tipo == TipoUsuario.ALUNO) {
+    //   UserProfile = await this.validaAlunoComPerfilCompleto.execute(user.id);
+    //   permissaoNavegar = UserProfile ? true : false;
+    // } else {
+    //   UserProfile = await this.validaVoluntarioComPerfilCompleto.execute(
+    //     user.id,
+    //   );
+    //   permissaoNavegar =
+    //     !!UserProfile?.aprovado || user.tipo === TipoUsuario.ADMINISTRADOR;
+    // }
+    const tokensReturned = this.token.execute(
+      user,
+      validarUsuarioResult.permissaoNavegar,
+    );
     const refreshTokenHashed = await this.hashService.hash(
       tokensReturned.refreshToken,
       user.salt,
     );
     tokensReturned.perfilCompleto =
-      UserProfile || user.tipo === TipoUsuario.ADMINISTRADOR ? true : false;
-    tokensReturned.permissaoNavegar = permissaoNavegar;
+      validarUsuarioResult.user || user.tipo === TipoUsuario.ADMINISTRADOR
+        ? true
+        : false;
     await this.updateUser.execute(user.id, { refreshTokenHashed });
     return tokensReturned;
   }
@@ -155,8 +183,12 @@ export class AuthService implements IAuthService {
       refreshToken,
       id,
     );
+    const validarUsuarioResult = await this.validarPerfilUsuario(usuario);
 
-    const newTokens = this.token.execute(usuario);
+    const newTokens = this.token.execute(
+      usuario,
+      validarUsuarioResult.permissaoNavegar,
+    );
 
     const refreshTokenHashed = await this.hashService.hash(
       newTokens.refreshToken,

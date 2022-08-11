@@ -9,6 +9,7 @@ describe('JwtStrategy', () => {
     email: internet.email(),
     sub: 1,
     roles: [TipoUsuario.ADMINISTRADOR],
+    permissaoNavegar: true,
   };
   it('deve retornar um payload', async () => {
     const response = await strategy.validate(payload);

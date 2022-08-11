@@ -11,6 +11,7 @@ describe('JwtRefreshTokenStrategy', () => {
     email: internet.email(),
     sub: 16,
     roles: [TipoUsuario.ATENDENTE],
+    permissaoNavegar: true,
   };
 
   it('deve retornar um payload', async () => {

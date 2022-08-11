@@ -11,13 +11,13 @@ export interface IToken {
   tipo: TipoUsuario;
   nome: string;
   perfilCompleto: boolean;
-  permissaoNavegar: boolean;
 }
 
 export interface ITokenPayload {
   sub: number;
   email: string;
   roles: TipoUsuario[];
+  permissaoNavegar: boolean;
 }
 
 export interface ITokenUser {

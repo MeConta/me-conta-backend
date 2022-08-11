@@ -87,7 +87,6 @@ describe('AuthService', () => {
       tipo: TipoUsuario.ADMINISTRADOR,
       nome: 'Teste',
       perfilCompleto: false,
-      permissaoNavegar: false,
     });
     jest.spyOn(logout, 'execute').mockResolvedValue();
     jest
@@ -111,15 +110,17 @@ describe('AuthService', () => {
 
   describe('login', () => {
     it('Deve chamar a assinatura de token', async () => {
+      const permissaoNavegar = false;
       entity.salt = await hash.generateSalt();
 
       await service.login(entity);
-      expect(login.execute).toBeCalledWith(entity);
+      expect(login.execute).toBeCalledWith(entity, permissaoNavegar);
     });
 
     it('Deve returnar permissaoNavegar falso quando o usuário é do tipo atendente and reprovado', async () => {
       entity.salt = await hash.generateSalt();
       const voluntario = { aprovado: false } as Voluntario;
+      const permissaoNavegar = false;
       jest
         .spyOn(validaVoluntarioComPerfilCompleto, 'execute')
         .mockResolvedValue(voluntario);
@@ -128,17 +129,17 @@ describe('AuthService', () => {
       expect(loginResult).toEqual({
         nome: 'Teste',
         perfilCompleto: true,
-        permissaoNavegar: false,
         refreshToken: 'REFRESH-TOKEN',
         tipo: 3,
         token: 'TOKEN',
       });
-      expect(login.execute).toBeCalledWith(entity);
+      expect(login.execute).toBeCalledWith(entity, permissaoNavegar);
     });
 
     it('Deve returnar permissaoNavegar falso quando o usuário é do tipo atendente e aprovado é null', async () => {
       entity.salt = await hash.generateSalt();
       const voluntario = { aprovado: null } as Voluntario;
+      const permissaoNavegar = false;
       jest
         .spyOn(validaVoluntarioComPerfilCompleto, 'execute')
         .mockResolvedValue(voluntario);
@@ -147,16 +148,16 @@ describe('AuthService', () => {
       expect(loginResult).toEqual({
         nome: 'Teste',
         perfilCompleto: true,
-        permissaoNavegar: false,
         refreshToken: 'REFRESH-TOKEN',
         tipo: 3,
         token: 'TOKEN',
       });
-      expect(login.execute).toBeCalledWith(entity);
+      expect(login.execute).toBeCalledWith(entity, permissaoNavegar);
     });
 
     it('Deve retornar permissaoNavegar true quando o usuário é do tipo atendente e aprovado é true', async () => {
       entity.salt = await hash.generateSalt();
+      const permissaoNavegar = true;
       const voluntario = { aprovado: true } as Voluntario;
       jest
         .spyOn(validaVoluntarioComPerfilCompleto, 'execute')
@@ -166,12 +167,11 @@ describe('AuthService', () => {
       expect(loginResult).toEqual({
         nome: 'Teste',
         perfilCompleto: true,
-        permissaoNavegar: true,
         refreshToken: 'REFRESH-TOKEN',
         tipo: 3,
         token: 'TOKEN',
       });
-      expect(login.execute).toBeCalledWith(entity);
+      expect(login.execute).toBeCalledWith(entity, permissaoNavegar);
     });
 
     it('Deve retornar permissaoNavegar true quando o usuário é do tipo administrador e o status aprovado é false', async () => {
@@ -186,7 +186,6 @@ describe('AuthService', () => {
       expect(loginResult).toEqual({
         nome: 'Teste',
         perfilCompleto: true,
-        permissaoNavegar: true,
         refreshToken: 'REFRESH-TOKEN',
         tipo: 3,
         token: 'TOKEN',
@@ -205,7 +204,6 @@ describe('AuthService', () => {
       expect(loginResult).toEqual({
         nome: 'Teste',
         perfilCompleto: true,
-        permissaoNavegar: true,
         refreshToken: 'REFRESH-TOKEN',
         tipo: 3,
         token: 'TOKEN',
@@ -230,6 +228,24 @@ describe('AuthService', () => {
         expect.any(String),
         expect.any(Number),
       );
+    });
+
+    it.skip('Deve buscar o usuário com um id especifico', async () => {
+      await service.refreshTokens('refresh-token', 550);
+
+      expect(validaUsuarioComRefreshToken.execute).toHaveBeenCalledWith(
+        'refresh-token',
+        550,
+      );
+
+      expect(true).toEqual({
+        nome: 'Teste',
+        perfilCompleto: true,
+        permissaoNavegar: true,
+        refreshToken: 'REFRESH-TOKEN',
+        tipo: 3,
+        token: 'TOKEN',
+      });
     });
   });
 });

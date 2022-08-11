@@ -14,13 +14,27 @@ describe('Gerar Token', () => {
     jest.spyOn(jwtService, 'sign').mockReturnValue('TOKEN');
   });
   it('Deve chamar a função de assinatura de token', function () {
-    const response = sut.execute(usuario);
+    const permissaoNavegar = true;
+    const teste = jest.spyOn(jwtService, 'sign').mockReturnValue('TOKEN');
+
+    const response = sut.execute(usuario, permissaoNavegar);
+
     expect(response).toEqual(
       expect.objectContaining({
         token: 'TOKEN',
+        refreshToken: 'TOKEN',
+        perfilCompleto: false,
       }),
     );
-
+    expect(teste).toHaveBeenCalledWith(
+      {
+        email: usuario.email,
+        sub: usuario.id,
+        roles: [usuario.tipo],
+        permissaoNavegar,
+      },
+      expect.anything(),
+    );
     expect(response).toHaveProperty('perfilCompleto');
   });
 });
