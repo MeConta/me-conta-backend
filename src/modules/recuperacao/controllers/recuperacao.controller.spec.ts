@@ -2,13 +2,15 @@ import { RecuperacaoController } from './recuperacao.controller';
 import { RecuperarSenha } from '../../../_business/recuperacao/casos-de-uso/recuperar-senha.feat';
 import { Test, TestingModule } from '@nestjs/testing';
 import { createMock } from '@golevelup/ts-jest';
-import { internet } from '@faker-js/faker/locale/pt_BR';
+import { faker } from '@faker-js/faker';
 
 describe('Recuperação Controller', () => {
   let controller: RecuperacaoController;
   let useCase: RecuperarSenha;
 
-  const email = internet.email();
+  faker.setLocale('pt_BR');
+
+  const email = faker.internet.email();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

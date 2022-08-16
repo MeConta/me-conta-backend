@@ -1,14 +1,15 @@
 import { JwtRefreshTokenStrategy } from './jwt-refresh-token.strategy';
-import { internet } from '@faker-js/faker/locale/pt_BR';
+import { faker } from '@faker-js/faker';
 
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { TokenPayload } from '../dto/auth.dto';
 
 describe('JwtRefreshTokenStrategy', () => {
+  faker.setLocale('pt_BR');
   const refreshTokenStrategy = new JwtRefreshTokenStrategy();
 
   const payload: TokenPayload = {
-    email: internet.email(),
+    email: faker.internet.email(),
     sub: 16,
     roles: [TipoUsuario.ATENDENTE],
     permissaoNavegar: true,

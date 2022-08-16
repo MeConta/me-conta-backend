@@ -1,7 +1,7 @@
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { DEFAULT_PHONE } from '../../jest.setup';
 import * as dayjs from 'dayjs';
-import { address, lorem } from '@faker-js/faker/locale/pt_BR';
+import { faker } from '@faker-js/faker';
 import {
   Estado,
   Genero,
@@ -21,15 +21,16 @@ import { AdminModule } from '../../src/modules/admin/admin.module';
 import { AutorizarVoluntarioInputDto } from '../../src/modules/admin/voluntario/dto/autorizar-voluntario.dto';
 
 describe('Aprovação de Voluntários (e2e)', () => {
+  faker.setLocale('pt_BR');
   let app: INestApplication;
   let token: string;
   const voluntarioReq = {
     telefone: DEFAULT_PHONE,
     dataNascimento: dayjs().subtract(18, 'years').toDate(),
-    cidade: address.city(),
+    cidade: faker.address.city(),
     UF: Estado.AC,
     genero: Genero.PREFIRO_NAO_DECLARAR,
-    instituicao: lorem.word(2),
+    instituicao: faker.lorem.word(2),
     formado: false,
     semestre: 10,
     tipo: TipoUsuario.ATENDENTE,

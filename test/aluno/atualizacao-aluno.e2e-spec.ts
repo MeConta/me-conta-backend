@@ -18,7 +18,7 @@ import { AlunoModule } from '../../src/modules/aluno/aluno.module';
 import { PerfilModule } from '../../src/modules/perfil/perfil.module';
 import * as request from 'supertest';
 import { AtualizarAlunoDto } from '../../src/_adapters/alunos/dto/atualizar-aluno.dto';
-import { name } from '@faker-js/faker/locale/pt_BR';
+import { faker } from '@faker-js/faker';
 
 describe('Criar Conta (e2e)', () => {
   let app: INestApplication;
@@ -60,12 +60,13 @@ describe('Criar Conta (e2e)', () => {
   });
 
   describe('/aluno/atualizar/ (PATCH)', () => {
+    faker.setLocale('pt_BR');
     it('Deve Atualizar um aluno com sucesso', async () => {
       await request(app.getHttpServer())
         .patch('/aluno/atualizar/1')
         .set('Authorization', `Bearer ${token}`)
         .send({
-          nome: name.firstName(),
+          nome: faker.name.firstName(),
         } as AtualizarAlunoDto)
         .expect(204);
     });
@@ -96,7 +97,7 @@ describe('Criar Conta (e2e)', () => {
 
     it('Um Administrador deve ser capaz de atualizar um perfil de Aluno', async () => {
       const adminToken = await getToken(app, TipoUsuario.ADMINISTRADOR);
-      const nome = name.firstName();
+      const nome = faker.name.firstName();
       await request(app.getHttpServer())
         .patch('/aluno/atualizar/1')
         .set('Authorization', `Bearer ${adminToken}`)

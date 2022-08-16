@@ -6,7 +6,7 @@ import { CreateUsuarioDto } from '../../src/_adapters/usuarios/dto/create-usuari
 import { TipoUsuario } from '../../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { setupApp } from '../../src/config/app.config';
 import { createUser, getTestingModule } from '../utils.test';
-import { internet, name } from '@faker-js/faker/locale/pt_BR';
+import { faker } from '@faker-js/faker';
 import { DEFAULT_PASSWORD } from '../../jest.setup';
 
 describe('Criar Conta (e2e)', () => {
@@ -23,9 +23,10 @@ describe('Criar Conta (e2e)', () => {
   });
 
   describe('/cadastro-inicial (POST)', () => {
+    faker.setLocale('pt_BR');
     const req = {
-      nome: name.firstName() + ' ' + name.lastName(),
-      email: internet.email(),
+      nome: faker.name.fullName(),
+      email: faker.internet.email(),
       senha: DEFAULT_PASSWORD,
       tipo: TipoUsuario.ALUNO,
     } as CreateUsuarioDto;

@@ -2,7 +2,7 @@ import * as request from 'supertest';
 import { CreateUsuarioDto } from '../src/_adapters/usuarios/dto/create-usuario.dto';
 import { INestApplication, Provider } from '@nestjs/common';
 import { TipoUsuario } from '../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
-import { internet, lorem, name } from '@faker-js/faker/locale/pt_BR';
+import { faker } from '@faker-js/faker';
 import { AuthDto, TokenDto } from '../src/_adapters/auth/dto/auth.dto';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DEFAULT_PASSWORD } from '../jest.setup';
@@ -26,9 +26,10 @@ export async function createUser(
   tipo: TipoUsuario = TipoUsuario.ALUNO,
   dto?: Partial<Omit<CreateUsuarioDto, 'tipo'>>,
 ): Promise<Usuario> {
+  faker.setLocale('pt_BR');
   const { nome, email, senha } = {
-    nome: dto?.nome || name.findName(),
-    email: dto?.email || internet.email(),
+    nome: dto?.nome || faker.name.firstName(),
+    email: dto?.email || faker.internet.email(),
     senha: dto?.senha || DEFAULT_PASSWORD,
   };
 
@@ -58,17 +59,17 @@ export async function createVoluntario(
   if (!usuario) {
     usuario = await createUser(app, tipo);
   }
-
+  faker.setLocale('pt_BR');
   const voluntarioRepo = app.get(Connection).getRepository(VoluntarioDbEntity);
 
   dto = {
-    instituicao: dto?.instituicao || lorem.words(),
+    instituicao: dto?.instituicao || faker.lorem.words(),
     frentes: dto?.frentes || [FrenteAtuacao.COACHING_DE_ROTINA_DE_ESTUDOS],
     anoFormacao: dto?.anoFormacao || +dayjs().format('YYYY'),
     formado: dto?.formado || true,
-    crp: dto?.crp || lorem.words(),
-    bio: dto?.bio || lorem.paragraphs(),
-    abordagem: dto?.abordagem || lorem.words(),
+    crp: dto?.crp || faker.lorem.words(),
+    bio: dto?.bio || faker.lorem.paragraphs(),
+    abordagem: dto?.abordagem || faker.lorem.words(),
     aprovado: dto?.aprovado || true,
   };
   return voluntarioRepo.save(
@@ -85,8 +86,9 @@ export async function getToken(
   tipo: TipoUsuario = TipoUsuario.ADMINISTRADOR,
   login?: AuthDto,
 ): Promise<string> {
+  faker.setLocale('pt_BR');
   const { email, senha } = {
-    email: login?.username || internet.email(),
+    email: login?.username || faker.internet.email(),
     senha: login?.password || DEFAULT_PASSWORD,
   };
 

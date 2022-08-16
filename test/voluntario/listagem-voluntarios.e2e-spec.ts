@@ -5,7 +5,7 @@ import { AuthModule } from '../../src/modules/auth/auth.module';
 import { UsuarioModule } from '../../src/modules/usuario/usuario.module';
 import { VoluntarioModule } from '../../src/modules/voluntario/voluntario.module';
 import { setupApp } from '../../src/config/app.config';
-import { address, lorem } from '@faker-js/faker/locale/pt_BR';
+import { faker } from '@faker-js/faker';
 import { DEFAULT_PHONE } from '../../jest.setup';
 import {
   Estado,
@@ -23,24 +23,25 @@ import { Connection } from 'typeorm';
 import { VoluntarioOutput } from '../../src/_business/voluntarios/dtos/voluntario.dto';
 
 describe('Listagem de Voluntários (e2)', () => {
+  faker.setLocale('pt_BR');
   let app: INestApplication;
   let token: string;
   const voluntarioReq = {
     telefone: DEFAULT_PHONE,
     dataNascimento: dayjs().subtract(18, 'years').toDate(),
-    cidade: address.city(),
+    cidade: faker.address.city(),
     UF: Estado.AC,
     genero: Genero.PREFIRO_NAO_DECLARAR,
-    instituicao: lorem.word(2),
+    instituicao: faker.lorem.word(2),
     formado: false,
     semestre: 10,
     anoFormacao: +dayjs().format('YYYY'),
-    crp: lorem.words(3),
+    crp: faker.lorem.words(3),
     areaAtuacao: AreaAtuacao.PROFESSOR,
     frentes: [FrenteAtuacao.SESSAO_ACOLHIMENTO],
-    especializacoes: lorem.words(3),
+    especializacoes: faker.lorem.words(3),
     tipo: TipoUsuario.ATENDENTE,
-    bio: lorem.paragraphs(2),
+    bio: faker.lorem.paragraphs(2),
   } as CreateVoluntarioDto;
   beforeEach(async () => {
     const moduleFixture = await getTestingModule([

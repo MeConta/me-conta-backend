@@ -4,16 +4,18 @@ import { TypeormUsuarioService } from './typeorm-usuario.service';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { DEFAULT_PASSWORD, MOCKED_SALT } from '../../../../jest.setup';
 import { Usuario } from '../../../_business/usuarios/entidades/usuario.entity';
-import { name, internet } from '@faker-js/faker/locale/pt_BR';
+import { faker } from '@faker-js/faker';
 
 describe('Usuario', () => {
+  faker.setLocale('pt_BR');
+
   let connection: Connection;
   let repository: Repository<UsuarioDbEntity>;
   let sut: TypeormUsuarioService;
 
   const request = {
-    nome: name.firstName(),
-    email: internet.email(),
+    nome: faker.name.firstName(),
+    email: faker.internet.email(),
     senha: DEFAULT_PASSWORD,
     tipo: TipoUsuario.ALUNO,
     salt: MOCKED_SALT,

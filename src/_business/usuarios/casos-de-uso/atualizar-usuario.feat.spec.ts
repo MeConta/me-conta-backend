@@ -7,12 +7,14 @@ import {
   EmailJaUtilizadoError,
 } from './atualizar-usuario.feat';
 import { UsuarioNaoEncontradoError } from '../erros/usuarios.errors';
-import { name, internet } from '@faker-js/faker/locale/pt_BR';
+import { faker } from '@faker-js/faker';
 import {
   IAtualizarUsuario,
   IAtualizarUsuarioService,
   IBuscarUsuarioViaEmailService,
 } from '../services/usuario.service';
+
+faker.setLocale('pt_BR');
 
 class InMemoryAtualizarService
   implements
@@ -22,8 +24,8 @@ class InMemoryAtualizarService
 {
   public usuario: Usuario = {
     ...createMock<Usuario>(),
-    nome: name.firstName(),
-    email: internet.email(),
+    nome: faker.name.firstName(),
+    email: faker.internet.email(),
     senha: DEFAULT_PASSWORD,
   };
   findById(input: number): Promise<Usuario> {

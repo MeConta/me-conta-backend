@@ -10,7 +10,7 @@ import {
 import { UsuarioDbEntity } from '../../usuarios/entidades/usuario.db.entity';
 import { TipoUsuario } from '../../../_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { DEFAULT_PASSWORD, MOCKED_SALT } from '../../../../jest.setup';
-import { name, internet, date } from '@faker-js/faker/locale/pt_BR';
+import { faker } from '@faker-js/faker';
 import {
   IAtualizarPerfilService,
   IBuscarPerfilByIdService,
@@ -18,6 +18,7 @@ import {
 } from '../../../_business/perfil/services/perfil.service';
 
 describe('PerfilService', function () {
+  faker.setLocale('pt_BR');
   let connection: Connection;
   let repository: Repository<PerfilDbEntity>;
   let service: ICadastrarPerfilService &
@@ -26,7 +27,7 @@ describe('PerfilService', function () {
 
   const request: Perfil = {
     cidade: 'Acrelândia',
-    dataNascimento: date.past(18),
+    dataNascimento: faker.date.past(18),
     UF: Estado.AC,
     genero: Genero.PREFIRO_NAO_DECLARAR,
     usuario: { id: 1 } as Usuario,
@@ -52,9 +53,9 @@ describe('PerfilService', function () {
     await usuarioRepo.save(
       usuarioRepo.create({
         senha: DEFAULT_PASSWORD,
-        nome: name.firstName(),
+        nome: faker.name.firstName(),
         tipo: TipoUsuario.ALUNO,
-        email: internet.email(),
+        email: faker.internet.email(),
         dataTermos: new Date(),
         salt: MOCKED_SALT,
       }),

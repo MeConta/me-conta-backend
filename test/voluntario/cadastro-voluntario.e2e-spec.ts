@@ -5,7 +5,7 @@ import { UsuarioModule } from '../../src/modules/usuario/usuario.module';
 import { TipoUsuario } from '../../src/_business/usuarios/casos-de-uso/cadastrar-novo-usuario.feat';
 import { setupApp } from '../../src/config/app.config';
 import { getTestingModule, getToken } from '../utils.test';
-import { lorem, address } from '@faker-js/faker/locale/pt_BR';
+import { faker } from '@faker-js/faker';
 
 import { AuthModule } from '../../src/modules/auth/auth.module';
 import { CreateVoluntarioDto } from '../../src/_adapters/voluntarios/dto/create-voluntario.dto';
@@ -41,18 +41,19 @@ describe('Criar Conta de Voluntário (e2e)', () => {
   });
 
   describe('/cadastro-voluntario (POST)', () => {
+    faker.setLocale('pt_BR');
     const req = {
       telefone: '11912345678',
       dataNascimento: dayjs().subtract(18, 'year').toDate(),
-      cidade: address.city(),
+      cidade: faker.address.city(),
       UF: Estado.AC,
       genero: Genero.PREFIRO_NAO_DECLARAR,
       formado: false,
       semestre: 10,
       frentes: [FrenteAtuacao.SESSAO_ACOLHIMENTO],
-      instituicao: lorem.word(3),
+      instituicao: faker.lorem.word(3),
       tipo: TipoUsuario.ATENDENTE,
-      bio: lorem.paragraphs(3),
+      bio: faker.lorem.paragraphs(3),
     } as CreateVoluntarioDto;
 
     it('Deve Cadastrar um voluntário com sucesso', async () => {

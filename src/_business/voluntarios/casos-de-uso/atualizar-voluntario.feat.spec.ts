@@ -7,7 +7,7 @@ import { IBuscarVoluntarioViaId } from '../services/voluntario.service';
 import { VoluntarioNaoEncontradoError } from '../../admin/casos-de-uso/autorizar-voluntario.feat';
 import { createMock } from '@golevelup/ts-jest';
 import { Perfil } from '../../usuarios/entidades/usuario.entity';
-import { lorem } from '@faker-js/faker/locale/pt_BR';
+import { faker } from '@faker-js/faker';
 import { AtualizarVoluntario } from './atualizar-voluntario.feat';
 import { VoluntarioOutput } from '../dtos/voluntario.dto';
 
@@ -20,6 +20,7 @@ describe('Atualizar Voluntário', () => {
   let sut: AtualizarVoluntario;
 
   beforeEach(async () => {
+    faker.setLocale('pt_BR');
     voluntarios[0] = createMock<NovoVoluntario>();
     sut = new AtualizarVoluntario(
       voluntarioService,
@@ -29,6 +30,7 @@ describe('Atualizar Voluntário', () => {
   });
 
   beforeEach(async () => {
+    faker.setLocale('pt_BR');
     jest
       .spyOn(voluntarioService, 'findById')
       .mockResolvedValue(createMock<VoluntarioOutput>());
@@ -47,7 +49,7 @@ describe('Atualizar Voluntário', () => {
   });
 
   it('Deve atualizar um Voluntário', async () => {
-    const bio = lorem.paragraphs(3);
+    const bio = faker.lorem.paragraphs(3);
     await sut.execute(0, {
       bio,
     });

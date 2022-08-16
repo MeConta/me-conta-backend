@@ -7,28 +7,29 @@ import {
   FrenteAtuacao,
 } from '../../../_business/voluntarios/entidades/voluntario.entity';
 import * as dayjs from 'dayjs';
-import { address, date, lorem } from '@faker-js/faker/locale/pt_BR';
+import { faker } from '@faker-js/faker';
 import {
   Estado,
   Genero,
 } from '../../../_business/usuarios/entidades/usuario.entity';
 
 describe('CreateVoluntarioDto', () => {
+  faker.setLocale('pt_BR');
   const input = {
     tipo: TipoUsuario.ATENDENTE,
-    bio: lorem.paragraphs(2),
-    crp: lorem.lines(1),
+    bio: faker.lorem.paragraphs(2),
+    crp: faker.lorem.lines(1),
     areaAtuacao: AreaAtuacao.PSICOLOGO,
-    anoFormacao: +dayjs(date.past()).format('YYYY'),
-    cidade: address.city(),
+    anoFormacao: +dayjs(faker.date.past()).format('YYYY'),
+    cidade: faker.address.city(),
     formado: true,
     semestre: 10,
     frentes: [FrenteAtuacao.SESSAO_ACOLHIMENTO],
-    instituicao: lorem.sentence(1),
+    instituicao: faker.lorem.sentence(1),
     dataNascimento: dayjs().subtract(18, 'years').format('YYYY-MM-DD'),
     genero: Genero.PREFIRO_NAO_DECLARAR,
     UF: Estado.AC,
-    especializacoes: lorem.words(10),
+    especializacoes: faker.lorem.words(10),
     telefone: '11912345678',
   };
   let transformed: CreateVoluntarioDto;
