@@ -28,7 +28,7 @@ export async function createUser(
 ): Promise<Usuario> {
   faker.setLocale('pt_BR');
   const { nome, email, senha } = {
-    nome: dto?.nome || faker.name.firstName(),
+    nome: dto?.nome || faker.name.fullName(),
     email: dto?.email || faker.internet.email(),
     senha: dto?.senha || DEFAULT_PASSWORD,
   };
