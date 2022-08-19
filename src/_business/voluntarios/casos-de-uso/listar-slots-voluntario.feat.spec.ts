@@ -11,6 +11,8 @@ describe('Listar Slots de Agenda', () => {
   let sut: ListarSlotsVoluntario;
   const voluntarioService = createMock<IBuscarVoluntarios>();
   let voluntarios: Array<Voluntario> = [];
+  const dataInicioSlot = dayjs('2021-01-01').toDate();
+  const dataFimSlot = dayjs('2021-01-01').add(1, 'hours').toDate();
   beforeEach(async () => {
     sut = new ListarSlotsVoluntario(voluntarioService);
   });
@@ -30,6 +32,12 @@ describe('Listar Slots de Agenda', () => {
             id: null,
             inicio: dayjs().subtract(1, 'day').toDate(),
             fim: dayjs().subtract(1, 'day').add(1, 'hours').toDate(),
+            voluntario: Promise.resolve(createMock<Voluntario>()),
+          },
+          {
+            id: null,
+            inicio: dataInicioSlot,
+            fim: dataFimSlot,
             voluntario: Promise.resolve(createMock<Voluntario>()),
           },
         ],
@@ -57,6 +65,12 @@ describe('Listar Slots de Agenda', () => {
   it('Deve listar os slots de um atendente a partir da data atual', async () => {
     jest.spyOn(voluntarioService, 'buscar').mockResolvedValue([voluntarios[0]]);
     const response = await sut.execute(1);
+    expect(response).toHaveLength(1);
+  });
+
+  it('Deve listar os slots de um atendente em uma data selecionada', async () => {
+    jest.spyOn(voluntarioService, 'buscar').mockResolvedValue([voluntarios[0]]);
+    const response = await sut.execute(1, dataInicioSlot);
     expect(response).toHaveLength(1);
   });
 

@@ -38,6 +38,7 @@ describe('ListarSlotsAgendaController', () => {
     await controller.get();
     expect(useCase.execute).toBeCalledWith(undefined);
   });
+
   it('Deve Dar erro de voluntário não encontrado', async () => {
     jest
       .spyOn(useCase, 'execute')

@@ -7,6 +7,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
+import * as dayjs from 'dayjs';
 
 describe('ListarSlotsAgendaController', () => {
   let controller: ListarSlotsVoluntarioController;
@@ -32,11 +33,19 @@ describe('ListarSlotsAgendaController', () => {
   });
   it('Deve chamar o caso de uso passando um atendente ID', async () => {
     await controller.get({ id: 1 });
-    expect(useCase.execute).toBeCalledWith(1);
+    expect(useCase.execute).toBeCalledWith(1, undefined);
   });
   it('Deve chamar o caso de uso sem passar atendente ID', async () => {
     await controller.get();
-    expect(useCase.execute).toBeCalledWith(undefined);
+    expect(useCase.execute).toBeCalledWith(undefined, undefined);
+  });
+
+  it('Deve chamar o caso de uso passando uma data', async () => {
+    await controller.get(null, { inicio: dayjs('2021-01-01').toDate() });
+    expect(useCase.execute).toBeCalledWith(
+      undefined,
+      dayjs('2021-01-01').toDate(),
+    );
   });
   it('Deve Dar erro de voluntário não encontrado', async () => {
     jest

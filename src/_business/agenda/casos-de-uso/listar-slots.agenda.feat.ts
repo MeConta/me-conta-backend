@@ -23,10 +23,12 @@ export class ListarSlotsAgenda {
     if (atendenteId) {
       search.usuario.id = atendenteId;
     }
+
     const voluntarios = await this.voluntarioService.buscar(search);
     if (atendenteId && !voluntarios.length) {
       throw new VoluntarioNaoEncontradoError();
     }
+
     return voluntarios.map<SlotAgendaComVoluntario>((voluntario) => ({
       voluntario: {
         id: voluntario.usuario.id,
