@@ -1,0 +1,82 @@
+name: CICD - Backend - GCP
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        uses: bahmutov/npm-install@v1
+      - name: Build
+        run: npm run build
+      - name: Unit Tests
+        run: npm run test:cov
+      - name: E2E Tests
+        run: | 
+          cp .env .env.test
+          npm run test:e2e
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  deploy-dev:
+    runs-on: ubuntu-latest
+    needs:
+      - build-and-test
+    environment: 
+      name: DEV
+      url: https://me-conta-backend.herokuapp.com
+    env:
+      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      HEROKU_APP_NAME: me-conta-backend
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+      - name: Build
+        run: npm run build
+      - name: Perform migrations
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NODE_ENV: production
+        run: npm run typeorm:migration:run
+      - name: Login no Heroku Container
+        run: heroku container:login
+      - name: Push Container to Heroku
+        run: heroku container:push -a $HEROKU_APP_NAME web
+      - name: Release to Heroku
+        run: heroku container:release -a $HEROKU_APP_NAME web
+      - name: google-chat-notification
+        uses: Co-qn/google-chat-notification@v1
+        if: failure()
+        with:
+          name: Deploy Dev Failure
+          url: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
+          status: ${{ job.status }}
+
+  deploy-hml:
+    runs-on: ubuntu-latest
+    if: ${{ false }}
+    needs: deploy-dev
+    environment: HML
+    steps:
+      - name: test
+        run: echo 'deploy on hml'
+
+  deploy-prd:
+    runs-on: ubuntu-latest
+    if: ${{ false }}
+    needs: deploy-hml
+    environment: PRD
+    steps:
+      - name: test
+        run: echo 'deploy on prd'
