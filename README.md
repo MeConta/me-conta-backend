@@ -50,7 +50,7 @@ Existe o arquivo `.env` com todas as variáveis utilizadas para rodar o sistema.
 ## ▶️ Executando o projeto
 - inicie o banco de dados via **docker compose**
   ```bash
-  docker compose up -d db
+  docker-compose up -d db
   ```
 - Instale as dependências **npm i**:
   ```bash
