@@ -40,3 +40,7 @@ lerna-debug.log*
 # Env
 .env.local
 .env.*.local
+
+# Terraform
+.terraform/
+/terraform/*.json
